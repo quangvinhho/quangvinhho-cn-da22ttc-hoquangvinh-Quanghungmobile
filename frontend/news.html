@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>QuangHưng Mobile - Điện thoại chính hãng giá tốt</title>
+  <meta name="description" content="Mua điện thoại chính hãng, giá tốt nhất thị trường. iPhone, Samsung, Sony Xperia.">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" href="responsive.css">
+
+  <style>
+    :root {
+      --red-main: #e41e26;
+      --red-dark: #c5111a;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-[var(--red-main)] text-white sticky top-0 z-50">
+    <!-- Top Bar -->
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between py-2 lg:py-3">
+        
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 hover:opacity-90 flex-shrink-0">
+          <img src="images/logo.png" alt="Logo" class="h-8 lg:h-10">
+          <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap">QuangHưng Mobile</h1>
+        </a>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="hidden lg:flex items-center gap-1 mx-4 flex-1">
+          <a href="index.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Trang chủ
+          </a>
+          
+          <div class="relative group">
+            <button class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap flex items-center gap-1">
+              Điện thoại
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <!-- Dropdown -->
+            <div class="absolute left-0 top-full mt-1 w-48 bg-white shadow-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div class="py-2">
+                <a href="products.html?brand=iphone" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-brands fa-apple"></i>
+                  iPhone
+                </a>
+                <a href="products.html?brand=samsung" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-solid fa-mobile"></i>
+                  Samsung
+                </a>
+                <a href="products.html?brand=sony" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-solid fa-mobile-alt"></i>
+                  Sony Xperia
+                </a>
+                <a href="products.html?brand=google" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-brands fa-google"></i>
+                  Google Pixel
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <a href="products.html?category=phukien" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Phụ kiện
+          </a>
+          <a href="promotions.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap flex items-center gap-1">
+            Khuyến mãi
+            <span class="bg-yellow-400 text-red-800 text-xs font-bold px-1.5 py-0.5 rounded-full">HOT</span>
+          </a>
+          <a href="news.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Tin tức
+          </a>
+          <a href="contact.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Liên hệ
+          </a>
+        </nav>
+
+        <!-- Search - Desktop -->
+        <div class="hidden lg:flex flex-1 max-w-md bg-white rounded-lg overflow-hidden">
+          <input type="text" placeholder="Tìm kiếm sản phẩm..."
+            class="flex-grow px-4 py-2 text-gray-700 focus:outline-none text-sm" />
+          <button class="bg-[var(--red-dark)] px-4 text-white hover:bg-red-700 transition-colors">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+
+        <!-- Right Menu -->
+        <div class="flex items-center gap-2 lg:gap-4 text-sm font-medium ml-4">
+          <a href="cart.html" class="hover:opacity-90 flex items-center gap-1 lg:gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-cart-shopping text-lg"></i>
+            <span class="hidden xl:inline">Giỏ hàng</span>
+          </a>
+          <a href="contact.html" class="hover:opacity-90 hidden lg:flex items-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-phone text-base"></i> 
+            <span class="text-yellow-300 font-bold hidden xl:inline">1800.2097</span>
+          </a>
+          <a href="login.html" class="hover:opacity-90 flex items-center gap-1 lg:gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-user text-base"></i>
+            <span class="hidden xl:inline">Đăng nhập</span>
+          </a>
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-btn" class="lg:hidden text-white text-xl">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Mobile Search -->
+      <div class="lg:hidden pb-3">
+        <div class="flex bg-white rounded-lg overflow-hidden">
+          <input type="text" placeholder="Tìm kiếm sản phẩm..."
+            class="flex-grow px-3 py-2 text-gray-700 focus:outline-none text-sm" />
+          <button class="bg-[var(--red-dark)] px-3 text-white">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2">
+          <!-- Featured News -->
+          <article class="bg-white rounded-lg shadow-md overflow-hidden mb-8 hover:shadow-xl transition">
+            <div class="relative overflow-hidden group">
+              <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                   alt="iPhone 15" 
+                   class="w-full h-96 object-cover transform group-hover:scale-110 transition duration-500" />
+              <div class="absolute top-4 left-4">
+                <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Nổi bật</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <h2 class="text-3xl font-bold mb-3 hover:text-red-600 transition">
+                <a href="news-detail.html">iPhone 15 Pro Max ra mắt với nhiều tính năng đột phá</a>
+              </h2>
+              <div class="flex items-center text-gray-500 text-sm mb-4">
+                <span class="mr-4"><i class="far fa-calendar mr-2"></i>09/10/2025</span>
+                <span class="mr-4"><i class="far fa-user mr-2"></i>Admin</span>
+                <span><i class="far fa-eye mr-2"></i>1,234 lượt xem</span>
+              </div>
+              <p class="text-gray-600 mb-4 leading-relaxed">
+                Apple vừa chính thức ra mắt dòng iPhone 15 series với nhiều cải tiến đáng chú ý. 
+                iPhone 15 Pro Max là phiên bản cao cấp nhất với khung titanium, chip A17 Pro mạnh mẽ 
+                và camera được nâng cấp lên 48MP với zoom quang học 5x...
+              </p>
+              <a href="news-detail.html" class="inline-flex items-center text-red-600 hover:text-red-700 font-semibold">
+                Đọc tiếp <i class="fas fa-arrow-right ml-2"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- News Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+              <div class="relative overflow-hidden group">
+                <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                     alt="Samsung Galaxy" 
+                     class="w-full h-48 object-cover transform group-hover:scale-110 transition duration-500" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl font-bold mb-2 hover:text-red-600 transition">
+                  <a href="news-detail.html">So sánh Galaxy S24 Ultra vs iPhone 15 Pro Max</a>
+                </h3>
+                <div class="flex items-center text-gray-500 text-xs mb-3">
+                  <span class="mr-3"><i class="far fa-calendar mr-1"></i>08/10/2025</span>
+                  <span><i class="far fa-eye mr-1"></i>856 lượt xem</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">
+                  Cuộc đối đầu giữa hai smartphone cao cấp nhất đến từ Samsung và Apple với nhiều điểm nổi bật...
+                </p>
+                <a href="news-detail.html" class="text-red-600 hover:text-red-700 font-medium text-sm">
+                  Đọc tiếp <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+              </div>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+              <div class="relative overflow-hidden group">
+                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                     alt="Xiaomi" 
+                     class="w-full h-48 object-cover transform group-hover:scale-110 transition duration-500" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl font-bold mb-2 hover:text-red-600 transition">
+                  <a href="news-detail.html">Xiaomi 14 Pro ra mắt với Snapdragon 8 Gen 3</a>
+                </h3>
+                <div class="flex items-center text-gray-500 text-xs mb-3">
+                  <span class="mr-3"><i class="far fa-calendar mr-1"></i>07/10/2025</span>
+                  <span><i class="far fa-eye mr-1"></i>645 lượt xem</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">
+                  Xiaomi vừa công bố dòng smartphone cao cấp mới với nhiều nâng cấp về hiệu năng và camera...
+                </p>
+                <a href="news-detail.html" class="text-red-600 hover:text-red-700 font-medium text-sm">
+                  Đọc tiếp <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+              </div>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+              <div class="relative overflow-hidden group">
+                <img src="https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                     alt="OPPO" 
+                     class="w-full h-48 object-cover transform group-hover:scale-110 transition duration-500" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl font-bold mb-2 hover:text-red-600 transition">
+                  <a href="news-detail.html">10 tính năng ẩn trên Android 15</a>
+                </h3>
+                <div class="flex items-center text-gray-500 text-xs mb-3">
+                  <span class="mr-3"><i class="far fa-calendar mr-1"></i>06/10/2025</span>
+                  <span><i class="far fa-eye mr-1"></i>923 lượt xem</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">
+                  Khám phá những tính năng hữu ích nhưng ít người biết đến trên hệ điều hành Android 15 mới nhất...
+                </p>
+                <a href="news-detail.html" class="text-red-600 hover:text-red-700 font-medium text-sm">
+                  Đọc tiếp <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+              </div>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+              <div class="relative overflow-hidden group">
+                <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                     alt="Technology" 
+                     class="w-full h-48 object-cover transform group-hover:scale-110 transition duration-500" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl font-bold mb-2 hover:text-red-600 transition">
+                  <a href="news-detail.html">Top 5 smartphone gaming tốt nhất 2025</a>
+                </h3>
+                <div class="flex items-center text-gray-500 text-xs mb-3">
+                  <span class="mr-3"><i class="far fa-calendar mr-1"></i>05/10/2025</span>
+                  <span><i class="far fa-eye mr-1"></i>1,112 lượt xem</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">
+                  Danh sách những chiếc smartphone được tối ưu hóa tốt nhất cho gaming với hiệu năng mạnh mẽ...
+                </p>
+                <a href="news-detail.html" class="text-red-600 hover:text-red-700 font-medium text-sm">
+                  Đọc tiếp <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Pagination -->
+          <div class="flex justify-center mt-8">
+            <nav class="flex items-center space-x-2">
+              <a href="#" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition">
+                <i class="fas fa-chevron-left"></i>
+              </a>
+              <a href="#" class="px-4 py-2 rounded-lg bg-red-600 text-white">1</a>
+              <a href="#" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">2</a>
+              <a href="#" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">3</a>
+              <span class="px-2">...</span>
+              <a href="#" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">10</a>
+              <a href="#" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition">
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <!-- Search Widget -->
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4">Tìm kiếm</h3>
+            <div class="relative">
+              <input type="text" 
+                     placeholder="Nhập từ khóa..." 
+                     class="w-full px-4 py-2 border rounded-lg outline-none focus:border-blue-600" />
+              <button class="absolute right-2 top-2 text-red-600 hover:text-red-700">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Categories Widget -->
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4">Chuyên mục</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="flex items-center justify-between text-gray-700 hover:text-red-600 transition">
+                  <span><i class="fas fa-folder mr-2"></i>Công nghệ</span>
+                  <span class="bg-gray-100 px-2 py-1 rounded text-sm">15</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-between text-gray-700 hover:text-red-600 transition">
+                  <span><i class="fas fa-folder mr-2"></i>Đánh giá</span>
+                  <span class="bg-gray-100 px-2 py-1 rounded text-sm">8</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-between text-gray-700 hover:text-red-600 transition">
+                  <span><i class="fas fa-folder mr-2"></i>Thủ thuật</span>
+                  <span class="bg-gray-100 px-2 py-1 rounded text-sm">12</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-between text-gray-700 hover:text-red-600 transition">
+                  <span><i class="fas fa-folder mr-2"></i>Tin tức</span>
+                  <span class="bg-gray-100 px-2 py-1 rounded text-sm">20</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Recent Posts Widget -->
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4">Bài viết mới</h3>
+            <div class="space-y-4">
+              <div class="flex space-x-3">
+                <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=100" 
+                     alt="Recent" 
+                     class="w-20 h-20 object-cover rounded" />
+                <div>
+                  <a href="news-detail.html" class="font-semibold text-sm hover:text-red-600 transition line-clamp-2">
+                    iPhone 15 Pro Max ra mắt với nhiều tính năng đột phá
+                  </a>
+                  <p class="text-gray-500 text-xs mt-1">
+                    <i class="far fa-calendar mr-1"></i>09/10/2025
+                  </p>
+                </div>
+              </div>
+              <div class="flex space-x-3">
+                <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=100" 
+                     alt="Recent" 
+                     class="w-20 h-20 object-cover rounded" />
+                <div>
+                  <a href="news-detail.html" class="font-semibold text-sm hover:text-red-600 transition line-clamp-2">
+                    So sánh Galaxy S24 Ultra vs iPhone 15 Pro Max
+                  </a>
+                  <p class="text-gray-500 text-xs mt-1">
+                    <i class="far fa-calendar mr-1"></i>08/10/2025
+                  </p>
+                </div>
+              </div>
+              <div class="flex space-x-3">
+                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=100" 
+                     alt="Recent" 
+                     class="w-20 h-20 object-cover rounded" />
+                <div>
+                  <a href="news-detail.html" class="font-semibold text-sm hover:text-red-600 transition line-clamp-2">
+                    Xiaomi 14 Pro ra mắt với Snapdragon 8 Gen 3
+                  </a>
+                  <p class="text-gray-500 text-xs mt-1">
+                    <i class="far fa-calendar mr-1"></i>07/10/2025
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tags Widget -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold mb-4">Tags</h3>
+            <div class="flex flex-wrap gap-2">
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">iPhone</a>
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">Samsung</a>
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">Android</a>
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">iOS</a>
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">Xiaomi</a>
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">OPPO</a>
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">Vivo</a>
+              <a href="#" class="bg-gray-100 hover:bg-red-600 hover:text-white px-3 py-1 rounded-full text-sm transition">5G</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer"></div>
+    <script src="main.js"></script>
+    <script>
+      // Mobile menu functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuButton = document.querySelector('button.md\\:hidden');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+        if (mobileMenuButton && mobileMenu && mobileMenuClose) {
+          mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+          });
+
+          mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+          });
+        }
+        
+        // Highlight active page
+        highlightActivePage();
+      });
+      
+      function highlightActivePage() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('header nav a, .mobile-menu nav a');
+        
+        navLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+            // Desktop menu
+            if (link.closest('header nav')) {
+              link.classList.add('text-yellow-300');
+              const underline = link.querySelector('span:last-child');
+              if (underline) {
+                underline.classList.remove('w-0');
+                underline.classList.add('w-full');
+              }
+            }
+            // Mobile menu
+            if (link.closest('.mobile-menu nav')) {
+              link.classList.remove('text-gray-700');
+              link.classList.add('text-red-600', 'bg-red-50');
+            }
+          }
+        });
+      }
+    </script>
+</body>
+</html>
+

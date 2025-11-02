@@ -1,0 +1,387 @@
+/* ===== RESPONSIVE CSS - Mobile, Tablet, Desktop ===== */
+
+/* === BASE VARIABLES === */
+:root {
+  --red-main: #e41e26;
+  --red-dark: #c5111a;
+  --mobile-padding: 1rem;
+  --tablet-padding: 1.5rem;
+  --desktop-padding: 2rem;
+}
+
+/* === MOBILE FIRST (< 640px) === */
+/* Base styles cho mobile */
+body {
+  font-size: 14px;
+  overflow-x: hidden;
+}
+
+.container {
+  padding-left: var(--mobile-padding);
+  padding-right: var(--mobile-padding);
+}
+
+/* Banner mobile */
+.banner-section {
+  margin-top: 1rem;
+}
+
+.banner-main {
+  height: 200px !important;
+}
+
+.banner-sub {
+  height: 80px !important;
+}
+
+/* PROMO STRIP mobile - 2 columns */
+.promo-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.promo-item {
+  padding: 0.75rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Flash Sale mobile */
+.flash-sale-title {
+  font-size: 1.25rem;
+}
+
+.countdown-timer {
+  font-size: 1rem;
+}
+
+.product-card {
+  min-width: 160px;
+  max-width: 160px;
+}
+
+.product-image {
+  height: 140px;
+}
+
+.product-title {
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+.product-price {
+  font-size: 1rem;
+}
+
+.product-old-price {
+  font-size: 0.75rem;
+}
+
+/* Product Grid mobile - 2 columns */
+.product-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+/* News mobile - 1 column */
+.news-grid {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Footer mobile */
+.footer-grid {
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+/* Hide desktop elements on mobile */
+.desktop-only {
+  display: none !important;
+}
+
+.mobile-only {
+  display: block !important;
+}
+
+
+/* === TABLET (640px - 1024px) === */
+@media (min-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+
+  .container {
+    padding-left: var(--tablet-padding);
+    padding-right: var(--tablet-padding);
+  }
+
+  /* Banner tablet */
+  .banner-main {
+    height: 280px !important;
+  }
+
+  .banner-sub {
+    height: 110px !important;
+  }
+
+  /* PROMO STRIP tablet - 3 columns */
+  .promo-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .promo-item {
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Flash Sale tablet */
+  .flash-sale-title {
+    font-size: 1.5rem;
+  }
+
+  .countdown-timer {
+    font-size: 1.25rem;
+  }
+
+  .product-card {
+    min-width: 180px;
+    max-width: 180px;
+  }
+
+  .product-image {
+    height: 160px;
+  }
+
+  /* Product Grid tablet - 3 columns */
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  /* News tablet - 2 columns */
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* Footer tablet - 2 columns */
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    text-align: left;
+  }
+}
+
+/* === TABLET LANDSCAPE (768px) === */
+@media (min-width: 768px) {
+  /* PROMO STRIP - 5 columns */
+  .promo-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  /* Product Grid - 4 columns */
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* News - 2 columns */
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* === DESKTOP (1024px+) === */
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+
+  .container {
+    padding-left: var(--desktop-padding);
+    padding-right: var(--desktop-padding);
+  }
+
+  /* Banner desktop */
+  .banner-main {
+    height: 360px !important;
+  }
+
+  .banner-sub {
+    height: 130px !important;
+  }
+
+  /* Flash Sale desktop */
+  .flash-sale-title {
+    font-size: 1.75rem;
+  }
+
+  .countdown-timer {
+    font-size: 1.5rem;
+  }
+
+  .product-card {
+    min-width: 200px;
+    max-width: 200px;
+  }
+
+  .product-image {
+    height: 180px;
+  }
+
+  /* Product Grid desktop - 5 columns */
+  .product-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+  }
+
+  /* News desktop - 3 columns */
+  .news-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  /* Footer desktop - 4 columns */
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Show desktop elements */
+  .desktop-only {
+    display: block !important;
+  }
+
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* === LARGE DESKTOP (1280px+) === */
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+
+  /* Product Grid - 6 columns */
+  .product-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .product-card {
+    min-width: 220px;
+    max-width: 220px;
+  }
+}
+
+/* === EXTRA LARGE DESKTOP (1536px+) === */
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
+/* === TOUCH DEVICE OPTIMIZATIONS === */
+@media (hover: none) and (pointer: coarse) {
+  /* Tăng kích thước nút bấm cho touch */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Tăng padding cho dễ chạm */
+  .product-card {
+    padding: 0.75rem;
+  }
+
+  /* Disable hover effects on touch devices */
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+}
+
+/* === LANDSCAPE MODE === */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Giảm chiều cao banner khi landscape */
+  .banner-main {
+    height: 180px !important;
+  }
+
+  /* Giảm padding vertical */
+  .py-8 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
+/* === PRINT STYLES === */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  header, nav, footer, .mobile-menu {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* === ACCESSIBILITY === */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* === DARK MODE SUPPORT === */
+@media (prefers-color-scheme: dark) {
+  /* Add dark mode styles if needed */
+  /* Currently using light mode only */
+}
+
+/* === SCROLL BEHAVIOR === */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* === SAFE AREAS (for notch devices) === */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  header {
+    padding-top: calc(0.75rem + env(safe-area-inset-top));
+  }
+}
+
+/* === CUSTOM SCROLLBAR === */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--red-main);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--red-dark);
+  }
+}

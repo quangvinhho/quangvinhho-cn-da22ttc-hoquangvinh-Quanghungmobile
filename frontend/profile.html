@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Tài khoản của tôi - QuangHưng Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+      :root {
+        --red-main: #e41e26;
+        --red-dark: #c5111a;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <script src="components/load-header.js"></script>
+
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-8">
+      <div class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold">Tài khoản của tôi</h1>
+        <p class="text-blue-100 mt-2">Quản lý thông tin và đơn hàng của bạn</p>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div id="profile-sidebar"></div>
+
+        <main class="lg:col-span-3">
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-2xl font-bold mb-6">Thông tin cá nhân</h2>
+
+            <form class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-700 font-semibold mb-2">Họ và tên</label>
+                  <input type="text" value="Nguyễn Đức" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-blue-600 transition" />
+                </div>
+                <div>
+                  <label class="block text-gray-700 font-semibold mb-2">Số điện thoại</label>
+                  <input type="tel" value="0912345678" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-blue-600 transition" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                <input type="email" value="nguyenduc@email.com" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-blue-600 transition" />
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Giới tính</label>
+                <div class="flex space-x-4">
+                  <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" class="w-4 h-4 text-red-600 focus:ring-red-500" checked />
+                    <span class="ml-2 text-gray-700">Nam</span>
+                  </label>
+                  <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" class="w-4 h-4 text-red-600 focus:ring-red-500" />
+                    <span class="ml-2 text-gray-700">Nữ</span>
+                  </label>
+                  <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" class="w-4 h-4 text-red-600 focus:ring-red-500" />
+                    <span class="ml-2 text-gray-700">Khác</span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Ngày sinh</label>
+                <input type="date" value="1995-05-15" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-blue-600 transition" />
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Địa chỉ</label>
+                <textarea rows="3" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-blue-600 transition" placeholder="Nhập địa chỉ...">123 Đường ABC, Phường XYZ, Quận 1, TP.HCM</textarea>
+              </div>
+
+              <div class="flex space-x-4">
+                <button type="submit" class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+                  Cập nhật thông tin
+                </button>
+                <button type="button" class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition">
+                  Hủy
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">Đơn hàng gần đây</h2>
+              <a href="#" class="text-red-600 hover:text-blue-700 font-semibold">Xem tất cả</a>
+            </div>
+
+            <div class="space-y-4">
+              <div class="border rounded-lg p-4 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                  <div>
+                    <span class="text-gray-600 text-sm">Mã đơn hàng: #DH001234</span>
+                    <p class="text-sm text-gray-500">Ngày đặt: 20/01/2025</p>
+                  </div>
+                  <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">Đã giao</span>
+                </div>
+
+                <div class="flex items-center space-x-4 mb-3">
+                  <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-16 h-16 object-cover rounded" />
+                  <div class="flex-1">
+                    <h3 class="font-semibold">iPhone 15 Pro Max</h3>
+                    <p class="text-sm text-gray-600">256GB - Titan Tự Nhiên</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-red-600">29.990.000đ</p>
+                    <p class="text-sm text-gray-600">x1</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t">
+                  <div class="text-sm text-gray-600">
+                    Tổng cộng: <span class="font-bold text-lg text-gray-800">29.990.000đ</span>
+                  </div>
+                  <div class="space-x-2">
+                    <button class="border-2 border-blue-600 text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition text-sm">
+                      Đánh giá
+                    </button>
+                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition text-sm">
+                      Mua lại
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border rounded-lg p-4 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                  <div>
+                    <span class="text-gray-600 text-sm">Mã đơn hàng: #DH001233</span>
+                    <p class="text-sm text-gray-500">Ngày đặt: 18/01/2025</p>
+                  </div>
+                  <span class="bg-blue-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">Đang giao</span>
+                </div>
+
+                <div class="flex items-center space-x-4 mb-3">
+                  <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-16 h-16 object-cover rounded" />
+                  <div class="flex-1">
+                    <h3 class="font-semibold">Samsung Galaxy S24 Ultra</h3>
+                    <p class="text-sm text-gray-600">512GB - Titan Gray</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-red-600">32.990.000đ</p>
+                    <p class="text-sm text-gray-600">x1</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t">
+                  <div class="text-sm text-gray-600">
+                    Tổng cộng: <span class="font-bold text-lg text-gray-800">32.990.000đ</span>
+                  </div>
+                  <div class="space-x-2">
+                    <button class="border-2 border-blue-600 text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition text-sm">
+                      Theo dõi
+                    </button>
+                    <button class="border-2 border-blue-600 text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition text-sm">
+                      Hủy đơn
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border rounded-lg p-4 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                  <div>
+                    <span class="text-gray-600 text-sm">Mã đơn hàng: #DH001232</span>
+                    <p class="text-sm text-gray-500">Ngày đặt: 10/01/2025</p>
+                  </div>
+                  <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold">Đã hủy</span>
+                </div>
+
+                <div class="flex items-center space-x-4 mb-3">
+                  <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-16 h-16 object-cover rounded" />
+                  <div class="flex-1">
+                    <h3 class="font-semibold">Xiaomi 14 Pro</h3>
+                    <p class="text-sm text-gray-600">256GB - Đen Titan</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-red-600">19.990.000đ</p>
+                    <p class="text-sm text-gray-600">x1</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t">
+                  <div class="text-sm text-gray-600">
+                    Tổng cộng: <span class="font-bold text-lg text-gray-800">19.990.000đ</span>
+                  </div>
+                  <div class="space-x-2">
+                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition text-sm">
+                      Mua lại
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div id="footer"></div>
+  </body>
+</html>
+

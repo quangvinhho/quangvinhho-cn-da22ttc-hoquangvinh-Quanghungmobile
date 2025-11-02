@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Chi tiết sản phẩm - QuangHưng Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+      :root {
+        --red-main: #e41e26;
+        --red-dark: #c5111a;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <script src="components/load-header.js"></script>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+      <div class="container mx-auto px-4 py-3">
+        <div class="flex items-center space-x-2 text-sm">
+          <a href="index.html" class="text-gray-600 hover:text-red-600">Trang chủ</a>
+          <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+          <a href="products.html" class="text-gray-600 hover:text-red-600">Sản phẩm</a>
+          <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+          <span class="text-red-600">iPhone 15 Pro Max</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- Product Images -->
+        <div>
+          <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+            <img id="mainImage" 
+                 src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                 alt="iPhone 15 Pro Max" 
+                 class="w-full h-96 object-cover rounded-lg" />
+          </div>
+          <div class="grid grid-cols-4 gap-4">
+            <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=200" 
+                 alt="Image 1" 
+                 class="w-full h-24 object-cover rounded-lg cursor-pointer border-2 border-blue-600 hover:opacity-75 transition"
+                 onclick="changeImage(this.src)" />
+            <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=200" 
+                 alt="Image 2" 
+                 class="w-full h-24 object-cover rounded-lg cursor-pointer border-2 border-gray-200 hover:border-blue-600 hover:opacity-75 transition"
+                 onclick="changeImage(this.src)" />
+            <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=200" 
+                 alt="Image 3" 
+                 class="w-full h-24 object-cover rounded-lg cursor-pointer border-2 border-gray-200 hover:border-blue-600 hover:opacity-75 transition"
+                 onclick="changeImage(this.src)" />
+            <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=200" 
+                 alt="Image 4" 
+                 class="w-full h-24 object-cover rounded-lg cursor-pointer border-2 border-gray-200 hover:border-blue-600 hover:opacity-75 transition"
+                 onclick="changeImage(this.src)" />
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="mb-4">
+            <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Giảm 15%</span>
+            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold ml-2">Còn hàng</span>
+          </div>
+          
+          <h1 class="text-3xl font-bold mb-3">iPhone 15 Pro Max</h1>
+          
+          <div class="flex items-center mb-4">
+            <div class="text-yellow-400 text-lg">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <span class="text-gray-600 ml-2">(4.5/5 - 128 đánh giá)</span>
+            <span class="text-gray-400 mx-2">|</span>
+            <span class="text-gray-600">Đã bán: 245</span>
+          </div>
+
+          <div class="border-t border-b py-4 mb-6">
+            <div class="flex items-baseline mb-2">
+              <span class="text-4xl font-bold text-red-600">29.990.000đ</span>
+              <span class="text-xl text-gray-500 line-through ml-3">34.990.000đ</span>
+            </div>
+            <p class="text-sm text-gray-600">Tiết kiệm: 5.000.000đ</p>
+          </div>
+
+          <!-- Color Selection -->
+          <div class="mb-6">
+            <h3 class="font-semibold mb-3">Màu sắc:</h3>
+            <div class="flex space-x-3">
+              <button class="w-12 h-12 rounded-full bg-gray-800 border-2 border-blue-600 hover:scale-110 transition"></button>
+              <button class="w-12 h-12 rounded-full bg-blue-900 border-2 border-gray-200 hover:border-blue-600 hover:scale-110 transition"></button>
+              <button class="w-12 h-12 rounded-full bg-gray-300 border-2 border-gray-200 hover:border-blue-600 hover:scale-110 transition"></button>
+              <button class="w-12 h-12 rounded-full bg-yellow-100 border-2 border-gray-200 hover:border-blue-600 hover:scale-110 transition"></button>
+            </div>
+          </div>
+
+          <!-- Storage Selection -->
+          <div class="mb-6">
+            <h3 class="font-semibold mb-3">Dung lượng:</h3>
+            <div class="grid grid-cols-4 gap-3">
+              <button class="border-2 border-gray-200 rounded-lg py-2 px-4 hover:border-blue-600 transition">128GB</button>
+              <button class="border-2 border-blue-600 bg-blue-50 rounded-lg py-2 px-4 font-semibold transition">256GB</button>
+              <button class="border-2 border-gray-200 rounded-lg py-2 px-4 hover:border-blue-600 transition">512GB</button>
+              <button class="border-2 border-gray-200 rounded-lg py-2 px-4 hover:border-blue-600 transition">1TB</button>
+            </div>
+          </div>
+
+          <!-- Quantity -->
+          <div class="mb-6">
+            <h3 class="font-semibold mb-3">Số lượng:</h3>
+            <div class="flex items-center space-x-4">
+              <div class="flex items-center border-2 rounded-lg">
+                <button class="px-4 py-2 hover:bg-gray-100 transition" onclick="decreaseQuantity()">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <input type="number" id="quantity" value="1" min="1" class="w-16 text-center border-x-2 py-2 outline-none" />
+                <button class="px-4 py-2 hover:bg-gray-100 transition" onclick="increaseQuantity()">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+              <span class="text-gray-600">Còn 45 sản phẩm</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <button class="bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition flex items-center justify-center">
+              <i class="fas fa-shopping-cart mr-2"></i>
+              Thêm vào giỏ
+            </button>
+            <button class="bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition flex items-center justify-center">
+              <i class="fas fa-bolt mr-2"></i>
+              Mua ngay
+            </button>
+          </div>
+
+          <button class="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:border-blue-600 hover:text-red-600 transition flex items-center justify-center">
+            <i class="far fa-heart mr-2"></i>
+            Thêm vào yêu thích
+          </button>
+
+          <!-- Product Features -->
+          <div class="mt-6 border-t pt-6">
+            <h3 class="font-semibold mb-3">Đặc điểm nổi bật:</h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Chip A17 Pro mạnh mẽ nhất từ trước đến nay</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Camera chính 48MP với zoom quang học 5x</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Khung Titanium cao cấp, nhẹ hơn 10%</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Màn hình Super Retina XDR 6.7 inch</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Hỗ trợ sạc nhanh USB-C và Action Button</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Details Tabs -->
+      <div class="bg-white rounded-lg shadow-md mb-8">
+        <div class="border-b">
+          <div class="flex space-x-8 px-6">
+            <button class="py-4 border-b-2 border-blue-600 text-red-600 font-semibold" onclick="showTab('description')">
+              Mô tả sản phẩm
+            </button>
+            <button class="py-4 border-b-2 border-transparent text-gray-600 hover:text-red-600 font-semibold" onclick="showTab('specs')">
+              Thông số kỹ thuật
+            </button>
+            <button class="py-4 border-b-2 border-transparent text-gray-600 hover:text-red-600 font-semibold" onclick="showTab('reviews')">
+              Đánh giá (128)
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <!-- Description Tab -->
+          <div id="description" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">Mô tả sản phẩm</h2>
+            <div class="prose max-w-none text-gray-700 leading-relaxed">
+              <p class="mb-4">
+                iPhone 15 Pro Max là chiếc điện thoại cao cấp nhất trong dòng iPhone 15 series, được Apple giới thiệu với nhiều cải tiến đột phá về thiết kế, hiệu năng và camera.
+              </p>
+              <h3 class="text-xl font-semibold mb-2 mt-6">Thiết kế Titanium cao cấp</h3>
+              <p class="mb-4">
+                Lần đầu tiên Apple sử dụng khung Titanium hàng không vũ trụ, giúp iPhone 15 Pro Max nhẹ hơn 10% so với thế hệ trước nhưng vẫn đảm bảo độ bền vượt trội.
+              </p>
+              <h3 class="text-xl font-semibold mb-2 mt-6">Chip A17 Pro mạnh mẽ</h3>
+              <p class="mb-4">
+                Được sản xuất trên quy trình 3nm tiên tiến nhất, chip A17 Pro mang lại hiệu năng vượt trội với GPU 6 nhân, hỗ trợ ray tracing và tối ưu cho gaming.
+              </p>
+              <h3 class="text-xl font-semibold mb-2 mt-6">Camera chuyên nghiệp</h3>
+              <p class="mb-4">
+                Hệ thống camera 48MP Pro với zoom quang học 5x, chế độ chụp đêm cải tiến và khả năng quay video ProRes 4K 60fps.
+              </p>
+            </div>
+          </div>
+
+          <!-- Specifications Tab -->
+          <div id="specs" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-4">Thông số kỹ thuật</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="font-semibold mb-3 text-lg">Màn hình</h3>
+                <table class="w-full text-sm">
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Công nghệ màn hình</td>
+                    <td class="py-2 font-medium">Super Retina XDR OLED</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Độ phân giải</td>
+                    <td class="py-2 font-medium">2796 x 1290 pixels</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Kích thước</td>
+                    <td class="py-2 font-medium">6.7 inch</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Tần số quét</td>
+                    <td class="py-2 font-medium">120Hz ProMotion</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div>
+                <h3 class="font-semibold mb-3 text-lg">Camera</h3>
+                <table class="w-full text-sm">
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Camera sau</td>
+                    <td class="py-2 font-medium">48MP + 12MP + 12MP</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Zoom quang học</td>
+                    <td class="py-2 font-medium">5x</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Camera trước</td>
+                    <td class="py-2 font-medium">12MP TrueDepth</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Quay video</td>
+                    <td class="py-2 font-medium">4K 60fps ProRes</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div>
+                <h3 class="font-semibold mb-3 text-lg">Hiệu năng</h3>
+                <table class="w-full text-sm">
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Chip xử lý</td>
+                    <td class="py-2 font-medium">Apple A17 Pro 3nm</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">RAM</td>
+                    <td class="py-2 font-medium">8GB</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Bộ nhớ trong</td>
+                    <td class="py-2 font-medium">256GB / 512GB / 1TB</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div>
+                <h3 class="font-semibold mb-3 text-lg">Pin & Sạc</h3>
+                <table class="w-full text-sm">
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Dung lượng pin</td>
+                    <td class="py-2 font-medium">4,441 mAh</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Sạc nhanh</td>
+                    <td class="py-2 font-medium">27W USB-C</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 text-gray-600">Sạc không dây</td>
+                    <td class="py-2 font-medium">MagSafe 15W</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews Tab -->
+          <div id="reviews" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-4">Đánh giá từ khách hàng</h2>
+            
+            <!-- Rating Summary -->
+            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+              <div class="flex items-center space-x-8">
+                <div class="text-center">
+                  <div class="text-5xl font-bold text-red-600">4.5</div>
+                  <div class="text-yellow-400 text-xl my-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <div class="text-gray-600">128 đánh giá</div>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center mb-2">
+                    <span class="w-12">5 sao</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-3">
+                      <div class="bg-yellow-400 h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                    <span class="w-12 text-right">96</span>
+                  </div>
+                  <div class="flex items-center mb-2">
+                    <span class="w-12">4 sao</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-3">
+                      <div class="bg-yellow-400 h-2 rounded-full" style="width: 15%"></div>
+                    </div>
+                    <span class="w-12 text-right">19</span>
+                  </div>
+                  <div class="flex items-center mb-2">
+                    <span class="w-12">3 sao</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-3">
+                      <div class="bg-yellow-400 h-2 rounded-full" style="width: 7%"></div>
+                    </div>
+                    <span class="w-12 text-right">9</span>
+                  </div>
+                  <div class="flex items-center mb-2">
+                    <span class="w-12">2 sao</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-3">
+                      <div class="bg-yellow-400 h-2 rounded-full" style="width: 2%"></div>
+                    </div>
+                    <span class="w-12 text-right">3</span>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="w-12">1 sao</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-3">
+                      <div class="bg-yellow-400 h-2 rounded-full" style="width: 1%"></div>
+                    </div>
+                    <span class="w-12 text-right">1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="space-y-6">
+              <div class="border-b pb-6">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="font-semibold">Nguyễn Văn A</div>
+                    <div class="text-yellow-400 text-sm">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                  <span class="text-gray-500 text-sm">2 ngày trước</span>
+                </div>
+                <p class="text-gray-700 mb-2">
+                  Máy rất đẹp và mượt mà. Camera chụp ảnh đẹp, pin trâu. Rất hài lòng với sản phẩm này!
+                </p>
+                <div class="flex items-center text-sm text-gray-500">
+                  <button class="mr-4 hover:text-red-600"><i class="far fa-thumbs-up mr-1"></i> Hữu ích (12)</button>
+                  <button class="hover:text-red-600"><i class="far fa-comment mr-1"></i> Trả lời</button>
+                </div>
+              </div>
+
+              <div class="border-b pb-6">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="font-semibold">Trần Thị B</div>
+                    <div class="text-yellow-400 text-sm">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                    </div>
+                  </div>
+                  <span class="text-gray-500 text-sm">5 ngày trước</span>
+                </div>
+                <p class="text-gray-700 mb-2">
+                  Sản phẩm tốt nhưng giá hơi cao. Camera thì không có gì để chê. Giao hàng nhanh.
+                </p>
+                <div class="flex items-center text-sm text-gray-500">
+                  <button class="mr-4 hover:text-red-600"><i class="far fa-thumbs-up mr-1"></i> Hữu ích (8)</button>
+                  <button class="hover:text-red-600"><i class="far fa-comment mr-1"></i> Trả lời</button>
+                </div>
+              </div>
+
+              <div class="border-b pb-6">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="font-semibold">Lê Văn C</div>
+                    <div class="text-yellow-400 text-sm">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                  <span class="text-gray-500 text-sm">1 tuần trước</span>
+                </div>
+                <p class="text-gray-700 mb-2">
+                  Chip A17 Pro thật sự mạnh mẽ, chơi game mượt mà. Thiết kế titanium rất sang trọng. Đáng tiền!
+                </p>
+                <div class="flex items-center text-sm text-gray-500">
+                  <button class="mr-4 hover:text-red-600"><i class="far fa-thumbs-up mr-1"></i> Hữu ích (15)</button>
+                  <button class="hover:text-red-600"><i class="far fa-comment mr-1"></i> Trả lời</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center mt-6">
+              <button class="border-2 border-blue-600 text-red-600 px-6 py-2 rounded-lg hover:bg-red-600 hover:text-white transition">
+                Xem thêm đánh giá
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-6">Sản phẩm liên quan</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Product 1 -->
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400" 
+                   alt="Samsung Galaxy S24" 
+                   class="w-full h-48 object-cover" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold mb-2">Samsung Galaxy S24 Ultra</h3>
+              <div class="flex items-center mb-2">
+                <div class="text-yellow-400 text-sm">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span class="text-gray-600 text-sm ml-2">(95)</span>
+              </div>
+              <div class="text-xl font-bold text-red-600">32.990.000đ</div>
+            </div>
+          </a>
+
+          <!-- Product 2 -->
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400" 
+                   alt="Xiaomi 14 Pro" 
+                   class="w-full h-48 object-cover" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold mb-2">Xiaomi 14 Pro</h3>
+              <div class="flex items-center mb-2">
+                <div class="text-yellow-400 text-sm">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+                <span class="text-gray-600 text-sm ml-2">(67)</span>
+              </div>
+              <div class="text-xl font-bold text-red-600">19.990.000đ</div>
+            </div>
+          </a>
+
+          <!-- Product 3 -->
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=400" 
+                   alt="OPPO Find X7" 
+                   class="w-full h-48 object-cover" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold mb-2">OPPO Find X7 Ultra</h3>
+              <div class="flex items-center mb-2">
+                <div class="text-yellow-400 text-sm">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="text-gray-600 text-sm ml-2">(43)</span>
+              </div>
+              <div class="text-xl font-bold text-red-600">25.990.000đ</div>
+            </div>
+          </a>
+
+          <!-- Product 4 -->
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=400" 
+                   alt="iPhone 14" 
+                   class="w-full h-48 object-cover" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold mb-2">iPhone 14 Pro</h3>
+              <div class="flex items-center mb-2">
+                <div class="text-yellow-400 text-sm">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span class="text-gray-600 text-sm ml-2">(156)</span>
+              </div>
+              <div class="text-xl font-bold text-red-600">24.990.000đ</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer"></div>
+    <script src="main.js"></script>
+
+    <script>
+      // Change main image
+      function changeImage(src) {
+        document.getElementById('mainImage').src = src.replace('w=200', 'w=800');
+        
+        // Update border for selected thumbnail
+        document.querySelectorAll('img[onclick]').forEach(img => {
+          img.classList.remove('border-blue-600');
+          img.classList.add('border-gray-200');
+        });
+        event.target.classList.remove('border-gray-200');
+        event.target.classList.add('border-blue-600');
+      }
+
+      // Quantity controls
+      function increaseQuantity() {
+        const input = document.getElementById('quantity');
+        input.value = parseInt(input.value) + 1;
+      }
+
+      function decreaseQuantity() {
+        const input = document.getElementById('quantity');
+        if (parseInt(input.value) > 1) {
+          input.value = parseInt(input.value) - 1;
+        }
+      }
+
+      // Tab switching
+      function showTab(tabName) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+          tab.classList.add('hidden');
+        });
+        
+        // Remove active state from all buttons
+        document.querySelectorAll('button[onclick^="showTab"]').forEach(btn => {
+          btn.classList.remove('border-blue-600', 'text-red-600');
+          btn.classList.add('border-transparent', 'text-gray-600');
+        });
+        
+        // Show selected tab
+        document.getElementById(tabName).classList.remove('hidden');
+        
+        // Add active state to clicked button
+        event.target.classList.remove('border-transparent', 'text-gray-600');
+        event.target.classList.add('border-blue-600', 'text-red-600');
+      }
+
+      // Mobile menu functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuButton = document.querySelector('button.md\\:hidden');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+        if (mobileMenuButton && mobileMenu && mobileMenuClose) {
+          mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+          });
+
+          mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
+

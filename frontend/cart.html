@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>QuangHưng Mobile - Điện thoại chính hãng giá tốt</title>
+  <meta name="description" content="Mua điện thoại chính hãng, giá tốt nhất thị trường. iPhone, Samsung, Sony Xperia.">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" href="responsive.css">
+
+  <style>
+    :root {
+      --red-main: #e41e26;
+      --red-dark: #c5111a;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-[var(--red-main)] text-white sticky top-0 z-50">
+    <!-- Top Bar -->
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between py-2 lg:py-3">
+        
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 hover:opacity-90 flex-shrink-0">
+          <img src="images/logo.png" alt="Logo" class="h-8 lg:h-10">
+          <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap">QuangHưng Mobile</h1>
+        </a>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="hidden lg:flex items-center gap-1 mx-4 flex-1">
+          <a href="index.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Trang chủ
+          </a>
+          
+          <div class="relative group">
+            <button class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap flex items-center gap-1">
+              Điện thoại
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <!-- Dropdown -->
+            <div class="absolute left-0 top-full mt-1 w-48 bg-white shadow-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div class="py-2">
+                <a href="products.html?brand=iphone" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-brands fa-apple"></i>
+                  iPhone
+                </a>
+                <a href="products.html?brand=samsung" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-solid fa-mobile"></i>
+                  Samsung
+                </a>
+                <a href="products.html?brand=sony" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-solid fa-mobile-alt"></i>
+                  Sony Xperia
+                </a>
+                <a href="products.html?brand=google" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
+                  <i class="fa-brands fa-google"></i>
+                  Google Pixel
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <a href="products.html?category=phukien" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Phụ kiện
+          </a>
+          <a href="promotions.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap flex items-center gap-1">
+            Khuyến mãi
+            <span class="bg-yellow-400 text-red-800 text-xs font-bold px-1.5 py-0.5 rounded-full">HOT</span>
+          </a>
+          <a href="news.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Tin tức
+          </a>
+          <a href="contact.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
+            Liên hệ
+          </a>
+        </nav>
+
+        <!-- Search - Desktop -->
+        <div class="hidden lg:flex flex-1 max-w-md bg-white rounded-lg overflow-hidden">
+          <input type="text" placeholder="Tìm kiếm sản phẩm..."
+            class="flex-grow px-4 py-2 text-gray-700 focus:outline-none text-sm" />
+          <button class="bg-[var(--red-dark)] px-4 text-white hover:bg-red-700 transition-colors">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+
+        <!-- Right Menu -->
+        <div class="flex items-center gap-2 lg:gap-4 text-sm font-medium ml-4">
+          <a href="cart.html" class="hover:opacity-90 flex items-center gap-1 lg:gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-cart-shopping text-lg"></i>
+            <span class="hidden xl:inline">Giỏ hàng</span>
+          </a>
+          <a href="contact.html" class="hover:opacity-90 hidden lg:flex items-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-phone text-base"></i> 
+            <span class="text-yellow-300 font-bold hidden xl:inline">1800.2097</span>
+          </a>
+          <a href="login.html" class="hover:opacity-90 flex items-center gap-1 lg:gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-user text-base"></i>
+            <span class="hidden xl:inline">Đăng nhập</span>
+          </a>
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-btn" class="lg:hidden text-white text-xl">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Mobile Search -->
+      <div class="lg:hidden pb-3">
+        <div class="flex bg-white rounded-lg overflow-hidden">
+          <input type="text" placeholder="Tìm kiếm sản phẩm..."
+            class="flex-grow px-3 py-2 text-gray-700 focus:outline-none text-sm" />
+          <button class="bg-[var(--red-dark)] px-3 text-white">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+   
+    <script>
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuSidebar = document.getElementById('mobile-menu-sidebar');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+          mobileMenu.classList.remove('hidden');
+          setTimeout(() => {
+            mobileMenuSidebar.classList.remove('-translate-x-full');
+          }, 10);
+        });
+      }
+      
+      if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', () => {
+          mobileMenuSidebar.classList.add('-translate-x-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        });
+      }
+      
+      if (mobileMenu) {
+        mobileMenu.addEventListener('click', (e) => {
+          if (e.target === mobileMenu) {
+            mobileMenuSidebar.classList.add('-translate-x-full');
+            setTimeout(() => {
+              mobileMenu.classList.add('hidden');
+            }, 300);
+          }
+        });
+      }
+    </script>
+
+    <div class="bg-gradient-to-r from-red-600 to-red-700 text-white py-8">
+      <div class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold">Giỏ hàng của bạn</h1>
+        <p class="text-red-100 mt-2">Có 3 sản phẩm trong giỏ hàng</p>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <div class="lg:w-2/3">
+          <div class="bg-white rounded-lg shadow-md mb-4">
+            <div class="p-4 border-b">
+              <label class="flex items-center cursor-pointer">
+                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500" checked />
+                <span class="ml-3 font-semibold">Chọn tất cả (3 sản phẩm)</span>
+              </label>
+            </div>
+
+            <div class="p-4 border-b">
+              <div class="flex items-start space-x-4">
+                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 mt-4" checked />
+                <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=200" alt="iPhone 15 Pro Max" class="w-24 h-24 object-cover rounded-lg" />
+                <div class="flex-1">
+                  <h3 class="font-semibold text-lg mb-1">iPhone 15 Pro Max</h3>
+                  <p class="text-sm text-gray-600 mb-2">256GB - Titan Tự Nhiên</p>
+                  <div class="flex items-center space-x-4">
+                    <span class="text-red-600 font-bold text-xl">29.990.000đ</span>
+                    <span class="text-gray-600 line-through text-sm">34.990.000đ</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end space-y-4">
+                  <button class="text-gray-600 hover:text-red-500 transition">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                  <div class="flex items-center border-2 rounded-lg">
+                    <button class="px-3 py-1 hover:bg-white/20 transition">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="text" value="1" class="w-12 text-center outline-none" />
+                    <button class="px-3 py-1 hover:bg-white/20 transition">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 border-b">
+              <div class="flex items-start space-x-4">
+                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 mt-4" checked />
+                <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Samsung Galaxy S24 Ultra" class="w-24 h-24 object-cover rounded-lg" />
+                <div class="flex-1">
+                  <h3 class="font-semibold text-lg mb-1">Samsung Galaxy S24 Ultra</h3>
+                  <p class="text-sm text-gray-600 mb-2">512GB - Titan Gray</p>
+                  <div class="flex items-center space-x-4">
+                    <span class="text-red-600 font-bold text-xl">32.990.000đ</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end space-y-4">
+                  <button class="text-gray-600 hover:text-red-500 transition">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                  <div class="flex items-center border-2 rounded-lg">
+                    <button class="px-3 py-1 hover:bg-white/20 transition">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="text" value="1" class="w-12 text-center outline-none" />
+                    <button class="px-3 py-1 hover:bg-white/20 transition">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4">
+              <div class="flex items-start space-x-4">
+                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 mt-4" checked />
+                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Xiaomi 14 Pro" class="w-24 h-24 object-cover rounded-lg" />
+                <div class="flex-1">
+                  <h3 class="font-semibold text-lg mb-1">Xiaomi 14 Pro</h3>
+                  <p class="text-sm text-gray-600 mb-2">256GB - Đen Titan</p>
+                  <div class="flex items-center space-x-4">
+                    <span class="text-red-600 font-bold text-xl">19.990.000đ</span>
+                    <span class="text-gray-600 line-through text-sm">24.990.000đ</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end space-y-4">
+                  <button class="text-gray-600 hover:text-red-500 transition">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                  <div class="flex items-center border-2 rounded-lg">
+                    <button class="px-3 py-1 hover:bg-white/20 transition">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="text" value="1" class="w-12 text-center outline-none" />
+                    <button class="px-3 py-1 hover:bg-white/20 transition">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-info-circle text-red-600 text-xl mr-3"></i>
+              <p class="text-blue-800">
+                <span class="font-semibold">Miễn phí giao hàng</span> cho đơn hàng từ 5.000.000đ. Đơn hàng của bạn đủ điều kiện!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:w-1/3">
+          <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
+            <h2 class="text-xl font-bold mb-4">Tóm tắt đơn hàng</h2>
+
+            <div class="mb-4">
+              <div class="flex items-center mb-3">
+                <input type="text" placeholder="Nhập mã giảm giá..." class="flex-1 border rounded-l-lg px-4 py-2 outline-none focus:border-blue-600" />
+                <button class="bg-red-600 text-white px-6 py-2 rounded-r-lg hover:bg-red-700 transition">
+                  Áp dụng
+                </button>
+              </div>
+            </div>
+
+            <div class="border-t pt-4 mb-4">
+              <div class="flex justify-between mb-3">
+                <span class="text-gray-600">Tạm tính:</span>
+                <span class="font-semibold">82.970.000đ</span>
+              </div>
+              <div class="flex justify-between mb-3">
+                <span class="text-gray-600">Giảm giá:</span>
+                <span class="text-red-500 font-semibold">-10.000.000đ</span>
+              </div>
+              <div class="flex justify-between mb-3">
+                <span class="text-gray-600">Phí vận chuyển:</span>
+                <span class="text-green-600 font-semibold">Miễn phí</span>
+              </div>
+            </div>
+
+            <div class="border-t pt-4 mb-6">
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-semibold">Tổng cộng:</span>
+                <span class="text-2xl font-bold text-red-600">72.970.000đ</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Đã bao gồm VAT nếu có</p>
+            </div>
+
+            <button class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition mb-3">
+              <i class="fas fa-shopping-bag mr-2"></i>Tiến hành đặt hàng
+            </button>
+
+            <a href="products.html" class="block w-full text-center border-2 border-blue-600 text-red-600 py-3 rounded-lg font-semibold hover:bg-blue-50 transition">
+              <i class="fas fa-arrow-left mr-2"></i>Tiếp tục mua hàng
+            </a>
+
+            <div class="mt-6 pt-6 border-t">
+              <h3 class="font-semibold mb-3">Chính sách mua hàng</h3>
+              <div class="space-y-2 text-sm text-gray-600">
+                <div class="flex items-center">
+                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                  <span>Bảo hành chính hãng 12 tháng</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                  <span>Đổi trả trong vòng 7 ngày</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                  <span>Giao hàng toàn quốc</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                  <span>Thanh toán an toàn</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+            <h3 class="font-semibold mb-4 flex items-center">
+              <i class="fas fa-shield-alt text-red-600 mr-2"></i>
+              Thanh toán an toàn
+            </h3>
+            <div class="grid grid-cols-4 gap-3">
+              <div class="border rounded p-2 flex items-center justify-center">
+                <i class="fab fa-cc-visa text-3xl text-red-600"></i>
+              </div>
+              <div class="border rounded p-2 flex items-center justify-center">
+                <i class="fab fa-cc-mastercard text-3xl text-red-500"></i>
+              </div>
+              <div class="border rounded p-2 flex items-center justify-center">
+                <i class="fas fa-mobile-alt text-3xl text-green-600"></i>
+              </div>
+              <div class="border rounded p-2 flex items-center justify-center">
+                <i class="fas fa-money-bill-wave text-3xl text-gray-600"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Sản phẩm bạn có thể quan tâm</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=400" alt="OPPO Find X7 Ultra" class="w-full h-64 object-cover" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-lg mb-2">OPPO Find X7 Ultra</h3>
+              <p class="text-sm text-gray-600 mb-3">512GB - Xanh Hải Dương</p>
+              <div class="flex items-center mb-3">
+                <div class="text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="text-sm text-gray-600 ml-2">(43)</span>
+              </div>
+              <span class="text-2xl font-bold text-red-600">25.990.000đ</span>
+            </div>
+          </a>
+
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Vivo X100 Pro" class="w-full h-64 object-cover" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-lg mb-2">Vivo X100 Pro</h3>
+              <p class="text-sm text-gray-600 mb-3">256GB - Xám Titan</p>
+              <div class="flex items-center mb-3">
+                <div class="text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+                <span class="text-sm text-gray-600 ml-2">(38)</span>
+              </div>
+              <span class="text-2xl font-bold text-red-600">22.990.000đ</span>
+            </div>
+          </a>
+
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=400" alt="iPhone 14 Pro" class="w-full h-64 object-cover" />
+              <span class="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">-10%</span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-lg mb-2">iPhone 14 Pro</h3>
+              <p class="text-sm text-gray-600 mb-3">128GB - Tím Deep Purple</p>
+              <div class="flex items-center mb-3">
+                <div class="text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span class="text-sm text-gray-600 ml-2">(210)</span>
+              </div>
+              <div class="flex items-baseline space-x-2">
+                <span class="text-2xl font-bold text-red-600">24.990.000đ</span>
+                <span class="text-sm text-gray-600 line-through">27.990.000đ</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Realme GT 5" class="w-full h-64 object-cover" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-lg mb-2">Realme GT 5</h3>
+              <p class="text-sm text-gray-600 mb-3">256GB - Xanh Dương</p>
+              <div class="flex items-center mb-3">
+                <div class="text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+                <span class="text-sm text-gray-600 ml-2">(52)</span>
+              </div>
+              <span class="text-2xl font-bold text-red-600">12.990.000đ</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-12 mt-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-xl font-bold mb-4">QuangHưngShop</h3>
+            <p class="text-gray-400 mb-4">Cửa hàng điện thoại di động uy tín, chất lượng hàng đầu Việt Nam.</p>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook text-xl"></i></a>
+              <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram text-xl"></i></a>
+              <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter text-xl"></i></a>
+              <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube text-xl"></i></a>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Về chúng tôi</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><a href="#" class="hover:text-white transition">Giới thiệu</a></li>
+              <li><a href="#" class="hover:text-white transition">Tuyển dụng</a></li>
+              <li><a href="#" class="hover:text-white transition">Hệ thống cửa hàng</a></li>
+              <li><a href="#" class="hover:text-white transition">Liên hệ</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Chính sách</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><a href="#" class="hover:text-white transition">Chính sách bảo hành</a></li>
+              <li><a href="#" class="hover:text-white transition">Chính sách đổi trả</a></li>
+              <li><a href="#" class="hover:text-white transition">Chính sách bảo mật</a></li>
+              <li><a href="#" class="hover:text-white transition">Điều khoản sử dụng</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Liên hệ</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><i class="fas fa-map-marker-alt mr-2"></i>123 Đường ABC, Quận 1, TP.HCM</li>
+              <li><i class="fas fa-phone mr-2"></i>1900-xxxx</li>
+              <li><i class="fas fa-envelope mr-2"></i>support@quanghungshop.vn</li>
+              <li><i class="fas fa-clock mr-2"></i>8:00 - 22:00 (Hằng ngày)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+          <p>&copy; 2025 QuangHưngShop. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <script src="header-menu.js"></script>
+  </body>
+</html>
+
+
