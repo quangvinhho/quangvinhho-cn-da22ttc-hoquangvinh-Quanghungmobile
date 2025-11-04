@@ -27,13 +27,19 @@
           <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
           <a href="products.html" class="text-gray-600 hover:text-red-600">Sản phẩm</a>
           <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-          <span class="text-red-600">iPhone 15 Pro Max</span>
+          <span id="breadcrumbProduct" class="text-red-600">Đang tải...</span>
         </div>
       </div>
     </div>
 
     <div class="container mx-auto px-4 py-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <div id="productContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- Product content will be dynamically loaded here -->
+        <div class="col-span-2 text-center py-20">
+          <i class="fas fa-spinner fa-spin text-4xl text-red-600 mb-4"></i>
+          <p class="text-gray-600">Đang tải thông tin sản phẩm...</p>
+        </div>
+      </div>
         <!-- Product Images -->
         <div>
           <div class="bg-white rounded-lg shadow-md p-4 mb-4">
@@ -443,99 +449,18 @@
 
       <!-- Related Products -->
       <div class="mb-8">
-        <h2 class="text-2xl font-bold mb-6">Sản phẩm liên quan</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- Product 1 -->
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400" 
-                   alt="Samsung Galaxy S24" 
-                   class="w-full h-48 object-cover" />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold mb-2">Samsung Galaxy S24 Ultra</h3>
-              <div class="flex items-center mb-2">
-                <div class="text-yellow-400 text-sm">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                </div>
-                <span class="text-gray-600 text-sm ml-2">(95)</span>
-              </div>
-              <div class="text-xl font-bold text-red-600">32.990.000đ</div>
-            </div>
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Sản phẩm liên quan</h2>
+            <p class="text-gray-600 text-sm mt-1">Khám phá thêm những sản phẩm tương tự</p>
+          </div>
+          <a href="products.html" class="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-2 group">
+            Xem tất cả
+            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
           </a>
-
-          <!-- Product 2 -->
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400" 
-                   alt="Xiaomi 14 Pro" 
-                   class="w-full h-48 object-cover" />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold mb-2">Xiaomi 14 Pro</h3>
-              <div class="flex items-center mb-2">
-                <div class="text-yellow-400 text-sm">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="far fa-star"></i>
-                </div>
-                <span class="text-gray-600 text-sm ml-2">(67)</span>
-              </div>
-              <div class="text-xl font-bold text-red-600">19.990.000đ</div>
-            </div>
-          </a>
-
-          <!-- Product 3 -->
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=400" 
-                   alt="OPPO Find X7" 
-                   class="w-full h-48 object-cover" />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold mb-2">OPPO Find X7 Ultra</h3>
-              <div class="flex items-center mb-2">
-                <div class="text-yellow-400 text-sm">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                </div>
-                <span class="text-gray-600 text-sm ml-2">(43)</span>
-              </div>
-              <div class="text-xl font-bold text-red-600">25.990.000đ</div>
-            </div>
-          </a>
-
-          <!-- Product 4 -->
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=400" 
-                   alt="iPhone 14" 
-                   class="w-full h-48 object-cover" />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold mb-2">iPhone 14 Pro</h3>
-              <div class="flex items-center mb-2">
-                <div class="text-yellow-400 text-sm">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                </div>
-                <span class="text-gray-600 text-sm ml-2">(156)</span>
-              </div>
-              <div class="text-xl font-bold text-red-600">24.990.000đ</div>
-            </div>
-          </a>
+        </div>
+        <div id="relatedProducts" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <!-- Dynamic related products will be rendered here -->
         </div>
       </div>
     </div>
@@ -591,8 +516,151 @@
         event.target.classList.add('border-blue-600', 'text-red-600');
       }
 
-      // Mobile menu functionality
+      // ===== RELATED PRODUCTS =====
+      // Products data (same as in products.html)
+      const PRODUCTS = [
+        {id:1,name:'Samsung Galaxy A06 5G 4GB 128GB',brand:'samsung',category:'dienthoai',price:3420000,oldPrice:3920000,discount:13,image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
+        {id:2,name:'Samsung Galaxy A07 4GB 128GB',brand:'samsung',category:'dienthoai',price:3190000,oldPrice:3390000,discount:6,image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop'},
+        {id:3,name:'Samsung Galaxy A16 4GB 128GB',brand:'samsung',category:'dienthoai',price:3700000,oldPrice:5000000,discount:26,image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop'},
+        {id:4,name:'OPPO A5i 4GB 64GB',brand:'oppo',category:'dienthoai',price:3290000,image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
+        {id:5,name:'iPhone 15 Pro Max 256GB',brand:'iphone',category:'dienthoai',price:28990000,oldPrice:34990000,discount:17,image:'https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=400&h=400&fit=crop'},
+        {id:6,name:'Xiaomi 14 5G 512GB',brand:'xiaomi',category:'dienthoai',price:18990000,oldPrice:24990000,discount:24,image:'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=400&fit=crop'},
+        {id:7,name:'OPPO Reno12 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:8290000,oldPrice:9990000,discount:17,image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop'},
+        {id:8,name:'HONOR X7c 8GB 256GB',brand:'honor',category:'dienthoai',price:4790000,oldPrice:5990000,discount:20,image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop'},
+        {id:9,name:'Samsung Galaxy S24 Ultra 12GB 256GB',brand:'samsung',category:'dienthoai',price:29990000,oldPrice:33990000,discount:12,image:'https://images.unsplash.com/photo-1610945264803-c22b62d2a7b4?w=400&h=400&fit=crop'},
+        {id:10,name:'iPhone 14 Pro 128GB',brand:'iphone',category:'dienthoai',price:24990000,oldPrice:27990000,discount:11,image:'https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=400&h=400&fit=crop'},
+        {id:11,name:'Xiaomi Redmi Note 13 Pro 8GB 256GB',brand:'xiaomi',category:'dienthoai',price:6990000,oldPrice:8990000,discount:22,image:'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400&h=400&fit=crop'},
+        {id:12,name:'OPPO Find N3 Flip 12GB 256GB',brand:'oppo',category:'dienthoai',price:19990000,oldPrice:22990000,discount:13,image:'https://images.unsplash.com/photo-1583573503122-a3c6ce6ec1e0?w=400&h=400&fit=crop'},
+        {id:13,name:'Samsung Galaxy Z Flip5 8GB 256GB',brand:'samsung',category:'dienthoai',price:16990000,oldPrice:20990000,discount:19,image:'https://images.unsplash.com/photo-1591122947157-26bad3a117d2?w=400&h=400&fit=crop'},
+        {id:14,name:'iPhone 13 128GB',brand:'iphone',category:'dienthoai',price:17990000,oldPrice:18990000,discount:5,image:'https://images.unsplash.com/photo-1632661674318-1c8e2b54d4f7?w=400&h=400&fit=crop'},
+        {id:15,name:'Xiaomi 13T Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:12990000,oldPrice:14990000,discount:13,image:'https://images.unsplash.com/photo-1567581935884-3349723552ca?w=400&h=400&fit=crop'},
+        {id:16,name:'OPPO Reno11 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:7990000,oldPrice:8990000,discount:11,image:'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&h=400&fit=crop'},
+        {id:17,name:'HONOR Magic6 Pro 12GB 512GB',brand:'honor',category:'dienthoai',price:24990000,oldPrice:29990000,discount:17,image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop'},
+        {id:18,name:'Samsung Galaxy A55 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:9490000,oldPrice:10990000,discount:14,image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
+        {id:19,name:'Xiaomi Redmi 13C 6GB 128GB',brand:'xiaomi',category:'dienthoai',price:2990000,oldPrice:3490000,discount:14,image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
+        {id:20,name:'iPhone 15 128GB',brand:'iphone',category:'dienthoai',price:22990000,oldPrice:24990000,discount:8,image:'https://images.unsplash.com/photo-1678685888221-cda269d3b1db?w=400&h=400&fit=crop'},
+        {id:21,name:'OPPO A79 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:6490000,oldPrice:6990000,discount:7,image:'https://images.unsplash.com/photo-1571066811602-716837d681de?w=400&h=400&fit=crop'},
+        {id:22,name:'Samsung Galaxy M34 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:6290000,oldPrice:6990000,discount:10,image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop'},
+        {id:23,name:'Xiaomi POCO X6 Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:9990000,oldPrice:10990000,discount:9,image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop'},
+        {id:24,name:'HONOR X9b 5G 12GB 256GB',brand:'honor',category:'dienthoai',price:6990000,oldPrice:7990000,discount:13,image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop'},
+        
+        // Phụ kiện
+        {id:101,name:'Tai nghe Bluetooth Apple AirPods Pro 2',brand:'apple',category:'phukien',type:'tainghe',price:5990000,oldPrice:6990000,discount:14,image:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400&h=400&fit=crop',rating:4.5,reviews:152},
+        {id:102,name:'Tai nghe Bluetooth Samsung Galaxy Buds2 Pro',brand:'samsung',category:'phukien',type:'tainghe',price:3490000,oldPrice:4990000,discount:30,image:'https://images.unsplash.com/photo-1590658165737-15a047b7a0c1?w=400&h=400&fit=crop',rating:4.5,reviews:89},
+        {id:103,name:'Tai nghe Bluetooth AirPods 2 Apple',brand:'apple',category:'phukien',type:'tainghe',price:2690000,oldPrice:3190000,discount:16,image:'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=400&h=400&fit=crop',rating:4,reviews:234},
+        {id:104,name:'Tai nghe Bluetooth Samsung Galaxy Buds FE',brand:'samsung',category:'phukien',type:'tainghe',price:1490000,oldPrice:1990000,discount:25,image:'https://images.unsplash.com/photo-1649859394657-c2c90e82446f?w=400&h=400&fit=crop',rating:4,reviews:67},
+        {id:105,name:'Tai nghe Bluetooth Xiaomi Redmi Buds 5 Pro',brand:'xiaomi',category:'phukien',type:'tainghe',price:1390000,oldPrice:1790000,discount:22,image:'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=400&h=400&fit=crop',rating:4,reviews:43},
+        {id:201,name:'Cáp Type C 1m Apple MM0A3',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,image:'https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400&h=400&fit=crop',rating:4.5,reviews:128},
+        {id:202,name:'Sạc nhanh Type C PD 20W Apple',brand:'apple',category:'phukien',type:'sac',price:490000,oldPrice:590000,discount:17,image:'https://images.unsplash.com/photo-1591290619762-c588ec6ade80?w=400&h=400&fit=crop',rating:4.5,reviews:156},
+        {id:301,name:'Ốp lưng iPhone 15 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:1190000,oldPrice:1490000,discount:20,image:'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&h=400&fit=crop',rating:4.5,reviews:234},
+        {id:302,name:'Ốp lưng iPhone 14 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:990000,oldPrice:1290000,discount:23,image:'https://images.unsplash.com/photo-1618088089075-44c3b5e2e283?w=400&h=400&fit=crop',rating:4,reviews:187},
+        {id:303,name:'Ốp lưng Samsung Galaxy S24 Ultra Clear',brand:'samsung',category:'phukien',type:'oplung',price:590000,oldPrice:790000,discount:25,image:'https://images.unsplash.com/photo-1585704768175-39ba0d82bda8?w=400&h=400&fit=crop',rating:4.5,reviews:145},
+        {id:304,name:'Ốp lưng Samsung Galaxy A55 5G Silicone',brand:'samsung',category:'phukien',type:'oplung',price:290000,oldPrice:390000,discount:26,image:'https://images.unsplash.com/photo-1601784551279-3c50e2c96d72?w=400&h=400&fit=crop',rating:4,reviews:98}
+      ];
+
+      // Format price
+      function formatPrice(price) {
+        return price.toLocaleString('vi-VN') + 'đ';
+      }
+
+      // Render related products
+      function renderRelatedProducts(currentProductId) {
+        // Get current product to find similar ones
+        const currentProduct = PRODUCTS.find(p => p.id === currentProductId);
+        if (!currentProduct) return;
+
+        // Find related products (same brand or same category, excluding current product)
+        let relatedProducts = PRODUCTS.filter(p => 
+          p.id !== currentProductId && 
+          (p.brand === currentProduct.brand || p.category === currentProduct.category)
+        );
+
+        // Prioritize same brand, then shuffle
+        relatedProducts.sort((a, b) => {
+          if (a.brand === currentProduct.brand && b.brand !== currentProduct.brand) return -1;
+          if (a.brand !== currentProduct.brand && b.brand === currentProduct.brand) return 1;
+          return Math.random() - 0.5;
+        });
+
+        // Limit to 4 products
+        relatedProducts = relatedProducts.slice(0, 4);
+
+        // Render products
+        const container = document.getElementById('relatedProducts');
+        if (!container) return;
+
+        container.innerHTML = relatedProducts.map(product => {
+          const rating = product.rating || (4 + Math.random() * 1);
+          const reviews = product.reviews || Math.floor(Math.random() * 200) + 50;
+          const fullStars = Math.floor(rating);
+          const halfStar = rating % 1 >= 0.5;
+
+          let starsHTML = '';
+          for(let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>';
+          if(halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>';
+          for(let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) starsHTML += '<i class="far fa-star"></i>';
+
+          return `
+            <a href="product-detail.html?id=${product.id}" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-2xl hover:border-red-300 transition-all duration-300 group">
+              <div class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white">
+                ${product.discount ? `
+                  <div class="absolute top-3 left-0 z-10">
+                    <div class="bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-r-full shadow-lg flex items-center gap-1">
+                      <i class="fas fa-tag"></i>
+                      <span>-${product.discount}%</span>
+                    </div>
+                  </div>
+                ` : ''}
+                <div class="p-4">
+                  <img src="${product.image}" 
+                       alt="${product.name}" 
+                       class="w-full h-40 sm:h-52 object-contain group-hover:scale-110 transition-transform duration-500" />
+                </div>
+              </div>
+              <div class="p-4 sm:p-5">
+                <h3 class="font-bold mb-3 text-sm sm:text-base line-clamp-2 min-h-[42px] text-gray-800 group-hover:text-red-600 transition-colors">${product.name}</h3>
+                
+                <div class="flex items-center mb-3 gap-2">
+                  <div class="text-yellow-400 text-xs sm:text-sm flex">
+                    ${starsHTML}
+                  </div>
+                  <span class="text-gray-500 text-xs sm:text-sm">({${reviews}})</span>
+                </div>
+                
+                <div class="space-y-1">
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-xl sm:text-2xl font-bold text-red-600">${formatPrice(product.price)}</span>
+                    ${product.oldPrice ? `<span class="text-xs sm:text-sm text-gray-400 line-through">${formatPrice(product.oldPrice)}</span>` : ''}
+                  </div>
+                  ${product.discount ? `
+                    <div class="inline-block">
+                      <span class="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-md font-semibold">
+                        Tiết kiệm ${formatPrice(product.oldPrice - product.price)}
+                      </span>
+                    </div>
+                  ` : ''}
+                </div>
+                
+                <div class="mt-4 pt-3 border-t border-gray-100">
+                  <button class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-300 transform group-hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm">
+                    <i class="fas fa-shopping-cart"></i>
+                    Xem chi tiết
+                  </button>
+                </div>
+              </div>
+            </a>
+          `;
+        }).join('');
+      }
+
+      // Load related products and setup mobile menu on page load
       document.addEventListener('DOMContentLoaded', () => {
+        // Get product ID from URL parameter and render related products
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id')) || 5; // Default to iPhone 15 Pro Max
+        renderRelatedProducts(productId);
+
+        // Mobile menu functionality
         const mobileMenu = document.querySelector('.mobile-menu');
         const mobileMenuButton = document.querySelector('button.md\\:hidden');
         const mobileMenuClose = document.querySelector('.mobile-menu-close');

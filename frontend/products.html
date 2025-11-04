@@ -10,322 +10,167 @@
     
     <style>
         :root {
-            --primary-red: #d91e23;
-            --primary-red-dark: #b01117;
-            --primary-red-light: #ff4d4f;
-            --accent-orange: #ff6b35;
-            --accent-blue: #4361ee;
+            /* WCAG 2.1 AA Compliant Colors - Giống index.html */
+            --red-main: #d91e23;        /* Màu đỏ chính */
+            --red-dark: #b01117;         /* Màu đỏ tối */
+            --red-light: #ffe5e6;        /* Nền đỏ nhạt */
+            --red-accent: #ff1a1a;       /* Màu nhấn */
+            
+            --text-primary: #1a1a1a;     /* Chữ chính */
+            --text-secondary: #4a4a4a;   /* Chữ phụ */
+            --text-muted: #666666;       /* Chữ mờ */
+            
+            --bg-main: #ffffff;
+            --bg-secondary: #f3f4f6;     /* Nền phụ - Giống index */
+            --bg-card: #ffffff;
+            
+            --border-light: #d4d4d4;
+            --border-medium: #a3a3a3;
         }
         
-        body { background: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { 
+            background: var(--bg-secondary); 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-primary);
+        }
         
         .brand-box {
-            position: relative; border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px;
+            position: relative; border: 2px solid var(--border-light); border-radius: 8px; padding: 16px;
             cursor: pointer; transition: all 0.2s; background: white;
         }
-        .brand-box:hover { border-color: #ccc; }
-        .brand-box.selected { border-color: var(--primary-red); background: #fff5f5; }
+        .brand-box:hover { border-color: var(--border-medium); }
+        .brand-box.selected { border-color: var(--red-main); background: var(--red-light); }
         .brand-box.selected::after {
             content: '✓'; position: absolute; top: -8px; right: -8px;
-            background: var(--primary-red); color: white; width: 24px; height: 24px;
+            background: var(--red-main); color: white; width: 24px; height: 24px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-size: 14px; font-weight: bold; border: 2px solid white;
         }
         
         .filter-tag {
             display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px;
-            background: #e0e0e0; border-radius: 20px; font-size: 14px; margin: 4px;
+            background: var(--border-light); border-radius: 20px; font-size: 14px; margin: 4px;
         }
-        .filter-tag .close { cursor: pointer; font-weight: bold; color: #666; }
+        .filter-tag .close { cursor: pointer; font-weight: bold; color: var(--text-muted); }
         
         .product-card {
             background: white; 
-            border-radius: 14px; 
+            border-radius: 12px; 
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 2px 12px rgba(40, 40, 70, 0.08);
+            transition: all 0.3s ease; 
+            border: 1px solid var(--border-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             padding: 16px;
             margin-bottom: 20px;
         }
         .product-card:hover { 
-            box-shadow: 0 6px 24px rgba(40, 40, 70, 0.15); 
-            transform: translateY(-3px) scale(1.02); 
-            border-color: #d0d0d0;
-        }
-        
-        .freeship-badge {
-            position: absolute; bottom: 8px; left: 8px; background: var(--primary-red);
-            color: white; padding: 4px 8px; border-radius: 50%; font-size: 10px;
-            font-weight: bold; text-align: center; line-height: 1.2; width: 60px; height: 60px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 6px 20px rgba(217, 30, 35, 0.12); 
+            transform: translateY(-4px); 
+            border-color: var(--red-main);
         }
         
         .spec-badge {
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            background: white;
             padding: 5px 10px; 
             border-radius: 6px;
             font-size: 11px; 
-            color: #555; 
+            color: var(--text-secondary); 
             display: inline-flex; 
             align-items: center; 
             gap: 4px;
             font-weight: 500;
-            border: 1px solid #e0e0e0;
-            transition: all 0.2s;
-        }
-        
-        .spec-badge:hover {
-            background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
-            border-color: var(--primary-red);
-            color: var(--primary-red);
-        }
-        
-        /* Product Labels */
-        .product-label {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            z-index: 10;
-        }
-        
-        .label-bestseller {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
-        }
-        
-        .label-new {
-            background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
-            color: white;
-        }
-        
-        .label-promo {
-            background: linear-gradient(135deg, #ffd43b 0%, #fab005 100%);
-            color: #333;
-        }
-        
-        .label-hot {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
-            color: white;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            border: 1px solid var(--border-light);
         }
         
         .color-dot {
             width: 20px; height: 20px; border-radius: 50%;
-            border: 2px solid #e0e0e0; cursor: pointer;
+            border: 2px solid var(--border-light); cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .color-dot:hover {
-            transform: scale(1.3);
-            border-color: var(--primary-red);
-            box-shadow: 0 4px 8px rgba(217, 30, 35, 0.3);
+            transform: scale(1.2);
+            border-color: var(--red-main);
         }
         
         /* Custom Checkbox Styling */
         input[type="checkbox"] {
             cursor: pointer;
-            transition: all 0.2s;
+            accent-color: var(--red-main);
         }
         
-        input[type="checkbox"]:hover {
-            transform: scale(1.1);
-        }
-        
-        /* Filter Labels Hover */
-        label:has(input[type="checkbox"]) {
-            transition: all 0.2s;
-        }
-        
+        /* Filter Labels */
         label:has(input[type="checkbox"]):hover {
-            background: linear-gradient(135deg, #fff5f5 0%, #ffebec 100%);
-            border-radius: 8px;
+            background: var(--red-light);
+            border-radius: 6px;
         }
         
-        .bank-logo {
-            width: 40px; height: 24px; border: 1px solid #e0e0e0;
-            border-radius: 4px; object-fit: contain; padding: 2px;
-        }
-        
-        /* Product Card Hover Effects */
-        .product-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-        
-        .product-card:hover::before {
-            left: 100%;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 32px rgba(217, 30, 35, 0.12);
+        /* Product Card Hover */
+        .product-card img {
+            transition: transform 0.3s ease;
         }
         
         .product-card:hover img {
-            transform: scale(1.08);
-        }
-        
-        .product-card img {
-            transition: transform 0.4s ease;
+            transform: scale(1.05);
         }
         
         /* CTA Buttons */
         .cta-button {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 10px;
+            background: var(--red-main);
+            color: white;
+            transition: all 0.3s ease;
+            border-radius: 8px;
             font-weight: 600;
-            letter-spacing: 0.3px;
-            box-shadow: 0 2px 8px rgba(217, 30, 35, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s;
-        }
-        
-        .cta-button:hover::before {
-            width: 300px;
-            height: 300px;
+            padding: 10px 20px;
         }
         
         .cta-button:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 6px 16px rgba(217, 30, 35, 0.35);
+            background: var(--red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(217, 30, 35, 0.3);
         }
         
-        .cta-button:active {
-            transform: translateY(0) scale(0.98);
-        }
-        
-        /* Secondary CTA - So sánh */
         .cta-secondary {
-            color: var(--primary-red);
-            border: 1.5px solid var(--primary-red);
+            color: var(--red-main);
+            border: 1.5px solid var(--red-main);
             background: white;
             transition: all 0.3s;
-            border-radius: 10px;
-            padding: 8px 12px;
+            border-radius: 8px;
+            padding: 8px 16px;
             font-weight: 600;
         }
         
         .cta-secondary:hover {
-            background: var(--primary-red);
+            background: var(--red-main);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(217, 30, 35, 0.25);
-        }
-        
-        /* Brand Logo Cards */
-        .brand-logo-card {
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .brand-logo-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 8px;
-            background: linear-gradient(135deg, transparent 0%, rgba(217, 30, 35, 0.05) 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .brand-logo-card:hover::after {
-            opacity: 1;
-        }
-        
-        .brand-logo-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(217, 30, 35, 0.15);
         }
         
         /* View Toggle Buttons */
-        .view-toggle {
-            transition: all 0.2s ease;
-        }
-        
         .view-toggle.active {
-            background: var(--primary-red);
+            background: var(--red-main);
             color: white;
         }
         
         /* Rating Stars */
-        .rating-stars {
-            color: #FFD700;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-        
-        .rating-stars i {
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        
         .product-rating {
-            margin-top: 6px;
+            margin-top: 8px;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         
         .product-rating .stars {
             color: #FFD700;
-            font-size: 18px;
-            letter-spacing: 2px;
-            filter: drop-shadow(0 1px 2px rgba(255, 215, 0, 0.3));
+            font-size: 16px;
         }
         
         .product-rating .reviews {
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 13px;
         }
         
-        .product-rating .reviews:hover {
-            color: var(--primary-red);
-            text-decoration: underline;
-        }
-        
-        /* Hide scrollbar for category tabs */
+        /* Scrollbar */
         .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -335,7 +180,6 @@
             display: none;
         }
         
-        /* Filter sidebar max height for scrolling */
         #filterSidebar {
             max-height: calc(100vh - 180px);
             overflow-y: auto;
@@ -346,102 +190,65 @@
         }
         
         #filterSidebar::-webkit-scrollbar-track {
-            background: #f8f9fa;
+            background: var(--bg-secondary);
             border-radius: 10px;
         }
         
         #filterSidebar::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #d91e23 0%, #b01117 100%);
+            background: var(--red-main);
             border-radius: 10px;
         }
         
         #filterSidebar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #b01117 0%, #8b0d12 100%);
+            background: var(--red-dark);
         }
         
-        /* Filter sections styling */
-        .filter-section {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid #f0f0f0;
-            transition: all 0.2s;
+        /* Brand Logo Carousel Animation */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
         }
         
-        .filter-section:hover {
-            box-shadow: 0 4px 12px rgba(217, 30, 35, 0.08);
-            border-color: #ffebec;
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
         }
         
-        /* Compact spacing for filter sections */
-        .filter-section-title {
-            font-size: 0.875rem;
-            font-weight: 600;
+        .animate-scroll:hover {
+            animation-play-state: paused;
         }
         
-        /* Product card compact spacing */
-        .product-card {
-            border-radius: 0.5rem;
+        /* Brand Text Buttons */
+        .brand-text-btn {
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
         }
         
-        /* Tighter spacing for all elements */
-        .spec-badge {
-            padding: 0.25rem 0.5rem;
-            margin: 0.125rem;
+        .brand-text-btn:hover {
+            opacity: 0.7;
         }
         
-        /* Responsive gap adjustments */
+        .brand-text-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
             #productsGrid {
                 gap: 12px !important;
             }
             
             .product-card {
-                border-radius: 12px;
                 padding: 12px;
                 margin-bottom: 16px;
             }
             
-            /* Even tighter spacing on mobile */
-            .container {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-            
-            .product-rating .stars {
-                font-size: 16px;
-            }
-            
-            .product-rating .reviews {
-                font-size: 12px;
-            }
-            
-            .cta-button {
-                font-size: 13px;
-                padding: 8px 12px;
-            }
-            
-            .spec-badge {
-                font-size: 10px;
-                padding: 4px 8px;
-            }
-        }
-        
-        @media (min-width: 769px) {
-            #productsGrid {
-                gap: 16px !important;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            #productsGrid {
-                gap: 20px !important;
-            }
-            
-            .product-card {
-                padding: 18px;
+            .animate-scroll {
+                animation: scroll 20s linear infinite;
             }
         }
     </style>
@@ -449,7 +256,7 @@
 <body>
 
     <!-- Header -->
-    <header class="bg-[var(--primary-red)] text-white sticky top-0 z-50 shadow-lg">
+    <header class="bg-[var(--red-main)] text-white sticky top-0 z-50 shadow-lg">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-3 gap-4">
                 <!-- Logo -->
@@ -466,35 +273,30 @@
                     
                     <div class="relative group">
                         <button class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap flex items-center gap-1">
-                            Điện thoại
+                            Sản phẩm
                             <i class="fa-solid fa-chevron-down text-xs"></i>
                         </button>
                         <!-- Dropdown -->
-                        <div class="absolute left-0 top-full mt-1 w-48 bg-white shadow-2xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-200 z-50">
+                        <div class="absolute left-0 top-full mt-1 w-56 bg-white shadow-2xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-200 z-50">
                             <div class="py-2">
-                                <a href="products.html?brand=iphone" class="flex items-center gap-2 px-4 py-2.5 hover:bg-red-50 transition-colors text-gray-800 font-medium text-sm">
-                                    <i class="fa-brands fa-apple text-gray-800"></i>
-                                    iPhone
+                                <a href="products.html?category=dienthoai" class="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors text-gray-800 font-semibold text-sm border-b border-gray-100" onclick="event.preventDefault(); filterByCategory('dienthoai')">
+                                    <i class="fa-solid fa-mobile-alt text-[var(--red-main)] text-lg"></i>
+                                    <div>
+                                        <div class="font-bold text-gray-900">Điện thoại</div>
+                                       
+                                    </div>
                                 </a>
-                                <a href="products.html?brand=samsung" class="flex items-center gap-2 px-4 py-2.5 hover:bg-red-50 transition-colors text-gray-800 font-medium text-sm">
-                                    <i class="fa-solid fa-mobile text-gray-800"></i>
-                                    Samsung
-                                </a>
-                                <a href="products.html?brand=xiaomi" class="flex items-center gap-2 px-4 py-2.5 hover:bg-red-50 transition-colors text-gray-800 font-medium text-sm">
-                                    <i class="fa-solid fa-mobile-alt text-gray-800"></i>
-                                    Xiaomi
-                                </a>
-                                <a href="products.html?brand=oppo" class="flex items-center gap-2 px-4 py-2.5 hover:bg-red-50 transition-colors text-gray-800 font-medium text-sm">
-                                    <i class="fa-solid fa-mobile text-gray-800"></i>
-                                    OPPO
+                                <a href="products.html?category=phukien" class="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors text-gray-800 font-semibold text-sm" onclick="event.preventDefault(); filterByCategory('phukien')">
+                                    <i class="fa-solid fa-headphones text-[var(--red-main)] text-lg"></i>
+                                    <div>
+                                        <div class="font-bold text-gray-900">Phụ kiện</div>
+                                        
+                                    </div>
                                 </a>
                             </div>
                         </div>
                     </div>
-
-                    <a href="products.html?category=phukien" class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap">
-                        Phụ kiện
-                    </a>
+                    
                     <a href="promotions.html" class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap flex items-center gap-1">
                         Khuyến mãi
                         <span class="bg-yellow-400 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full">HOT</span>
@@ -511,7 +313,7 @@
                 <div class="hidden lg:flex flex-1 max-w-md bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300">
                     <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
                         class="flex-grow px-4 py-2 text-gray-800 focus:outline-none text-sm font-medium placeholder:text-gray-600" />
-                    <button class="bg-[var(--primary-red-dark)] px-4 text-white hover:bg-[#8b0d12] transition-colors font-semibold">
+                    <button class="bg-[var(--red-main-dark)] px-4 text-white hover:bg-[#8b0d12] transition-colors font-semibold">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
@@ -524,7 +326,7 @@
                     </a>
                     
                     <!-- Mobile Filter Button -->
-                    <button id="mobileFilterBtn" class="lg:hidden bg-white text-[var(--primary-red)] px-3 py-2 rounded-lg text-sm font-semibold">
+                    <button id="mobileFilterBtn" class="lg:hidden bg-white text-[var(--red-main)] px-3 py-2 rounded-lg text-sm font-semibold">
                         <i class="fas fa-filter"></i> Lọc
                     </button>
                 </div>
@@ -537,49 +339,6 @@
             </div>
         </div>
     </header>
-
-    <!-- Breadcrumb -->
-    <section class="bg-white border-b">
-        <div class="container mx-auto px-4 py-3">
-            <nav class="flex items-center gap-2 text-sm">
-                <a href="index.html" class="text-gray-600 hover:text-[var(--primary-red)]"><i class="fas fa-home"></i></a>
-                <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                <span class="text-[var(--primary-red)] font-semibold">Điện thoại</span>
-            </nav>
-        </div>
-    </section>
-
-    <!-- Category Tabs -->
-    <section class="bg-white border-b">
-        <div class="container mx-auto px-4">
-            <div class="flex gap-3 overflow-x-auto scrollbar-hide py-1.5">
-                <button class="category-tab px-4 py-2 text-sm font-semibold text-white bg-[var(--primary-red)] rounded-lg whitespace-nowrap transition" onclick="filterByCategory('all')">
-                    <i class="fas fa-th-large mr-1"></i> Tất cả
-                </button>
-                <button class="category-tab px-4 py-2 text-sm font-medium text-gray-700 hover:text-[var(--primary-red)] whitespace-nowrap rounded-lg hover:bg-red-50 transition" onclick="filterByCategory('dienthoai')">
-                    <i class="fas fa-mobile-alt mr-1"></i> Điện thoại
-                </button>
-                <button class="category-tab px-4 py-2 text-sm font-medium text-gray-700 hover:text-[var(--primary-red)] whitespace-nowrap rounded-lg hover:bg-red-50 transition" onclick="filterByCategory('phukien')">
-                    <i class="fas fa-headphones mr-1"></i> Phụ kiện
-                </button>
-                <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-[var(--primary-red)] whitespace-nowrap rounded hover:bg-red-50 transition" onclick="filterByCategory('dienthoai')">
-                    <i class="fas fa-signal mr-1"></i> Điện thoại 5G
-                </button>
-                <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-[var(--primary-red)] whitespace-nowrap rounded hover:bg-red-50 transition">
-                    <i class="fas fa-brain mr-1"></i> Điện thoại AI
-                </button>
-                <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-[var(--primary-red)] whitespace-nowrap rounded hover:bg-red-50 transition">
-                    <i class="fas fa-layer-group mr-1"></i> Điện thoại gập
-                </button>
-                <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-[var(--primary-red)] whitespace-nowrap rounded hover:bg-red-50 transition">
-                    <i class="fas fa-gamepad mr-1"></i> Gaming phone
-                </button>
-                <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-[var(--primary-red)] whitespace-nowrap rounded hover:bg-red-50 transition">
-                    <i class="fas fa-phone mr-1"></i> Phổ thông 4G
-                </button>
-            </div>
-        </div>
-    </section>
 
     <!-- Banner Slider -->
     <section class="bg-gray-100 py-3">
@@ -595,12 +354,12 @@
                                         <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">iPhone 15 Pro Max</h2>
                                         <p class="text-base md:text-xl mb-1 md:mb-2">Chỉ từ <span class="text-yellow-300 font-bold">28.990.000đ</span></p>
                                         <p class="text-xs md:text-base mb-3 md:mb-3">Thu cũ đổi mới - Giảm thêm 2 triệu</p>
-                                        <button class="bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
+                                        <button class="bg-[var(--red-main)] hover:bg-[var(--red-main-dark)] text-white px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
                                             Mua ngay
                                         </button>
                                     </div>
                                     <div class="hidden md:block">
-                                        <img src="https://cdn.tgdd.vn/Products/Images/42/305660/iphone-15-pro-max-blue-thumbnew-600x600.jpg" alt="iPhone 15 Pro Max" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                                        <img src="images/iphone.jpg" alt="iPhone 15 Pro Max" class="h-48 md:h-56 object-contain drop-shadow-2xl">
                                     </div>
                                 </div>
                             </div>
@@ -621,7 +380,7 @@
                                         </button>
                                     </div>
                                     <div class="hidden md:block">
-                                        <img src="https://cdn.tgdd.vn/Products/Images/42/307174/samsung-galaxy-s24-ultra-grey-thumbnew-600x600.jpg" alt="Samsung S24 Ultra" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                                        <img src="images/samsung.webp" alt="Samsung S24 Ultra" class="h-48 md:h-56 object-contain drop-shadow-2xl">
                                     </div>
                                 </div>
                             </div>
@@ -642,7 +401,7 @@
                                         </button>
                                     </div>
                                     <div class="hidden md:block">
-                                        <img src="https://cdn.tgdd.vn/Products/Images/42/313203/xiaomi-14-xanh-la-thumb-600x600.jpg" alt="Xiaomi 14" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                                        <img src="images/17.jpg" alt="Xiaomi 14" class="h-48 md:h-56 object-contain drop-shadow-2xl">
                                     </div>
                                 </div>
                             </div>
@@ -668,68 +427,62 @@
         </div>
     </section>
 
-    <!-- Brand Logos -->
-    <section class="bg-white py-4 border-b">
-        <div class="container mx-auto px-4">
-            <h2 class="text-lg font-bold mb-3 text-gray-800">Chọn nhanh theo thương hiệu</h2>
-            <div class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-10 gap-2 md:gap-3">
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('iphone')">
-                    <img src="images/iphone.jpg" alt="iPhone" class="h-10 mx-auto object-contain mb-1">
-                    <p class="text-xs text-center text-gray-600 font-medium">iPhone</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('samsung')">
-                    <img src="images/samsung.webp" alt="Samsung" class="h-10 mx-auto object-contain mb-1">
-                    <p class="text-xs text-center text-gray-600 font-medium">Samsung</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('xiaomi')">
-                    <img src="images/uni8.jpg" alt="Xiaomi" class="h-10 mx-auto object-contain mb-1">
-                    <p class="text-xs text-center text-gray-600 font-medium">Xiaomi</p>
-                </button>
-                <button c  lass="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('oppo')">
-                    <div class="h-10 flex items-center justify-center mb-1">
-                        <i class="fas fa-mobile-alt text-3xl text-green-600"></i>
-                    </div>
-                    <p class="text-xs text-center text-gray-600 font-medium">OPPO</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('honor')">
-                    <div class="h-10 flex items-center justify-center mb-1">
-                        <i class="fas fa-star text-3xl text-blue-600"></i>
-                    </div>
-                    <p class="text-xs text-center text-gray-600 font-medium">HONOR</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('tecno')">
-                    <div class="h-10 flex items-center justify-center mb-1">
-                        <i class="fas fa-bolt text-3xl text-blue-500"></i>
-                    </div>
-                    <p class="text-xs text-center text-gray-600 font-medium">Tecno</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('nokia')">
-                    <div class="h-10 flex items-center justify-center mb-1">
-                        <i class="fas fa-mobile text-3xl text-blue-700"></i>
-                    </div>
-                    <p class="text-xs text-center text-gray-600 font-medium">Nokia</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('vivo')">
-                    <div class="h-10 flex items-center justify-center mb-1">
-                        <i class="fas fa-camera text-3xl text-blue-400"></i>
-                    </div>
-                    <p class="text-xs text-center text-gray-600 font-medium">Vivo</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('realme')">
-                    <div class="h-10 flex items-center justify-center mb-1">
-                        <i class="fas fa-rocket text-3xl text-yellow-600"></i>
-                    </div>
-                    <p class="text-xs text-center text-gray-600 font-medium">Realme</p>
-                </button>
-                <button class="brand-logo-card p-3 border-2 border-gray-200 rounded-lg hover:border-[var(--primary-red)] hover:shadow-md transition" onclick="filterByBrand('other')">
-                    <div class="h-10 flex items-center justify-center mb-1">
-                        <i class="fas fa-ellipsis-h text-3xl text-gray-500"></i>
-                    </div>
-                    <p class="text-xs text-center text-gray-600 font-medium">Khác</p>
-                </button>
-            </div>
-        </div>
-    </section>
+
+<!-- Hãng sản xuất -->
+<section class="bg-white py-6 border-t border-b border-gray-200">
+  <div class="container mx-auto px-4">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Hãng sản xuất</h2>
+
+    <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+      <!-- Xiaomi -->
+      <button onclick="filterByBrand('xiaomi')"
+        class="px-5 py-2 text-lg font-semibold text-gray-500 border border-gray-200 rounded-xl bg-white hover:text-black hover:border-gray-400 hover:shadow-sm transition-all duration-300">
+        xiaomi
+      </button>
+
+      <!-- Vivo -->
+      <button onclick="filterByBrand('vivo')"
+        class="px-5 py-2 text-lg font-semibold text-blue-500 border border-gray-200 rounded-xl bg-white hover:text-blue-700 hover:border-blue-400 hover:shadow-sm transition-all duration-300">
+        vivo
+      </button>
+
+      <!-- HONOR -->
+      <button onclick="filterByBrand('honor')"
+        class="px-5 py-2 text-lg font-semibold text-gray-800 border border-gray-200 rounded-xl bg-white hover:text-black hover:border-gray-400 hover:shadow-sm transition-all duration-300">
+        HONOR
+      </button>
+
+      <!-- TECNO -->
+      <button onclick="filterByBrand('tecno')"
+        class="px-5 py-2 text-lg font-semibold text-blue-600 border border-gray-200 rounded-xl bg-white hover:text-blue-700 hover:border-blue-400 hover:shadow-sm transition-all duration-300">
+        TECNO
+      </button>
+
+      <!-- TCL -->
+      <button onclick="filterByBrand('tcl')"
+        class="px-5 py-2 text-lg font-semibold text-red-500 border border-gray-200 rounded-xl bg-white hover:text-red-600 hover:border-red-400 hover:shadow-sm transition-all duration-300">
+        TCL
+      </button>
+
+      <!-- Masstel -->
+      <button onclick="filterByBrand('masstel')"
+        class="px-5 py-2 text-lg font-semibold text-red-400 border border-gray-200 rounded-xl bg-white hover:text-red-600 hover:border-red-400 hover:shadow-sm transition-all duration-300">
+        Masstel
+      </button>
+
+      <!-- Nokia -->
+      <button onclick="filterByBrand('nokia')"
+        class="px-5 py-2 text-lg font-semibold text-blue-700 border border-gray-200 rounded-xl bg-white hover:text-blue-900 hover:border-blue-500 hover:shadow-sm transition-all duration-300">
+        NOKIA
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+
+    
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-4">
@@ -739,18 +492,17 @@
             <aside id="filterSidebar" class="hidden lg:block w-64 flex-shrink-0">
                 
                 <!-- Bộ lọc tìm kiếm -->
-                <div class="bg-white rounded-xl p-4 mb-3 sticky top-20 shadow-sm border border-gray-100">
-                    <button class="flex items-center justify-between w-full font-bold text-base">
-                        <span><i class="fas fa-filter mr-2 text-[var(--primary-red)]"></i> Bộ lọc tìm kiếm</span>
-                        <i class="fas fa-chevron-up text-gray-600"></i>
-                    </button>
+                <div class="bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between w-full font-bold text-base">
+                        <span><i class="fas fa-filter mr-2 text-[var(--red-main)]"></i> Bộ lọc tìm kiếm</span>
+                    </div>
                 </div>
 
                 <!-- Hãng sản xuất -->
                 <div class="bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('brandSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-mobile-alt text-[var(--primary-red)]"></i>
+                            <i class="fas fa-mobile-alt text-[var(--red-main)]"></i>
                             Hãng sản xuất
                         </h3>
                         <i class="fas fa-chevron-up" id="brandIcon"></i>
@@ -790,7 +542,7 @@
                 <div id="accessoryFilter" class="bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100" style="display:none;">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('accessorySection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-boxes text-[var(--primary-red)]"></i>
+                            <i class="fas fa-boxes text-[var(--red-main)]"></i>
                             Loại phụ kiện
                         </h3>
                         <i class="fas fa-chevron-up" id="accessoryIcon"></i>
@@ -832,7 +584,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('priceSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-tag text-[var(--primary-red)]"></i>
+                            <i class="fas fa-tag text-[var(--red-main)]"></i>
                             Mức giá
                         </h3>
                         <i class="fas fa-chevron-up" id="priceIcon"></i>
@@ -877,7 +629,7 @@
                             <span class="text-gray-500">~</span>
                             <input type="number" id="maxPrice" placeholder="63.990.000" class="w-full px-3 py-2 border rounded text-sm" value="63990000">
                         </div>
-                        <button onclick="applyCustomPriceRange()" class="w-full mt-2 bg-[var(--primary-red)] text-white py-2 rounded text-sm font-semibold hover:bg-[var(--primary-red-dark)] transition">
+                        <button onclick="applyCustomPriceRange()" class="w-full mt-2 bg-[var(--red-main)] text-white py-2 rounded text-sm font-semibold hover:bg-[var(--red-main-dark)] transition">
                             Áp dụng
                         </button>
                     </div>
@@ -887,7 +639,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('osSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-cog text-[var(--primary-red)]"></i>
+                            <i class="fas fa-cog text-[var(--red-main)]"></i>
                             Hệ điều hành
                         </h3>
                         <i class="fas fa-chevron-up" id="osIcon"></i>
@@ -909,7 +661,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('romSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-hdd text-[var(--primary-red)]"></i>
+                            <i class="fas fa-hdd text-[var(--red-main)]"></i>
                             Dung lượng ROM
                         </h3>
                         <i class="fas fa-chevron-up" id="romIcon"></i>
@@ -939,7 +691,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('connectSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-wifi text-[var(--primary-red)]"></i>
+                            <i class="fas fa-wifi text-[var(--red-main)]"></i>
                             Kết nối
                         </h3>
                         <i class="fas fa-chevron-up" id="connectIcon"></i>
@@ -965,7 +717,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('batterySection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-battery-full text-[var(--primary-red)]"></i>
+                            <i class="fas fa-battery-full text-[var(--red-main)]"></i>
                             Hiệu năng và Pin
                         </h3>
                         <i class="fas fa-chevron-up" id="batteryIcon"></i>
@@ -999,7 +751,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('networkSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-signal text-[var(--primary-red)]"></i>
+                            <i class="fas fa-signal text-[var(--red-main)]"></i>
                             Hỗ trợ mạng
                         </h3>
                         <i class="fas fa-chevron-up" id="networkIcon"></i>
@@ -1021,7 +773,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('ramSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-memory text-[var(--primary-red)]"></i>
+                            <i class="fas fa-memory text-[var(--red-main)]"></i>
                             RAM
                         </h3>
                         <i class="fas fa-chevron-up" id="ramIcon"></i>
@@ -1059,7 +811,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('sdSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-sd-card text-[var(--primary-red)]"></i>
+                            <i class="fas fa-sd-card text-[var(--red-main)]"></i>
                             Thẻ nhớ
                         </h3>
                         <i class="fas fa-chevron-up" id="sdIcon"></i>
@@ -1085,7 +837,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('screenSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-tv text-[var(--primary-red)]"></i>
+                            <i class="fas fa-tv text-[var(--red-main)]"></i>
                             Màn hình
                         </h3>
                         <i class="fas fa-chevron-up" id="screenIcon"></i>
@@ -1177,7 +929,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('cameraSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-camera text-[var(--primary-red)]"></i>
+                            <i class="fas fa-camera text-[var(--red-main)]"></i>
                             Camera
                         </h3>
                         <i class="fas fa-chevron-up" id="cameraIcon"></i>
@@ -1217,7 +969,7 @@
                 <div class="bg-white rounded-lg p-4 mb-3">
                     <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('featureSection')">
                         <h3 class="font-bold flex items-center gap-2">
-                            <i class="fas fa-star text-[var(--primary-red)]"></i>
+                            <i class="fas fa-star text-[var(--red-main)]"></i>
                             Tính năng đặc biệt
                         </h3>
                         <i class="fas fa-chevron-up" id="featureIcon"></i>
@@ -1250,7 +1002,7 @@
                 <!-- Sort Bar -->
                 <div class="bg-white rounded-lg p-3 mb-3 flex flex-wrap items-center justify-between gap-3">
                     <div class="text-sm text-gray-600">
-                        Tìm thấy <span id="productCount" class="font-bold text-[var(--primary-red)]">10</span> kết quả
+                        Tìm thấy <span id="productCount" class="font-bold text-[var(--red-main)]">10</span> kết quả
                     </div>
                     <div class="flex items-center gap-4">
                         <!-- View Toggle -->
@@ -1265,7 +1017,7 @@
                         
                         <!-- Sort Buttons -->
                         <div class="flex items-center gap-2 flex-wrap">
-                            <button class="sort-btn px-4 py-2 text-sm rounded bg-[var(--primary-red)] text-white" onclick="sortProducts('featured')">Nổi bật</button>
+                            <button class="sort-btn px-4 py-2 text-sm rounded bg-[var(--red-main)] text-white" onclick="sortProducts('featured')">Nổi bật</button>
                             <button class="sort-btn px-4 py-2 text-sm rounded hover:bg-gray-100" onclick="sortProducts('price-asc')">Giá tăng dần</button>
                             <button class="sort-btn px-4 py-2 text-sm rounded hover:bg-gray-100" onclick="sortProducts('price-desc')">Giá giảm dần</button>
                             <button class="sort-btn px-4 py-2 text-sm rounded hover:bg-gray-100" onclick="sortProducts('tragop')">Trả góp 0%</button>
@@ -1282,60 +1034,60 @@
 
     <script>
         const PRODUCTS = [
-            {id:1,name:'Samsung Galaxy A06 5G 4GB 128GB',brand:'samsung',category:'dienthoai',price:3420000,oldPrice:3920000,discount:13,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',features:['tragop','freeship'],colors:['#e8f5e9','#000000'],image:'https://cdn.tgdd.vn/Products/Images/42/329038/samsung-galaxy-a06-xanh-thumb-600x600.jpg',timeLeft:'01 ngày 16:12:29'},
-            {id:2,name:'Samsung Galaxy A07 4GB 128GB',brand:'samsung',category:'dienthoai',price:3190000,oldPrice:3390000,discount:6,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#4fc3f7','#006064'],image:'https://cdn.tgdd.vn/Products/Images/42/329146/samsung-galaxy-a07-den-thumb-600x600.jpg',timeLeft:'01 ngày 16:12:29'},
-            {id:3,name:'Samsung Galaxy A16 4GB 128GB',brand:'samsung',category:'dienthoai',price:3700000,oldPrice:5000000,discount:26,ram:4,storage:128,screen:'6.7" Super AMOLED FHD+',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#e0e0e0'],image:'https://cdn.tgdd.vn/Products/Images/42/330463/samsung-galaxy-a16-xanh-thumb-600x600.jpg'},
-            {id:4,name:'OPPO A5i 4GB 64GB',brand:'oppo',category:'dienthoai',price:3290000,ram:4,storage:64,screen:'6.7 inch',camera:'50MP góc siêu rộng',features:['tragop'],colors:['#9575cd','#b39ddb'],image:'https://cdn.tgdd.vn/Products/Images/42/329807/oppo-a5i-tim-thumb-600x600.jpg'},
-            {id:5,name:'iPhone 15 Pro Max 256GB',brand:'iphone',category:'dienthoai',price:28990000,oldPrice:34990000,discount:17,ram:8,storage:256,screen:'6.7"',camera:'48MP',features:['tragop','freeship'],colors:['#4a4a4a','#e8e8e8','#ffd700'],image:'https://cdn.tgdd.vn/Products/Images/42/305660/iphone-15-pro-max-blue-thumbnew-600x600.jpg'},
-            {id:6,name:'Xiaomi 14 5G 512GB',brand:'xiaomi',category:'dienthoai',price:18990000,oldPrice:24990000,discount:24,ram:12,storage:512,screen:'6.36"',camera:'50MP',features:['tragop','freeship'],colors:['#81c784','#000000'],image:'https://cdn.tgdd.vn/Products/Images/42/313203/xiaomi-14-xanh-la-thumb-600x600.jpg'},
-            {id:7,name:'OPPO Reno12 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:8290000,oldPrice:9990000,discount:17,ram:8,storage:256,screen:'6.67"',camera:'50MP',features:['tragop'],colors:['#ff9800','#9c27b0'],image:'https://cdn.tgdd.vn/Products/Images/42/329145/oppo-reno12-f-5g-cam-thumb-600x600.jpg'},
-            {id:8,name:'HONOR X7c 8GB 256GB',brand:'honor',category:'dienthoai',price:4790000,oldPrice:5990000,discount:20,ram:8,storage:256,screen:'6.77"',camera:'108MP',features:['tragop'],colors:['#000000','#4fc3f7'],image:'https://cdn.tgdd.vn/Products/Images/42/329499/honor-x7c-den-thumb-600x600.jpg'},
-            {id:9,name:'Samsung Galaxy S24 Ultra 12GB 256GB',brand:'samsung',category:'dienthoai',price:29990000,oldPrice:33990000,discount:12,ram:12,storage:256,screen:'6.8" Dynamic AMOLED 2X',camera:'200MP',features:['tragop','freeship'],colors:['#9e9e9e','#000000','#b39ddb'],image:'https://cdn.tgdd.vn/Products/Images/42/307174/samsung-galaxy-s24-ultra-grey-thumbnew-600x600.jpg',timeLeft:'2 ngày 08:30:15'},
-            {id:10,name:'iPhone 14 Pro 128GB',brand:'iphone',category:'dienthoai',price:24990000,oldPrice:27990000,discount:11,ram:6,storage:128,screen:'6.1"',camera:'48MP',features:['tragop','freeship'],colors:['#4a148c','#000000','#ffd700'],image:'https://cdn.tgdd.vn/Products/Images/42/289700/iphone-14-pro-tim-thumb-600x600.jpg'},
-            {id:11,name:'Xiaomi Redmi Note 13 Pro 8GB 256GB',brand:'xiaomi',category:'dienthoai',price:6990000,oldPrice:8990000,discount:22,ram:8,storage:256,screen:'6.67" AMOLED',camera:'200MP',features:['tragop','freeship'],colors:['#9c27b0','#000000','#e3f2fd'],image:'https://cdn.tgdd.vn/Products/Images/42/313203/xiaomi-redmi-note-13-pro-tim-thumb-600x600.jpg'},
-            {id:12,name:'OPPO Find N3 Flip 12GB 256GB',brand:'oppo',category:'dienthoai',price:19990000,oldPrice:22990000,discount:13,ram:12,storage:256,screen:'6.8"',camera:'50MP',features:['tragop','freeship'],colors:['#ffc107','#f48fb1'],image:'https://cdn.tgdd.vn/Products/Images/42/309831/oppo-find-n3-flip-vang-thumb-600x600.jpg'},
-            {id:13,name:'Samsung Galaxy Z Flip5 8GB 256GB',brand:'samsung',category:'dienthoai',price:16990000,oldPrice:20990000,discount:19,ram:8,storage:256,screen:'6.7" Foldable AMOLED',camera:'12MP',features:['tragop','freeship'],colors:['#b39ddb','#ffeb3b','#000000'],image:'https://cdn.tgdd.vn/Products/Images/42/305658/samsung-galaxy-z-flip5-tim-thumbnew-600x600.jpg'},
-            {id:14,name:'iPhone 13 128GB',brand:'iphone',category:'dienthoai',price:17990000,oldPrice:18990000,discount:5,ram:4,storage:128,screen:'6.1"',camera:'12MP',features:['tragop','freeship'],colors:['#f48fb1','#000000','#e3f2fd','#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-hong-thumb-600x600.jpg'},
-            {id:15,name:'Xiaomi 13T Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:12990000,oldPrice:14990000,discount:13,ram:12,storage:512,screen:'6.67" AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#90caf9'],image:'https://cdn.tgdd.vn/Products/Images/42/309816/xiaomi-13t-pro-den-thumb-600x600.jpg'},
-            {id:16,name:'OPPO Reno11 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:7990000,oldPrice:8990000,discount:11,ram:8,storage:256,screen:'6.7" AMOLED',camera:'64MP',features:['tragop'],colors:['#80deea','#f48fb1'],image:'https://cdn.tgdd.vn/Products/Images/42/320702/oppo-reno11-f-xanh-thumb-600x600.jpg'},
-            {id:17,name:'HONOR Magic6 Pro 12GB 512GB',brand:'honor',category:'dienthoai',price:24990000,oldPrice:29990000,discount:17,ram:12,storage:512,screen:'6.8" AMOLED',camera:'180MP',features:['tragop','freeship'],colors:['#000000','#e8f5e9'],image:'https://cdn.tgdd.vn/Products/Images/42/320813/honor-magic6-pro-den-thumb-600x600.jpg'},
-            {id:18,name:'Samsung Galaxy A55 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:9490000,oldPrice:10990000,discount:14,ram:8,storage:128,screen:'6.6" Super AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#90caf9','#b39ddb','#000000'],image:'https://cdn.tgdd.vn/Products/Images/42/322096/samsung-galaxy-a55-5g-xanh-thumb-600x600.jpg'},
-            {id:19,name:'Xiaomi Redmi 13C 6GB 128GB',brand:'xiaomi',category:'dienthoai',price:2990000,oldPrice:3490000,discount:14,ram:6,storage:128,screen:'6.74" IPS LCD',camera:'50MP',features:['tragop'],colors:['#000000','#90caf9','#e8f5e9'],image:'https://cdn.tgdd.vn/Products/Images/42/316636/xiaomi-redmi-13c-den-thumb-600x600.jpg'},
-            {id:20,name:'iPhone 15 128GB',brand:'iphone',category:'dienthoai',price:22990000,oldPrice:24990000,discount:8,ram:6,storage:128,screen:'6.1"',camera:'48MP',features:['tragop','freeship'],colors:['#f48fb1','#000000','#90caf9','#ffeb3b'],image:'https://cdn.tgdd.vn/Products/Images/42/303825/iphone-15-hong-thumb-600x600.jpg'},
-            {id:21,name:'OPPO A79 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:6490000,oldPrice:6990000,discount:7,ram:8,storage:256,screen:'6.72" IPS LCD',camera:'50MP',features:['tragop'],colors:['#b39ddb','#000000'],image:'https://cdn.tgdd.vn/Products/Images/42/313206/oppo-a79-tim-thumb-600x600.jpg'},
-            {id:22,name:'Samsung Galaxy M34 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:6290000,oldPrice:6990000,discount:10,ram:8,storage:128,screen:'6.5" Super AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#90caf9','#e8f5e9'],image:'https://cdn.tgdd.vn/Products/Images/42/309816/samsung-galaxy-m34-5g-xanh-thumb-600x600.jpg'},
-            {id:23,name:'Xiaomi POCO X6 Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:9990000,oldPrice:10990000,discount:9,ram:12,storage:512,screen:'6.67" AMOLED',camera:'64MP',features:['tragop','freeship'],colors:['#000000','#ffeb3b'],image:'https://cdn.tgdd.vn/Products/Images/42/318231/xiaomi-poco-x6-pro-den-thumb-600x600.jpg'},
-            {id:24,name:'HONOR X9b 5G 12GB 256GB',brand:'honor',category:'dienthoai',price:6990000,oldPrice:7990000,discount:13,ram:12,storage:256,screen:'6.78" AMOLED',camera:'108MP',features:['tragop'],colors:['#b39ddb','#000000','#fff8e1'],image:'https://cdn.tgdd.vn/Products/Images/42/316637/honor-x9b-tim-thumb-600x600.jpg',category:'dienthoai'},
+            {id:1,name:'Samsung Galaxy A06 5G 4GB 128GB',brand:'samsung',category:'dienthoai',price:3420000,oldPrice:3920000,discount:13,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',features:['tragop','freeship'],colors:['#e8f5e9','#000000'],image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop',timeLeft:'01 ngày 16:12:29'},
+            {id:2,name:'Samsung Galaxy A07 4GB 128GB',brand:'samsung',category:'dienthoai',price:3190000,oldPrice:3390000,discount:6,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#4fc3f7','#006064'],image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop',timeLeft:'01 ngày 16:12:29'},
+            {id:3,name:'Samsung Galaxy A16 4GB 128GB',brand:'samsung',category:'dienthoai',price:3700000,oldPrice:5000000,discount:26,ram:4,storage:128,screen:'6.7" Super AMOLED FHD+',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#e0e0e0'],image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop'},
+            {id:4,name:'OPPO A5i 4GB 64GB',brand:'oppo',category:'dienthoai',price:3290000,ram:4,storage:64,screen:'6.7 inch',camera:'50MP góc siêu rộng',features:['tragop'],colors:['#9575cd','#b39ddb'],image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
+            {id:5,name:'iPhone 15 Pro Max 256GB',brand:'iphone',category:'dienthoai',price:28990000,oldPrice:34990000,discount:17,ram:8,storage:256,screen:'6.7"',camera:'48MP',features:['tragop','freeship'],colors:['#4a4a4a','#e8e8e8','#ffd700'],image:'https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=400&h=400&fit=crop'},
+            {id:6,name:'Xiaomi 14 5G 512GB',brand:'xiaomi',category:'dienthoai',price:18990000,oldPrice:24990000,discount:24,ram:12,storage:512,screen:'6.36"',camera:'50MP',features:['tragop','freeship'],colors:['#81c784','#000000'],image:'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=400&fit=crop'},
+            {id:7,name:'OPPO Reno12 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:8290000,oldPrice:9990000,discount:17,ram:8,storage:256,screen:'6.67"',camera:'50MP',features:['tragop'],colors:['#ff9800','#9c27b0'],image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop'},
+            {id:8,name:'HONOR X7c 8GB 256GB',brand:'honor',category:'dienthoai',price:4790000,oldPrice:5990000,discount:20,ram:8,storage:256,screen:'6.77"',camera:'108MP',features:['tragop'],colors:['#000000','#4fc3f7'],image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop'},
+            {id:9,name:'Samsung Galaxy S24 Ultra 12GB 256GB',brand:'samsung',category:'dienthoai',price:29990000,oldPrice:33990000,discount:12,ram:12,storage:256,screen:'6.8" Dynamic AMOLED 2X',camera:'200MP',features:['tragop','freeship'],colors:['#9e9e9e','#000000','#b39ddb'],image:'https://images.unsplash.com/photo-1610945264803-c22b62d2a7b4?w=400&h=400&fit=crop',timeLeft:'2 ngày 08:30:15'},
+            {id:10,name:'iPhone 14 Pro 128GB',brand:'iphone',category:'dienthoai',price:24990000,oldPrice:27990000,discount:11,ram:6,storage:128,screen:'6.1"',camera:'48MP',features:['tragop','freeship'],colors:['#4a148c','#000000','#ffd700'],image:'https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=400&h=400&fit=crop'},
+            {id:11,name:'Xiaomi Redmi Note 13 Pro 8GB 256GB',brand:'xiaomi',category:'dienthoai',price:6990000,oldPrice:8990000,discount:22,ram:8,storage:256,screen:'6.67" AMOLED',camera:'200MP',features:['tragop','freeship'],colors:['#9c27b0','#000000','#e3f2fd'],image:'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400&h=400&fit=crop'},
+            {id:12,name:'OPPO Find N3 Flip 12GB 256GB',brand:'oppo',category:'dienthoai',price:19990000,oldPrice:22990000,discount:13,ram:12,storage:256,screen:'6.8"',camera:'50MP',features:['tragop','freeship'],colors:['#ffc107','#f48fb1'],image:'https://images.unsplash.com/photo-1583573503122-a3c6ce6ec1e0?w=400&h=400&fit=crop'},
+            {id:13,name:'Samsung Galaxy Z Flip5 8GB 256GB',brand:'samsung',category:'dienthoai',price:16990000,oldPrice:20990000,discount:19,ram:8,storage:256,screen:'6.7" Foldable AMOLED',camera:'12MP',features:['tragop','freeship'],colors:['#b39ddb','#ffeb3b','#000000'],image:'https://images.unsplash.com/photo-1591122947157-26bad3a117d2?w=400&h=400&fit=crop'},
+            {id:14,name:'iPhone 13 128GB',brand:'iphone',category:'dienthoai',price:17990000,oldPrice:18990000,discount:5,ram:4,storage:128,screen:'6.1"',camera:'12MP',features:['tragop','freeship'],colors:['#f48fb1','#000000','#e3f2fd','#ffffff'],image:'https://images.unsplash.com/photo-1632661674318-1c8e2b54d4f7?w=400&h=400&fit=crop'},
+            {id:15,name:'Xiaomi 13T Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:12990000,oldPrice:14990000,discount:13,ram:12,storage:512,screen:'6.67" AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#90caf9'],image:'https://images.unsplash.com/photo-1567581935884-3349723552ca?w=400&h=400&fit=crop'},
+            {id:16,name:'OPPO Reno11 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:7990000,oldPrice:8990000,discount:11,ram:8,storage:256,screen:'6.7" AMOLED',camera:'64MP',features:['tragop'],colors:['#80deea','#f48fb1'],image:'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&h=400&fit=crop'},
+            {id:17,name:'HONOR Magic6 Pro 12GB 512GB',brand:'honor',category:'dienthoai',price:24990000,oldPrice:29990000,discount:17,ram:12,storage:512,screen:'6.8" AMOLED',camera:'180MP',features:['tragop','freeship'],colors:['#000000','#e8f5e9'],image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop&auto=format'},
+            {id:18,name:'Samsung Galaxy A55 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:9490000,oldPrice:10990000,discount:14,ram:8,storage:128,screen:'6.6" Super AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#90caf9','#b39ddb','#000000'],image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop&auto=format'},
+            {id:19,name:'Xiaomi Redmi 13C 6GB 128GB',brand:'xiaomi',category:'dienthoai',price:2990000,oldPrice:3490000,discount:14,ram:6,storage:128,screen:'6.74" IPS LCD',camera:'50MP',features:['tragop'],colors:['#000000','#90caf9','#e8f5e9'],image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop&auto=format'},
+            {id:20,name:'iPhone 15 128GB',brand:'iphone',category:'dienthoai',price:22990000,oldPrice:24990000,discount:8,ram:6,storage:128,screen:'6.1"',camera:'48MP',features:['tragop','freeship'],colors:['#f48fb1','#000000','#90caf9','#ffeb3b'],image:'https://images.unsplash.com/photo-1678685888221-cda269d3b1db?w=400&h=400&fit=crop'},
+            {id:21,name:'OPPO A79 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:6490000,oldPrice:6990000,discount:7,ram:8,storage:256,screen:'6.72" IPS LCD',camera:'50MP',features:['tragop'],colors:['#b39ddb','#000000'],image:'https://images.unsplash.com/photo-1571066811602-716837d681de?w=400&h=400&fit=crop'},
+            {id:22,name:'Samsung Galaxy M34 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:6290000,oldPrice:6990000,discount:10,ram:8,storage:128,screen:'6.5" Super AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#90caf9','#e8f5e9'],image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop&auto=format'},
+            {id:23,name:'Xiaomi POCO X6 Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:9990000,oldPrice:10990000,discount:9,ram:12,storage:512,screen:'6.67" AMOLED',camera:'64MP',features:['tragop','freeship'],colors:['#000000','#ffeb3b'],image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop&auto=format'},
+            {id:24,name:'HONOR X9b 5G 12GB 256GB',brand:'honor',category:'dienthoai',price:6990000,oldPrice:7990000,discount:13,ram:12,storage:256,screen:'6.78" AMOLED',camera:'108MP',features:['tragop'],colors:['#b39ddb','#000000','#fff8e1'],image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop&auto=format',category:'dienthoai'},
             
             // PHỤ KIỆN - TAI NGHE
-            {id:101,name:'Tai nghe Bluetooth Apple AirPods Pro 2',brand:'apple',category:'phukien',type:'tainghe',price:5990000,oldPrice:6990000,discount:14,features:['freeship'],colors:['#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/54/289781/tai-nghe-bluetooth-airpods-pro-2-usb-c-charge-apple-mqd83-thumb-600x600.jpg'},
-            {id:102,name:'Tai nghe Bluetooth Samsung Galaxy Buds2 Pro',brand:'samsung',category:'phukien',type:'tainghe',price:3490000,oldPrice:4990000,discount:30,features:['tragop'],colors:['#b39ddb','#ffffff','#000000'],image:'https://cdn.tgdd.vn/Products/Images/54/288088/tai-nghe-bluetooth-true-wireless-samsung-galaxy-buds2-pro-r510-thumb-600x600.jpg'},
-            {id:103,name:'Tai nghe Bluetooth AirPods 2 Apple',brand:'apple',category:'phukien',type:'tainghe',price:2690000,oldPrice:3190000,discount:16,features:[],colors:['#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/54/230044/tai-nghe-bluetooth-airpods-2-apple-mrxj2-ava-600x600.jpg'},
-            {id:104,name:'Tai nghe Bluetooth Samsung Galaxy Buds FE',brand:'samsung',category:'phukien',type:'tainghe',price:1490000,oldPrice:1990000,discount:25,features:[],colors:['#000000','#e0e0e0'],image:'https://cdn.tgdd.vn/Products/Images/54/309741/tai-nghe-bluetooth-true-wireless-samsung-galaxy-buds-fe-r400-thumb-600x600.jpg'},
-            {id:105,name:'Tai nghe Bluetooth Xiaomi Redmi Buds 5 Pro',brand:'xiaomi',category:'phukien',type:'tainghe',price:1390000,oldPrice:1790000,discount:22,features:[],colors:['#000000','#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/54/320134/tai-nghe-bluetooth-true-wireless-xiaomi-redmi-buds-5-pro-thumb-600x600.jpg'},
+            {id:101,name:'Tai nghe Bluetooth Apple AirPods Pro 2',brand:'apple',category:'phukien',type:'tainghe',price:5990000,oldPrice:6990000,discount:14,features:['freeship'],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400&h=400&fit=crop',rating:4.5,reviews:152},
+            {id:102,name:'Tai nghe Bluetooth Samsung Galaxy Buds2 Pro',brand:'samsung',category:'phukien',type:'tainghe',price:3490000,oldPrice:4990000,discount:30,features:['tragop'],colors:['#b39ddb','#ffffff','#000000'],image:'https://images.unsplash.com/photo-1590658165737-15a047b7a0c1?w=400&h=400&fit=crop',rating:4.5,reviews:89},
+            {id:103,name:'Tai nghe Bluetooth AirPods 2 Apple',brand:'apple',category:'phukien',type:'tainghe',price:2690000,oldPrice:3190000,discount:16,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=400&h=400&fit=crop',rating:4,reviews:234},
+            {id:104,name:'Tai nghe Bluetooth Samsung Galaxy Buds FE',brand:'samsung',category:'phukien',type:'tainghe',price:1490000,oldPrice:1990000,discount:25,features:[],colors:['#000000','#e0e0e0'],image:'https://images.unsplash.com/photo-1649859394657-c2c90e82446f?w=400&h=400&fit=crop',rating:4,reviews:67},
+            {id:105,name:'Tai nghe Bluetooth Xiaomi Redmi Buds 5 Pro',brand:'xiaomi',category:'phukien',type:'tainghe',price:1390000,oldPrice:1790000,discount:22,features:[],colors:['#000000','#ffffff'],image:'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=400&h=400&fit=crop',rating:4,reviews:43},
             
             // PHỤ KIỆN - SẠC & CÁP
-            {id:201,name:'Cáp Type C 1m Apple MM0A3',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/58/281570/cap-type-c-1m-apple-mm0a3-thumb-600x600.jpg'},
-            {id:202,name:'Sạc nhanh Type C PD 20W Apple',brand:'apple',category:'phukien',type:'sac',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/58/217740/sac-nhanh-type-c-pd-20w-apple-mhje3-thumb-600x600.jpg'},
-            {id:203,name:'Cáp Lightning 1m Apple MXLY2',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/58/217757/cap-lightning-1m-apple-mxly2-thumb-600x600.jpg'},
-            {id:204,name:'Sạc nhanh Samsung 25W Type C',brand:'samsung',category:'phukien',type:'sac',price:390000,oldPrice:490000,discount:20,features:[],colors:['#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/58/232783/sac-nhanh-samsung-25w-type-c-thumb-600x600.jpg'},
-            {id:205,name:'Cáp Type C 1m Samsung',brand:'samsung',category:'phukien',type:'cap',price:190000,oldPrice:290000,discount:34,features:[],colors:['#ffffff','#000000'],image:'https://cdn.tgdd.vn/Products/Images/58/232794/cap-type-c-1m-samsung-thumb-600x600.jpg'},
-            {id:206,name:'Sạc dự phòng 10000mAh Xiaomi Redmi 18W',brand:'xiaomi',category:'phukien',type:'sac',price:390000,oldPrice:490000,discount:20,features:[],colors:['#000000','#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/57/308728/sac-du-phong-10000mah-type-c-18w-xiaomi-redmi-pb100lzm-thumb-600x600.jpg'},
-            {id:207,name:'Sạc dự phòng 20000mAh Samsung',brand:'samsung',category:'phukien',type:'sac',price:890000,oldPrice:1190000,discount:25,features:['freeship'],colors:['#9e9e9e'],image:'https://cdn.tgdd.vn/Products/Images/57/308092/sac-du-phong-20000mah-type-c-25w-samsung-eb-p3400-thumb-600x600.jpg'},
+            {id:201,name:'Cáp Type C 1m Apple MM0A3',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400&h=400&fit=crop',rating:4.5,reviews:128},
+            {id:202,name:'Sạc nhanh Type C PD 20W Apple',brand:'apple',category:'phukien',type:'sac',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1591290619762-c588ec6ade80?w=400&h=400&fit=crop',rating:4.5,reviews:156},
+            {id:203,name:'Cáp Lightning 1m Apple MXLY2',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=400&h=400&fit=crop',rating:4,reviews:98},
+            {id:204,name:'Sạc nhanh Samsung 25W Type C',brand:'samsung',category:'phukien',type:'sac',price:390000,oldPrice:490000,discount:20,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop',rating:4,reviews:87},
+            {id:205,name:'Cáp Type C 1m Samsung',brand:'samsung',category:'phukien',type:'cap',price:190000,oldPrice:290000,discount:34,features:[],colors:['#ffffff','#000000'],image:'https://images.unsplash.com/photo-1625281586083-4e10e60e8219?w=400&h=400&fit=crop',rating:4,reviews:143},
+            {id:206,name:'Sạc dự phòng 10000mAh Xiaomi Redmi 18W',brand:'xiaomi',category:'phukien',type:'sac',price:390000,oldPrice:490000,discount:20,features:[],colors:['#000000','#ffffff'],image:'https://images.unsplash.com/photo-1609592398957-c6c5ffeb1c81?w=400&h=400&fit=crop',rating:4.5,reviews:76},
+            {id:207,name:'Sạc dự phòng 20000mAh Samsung',brand:'samsung',category:'phukien',type:'sac',price:890000,oldPrice:1190000,discount:25,features:['freeship'],colors:['#9e9e9e'],image:'https://images.unsplash.com/photo-1667573591415-dae49ef1d7f2?w=400&h=400&fit=crop',rating:5,reviews:92},
             
             // PHỤ KIỆN - ỐP LƯNG
-            {id:301,name:'Ốp lưng iPhone 15 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:1190000,oldPrice:1490000,discount:20,features:[],colors:['#000000','#4a148c','#e3f2fd','#ffeb3b'],image:'https://cdn.tgdd.vn/Products/Images/60/306179/op-lung-iphone-15-pro-max-magsafe-apple-mt223-thumb-600x600.jpg'},
-            {id:302,name:'Ốp lưng iPhone 14 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:990000,oldPrice:1290000,discount:23,features:[],colors:['#000000','#e0e0e0','#f48fb1'],image:'https://cdn.tgdd.vn/Products/Images/60/285308/op-lung-iphone-14-pro-max-magsafe-apple-mppw3-thumb-600x600.jpg'},
-            {id:303,name:'Ốp lưng Samsung Galaxy S24 Ultra Clear',brand:'samsung',category:'phukien',type:'oplung',price:590000,oldPrice:790000,discount:25,features:[],colors:['transparent'],image:'https://cdn.tgdd.vn/Products/Images/60/320131/op-lung-samsung-galaxy-s24-ultra-clear-ef-qs928-thumb-600x600.jpg'},
-            {id:304,name:'Ốp lưng Samsung Galaxy A55 5G Silicone',brand:'samsung',category:'phukien',type:'oplung',price:290000,oldPrice:390000,discount:26,features:[],colors:['#000000','#90caf9','#f48fb1'],image:'https://cdn.tgdd.vn/Products/Images/60/322132/op-lung-samsung-galaxy-a55-5g-silicone-thumb-600x600.jpg'},
-            {id:305,name:'Ốp lưng Xiaomi 14 Clear Case',brand:'xiaomi',category:'phukien',type:'oplung',price:190000,oldPrice:290000,discount:34,features:[],colors:['transparent'],image:'https://cdn.tgdd.vn/Products/Images/60/313290/op-lung-xiaomi-14-clear-case-thumb-600x600.jpg'},
-            {id:306,name:'Ốp lưng iPhone 15 Clear Case',brand:'other',category:'phukien',type:'oplung',price:149000,oldPrice:249000,discount:40,features:[],colors:['transparent','#000000','#f48fb1'],image:'https://cdn.tgdd.vn/Products/Images/60/306290/op-lung-iphone-15-clear-case-thumb-600x600.jpg'},
+            {id:301,name:'Ốp lưng iPhone 15 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:1190000,oldPrice:1490000,discount:20,features:[],colors:['#000000','#4a148c','#e3f2fd','#ffeb3b'],image:'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&h=400&fit=crop',rating:4.5,reviews:234},
+            {id:302,name:'Ốp lưng iPhone 14 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:990000,oldPrice:1290000,discount:23,features:[],colors:['#000000','#e0e0e0','#f48fb1'],image:'https://images.unsplash.com/photo-1618088089075-44c3b5e2e283?w=400&h=400&fit=crop',rating:4,reviews:187},
+            {id:303,name:'Ốp lưng Samsung Galaxy S24 Ultra Clear',brand:'samsung',category:'phukien',type:'oplung',price:590000,oldPrice:790000,discount:25,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1585704768175-39ba0d82bda8?w=400&h=400&fit=crop',rating:4.5,reviews:145},
+            {id:304,name:'Ốp lưng Samsung Galaxy A55 5G Silicone',brand:'samsung',category:'phukien',type:'oplung',price:290000,oldPrice:390000,discount:26,features:[],colors:['#000000','#90caf9','#f48fb1'],image:'https://images.unsplash.com/photo-1601784551279-3c50e2c96d72?w=400&h=400&fit=crop',rating:4,reviews:98},
+            {id:305,name:'Ốp lưng Xiaomi 14 Clear Case',brand:'xiaomi',category:'phukien',type:'oplung',price:190000,oldPrice:290000,discount:34,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1602526212616-f65c9d95e3e1?w=400&h=400&fit=crop',rating:4,reviews:76},
+            {id:306,name:'Ốp lưng iPhone 15 Clear Case',brand:'other',category:'phukien',type:'oplung',price:149000,oldPrice:249000,discount:40,features:[],colors:['transparent','#000000','#f48fb1'],image:'https://images.unsplash.com/photo-1592503254549-d83d24a4dfab?w=400&h=400&fit=crop',rating:3.5,reviews:342},
             
             // PHỤ KIỆN - KHÁC
-            {id:401,name:'Cường lực iPhone 15 Pro Max Zagg',brand:'other',category:'phukien',type:'cuongluc',price:790000,oldPrice:990000,discount:20,features:[],colors:['transparent'],image:'https://cdn.tgdd.vn/Products/Images/60/305823/cuong-luc-iphone-15-pro-max-zagg-thumb-600x600.jpg'},
-            {id:402,name:'Cường lực Samsung Galaxy S24 Ultra',brand:'other',category:'phukien',type:'cuongluc',price:490000,oldPrice:690000,discount:29,features:[],colors:['transparent'],image:'https://cdn.tgdd.vn/Products/Images/60/320145/cuong-luc-samsung-galaxy-s24-ultra-thumb-600x600.jpg'},
-            {id:403,name:'Giá đỡ điện thoại Baseus Magnetic',brand:'other',category:'phukien',type:'giado',price:290000,oldPrice:390000,discount:26,features:[],colors:['#000000','#e0e0e0'],image:'https://cdn.tgdd.vn/Products/Images/60/320234/gia-do-dien-thoai-baseus-magnetic-thumb-600x600.jpg'},
-            {id:404,name:'Gậy chụp ảnh Bluetooth Tripod',brand:'other',category:'phukien',type:'gaychup',price:390000,oldPrice:590000,discount:34,features:[],colors:['#000000','#ffffff'],image:'https://cdn.tgdd.vn/Products/Images/60/234532/gay-chup-anh-bluetooth-tripod-thumb-600x600.jpg'}
+            {id:401,name:'Cường lực iPhone 15 Pro Max Zagg',brand:'other',category:'phukien',type:'cuongluc',price:790000,oldPrice:990000,discount:20,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1585282263861-f55e341878f8?w=400&h=400&fit=crop',rating:4.5,reviews:167},
+            {id:402,name:'Cường lực Samsung Galaxy S24 Ultra',brand:'other',category:'phukien',type:'cuongluc',price:490000,oldPrice:690000,discount:29,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1598327106026-d9521da673d1?w=400&h=400&fit=crop',rating:4,reviews:123},
+            {id:403,name:'Giá đỡ điện thoại Baseus Magnetic',brand:'other',category:'phukien',type:'giado',price:290000,oldPrice:390000,discount:26,features:[],colors:['#000000','#e0e0e0'],image:'https://images.unsplash.com/photo-1583511655826-05700b77f572?w=400&h=400&fit=crop',rating:4.5,reviews:89},
+            {id:404,name:'Gậy chụp ảnh Bluetooth Tripod',brand:'other',category:'phukien',type:'gaychup',price:390000,oldPrice:590000,discount:34,features:[],colors:['#000000','#ffffff'],image:'https://images.unsplash.com/photo-1603481546703-aec318fc719a?w=400&h=400&fit=crop',rating:4,reviews:54}
         ];
 
         let selectedBrands = [];
@@ -1345,7 +1097,39 @@
         let currentSort = 'featured';
         let searchQuery = '';
 
-        document.addEventListener('DOMContentLoaded', () => { renderProducts(); updateFilterTags(); });
+        // Parse URL parameters on page load
+        document.addEventListener('DOMContentLoaded', () => { 
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Check for category parameter
+            const categoryParam = urlParams.get('category');
+            if (categoryParam) {
+                selectedCategories = [categoryParam];
+                
+                // Update category tab active state
+                document.querySelectorAll('.category-tab').forEach(tab => {
+                    tab.classList.remove('bg-[var(--red-main)]', 'text-white');
+                    tab.classList.add('text-gray-700', 'hover:text-[var(--red-main)]');
+                });
+                
+                // Show accessory filter if phukien
+                const accessoryFilter = document.getElementById('accessoryFilter');
+                if (categoryParam === 'phukien') {
+                    if (accessoryFilter) accessoryFilter.style.display = 'block';
+                }
+            }
+            
+            // Check for brand parameter
+            const brandParam = urlParams.get('brand');
+            if (brandParam) {
+                selectedBrands = [brandParam];
+                const checkbox = document.querySelector(`.brand-filter[value="${brandParam}"]`);
+                if (checkbox) checkbox.checked = true;
+            }
+            
+            renderProducts(); 
+            updateFilterTags(); 
+        });
 
         function toggleBrandFilter(brand) {
             const checkbox = document.querySelector(`.brand-filter[value="${brand}"]`);
@@ -1369,20 +1153,30 @@
             
             // Update category tabs active state
             document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.classList.remove('bg-[var(--primary-red)]', 'text-white');
-                tab.classList.add('text-gray-700', 'hover:text-[var(--primary-red)]');
+                tab.classList.remove('bg-[var(--red-main)]', 'text-white');
+                tab.classList.add('text-gray-700', 'hover:text-[var(--red-main)]', 'hover:bg-gray-100');
             });
-            event.target.classList.add('bg-[var(--primary-red)]', 'text-white');
-            event.target.classList.remove('text-gray-700', 'hover:text-[var(--primary-red)]');
+            
+            // Find and activate the correct tab by checking onclick attribute
+            const allTabs = document.querySelectorAll('.category-tab');
+            allTabs.forEach(tab => {
+                const onclickAttr = tab.getAttribute('onclick');
+                if (onclickAttr && onclickAttr.includes(`'${category}'`)) {
+                    tab.classList.add('bg-[var(--red-main)]', 'text-white');
+                    tab.classList.remove('text-gray-700', 'hover:text-[var(--red-main)]', 'hover:bg-gray-100');
+                }
+            });
             
             // Show/hide accessory filter based on category
             const accessoryFilter = document.getElementById('accessoryFilter');
-            if (category === 'phukien') {
-                accessoryFilter.style.display = 'block';
-            } else {
-                accessoryFilter.style.display = 'none';
-                selectedAccessoryTypes = [];
-                document.querySelectorAll('.accessory-filter').forEach(cb => cb.checked = false);
+            if (accessoryFilter) {
+                if (category === 'phukien') {
+                    accessoryFilter.style.display = 'block';
+                } else {
+                    accessoryFilter.style.display = 'none';
+                    selectedAccessoryTypes = [];
+                    document.querySelectorAll('.accessory-filter').forEach(cb => cb.checked = false);
+                }
             }
             
             renderProducts();
@@ -1442,7 +1236,7 @@
 
             if (selectedBrands.length>0 || selectedPriceRanges.length>0) {
                 const clearBtn = document.createElement('button');
-                clearBtn.className = 'text-[var(--primary-red)] text-sm font-semibold hover:underline';
+                clearBtn.className = 'text-[var(--red-main)] text-sm font-semibold hover:underline';
                 clearBtn.textContent = 'Xóa tất cả';
                 clearBtn.onclick = clearAllFilters;
                 container.appendChild(clearBtn);
@@ -1463,10 +1257,10 @@
         function sortProducts(type) {
             currentSort = type;
             document.querySelectorAll('.sort-btn').forEach(btn => {
-                btn.classList.remove('bg-[var(--primary-red)]','text-white');
+                btn.classList.remove('bg-[var(--red-main)]','text-white');
                 btn.classList.add('hover:bg-gray-100');
             });
-            event.target.classList.add('bg-[var(--primary-red)]','text-white');
+            event.target.classList.add('bg-[var(--red-main)]','text-white');
             event.target.classList.remove('hover:bg-gray-100');
             renderProducts();
         }
@@ -1512,30 +1306,19 @@
         function createProductCard(product) {
             const card = document.createElement('div');
             
-            // Discount badge with gradient
-            const discountBadge = product.discount ? `<span class="absolute top-2 left-2 bg-gradient-to-br from-red-600 to-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-md z-10">-${product.discount}%</span>` : '';
+            // Discount badge - đơn giản không icon
+            const discountBadge = product.discount ? `<span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-md z-10">-${product.discount}%</span>` : '';
             
-            // Freeship badge
-            const freeshipBadge = product.features.includes('freeship') ? '<div class="freeship-badge">FREESHIP<br>TOÀN QUỐC</div>' : '';
+            // Không hiển thị freeship badge
             
-            // Trả góp badge with new design
-            const tragopBadge = product.features.includes('tragop') ? '<div class="bg-gradient-to-r from-blue-50 to-blue-100 px-3 py-1.5 rounded-lg text-xs mb-2 font-semibold text-blue-700 border border-blue-200"><i class="fas fa-credit-card mr-1"></i>Trả góp 0%</div>' : '';
+            // Không hiển thị trả góp badge
             
-            // Product labels (Bestseller, New, Hot)
-            let productLabel = '';
-            const randomLabel = Math.random();
-            if (randomLabel < 0.3) {
-                productLabel = '<span class="product-label label-bestseller"><i class="fas fa-fire mr-1"></i>Bán chạy</span>';
-            } else if (randomLabel < 0.5) {
-                productLabel = '<span class="product-label label-new"><i class="fas fa-star mr-1"></i>Mới về</span>';
-            } else if (randomLabel < 0.65 && product.discount >= 10) {
-                productLabel = '<span class="product-label label-hot"><i class="fas fa-bolt mr-1"></i>Hot</span>';
-            }
+            // Không hiển thị product labels
             
             const colors = product.colors.map(color => `<div class="color-dot" style="background-color: ${color}"></div>`).join('');
             
-            // Generate rating stars with better styling
-            const rating = product.rating || (4 + Math.random() * 1); // 4.0-5.0
+            // Generate rating stars
+            const rating = product.rating || (4 + Math.random() * 1);
             const reviewCount = product.reviewCount || Math.floor(Math.random() * 500) + 50;
             const fullStars = Math.floor(rating);
             const halfStar = rating % 1 >= 0.5 ? 1 : 0;
@@ -1543,69 +1326,62 @@
             
             let starsHTML = '<div class="product-rating mb-2">';
             starsHTML += '<span class="stars">';
-            for(let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>';
-            if(halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>';
-            for(let i = 0; i < emptyStars; i++) starsHTML += '<i class="far fa-star"></i>';
+            for(let i = 0; i < fullStars; i++) starsHTML += '★';
+            if(halfStar) starsHTML += '⯨';
+            for(let i = 0; i < emptyStars; i++) starsHTML += '☆';
             starsHTML += '</span>';
-            starsHTML += `<span class="reviews ml-1">(${reviewCount})</span></div>`;
-            for(let i = 0; i < emptyStars; i++) starsHTML += '<i class="far fa-star"></i>';
-            starsHTML += `<span class="text-xs text-gray-600 ml-1">(${reviewCount})</span></div>`;
+            starsHTML += `<span class="reviews">(${reviewCount})</span></div>`;
             
             if (currentView === 'list') {
-                // List View
+                // List View - Bỏ icon
                 card.className = 'product-card flex flex-row gap-4 items-center';
                 card.innerHTML = `
                     <a href="product-detail.html?id=${product.id}" class="flex flex-row gap-4 w-full">
                         <div class="relative flex-shrink-0 w-40 h-40 overflow-hidden rounded-lg">
                             ${discountBadge}
-                            ${productLabel}
                             <img src="${product.image}" alt="${product.name}" loading="lazy" class="w-full h-full object-contain p-2">
-                            ${freeshipBadge}
                         </div>
                         <div class="flex-1 py-2">
-                            ${tragopBadge}
-                            <h3 class="text-lg font-bold mb-2 text-gray-800 hover:text-[var(--primary-red)] transition-colors">${product.name}</h3>
+                            <h3 class="text-lg font-bold mb-2 text-gray-800 hover:text-[var(--red-main)] transition-colors">${product.name}</h3>
                             ${starsHTML}
                             <div class="flex flex-wrap gap-2 mb-3">
-                                <span class="spec-badge"><i class="fas fa-mobile-alt text-xs"></i> ${product.screen}</span>
-                                <span class="spec-badge"><i class="fas fa-camera text-xs"></i> ${product.camera}</span>
-                                <span class="spec-badge"><i class="fas fa-memory text-xs"></i> ${product.ram}GB/${product.storage}GB</span>
+                                ${product.screen ? `<span class="spec-badge">${product.screen}</span>` : ''}
+                                ${product.camera ? `<span class="spec-badge">${product.camera}</span>` : ''}
+                                ${product.ram && product.storage ? `<span class="spec-badge">${product.ram}GB/${product.storage}GB</span>` : ''}
                             </div>
                             <div class="flex items-center gap-2 mb-2">${colors}</div>
                         </div>
                         <div class="flex flex-col justify-center items-end gap-3 flex-shrink-0 pr-4">
                             <div>
-                                <div class="text-2xl font-black text-[var(--primary-red)]">${formatPrice(product.price)}</div>
+                                <div class="text-2xl font-black text-[var(--red-main)]">${formatPrice(product.price)}</div>
                                 ${product.oldPrice ? `<div class="flex items-center gap-2 justify-end mt-1">
                                     <div class="text-sm text-gray-500 line-through">${formatPrice(product.oldPrice)}</div>
                                     <div class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">-${formatPrice(product.oldPrice-product.price)}</div>
                                 </div>` : ''}
                             </div>
                             <div class="flex flex-col gap-2 w-40">
-                                <button class="cta-button bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white py-2.5 px-4 rounded-lg text-sm font-bold flex items-center justify-center gap-2" onclick="event.preventDefault(); addToCart(${product.id})">
-                                    <i class="fas fa-shopping-cart"></i> Mua ngay
+                                <button class="cta-button text-white py-2.5 px-4 rounded-lg text-sm font-bold" onclick="event.preventDefault(); addToCart(${product.id})">
+                                    Mua ngay
                                 </button>
-                                <button class="cta-secondary py-2 px-4 text-xs font-semibold flex items-center justify-center gap-2" onclick="event.preventDefault(); addToCompare(${product.id})">
-                                    <i class="fas fa-exchange-alt"></i> So sánh
+                                <button class="cta-secondary py-2 px-4 text-xs font-semibold" onclick="event.preventDefault(); addToCompare(${product.id})">
+                                    So sánh
                                 </button>
                             </div>
                         </div>
                     </a>
                 `;
             } else {
-                // Grid View
+                // Grid View - Bỏ icon
                 card.className = 'product-card';
                 
-                // Check if product is accessory (phukien)
                 const isAccessory = product.category === 'phukien';
                 
-                // Spec badges - different for accessories
                 let specBadgesHTML = '';
                 if (!isAccessory && product.screen && product.camera) {
                     specBadgesHTML = `
                         <div class="flex flex-wrap gap-1.5 mb-3">
-                            <span class="spec-badge"><i class="fas fa-mobile-alt text-xs"></i> ${product.screen}</span>
-                            <span class="spec-badge"><i class="fas fa-camera text-xs"></i> ${product.camera}</span>
+                            <span class="spec-badge">${product.screen}</span>
+                            <span class="spec-badge">${product.camera}</span>
                         </div>
                     `;
                 }
@@ -1620,17 +1396,14 @@
                     <a href="product-detail.html?id=${product.id}" class="block">
                         <div class="relative overflow-hidden rounded-lg mb-3">
                             ${discountBadge}
-                            ${productLabel}
                             <img src="${product.image}" alt="${product.name}" loading="lazy" class="w-full h-48 object-contain p-2">
-                            ${freeshipBadge}
                         </div>
                         <div>
-                            ${tragopBadge}
-                            <h3 class="text-sm font-bold mb-2 line-clamp-2 min-h-[40px] text-gray-800 hover:text-[var(--primary-red)] transition-colors">${product.name}</h3>
+                            <h3 class="text-sm font-bold mb-2 line-clamp-2 min-h-[40px] text-gray-800 hover:text-[var(--red-main)] transition-colors">${product.name}</h3>
                             ${starsHTML}
                             ${specBadgesHTML}
                             <div class="mb-3">
-                                <div class="text-xl font-black text-[var(--primary-red)] mb-1">${formatPrice(product.price)}</div>
+                                <div class="text-xl font-black text-[var(--red-main)] mb-1">${formatPrice(product.price)}</div>
                                 ${product.oldPrice ? `<div class="flex items-center gap-2">
                                     <div class="text-xs text-gray-500 line-through">${formatPrice(product.oldPrice)}</div>
                                     <div class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded">-${formatPrice(product.oldPrice-product.price)}</div>
@@ -1638,15 +1411,12 @@
                             </div>
                             ${colorDotsHTML}
                             
-                            <!-- CTA Buttons -->
                             <div class="space-y-2">
-                                <button class="cta-button w-full bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white py-2.5 px-4 rounded-lg text-sm font-bold flex items-center justify-center gap-2" onclick="event.preventDefault(); addToCart(${product.id})">
-                                    <i class="fas fa-shopping-cart"></i> 
-                                    <span>Mua ngay</span>
+                                <button class="cta-button w-full text-white py-2.5 px-4 rounded-lg text-sm font-bold" onclick="event.preventDefault(); addToCart(${product.id})">
+                                    Mua ngay
                                 </button>
-                                <button class="cta-secondary w-full py-2 px-4 text-xs font-semibold flex items-center justify-center gap-2" onclick="event.preventDefault(); addToCompare(${product.id})">
-                                    <i class="fas fa-exchange-alt"></i>
-                                    <span>So sánh</span>
+                                <button class="cta-secondary w-full py-2 px-4 text-xs font-semibold" onclick="event.preventDefault(); addToCompare(${product.id})">
+                                    So sánh
                                 </button>
                             </div>
                         </div>
@@ -1763,205 +1533,6 @@
             toggleBrand(brand);
         }
     </script>
-
-    <!-- Accessories Section with Banner -->
-    <section class="bg-gray-50 py-4 mt-4">
-        <div class="container mx-auto px-4">
-            
-            <!-- Section Header -->
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-800">
-                    <i class="fas fa-headphones text-[var(--primary-red)] mr-2"></i>
-                    Phụ Kiện Chính Hãng
-                </h2>
-                <a href="products.html?category=accessories" class="text-sm md:text-base text-[var(--primary-red)] hover:underline font-semibold">
-                    Xem tất cả <i class="fas fa-chevron-right text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Banner Quảng Cáo Phụ Kiện -->
-            <div class="mb-4 relative overflow-hidden rounded-lg shadow-lg">
-                <div class="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 p-4 md:p-6">
-                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div class="text-white flex-1">
-                            <div class="inline-block bg-yellow-400 text-purple-900 px-2.5 py-0.5 rounded-full text-xs font-bold mb-2">
-                                🔥 SALE SỐC - GIẢM TỚI 50%
-                            </div>
-                            <h3 class="text-xl md:text-2xl font-bold mb-1.5">PHỤ KIỆN CHÍNH HÃNG</h3>
-                            <p class="text-sm md:text-base mb-2 opacity-90">Tai nghe, Sạc, Ốp lưng, Cáp... Giá tốt nhất!</p>
-                            <ul class="space-y-0.5 mb-3 text-xs md:text-sm">
-                                <li><i class="fas fa-check-circle text-yellow-300 mr-1.5"></i>Bảo hành 12 tháng chính hãng</li>
-                                <li><i class="fas fa-check-circle text-yellow-300 mr-1.5"></i>Freeship đơn từ 200K</li>
-                                <li><i class="fas fa-check-circle text-yellow-300 mr-1.5"></i>Đổi trả trong 7 ngày</li>
-                            </ul>
-                            <button class="bg-white text-purple-700 px-4 md:px-6 py-2 md:py-2.5 rounded-lg text-sm font-bold hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-lg">
-                                <i class="fas fa-shopping-bag mr-1.5"></i>MUA NGAY
-                            </button>
-                        </div>
-                        <div class="flex gap-2 md:gap-3">
-                            <img src="https://cdn.tgdd.vn/Products/Images/54/325602/tai-nghe-bluetooth-airpods-4-apple-mnx13-thumb-600x600.jpg" 
-                                 alt="AirPods" class="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-2xl transform hover:scale-110 transition">
-                            <img src="https://cdn.tgdd.vn/Products/Images/57/325828/sac-du-phong-10000mah-type-c-20w-anker-powercore-a1256-thumb-600x600.jpg" 
-                                 alt="Sạc dự phòng" class="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-2xl transform hover:scale-110 transition hidden md:block">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Products Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-3">
-                
-                <!-- Tai nghe AirPods -->
-                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all transform hover:scale-105 overflow-hidden">
-                    <a href="product-detail.html?id=acc1">
-                        <div class="relative p-2">
-                            <span class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">-30%</span>
-                            <div class="freeship-badge text-xs">FREE<br>SHIP</div>
-                            <img src="https://cdn.tgdd.vn/Products/Images/54/325602/tai-nghe-bluetooth-airpods-4-apple-mnx13-thumb-600x600.jpg" 
-                                 alt="AirPods 4" class="w-full h-32 md:h-36 object-contain" loading="lazy">
-                        </div>
-                        <div class="p-2 border-t">
-                            <h3 class="text-xs md:text-sm font-semibold mb-1 line-clamp-2">AirPods 4 Apple MNX13</h3>
-                            <div class="rating-stars flex items-center gap-0.5 mb-1 text-xs">
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star-half-alt text-yellow-400"></i>
-                                <span class="text-xs text-gray-600 ml-0.5">(342)</span>
-                            </div>
-                            <div class="mb-1">
-                                <div class="text-base md:text-lg font-black text-[var(--primary-red)]">3.190.000đ</div>
-                                <div class="text-xs text-gray-500 line-through">4.490.000đ</div>
-                            </div>
-                            <button class="w-full bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white py-1.5 rounded text-xs md:text-sm font-semibold transition">
-                                <i class="fas fa-shopping-cart"></i> Mua ngay
-                            </button>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Sạc dự phòng Anker -->
-                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all transform hover:scale-105 overflow-hidden">
-                    <a href="product-detail.html?id=acc2">
-                        <div class="relative p-2">
-                            <span class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">-25%</span>
-                            <img src="https://cdn.tgdd.vn/Products/Images/57/325828/sac-du-phong-10000mah-type-c-20w-anker-powercore-a1256-thumb-600x600.jpg" 
-                                 alt="Sạc Anker" class="w-full h-32 md:h-36 object-contain" loading="lazy">
-                        </div>
-                        <div class="p-2 border-t">
-                            <h3 class="text-xs md:text-sm font-semibold mb-1 line-clamp-2">Sạc dự phòng 10000mAh Anker PowerCore</h3>
-                            <div class="rating-stars flex items-center gap-0.5 mb-1 text-xs">
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <span class="text-xs text-gray-600 ml-0.5">(521)</span>
-                            </div>
-                            <div class="mb-1">
-                                <div class="text-base md:text-lg font-black text-[var(--primary-red)]">590.000đ</div>
-                                <div class="text-xs text-gray-500 line-through">790.000đ</div>
-                            </div>
-                            <button class="w-full bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white py-1.5 rounded text-xs md:text-sm font-semibold transition">
-                                <i class="fas fa-shopping-cart"></i> Mua ngay
-                            </button>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Ốp lưng iPhone -->
-                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all transform hover:scale-105 overflow-hidden">
-                    <a href="product-detail.html?id=acc3">
-                        <div class="relative p-2">
-                            <span class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">-40%</span>
-                            <img src="https://cdn.tgdd.vn/Products/Images/60/325156/op-lung-iphone-16-pro-max-apple-silicone-magsafe-thumb-600x600.jpg" 
-                                 alt="Ốp lưng" class="w-full h-32 md:h-36 object-contain" loading="lazy">
-                        </div>
-                        <div class="p-2 border-t">
-                            <h3 class="text-xs md:text-sm font-semibold mb-1 line-clamp-2">Ốp lưng iPhone 16 Pro Max MagSafe</h3>
-                            <div class="rating-stars flex items-center gap-0.5 mb-1 text-xs">
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="far fa-star text-yellow-400"></i>
-                                <span class="text-xs text-gray-600 ml-0.5">(189)</span>
-                            </div>
-                            <div class="mb-1">
-                                <div class="text-base md:text-lg font-black text-[var(--primary-red)]">299.000đ</div>
-                                <div class="text-xs text-gray-500 line-through">499.000đ</div>
-                            </div>
-                            <button class="w-full bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white py-1.5 rounded text-xs md:text-sm font-semibold transition">
-                                <i class="fas fa-shopping-cart"></i> Mua ngay
-                            </button>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Cáp sạc Type-C -->
-                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all transform hover:scale-105 overflow-hidden">
-                    <a href="product-detail.html?id=acc4">
-                        <div class="relative p-2">
-                            <span class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">-35%</span>
-                            <div class="freeship-badge">FREESHIP</div>
-                            <img src="https://cdn.tgdd.vn/Products/Images/58/326890/cap-type-c-lightning-1m-20w-anker-powerline-iii-a8652-thumb-600x600.jpg" 
-                                 alt="Cáp sạc" class="w-full h--32 md:h-36 object-contain" loading="lazy">
-                        </div>
-                        <div class="p-2 border-t">
-                            <h3 class="text-xs md:text-sm font-semibold mb-1 line-clamp-2">Cáp Type-C Lightning 1m Anker</h3>
-                            <div class="rating-stars flex items-center gap-0.5 mb-1 text-xs">
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star-half-alt text-yellow-400"></i>
-                                <span class="text-xs text-gray-600 ml-0.5">(421)</span>
-                            </div>
-                            <div class="mb-1">
-                                <div class="text-base md:text-lg font-black text-[var(--primary-red)]">195.000đ</div>
-                                <div class="text-xs text-gray-500 line-through">299.000đ</div>
-                            </div>
-                            <button class="w-full bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white py-1.5 rounded text-xs md:text-sm font-semibold transition">
-                                <i class="fas fa-shopping-cart"></i> Mua ngay
-                            </button>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Smartwatch -->
-                <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all transform hover:scale-105 overflow-hidden">
-                    <a href="product-detail.html?id=acc5">
-                        <div class="relative p-2">
-                            <span class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">-20%</span>
-                            <div class="freeship-badge">FREESHIP</div>
-                            <img src="https://cdn.tgdd.vn/Products/Images/7077/325045/apple-watch-series-10-gps-46mm-nhom-thumb-600x600.jpg" 
-                                 alt="Apple Watch" class="w-full h--32 md:h-36 object-contain" loading="lazy">
-                        </div>
-                        <div class="p-2 border-t">
-                            <h3 class="text-xs md:text-sm font-semibold mb-1 line-clamp-2">Apple Watch Series 10 GPS 46mm</h3>
-                            <div class="rating-stars flex items-center gap-0.5 mb-1 text-xs">
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <span class="text-xs text-gray-600 ml-0.5">(234)</span>
-                            </div>
-                            <div class="mb-1">
-                                <div class="text-base md:text-lg font-black text-[var(--primary-red)]">10.490.000đ</div>
-                                <div class="text-xs text-gray-500 line-through">12.990.000đ</div>
-                            </div>
-                            <button class="w-full bg-[var(--primary-red)] hover:bg-[var(--primary-red-dark)] text-white py-1.5 rounded text-xs md:text-sm font-semibold transition">
-                                <i class="fas fa-shopping-cart"></i> Mua ngay
-                            </button>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
 
     <!-- Quality Guarantee Section -->
 <section class="bg-gradient-to-br from-red-50 to-orange-50 py-6 mt-6">
