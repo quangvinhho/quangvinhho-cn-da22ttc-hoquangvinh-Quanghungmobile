@@ -55,41 +55,48 @@
         
         .product-card {
             background: white; 
-            border-radius: 12px; 
+            border-radius: 8px; 
             overflow: hidden;
             transition: all 0.3s ease; 
-            border: 1px solid var(--border-light);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            padding: 16px;
-            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            padding: 0;
+            margin-bottom: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         .product-card:hover { 
-            box-shadow: 0 6px 20px rgba(217, 30, 35, 0.12); 
-            transform: translateY(-4px); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            transform: translateY(-2px); 
             border-color: var(--red-main);
         }
         
         .spec-badge {
             background: white;
-            padding: 5px 10px; 
-            border-radius: 6px;
-            font-size: 11px; 
+            padding: 4px 8px; 
+            border-radius: 5px;
+            font-size: 10px; 
             color: var(--text-secondary); 
             display: inline-flex; 
             align-items: center; 
-            gap: 4px;
+            gap: 3px;
             font-weight: 500;
             border: 1px solid var(--border-light);
+            white-space: nowrap;
         }
         
         .color-dot {
-            width: 20px; height: 20px; border-radius: 50%;
-            border: 2px solid var(--border-light); cursor: pointer;
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%;
+            border: 2px solid var(--border-light); 
+            cursor: pointer;
             transition: all 0.2s ease;
         }
         
         .color-dot:hover {
-            transform: scale(1.2);
+            transform: scale(1.15);
             border-color: var(--red-main);
         }
         
@@ -121,7 +128,8 @@
             transition: all 0.3s ease;
             border-radius: 8px;
             font-weight: 600;
-            padding: 10px 20px;
+            padding: 10px 16px;
+            font-size: 13px;
         }
         
         .cta-button:hover {
@@ -136,8 +144,9 @@
             background: white;
             transition: all 0.3s;
             border-radius: 8px;
-            padding: 8px 16px;
+            padding: 8px 14px;
             font-weight: 600;
+            font-size: 12px;
         }
         
         .cta-secondary:hover {
@@ -153,21 +162,21 @@
         
         /* Rating Stars */
         .product-rating {
-            margin-top: 8px;
+            margin-top: 6px;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .product-rating .stars {
             color: #FFD700;
-            font-size: 16px;
+            font-size: 14px;
+            letter-spacing: 1px;
         }
         
         .product-rating .reviews {
-            color: var(--text-muted);
-            font-size: 13px;
+            display: none;
         }
         
         /* Scrollbar */
@@ -243,20 +252,44 @@
             }
             
             .product-card {
-                padding: 12px;
-                margin-bottom: 16px;
+                padding: 0;
             }
             
             .animate-scroll {
                 animation: scroll 20s linear infinite;
             }
         }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #productsGrid {
+                gap: 16px !important;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            #productsGrid {
+                gap: 20px !important;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="bg-[var(--red-main)] text-white sticky top-0 z-50 shadow-lg">
+    <!-- Header Navigation Component -->
+    <div id="header-nav-placeholder"></div>
+    
+    <script>
+        // Load header-nav component
+        fetch('components/header-nav.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-nav-placeholder').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+
+    <!-- Old Header - Will be hidden/removed -->
+    <header class="bg-[var(--red-main)] text-white sticky top-0 z-50 shadow-lg" style="display:none;">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-3 gap-4">
                 <!-- Logo -->
@@ -345,13 +378,13 @@
         <div class="container mx-auto px-4">
             <div class="relative rounded-2xl overflow-hidden shadow-lg group">
                 <div id="bannerSlider" class="relative h-48 md:h-64">
-                    <!-- Slide 1 - iPhone 15 Pro Max -->
+                    <!-- Slide 1 - iPhone 17 Pro Max -->
                     <div class="banner-slide absolute inset-0 transition-all duration-700 ease-in-out">
                         <div class="relative w-full h-full bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
                             <div class="absolute inset-0 flex items-center">
                                 <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
                                     <div class="text-white max-w-md z-10">
-                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">iPhone 15 Pro Max</h2>
+                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">iPhone 17 Pro Max</h2>
                                         <p class="text-base md:text-xl mb-1 md:mb-2">Chỉ từ <span class="text-yellow-300 font-bold">28.990.000đ</span></p>
                                         <p class="text-xs md:text-base mb-3 md:mb-3">Thu cũ đổi mới - Giảm thêm 2 triệu</p>
                                         <button class="bg-[var(--red-main)] hover:bg-[var(--red-main-dark)] text-white px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
@@ -359,20 +392,20 @@
                                         </button>
                                     </div>
                                     <div class="hidden md:block">
-                                        <img src="images/iphone.jpg" alt="iPhone 15 Pro Max" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                                        <img src="images/ip17.jpg" alt="iPhone 17 Pro Max" class="h-48 md:h-56 object-contain drop-shadow-2xl">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Slide 2 - Samsung Galaxy S24 Ultra -->
+                    <!-- Slide 2 - Samsung Galaxy -->
                     <div class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out">
                         <div class="relative w-full h-full bg-gradient-to-br from-purple-900 via-purple-800 to-pink-900">
                             <div class="absolute inset-0 flex items-center">
                                 <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
                                     <div class="text-white max-w-md z-10">
-                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">Galaxy S24 Ultra</h2>
+                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">Samsung Galaxy</h2>
                                         <p class="text-base md:text-xl mb-1 md:mb-2">Giá sốc <span class="text-yellow-300 font-bold">29.990.000đ</span></p>
                                         <p class="text-xs md:text-base mb-3 md:mb-3">Tặng tai nghe Galaxy Buds 2 Pro</p>
                                         <button class="bg-white hover:bg-gray-100 text-purple-900 px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
@@ -380,28 +413,28 @@
                                         </button>
                                     </div>
                                     <div class="hidden md:block">
-                                        <img src="images/samsung.webp" alt="Samsung S24 Ultra" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                                        <img src="images/samsung.webp" alt="Samsung Galaxy" class="h-48 md:h-56 object-contain drop-shadow-2xl">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Slide 3 - Xiaomi 14 -->
+                    <!-- Slide 3 - iPhone -->
                     <div class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out">
                         <div class="relative w-full h-full bg-gradient-to-br from-green-900 via-teal-800 to-blue-900">
                             <div class="absolute inset-0 flex items-center">
                                 <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
                                     <div class="text-white max-w-md z-10">
-                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">Xiaomi 14 5G</h2>
-                                        <p class="text-base md:text-xl mb-1 md:mb-2">Giảm 24% <span class="text-yellow-300 font-bold">18.990.000đ</span></p>
+                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">iPhone Hot Deal</h2>
+                                        <p class="text-base md:text-xl mb-1 md:mb-2">Giảm sốc <span class="text-yellow-300 font-bold">18.990.000đ</span></p>
                                         <p class="text-xs md:text-base mb-3 md:mb-3">Trả góp 0% - Freeship toàn quốc</p>
                                         <button class="bg-white hover:bg-gray-100 text-green-900 px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
                                             Đặt hàng ngay
                                         </button>
                                     </div>
                                     <div class="hidden md:block">
-                                        <img src="images/17.jpg" alt="Xiaomi 14" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                                        <img src="images/iphone.jpg" alt="iPhone" class="h-48 md:h-56 object-contain drop-shadow-2xl">
                                     </div>
                                 </div>
                             </div>
@@ -433,47 +466,47 @@
   <div class="container mx-auto px-4">
     <h2 class="text-lg font-semibold text-gray-800 mb-4">Hãng sản xuất</h2>
 
-    <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
       <!-- Xiaomi -->
       <button onclick="filterByBrand('xiaomi')"
-        class="px-5 py-2 text-lg font-semibold text-gray-500 border border-gray-200 rounded-xl bg-white hover:text-black hover:border-gray-400 hover:shadow-sm transition-all duration-300">
-        xiaomi
+        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+        <img src="images/xiaomi.png" alt="Xiaomi" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
       </button>
 
       <!-- Vivo -->
       <button onclick="filterByBrand('vivo')"
-        class="px-5 py-2 text-lg font-semibold text-blue-500 border border-gray-200 rounded-xl bg-white hover:text-blue-700 hover:border-blue-400 hover:shadow-sm transition-all duration-300">
-        vivo
+        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+        <img src="images/vivo.png" alt="Vivo" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
       </button>
 
       <!-- HONOR -->
       <button onclick="filterByBrand('honor')"
-        class="px-5 py-2 text-lg font-semibold text-gray-800 border border-gray-200 rounded-xl bg-white hover:text-black hover:border-gray-400 hover:shadow-sm transition-all duration-300">
-        HONOR
+        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+        <img src="images/honor.png" alt="HONOR" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
       </button>
 
       <!-- TECNO -->
       <button onclick="filterByBrand('tecno')"
-        class="px-5 py-2 text-lg font-semibold text-blue-600 border border-gray-200 rounded-xl bg-white hover:text-blue-700 hover:border-blue-400 hover:shadow-sm transition-all duration-300">
-        TECNO
+        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+        <img src="images/tecno.png" alt="TECNO" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
       </button>
 
       <!-- TCL -->
       <button onclick="filterByBrand('tcl')"
-        class="px-5 py-2 text-lg font-semibold text-red-500 border border-gray-200 rounded-xl bg-white hover:text-red-600 hover:border-red-400 hover:shadow-sm transition-all duration-300">
-        TCL
+        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+        <img src="images/tcl.png" alt="TCL" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
       </button>
 
       <!-- Masstel -->
       <button onclick="filterByBrand('masstel')"
-        class="px-5 py-2 text-lg font-semibold text-red-400 border border-gray-200 rounded-xl bg-white hover:text-red-600 hover:border-red-400 hover:shadow-sm transition-all duration-300">
-        Masstel
+        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+        <img src="images/masstel.png" alt="Masstel" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
       </button>
 
       <!-- Nokia -->
       <button onclick="filterByBrand('nokia')"
-        class="px-5 py-2 text-lg font-semibold text-blue-700 border border-gray-200 rounded-xl bg-white hover:text-blue-900 hover:border-blue-500 hover:shadow-sm transition-all duration-300">
-        NOKIA
+        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+        <img src="images/nokia.png" alt="Nokia" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
       </button>
     </div>
   </div>
@@ -486,15 +519,18 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-4">
-        <div class="flex gap-3 lg:gap-4">
+        <div class="flex gap-4 lg:gap-5">
             
             <!-- Sidebar Filter -->
             <aside id="filterSidebar" class="hidden lg:block w-64 flex-shrink-0">
                 
-                <!-- Bộ lọc tìm kiếm -->
+                <!-- Bộ lọc tìm kiếm Header -->
                 <div class="bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100">
-                    <div class="flex items-center justify-between w-full font-bold text-base">
-                        <span><i class="fas fa-filter mr-2 text-[var(--red-main)]"></i> Bộ lọc tìm kiếm</span>
+                    <div class="flex items-center justify-between w-full">
+                        <h2 class="font-bold text-base flex items-center gap-2">
+                            <i class="fas fa-filter text-[var(--red-main)]"></i>
+                            Bộ lọc tìm kiếm
+                        </h2>
                     </div>
                 </div>
 
@@ -1026,7 +1062,7 @@
                 </div>
 
                 <!-- Products Grid -->
-                <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5"></div>
+                <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5"></div>
 
             </section>
         </div>
@@ -1125,6 +1161,25 @@
                 selectedBrands = [brandParam];
                 const checkbox = document.querySelector(`.brand-filter[value="${brandParam}"]`);
                 if (checkbox) checkbox.checked = true;
+            }
+            
+            // Setup search event listeners
+            const searchInput = document.getElementById('searchInput');
+            const searchInputMobile = document.getElementById('searchInputMobile');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => { 
+                    searchQuery = e.target.value; 
+                    renderProducts(); 
+                });
+            }
+            
+            if (searchInputMobile) {
+                searchInputMobile.addEventListener('input', (e) => { 
+                    searchQuery = e.target.value; 
+                    if (searchInput) searchInput.value = e.target.value; 
+                    renderProducts(); 
+                });
             }
             
             renderProducts(); 
@@ -1371,20 +1426,12 @@
                     </a>
                 `;
             } else {
-                // Grid View - Bỏ icon
+                // Grid View - Giống như hình mẫu
                 card.className = 'product-card';
                 
                 const isAccessory = product.category === 'phukien';
                 
-                let specBadgesHTML = '';
-                if (!isAccessory && product.screen && product.camera) {
-                    specBadgesHTML = `
-                        <div class="flex flex-wrap gap-1.5 mb-3">
-                            <span class="spec-badge">${product.screen}</span>
-                            <span class="spec-badge">${product.camera}</span>
-                        </div>
-                    `;
-                }
+                // Không hiển thị spec badges trong grid view
                 
                 // Color dots - hide for transparent accessories
                 let colorDotsHTML = '';
@@ -1393,31 +1440,17 @@
                 }
                 
                 card.innerHTML = `
-                    <a href="product-detail.html?id=${product.id}" class="block">
-                        <div class="relative overflow-hidden rounded-lg mb-3">
+                    <a href="product-detail.html?id=${product.id}" class="block h-full flex flex-col">
+                        <div class="relative overflow-hidden bg-gray-50 mb-3">
                             ${discountBadge}
-                            <img src="${product.image}" alt="${product.name}" loading="lazy" class="w-full h-48 object-contain p-2">
+                            <img src="${product.image}" alt="${product.name}" loading="lazy" class="w-full h-56 object-contain p-4">
                         </div>
-                        <div>
-                            <h3 class="text-sm font-bold mb-2 line-clamp-2 min-h-[40px] text-gray-800 hover:text-[var(--red-main)] transition-colors">${product.name}</h3>
+                        <div class="px-3 pb-3 flex-1 flex flex-col">
+                            <h3 class="text-sm font-semibold mb-2 line-clamp-2 min-h-[40px] text-gray-800 hover:text-[var(--red-main)] transition-colors leading-tight">${product.name}</h3>
                             ${starsHTML}
-                            ${specBadgesHTML}
-                            <div class="mb-3">
-                                <div class="text-xl font-black text-[var(--red-main)] mb-1">${formatPrice(product.price)}</div>
-                                ${product.oldPrice ? `<div class="flex items-center gap-2">
-                                    <div class="text-xs text-gray-500 line-through">${formatPrice(product.oldPrice)}</div>
-                                    <div class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded">-${formatPrice(product.oldPrice-product.price)}</div>
-                                </div>` : ''}
-                            </div>
-                            ${colorDotsHTML}
-                            
-                            <div class="space-y-2">
-                                <button class="cta-button w-full text-white py-2.5 px-4 rounded-lg text-sm font-bold" onclick="event.preventDefault(); addToCart(${product.id})">
-                                    Mua ngay
-                                </button>
-                                <button class="cta-secondary w-full py-2 px-4 text-xs font-semibold" onclick="event.preventDefault(); addToCompare(${product.id})">
-                                    So sánh
-                                </button>
+                            <div class="mb-2 mt-auto">
+                                <div class="text-lg font-bold text-[var(--red-main)] mb-1">${formatPrice(product.price)}</div>
+                                ${product.oldPrice ? `<div class="text-xs text-gray-400 line-through">${formatPrice(product.oldPrice)}</div>` : ''}
                             </div>
                         </div>
                     </a>
@@ -1440,9 +1473,6 @@
                 icon.className = 'fas fa-chevron-down';
             }
         }
-
-        document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value; renderProducts(); });
-        document.getElementById('searchInputMobile').addEventListener('input', (e) => { searchQuery = e.target.value; document.getElementById('searchInput').value = e.target.value; renderProducts(); });
 
         // CTA Functions
         function addToCart(productId) {
@@ -1484,7 +1514,7 @@
                 // Re-render products with list view
                 renderProducts();
             } else {
-                grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5';
+                grid.className = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5';
                 renderProducts();
             }
         }

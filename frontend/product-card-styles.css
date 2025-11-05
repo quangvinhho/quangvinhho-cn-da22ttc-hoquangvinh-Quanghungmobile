@@ -1,0 +1,143 @@
+/**
+ * product-card-styles.css
+ * Styles chung cho product card - sử dụng cho cả index.html và products.html
+ */
+
+.product-card {
+    background: white; 
+    border-radius: 8px; 
+    overflow: hidden;
+    transition: all 0.3s ease; 
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 0;
+    margin-bottom: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover { 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    transform: translateY(-2px); 
+    border-color: var(--red-main, #d91e23);
+}
+
+.product-card img {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.spec-badge {
+    background: white;
+    padding: 4px 8px; 
+    border-radius: 5px;
+    font-size: 10px; 
+    color: var(--text-secondary, #4a4a4a); 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 3px;
+    font-weight: 500;
+    border: 1px solid var(--border-light, #d4d4d4);
+    white-space: nowrap;
+}
+
+.color-dot {
+    width: 18px; 
+    height: 18px; 
+    border-radius: 50%;
+    border: 2px solid var(--border-light, #d4d4d4); 
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.color-dot:hover {
+    transform: scale(1.15);
+    border-color: var(--red-main, #d91e23);
+}
+
+/* CTA Buttons */
+.cta-button {
+    background: var(--red-main, #d91e23);
+    color: white;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.cta-button:hover {
+    background: var(--red-dark, #b01117);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(217, 30, 35, 0.3);
+}
+
+.cta-secondary {
+    color: var(--red-main, #d91e23);
+    border: 1.5px solid var(--red-main, #d91e23);
+    background: white;
+    transition: all 0.3s;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.cta-secondary:hover {
+    background: var(--red-main, #d91e23);
+    color: white;
+}
+
+/* Rating Stars */
+.product-rating {
+    margin-top: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.product-rating .stars {
+    color: #FFD700;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.product-rating .reviews {
+    display: none;
+}
+
+/* Toast Notification Animation */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slideIn {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-card {
+        padding: 12px;
+        margin-bottom: 16px;
+    }
+    
+    .spec-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    .color-dot {
+        width: 16px;
+        height: 16px;
+    }
+}
