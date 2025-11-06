@@ -348,6 +348,7 @@ html {
   scroll-behavior: smooth;
 }
 
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -385,3 +386,85 @@ html {
     background: var(--red-dark);
   }
 }
+
+/* === RESPONSIVE FOR NEW SECTIONS === */
+
+/* Payment Methods Grid - Responsive */
+@media (max-width: 640px) {
+  .payment-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .payment-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* News Carousel - Mobile */
+@media (max-width: 768px) {
+  #newsCarousel article {
+    width: 90% !important;
+  }
+}
+
+/* About Section - Mobile Stack */
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  #textContent {
+    max-height: 200px !important;
+  }
+}
+
+/* Review Section - Mobile */
+@media (max-width: 1024px) {
+  .review-video-main {
+    height: 300px !important;
+  }
+  
+  .review-video-small {
+    height: 150px !important;
+  }
+}
+
+/* Stats Grid - Responsive */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Footer - Better spacing on mobile */
+@media (max-width: 768px) {
+  footer .grid {
+    gap: 2rem !important;
+  }
+  
+  footer h3 {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* Fix overflow on all sections */
+section {
+  overflow-x: hidden;
+}
+
+/* Ensure images don't overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Touch-friendly buttons on mobile */
+@media (max-width: 768px) {
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+

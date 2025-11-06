@@ -1,118 +1,518 @@
-<header class="navbar-main">
-  <div class="container mx-auto px-6 lg:px-8">
-    <div class="navbar-wrapper">
-      <!-- Logo -->
-      <div class="navbar-logo">
-        <a href="index.html" class="logo-link">
-          <span class="logo-icon">
-            <i class="fas fa-mobile-alt"></i>
-          </span>
-          <span class="logo-text">QuangHưng Mobile</span>
-        </a>
-      </div>
+<!-- Navigation Styles -->
 
-      <!-- Navigation menu - Desktop -->
-      <nav class="navbar-nav">
-        <a href="index.html" class="nav-item active">
-          <span>Trang chủ</span>
-        </a>
-        <a href="products.html" class="nav-item">
-          <span>Sản phẩm</span>
-        </a>
-        <a href="promotions.html" class="nav-item">
-          <span>🔥 Khuyến mãi</span>
-        </a>
-        <a href="news.html" class="nav-item">
-          <span>Tin tức</span>
-        </a>
-        <a href="contact.html" class="nav-item">
-          <span>Hỗ trợ</span>
-        </a>
-      </nav>
+    /* ===== KẾT THÚC PHẦN ĐỒNG BỘ FONT VÀ MÀU SẮC ===== */
 
-      <!-- Search bar -->
-      <div class="navbar-search">
-        <form class="search-form">
-          <div class="search-wrapper">
-            <input 
-              type="text" 
-              placeholder="Tìm kiếm sản phẩm..." 
-              class="search-input"
-            />
-            <button type="submit" class="search-button">
-              <i class="fas fa-search"></i>
+    /* ===== TĂNG KÍCH THƯỚC CHỮ ĐỂ CẢI THIỆN TRẢI NGHIỆM NGƯỜI DÙNG ===== */
+    /* Tăng base font-size cho toàn trang */
+    html {
+      font-size: 16px;
+      /* Base size */
+    }
+
+    body {
+      font-size: 1.125rem;
+      /* 18px - Tăng kích thước chữ nội dung */
+      line-height: 1.6;
+      background: #f3f4f6;
+    }
+
+    /* Tăng kích thước tiêu đề */
+    h1 {
+      font-size: 2.5rem !important;
+      /* 40px */
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 2rem !important;
+      /* 32px */
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-size: 1.75rem !important;
+      /* 28px */
+      line-height: 1.3;
+    }
+
+    h4 {
+      font-size: 1.5rem !important;
+      /* 24px */
+      line-height: 1.4;
+    }
+
+    h5 {
+      font-size: 1.25rem !important;
+      /* 20px */
+      line-height: 1.4;
+    }
+
+    h6 {
+      font-size: 1.125rem !important;
+      /* 18px */
+      line-height: 1.4;
+    }
+
+    /* Tăng kích thước chữ cho các thành phần */
+    p,
+    a,
+    span,
+    li {
+      font-size: 1.125rem;
+      /* 18px */
+      line-height: 1.6;
+    }
+
+    /* Tăng kích thước input và button */
+    input,
+    textarea,
+    select {
+      font-size: 1.125rem !important;
+      /* 18px */
+      padding: 0.75rem 1rem;
+    }
+
+    button {
+      font-size: 1.125rem !important;
+      /* 18px */
+      padding: 0.75rem 1.5rem;
+    }
+
+    /* Đặc biệt: Giá sản phẩm nổi bật hơn */
+    .product-price {
+      font-size: 1.5rem !important;
+      /* 24px */
+      font-weight: bold;
+    }
+
+    /* Link và menu */
+    nav a,
+    .menu-item {
+      font-size: 1.125rem !important;
+      /* 18px */
+    }
+
+    /* Giữ các text nhỏ (như caption, helper text) ở kích thước vừa phải */
+    .text-xs {
+      font-size: 0.875rem !important;
+      /* 14px */
+    }
+
+    .text-sm {
+      font-size: 1rem !important;
+      /* 16px */
+    }
+
+    /* ===== KẾT THÚC PHẦN TĂNG KÍCH THƯỚC CHỮ ===== */
+
+    /* Layout đẹp cho section sản phẩm - Khung trắng giữa, hai bên xám */
+
+    /* Container giới hạn chiều rộng và căn giữa */
+    .max-w-7xl {
+      max-width: 1280px;
+    }
+
+    /* Khung trắng chứa sản phẩm với hiệu ứng đẹp */
+    section .bg-white.rounded-2xl,
+    section .bg-gradient-to-br.rounded-2xl {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    section .bg-white.rounded-2xl:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Spacing giữa các section */
+    section.py-6 {
+      margin-bottom: 0;
+    }
+
+    /* Responsive - trên mobile thì full width */
+    @media (max-width: 640px) {
+      .max-w-7xl {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      section .bg-white.rounded-2xl,
+      section .bg-gradient-to-br.rounded-2xl {
+        border-radius: 1rem;
+        padding: 1rem;
+      }
+    }
+
+    /* Hiệu ứng cho banner khuyến mãi */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3), 0 2px 4px -1px rgba(239, 68, 68, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 10px 20px -3px rgba(239, 68, 68, 0.5), 0 4px 6px -2px rgba(239, 68, 68, 0.3);
+      }
+    }
+
+    section .bg-gradient-to-br.from-red-500 {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    /* Banner layout - 3 banner phải có chiều cao bằng tổng chiều cao trái */
+    @media (min-width: 1024px) {
+      .lg\:w-\[30\%\] {
+        height: 100%;
+      }
+
+      .lg\:w-\[30\%\]>div {
+        flex: 1;
+        min-height: 0;
+      }
+
+      .lg\:w-\[30\%\] img {
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    /* Đảm bảo contrast cho text */
+    .high-contrast-text {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .medium-contrast-text {
+      color: var(--text-secondary);
+    }
+
+    /* Nút bấm với contrast cao */
+    .btn-primary {
+      background-color: var(--red-dark);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background-color: #8b0d12;
+    }
+
+    /* Giá khuyến mãi nổi bật */
+    .price-sale {
+      color: var(--red-accent);
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .price-original {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    /* Navigation hover effects */
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 0.875rem;
+    }
+
+    /* Override font size for navigation specifically */
+    nav a,
+    nav button {
+      font-size: 0.875rem !important;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: #ffc107;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 70%;
+    }
+
+    /* Dropdown animation */
+    .dropdown-menu {
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .group:hover .dropdown-menu {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body class="bg-[#f8f9fa]">
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-gradient-to-r from-[#c41e26] to-[#d91e23] text-white sticky top-0 z-50 shadow-lg">
+    <!-- Top Bar -->
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between py-2">
+
+        <!-- Logo -->
+        <a href="index.html"
+  class="flex items-center gap-2 hover:opacity-90 transition-all duration-300 flex-shrink-0 group">
+  <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo"
+    class="h-9 sm:h-10 lg:h-12 rounded-md shadow-md group-hover:scale-105 transition-transform duration-300">
+          <h1 class="text-xs sm:text-sm lg:text-base font-extrabold uppercase tracking-wide text-white drop-shadow-md">
+    QuangHưng Mobile
+  </h1>
+        </a>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="hidden lg:flex items-center gap-1 mx-3 flex-1">
+          <a href="index.html"
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            Trang chủ
+          </a>
+
+          <div class="relative group">
+            <button
+              class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap flex items-center gap-1">
+              Sản phẩm
+              <i
+                class="fa-solid fa-chevron-down text-xs ml-1 group-hover:rotate-180 transition-transform duration-300"></i>
             </button>
+            <!-- Dropdown -->
+            <div
+              class="absolute left-0 top-full mt-2 w-56 bg-white shadow-2xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-100 overflow-hidden">
+              <div class="py-2">
+                <a href="products.html?category=dienthoai"
+                  class="flex items-center gap-3 px-5 py-3 hover:bg-gradient-to-r hover:from-[#ffe5e6] hover:to-white transition-all duration-300 text-[#1a1a1a] font-medium text-sm border-l-4 border-transparent hover:border-[#d91e23]">
+                  <span>Điện thoại</span>
+                </a>
+                <a href="products.html?category=phukien"
+                  class="flex items-center gap-3 px-5 py-3 hover:bg-gradient-to-r hover:from-[#ffe5e6] hover:to-white transition-all duration-300 text-[#1a1a1a] font-medium text-sm border-l-4 border-transparent hover:border-[#d91e23]">
+                  <span>Phụ kiện</span>
+                </a>
+              </div>
+            </div>
           </div>
-        </form>
+
+          <a href="promotions.html"
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            Khuyến mãi
+          </a>
+          <a href="news.html"
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            Tin tức
+          </a>
+          <a href="contact.html"
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            Liên hệ
+          </a>
+        </nav>
+
+        <!-- Search - Desktop -->
+        <div
+          class="hidden lg:flex flex-1 max-w-sm bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+          <input type="text" id="desktop-search-input" placeholder="Tìm kiếm sản phẩm..."
+            class="flex-grow px-3 py-2 text-[#1a1a1a] focus:outline-none text-sm font-medium placeholder:text-[#666666]" />
+          <button id="desktop-search-btn"
+            class="bg-[var(--red-dark)] px-4 text-white hover:bg-[#8b0d12] transition-all duration-300 font-semibold">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+
+        <!-- Right Menu -->
+        <div class="flex items-center gap-1.5 lg:gap-2 text-sm font-medium ml-2">
+          <!-- Mobile Menu Button - Hiển thị đầu tiên trên mobile -->
+          <button id="mobile-menu-btn"
+            class="lg:hidden text-white text-xl hover:scale-110 transition-transform duration-300 bg-white/10 px-2.5 py-1.5 rounded-lg hover:bg-white/20 order-1">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          
+          <a href="cart.html"
+            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-2">
+            <i class="fa-solid fa-cart-shopping text-base lg:hidden"></i>
+            <span class="font-semibold hidden lg:inline text-sm">Giỏ hàng</span>
+          </a>
+          <a href="contact.html"
+            class="hover:scale-110 transition-transform duration-300 hidden lg:flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 order-3">
+            <span class="text-yellow-300 font-bold text-sm">1800.2097</span>
+          </a>
+          <a href="login.html"
+            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-4">
+            <i class="fa-solid fa-user text-base lg:hidden"></i>
+            <span class="font-semibold hidden lg:inline text-sm">Đăng nhập</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Right actions -->
-      <div class="navbar-actions">
-        <a href="cart.html" class="action-item cart-icon">
-          <i class="fas fa-shopping-cart"></i>
-          <span class="cart-badge">3</span>
-        </a>
-        <a href="login.html" class="action-item login-btn">
-          <i class="fas fa-user"></i>
-          <span>Đăng nhập</span>
-        </a>
-        <button id="mobile-menu-btn" class="mobile-menu-toggle">
-          <i class="fas fa-bars"></i>
-        </button>
+      <!-- Mobile Search -->
+      <div class="lg:hidden pb-3">
+        <div class="flex bg-white rounded-lg overflow-hidden shadow-md">
+          <input type="text" id="mobile-search-input" placeholder="Tìm kiếm sản phẩm..."
+            class="flex-grow px-3 py-2.5 text-gray-700 focus:outline-none text-sm" />
+          <button id="mobile-search-btn"
+            class="bg-[var(--red-dark)] px-4 text-white hover:bg-[#8b0d12] transition-colors">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Sidebar -->
+  <div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden backdrop-blur-sm">
+    <div
+      class="fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-white to-gray-50 shadow-2xl transform transition-transform duration-300 -translate-x-full"
+      id="mobile-menu-sidebar">
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-8 pb-4 border-b-2 border-red-100">
+          <div class="flex items-center gap-2">
+            <img src="images/Logo.jpg" alt="Logo" class="h-10 rounded-md shadow">
+            <h2 class="text-xl font-bold text-red-600">Menu</h2>
+          </div>
+          <button id="mobile-menu-close"
+            class="text-gray-600 text-2xl hover:text-red-600 hover:rotate-90 transition-all duration-300">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+
+        <nav class="space-y-1">
+          <a href="index.html"
+            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
+            <span>Trang chủ</span>
+          </a>
+
+          <div class="border-t border-gray-200 my-2 pt-2">
+            <p class="text-xs text-gray-500 px-4 mb-2 font-semibold uppercase tracking-wider">Sản phẩm</p>
+          </div>
+
+          <a href="products.html?category=dienthoai"
+            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
+            <span>Điện thoại</span>
+          </a>
+          <a href="products.html?category=phukien"
+            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
+            <span>Phụ kiện</span>
+          </a>
+
+          <div class="border-t border-gray-200 my-2 pt-2">
+            <p class="text-xs text-gray-500 px-4 mb-2 font-semibold uppercase tracking-wider">Khác</p>
+          </div>
+
+          <a href="promotions.html"
+            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:text-orange-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-orange-600 hover:shadow-md">
+            <span>Khuyến mãi</span>
+          </a>
+          <a href="news.html"
+            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
+            <span>Tin tức</span>
+          </a>
+          <a href="contact.html"
+            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
+            <span>Liên hệ</span>
+          </a>
+        </nav>
+
+        <!-- Contact Info in Mobile Menu -->
+        <div class="mt-6 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-100">
+          <p class="text-sm font-semibold text-gray-700 mb-2">Hotline hỗ trợ</p>
+          <a href="tel:18002097" class="flex items-center gap-2 text-red-600 font-bold text-lg">
+            1800.2097
+          </a>
+        </div>
       </div>
     </div>
   </div>
-</header>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu hidden">
-  <div class="mobile-menu-overlay"></div>
-  <div class="mobile-menu-panel">
-    <div class="mobile-menu-header">
-      <a href="index.html" class="mobile-logo">
-        <span class="logo-icon">
-          <i class="fas fa-mobile-alt"></i>
-        </span>
-        <span class="logo-text">QuangHưng Mobile</span>
-      </a>
-      <button class="mobile-menu-close">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
-    <nav class="mobile-nav">
-      <a href="index.html" class="mobile-nav-item active">
-        <i class="fas fa-home"></i>
-        <span>Trang chủ</span>
-      </a>
-      <a href="products.html" class="mobile-nav-item">
-        <i class="fas fa-mobile-alt"></i>
-        <span>Sản phẩm</span>
-      </a>
-      <a href="promotions.html" class="mobile-nav-item">
-        <i class="fas fa-tag"></i>
-        <span>🔥 Khuyến mãi</span>
-      </a>
-      <a href="news.html" class="mobile-nav-item">
-        <i class="fas fa-newspaper"></i>
-        <span>Tin tức</span>
-      </a>
-      <a href="contact.html" class="mobile-nav-item">
-        <i class="fas fa-headset"></i>
-        <span>Hỗ trợ</span>
-      </a>
-      
-      <div class="mobile-nav-divider"></div>
-      
-      <a href="cart.html" class="mobile-nav-item">
-        <i class="fas fa-shopping-cart"></i>
-        <span>Giỏ hàng</span>
-        <span class="cart-badge">3</span>
-      </a>
-      <a href="login.html" class="mobile-nav-item">
-        <i class="fas fa-user"></i>
-        <span>Đăng nhập</span>
-      </a>
-    </nav>
-  </div>
-</div>
+  <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuSidebar = document.getElementById('mobile-menu-sidebar');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('hidden');
+        setTimeout(() => {
+          mobileMenuSidebar.classList.remove('-translate-x-full');
+        }, 10);
+      });
+    }
+
+    if (mobileMenuClose) {
+      mobileMenuClose.addEventListener('click', () => {
+        mobileMenuSidebar.classList.add('-translate-x-full');
+        setTimeout(() => {
+          mobileMenu.classList.add('hidden');
+        }, 300);
+      });
+    }
+
+    if (mobileMenu) {
+      mobileMenu.addEventListener('click', (e) => {
+        if (e.target === mobileMenu) {
+          mobileMenuSidebar.classList.add('-translate-x-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
+      });
+    }
+
+    // Search functionality
+    function handleSearch(input) {
+      const searchTerm = input.value.trim();
+      if (searchTerm) {
+        window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}`;
+      }
+    }
+
+    // Desktop search
+    const desktopSearchInput = document.getElementById('desktop-search-input');
+    const desktopSearchBtn = document.getElementById('desktop-search-btn');
+
+    if (desktopSearchInput) {
+      desktopSearchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          handleSearch(desktopSearchInput);
+        }
+      });
+    }
+
+    if (desktopSearchBtn) {
+      desktopSearchBtn.addEventListener('click', () => {
+        handleSearch(desktopSearchInput);
+      });
+    }
+
+    // Mobile search
+    const mobileSearchInput = document.getElementById('mobile-search-input');
+    const mobileSearchBtn = document.getElementById('mobile-search-btn');
+
+    if (mobileSearchInput) {
+      mobileSearchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          handleSearch(mobileSearchInput);
+        }
+      });
+    }
+
+    if (mobileSearchBtn) {
+      mobileSearchBtn.addEventListener('click', () => {
+        handleSearch(mobileSearchInput);
+      });
+    }
+  </script>
+  <!-- Tailwind + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --red-main: #e41e26;
+    }
+  </style>

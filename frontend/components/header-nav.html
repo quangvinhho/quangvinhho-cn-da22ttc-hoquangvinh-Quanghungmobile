@@ -30,10 +30,36 @@
     --border-medium: #a3a3a3;
   }
   
+  /* Force correct font sizes for header - Override all global styles */
+  header nav a,
+  header nav button,
+  header .nav-link {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* Logo text size */
+  header h1 {
+    font-size: inherit !important;
+  }
+  
+  /* Search input */
+  header input {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  /* Right menu buttons */
+  header .flex.items-center a,
+  header .flex.items-center button {
+    font-size: 0.875rem !important;
+  }
+  
   /* Navigation hover effects */
   .nav-link {
     position: relative;
     transition: all 0.3s ease;
+    font-size: 0.875rem !important;
   }
   
   .nav-link::after {
@@ -49,7 +75,7 @@
   }
   
   .nav-link:hover::after {
-    width: 80%;
+    width: 70%;
   }
   
   /* Dropdown animation */
@@ -71,30 +97,43 @@
   .search-input:focus {
     box-shadow: 0 0 0 3px rgba(217, 30, 35, 0.1);
   }
+  
+  /* Mobile menu font sizes */
+  #mobile-menu-sidebar nav a {
+    font-size: 0.9375rem !important;
+  }
+  
+  #mobile-menu-sidebar h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  #mobile-menu-sidebar .text-xs {
+    font-size: 0.75rem !important;
+  }
 </style>
 
 <!-- ===== HEADER ===== -->
 <header class="bg-gradient-to-r from-[#c41e26] to-[#d91e23] text-white sticky top-0 z-50 shadow-lg">
   <!-- Top Bar -->
   <div class="container mx-auto px-4 lg:px-6">
-    <div class="flex items-center justify-between py-2 lg:py-3">
+    <div class="flex items-center justify-between py-2">
       
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition-all duration-300 flex-shrink-0 group">
-        <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo" class="h-8 lg:h-10 rounded-md shadow-md group-hover:scale-105 transition-transform duration-300">
-        <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap tracking-wide">
-          QuangHưng <span class="text-yellow-300">Mobile</span>
+        <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo" class="h-9 sm:h-10 lg:h-12 rounded-md shadow-md group-hover:scale-105 transition-transform duration-300">
+        <h1 class="text-xs sm:text-sm lg:text-base font-extrabold uppercase tracking-wide text-white drop-shadow-md">
+          QuangHưng Mobile
         </h1>
       </a>
 
       <!-- Desktop Navigation Menu -->
-      <nav class="hidden lg:flex items-center gap-2 mx-4 flex-1">
-        <a href="index.html" class="nav-link px-4 py-2 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+      <nav class="hidden lg:flex items-center gap-1 mx-3 flex-1">
+        <a href="index.html" class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
           Trang chủ
         </a>
         
         <div class="relative group">
-          <button class="nav-link px-4 py-2 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap flex items-center gap-1">
+          <button class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap flex items-center gap-1">
             Sản phẩm
             <i class="fa-solid fa-chevron-down text-xs ml-1 group-hover:rotate-180 transition-transform duration-300"></i>
           </button>
@@ -111,41 +150,44 @@
           </div>
         </div>
 
-        <a href="promotions.html" class="nav-link px-4 py-2 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+        <a href="promotions.html" class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
           Khuyến mãi
         </a>
-        <a href="news.html" class="nav-link px-4 py-2 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+        <a href="news.html" class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
           Tin tức
         </a>
-        <a href="contact.html" class="nav-link px-4 py-2 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+        <a href="contact.html" class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
           Liên hệ
         </a>
       </nav>
 
       <!-- Search - Desktop -->
-      <div class="hidden lg:flex flex-1 max-w-md bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+      <div class="hidden lg:flex flex-1 max-w-sm bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
         <input type="text" id="desktop-search-input" placeholder="Tìm kiếm sản phẩm..."
-          class="search-input flex-grow px-4 py-2.5 text-[#1a1a1a] focus:outline-none text-sm font-medium placeholder:text-[#666666]" />
-        <button id="desktop-search-btn" class="bg-[var(--red-dark)] px-5 text-white hover:bg-[#8b0d12] transition-all duration-300 font-semibold">
+          class="search-input flex-grow px-3 py-2 text-[#1a1a1a] focus:outline-none text-sm font-medium placeholder:text-[#666666]" />
+        <button id="desktop-search-btn" class="bg-[var(--red-dark)] px-4 text-white hover:bg-[#8b0d12] transition-all duration-300 font-semibold">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </div>
 
       <!-- Right Menu -->
-      <div class="flex items-center gap-3 lg:gap-4 text-sm font-medium ml-4">
-        <a href="cart.html" class="hover:scale-110 transition-transform duration-300 flex items-center gap-2 whitespace-nowrap bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20">
-          <span class="font-semibold">Giỏ hàng</span>
-        </a>
-        <a href="contact.html" class="hover:scale-110 transition-transform duration-300 hidden lg:flex items-center gap-2 whitespace-nowrap bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20">
-          <span class="text-yellow-300 font-bold">1800.2097</span>
-        </a>
-        <a href="login.html" class="hover:scale-110 transition-transform duration-300 flex items-center gap-2 whitespace-nowrap bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20">
-          <span class="font-semibold">Đăng nhập</span>
-        </a>
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" class="lg:hidden text-white text-2xl hover:scale-110 transition-transform duration-300 bg-white/10 px-3 py-2 rounded-lg hover:bg-white/20">
+      <div class="flex items-center gap-1.5 lg:gap-2 text-sm font-medium ml-2">
+        <!-- Mobile Menu Button - Hiển thị đầu tiên trên mobile -->
+        <button id="mobile-menu-btn" class="lg:hidden text-white text-xl hover:scale-110 transition-transform duration-300 bg-white/10 px-2.5 py-1.5 rounded-lg hover:bg-white/20 order-1">
           <i class="fa-solid fa-bars"></i>
         </button>
+        
+        <a href="cart.html" class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-2">
+          <i class="fa-solid fa-cart-shopping text-base lg:hidden"></i>
+          <span class="font-semibold hidden lg:inline text-sm">Giỏ hàng</span>
+        </a>
+        <a href="contact.html" class="hover:scale-110 transition-transform duration-300 hidden lg:flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 order-3">
+          <span class="text-yellow-300 font-bold text-sm">1800.2097</span>
+        </a>
+        <a href="login.html" class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-4">
+          <i class="fa-solid fa-user text-base lg:hidden"></i>
+          <span class="font-semibold hidden lg:inline text-sm">Đăng nhập</span>
+        </a>
       </div>
     </div>
     

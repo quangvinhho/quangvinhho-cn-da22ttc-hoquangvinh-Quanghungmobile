@@ -22,11 +22,19 @@
     <div id="header-nav-placeholder"></div>
     
     <script>
-        // Load header-nav component
-        fetch('components/header-nav.html')
+        // Load header-nav component with cache busting
+        const headerVersion = '?v=' + new Date().getTime();
+        fetch('components/header-nav.html' + headerVersion)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('header-nav-placeholder').innerHTML = html;
+                
+                // Initialize mobile menu after header is loaded
+                setTimeout(() => {
+                    const script = document.createElement('script');
+                    script.src = 'components/header-menu.js';
+                    document.body.appendChild(script);
+                }, 100);
             })
             .catch(error => console.error('Error loading header:', error));
     </script>
