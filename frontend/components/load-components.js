@@ -24,26 +24,24 @@ function highlightActiveMenu() {
     const currentPath = window.location.pathname;
     const fileName = currentPath.split('/').pop() || 'index.html';
     
-    // Desktop navigation
-    const navLinks = document.querySelectorAll('header nav a');
+    // Desktop navigation - New navbar structure
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-item');
     navLinks.forEach(link => {
         const linkPath = link.getAttribute('href');
         if (linkPath === fileName || 
             (fileName === '' && linkPath === 'index.html') ||
             (fileName === 'index.html' && linkPath === 'index.html')) {
-            link.classList.add('text-yellow-300');
-            const underline = link.querySelector('span:last-child');
-            if (underline) underline.classList.add('w-full');
+            link.classList.add('active');
         }
     });
 
-    // Mobile navigation
-    const mobileLinks = document.querySelectorAll('.mobile-menu nav a');
+    // Mobile navigation - New structure
+    const mobileLinks = document.querySelectorAll('.mobile-nav .mobile-nav-item');
     mobileLinks.forEach(link => {
         const linkPath = link.getAttribute('href');
         if (linkPath === fileName || 
             (fileName === '' && linkPath === 'index.html')) {
-            link.classList.add('text-red-600', 'bg-red-50', 'font-bold');
+            link.classList.add('active');
         }
     });
 }
@@ -53,6 +51,7 @@ function initMobileMenu() {
     const mobileMenuButton = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.querySelector('.mobile-menu');
     const mobileMenuClose = document.querySelector('.mobile-menu-close');
+    const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
 
     if (mobileMenuButton && mobileMenu) {
         mobileMenuButton.addEventListener('click', () => {
@@ -68,14 +67,22 @@ function initMobileMenu() {
         });
     }
 
-    if (mobileMenu) {
-        mobileMenu.addEventListener('click', (e) => {
-            if (e.target === mobileMenu) {
-                mobileMenu.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
+    // Close menu when clicking overlay
+    if (mobileMenuOverlay && mobileMenu) {
+        mobileMenuOverlay.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
         });
     }
+
+    // Close menu when clicking a link
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav .mobile-nav-item');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+        });
+    });
 }
 
 // Load all components when the page loads

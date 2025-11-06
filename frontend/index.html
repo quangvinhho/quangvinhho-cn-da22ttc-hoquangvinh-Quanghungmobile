@@ -61,6 +61,11 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Google Fonts - Roboto & Montserrat (Tối ưu Typography) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -109,10 +114,215 @@
       --promo-text: #ffffff;
     }
 
-    /* Layout đẹp cho section sản phẩm - Khung trắng giữa, hai bên xám */
+    /* ===== ĐỒNG BỘ FONT VÀ MÀU SẮC CHO TOÀN BỘ WEBSITE ===== */
+    /* Thiết lập font chữ thống nhất - Roboto cho toàn bộ trang */
+    * {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    }
+
+    body,
+    p,
+    a,
+    span,
+    li,
+    input,
+    button,
+    textarea,
+    select {
+      font-family: 'Roboto', Arial, sans-serif;
+      color: #222;
+      /* Màu chữ tối, dễ đọc trên nền sáng */
+    }
+
+    /* Màu sắc cho tiêu đề - Sử dụng màu đỏ chủ đạo của QuangHưng Mobile */
+    h1,
+    h2,
+    h3 {
+      font-family: 'Roboto', Arial, sans-serif;
+      color: #d91e23;
+      /* Màu đỏ chính của thương hiệu */
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h4,
+    h5,
+    h6 {
+      font-family: 'Roboto', Arial, sans-serif;
+      color: #b01117;
+      /* Màu đỏ tối cho tiêu đề nhỏ */
+      font-weight: 600;
+    }
+
+    /* Màu chữ nội dung đồng nhất */
+    p,
+    li,
+    span {
+      color: #333;
+      /* Màu chữ nội dung, dễ tiếp nhận */
+      font-weight: 400;
+    }
+
+    /* Màu cho link */
+    a {
+      color: #333;
+      font-weight: 400;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #d91e23;
+      /* Chuyển sang màu đỏ khi hover */
+    }
+
+    /* Input và Button */
+    input,
+    textarea,
+    select {
+      font-family: 'Roboto', Arial, sans-serif;
+      color: #333;
+      border: 1px solid #d4d4d4;
+    }
+
+    button {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* Giá sản phẩm - Màu đỏ nổi bật */
+    .product-price,
+    .price {
+      color: #d91e23 !important;
+      font-weight: 700;
+    }
+
+    /* Giá cũ (gạch ngang) */
+    .old-price {
+      color: #999 !important;
+      font-weight: 400;
+    }
+
+    /* Text phụ */
+    .text-muted,
+    .text-gray-500,
+    .text-gray-600 {
+      color: #666 !important;
+    }
+
+    /* Text thành công */
+    .text-success,
+    .text-green-600 {
+      color: #00752e !important;
+    }
+
+    /* ===== KẾT THÚC PHẦN ĐỒNG BỘ FONT VÀ MÀU SẮC ===== */
+
+    /* ===== TĂNG KÍCH THƯỚC CHỮ ĐỂ CẢI THIỆN TRẢI NGHIỆM NGƯỜI DÙNG ===== */
+    /* Tăng base font-size cho toàn trang */
+    html {
+      font-size: 16px;
+      /* Base size */
+    }
+
     body {
+      font-size: 1.125rem;
+      /* 18px - Tăng kích thước chữ nội dung */
+      line-height: 1.6;
       background: #f3f4f6;
     }
+
+    /* Tăng kích thước tiêu đề */
+    h1 {
+      font-size: 2.5rem !important;
+      /* 40px */
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 2rem !important;
+      /* 32px */
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-size: 1.75rem !important;
+      /* 28px */
+      line-height: 1.3;
+    }
+
+    h4 {
+      font-size: 1.5rem !important;
+      /* 24px */
+      line-height: 1.4;
+    }
+
+    h5 {
+      font-size: 1.25rem !important;
+      /* 20px */
+      line-height: 1.4;
+    }
+
+    h6 {
+      font-size: 1.125rem !important;
+      /* 18px */
+      line-height: 1.4;
+    }
+
+    /* Tăng kích thước chữ cho các thành phần */
+    p,
+    a,
+    span,
+    li {
+      font-size: 1.125rem;
+      /* 18px */
+      line-height: 1.6;
+    }
+
+    /* Tăng kích thước input và button */
+    input,
+    textarea,
+    select {
+      font-size: 1.125rem !important;
+      /* 18px */
+      padding: 0.75rem 1rem;
+    }
+
+    button {
+      font-size: 1.125rem !important;
+      /* 18px */
+      padding: 0.75rem 1.5rem;
+    }
+
+    /* Đặc biệt: Giá sản phẩm nổi bật hơn */
+    .product-price {
+      font-size: 1.5rem !important;
+      /* 24px */
+      font-weight: bold;
+    }
+
+    /* Link và menu */
+    nav a,
+    .menu-item {
+      font-size: 1.125rem !important;
+      /* 18px */
+    }
+
+    /* Giữ các text nhỏ (như caption, helper text) ở kích thước vừa phải */
+    .text-xs {
+      font-size: 0.875rem !important;
+      /* 14px */
+    }
+
+    .text-sm {
+      font-size: 1rem !important;
+      /* 16px */
+    }
+
+    /* ===== KẾT THÚC PHẦN TĂNG KÍCH THƯỚC CHỮ ===== */
+
+    /* Layout đẹp cho section sản phẩm - Khung trắng giữa, hai bên xám */
 
     /* Container giới hạn chiều rộng và căn giữa */
     .max-w-7xl {
@@ -165,18 +375,18 @@
     section .bg-gradient-to-br.from-red-500 {
       animation: pulse-glow 2s ease-in-out infinite;
     }
-    
+
     /* Banner layout - 3 banner phải có chiều cao bằng tổng chiều cao trái */
     @media (min-width: 1024px) {
       .lg\:w-\[30\%\] {
         height: 100%;
       }
-      
-      .lg\:w-\[30\%\] > div {
+
+      .lg\:w-\[30\%\]>div {
         flex: 1;
         min-height: 0;
       }
-      
+
       .lg\:w-\[30\%\] img {
         height: 100%;
         object-fit: cover;
@@ -263,7 +473,8 @@
           class="flex items-center gap-2 hover:opacity-90 transition-all duration-300 flex-shrink-0 group">
           <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo"
             class="h-8 lg:h-10 rounded-md shadow-md group-hover:scale-105 transition-transform duration-300">
-          <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap tracking-wide">
+          <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap tracking-wide text-white"></h1>
+
             QuangHưng Mobile</span>
           </h1>
         </a>
@@ -519,54 +730,55 @@
     <div class="container mx-auto px-4">
       <div class="flex flex-col lg:flex-row gap-4">
 
-          <!-- PHẦN TRÁI: Banner chính + 5 banner nhỏ -->
-          <div class="lg:w-[70%] w-full flex flex-col gap-4">
+        <!-- PHẦN TRÁI: Banner chính + 5 banner nhỏ -->
+        <div class="lg:w-[70%] w-full flex flex-col gap-4">
 
-            <!-- Banner chính -->
-            <div class="rounded-2xl overflow-hidden shadow-lg relative group">
-        <img id="main-banner" src="images/BC.jpg" alt="Banner chính"
-          class="w-full h-[360px] object-cover transition-transform duration-700 ease-in-out group-hover:scale-105">
+          <!-- Banner chính -->
+          <div class="rounded-2xl overflow-hidden shadow-lg relative group">
+            <img id="main-banner" src="images/BC.jpg" alt="Banner chính"
+              class="w-full h-[360px] object-cover transition-transform duration-700 ease-in-out group-hover:scale-105">
 
-        <!-- Overlay nội dung -->
-        <div class="absolute bottom-4 left-6 bg-black/40 text-white p-3 rounded-lg transition-opacity duration-500">
-          <h2 class="text-xl font-bold" id="banner-title">iPhone 16 Series – Siêu phẩm 2025</h2>
-          <p class="text-sm text-gray-200" id="banner-desc">Đặt trước ngay – Ưu đãi đến 5 triệu đồng</p>
-        </div>
+            <!-- Overlay nội dung -->
+            <div class="absolute bottom-4 left-6 bg-black/40 text-white p-3 rounded-lg transition-opacity duration-500">
+              <h2 class="text-xl md:text-2xl font-black bg-gradient-to-r from-yellow-300 via-orange-300 to-red-400 bg-clip-text text-transparent drop-shadow-lg" id="banner-title">iPhone 16 Series – Siêu phẩm 2025</h2>
+              <p class="text-sm text-gray-200 font-semibold" id="banner-desc">Đặt trước ngay – Ưu đãi đến 5 triệu đồng</p>
+            </div>
 
-        <!-- Nút điều khiển Previous -->
-        <button onclick="prevBanner()"
-          class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
-          <i class="fas fa-chevron-left"></i>
-        </button>
+            <!-- Nút điều khiển Previous -->
+            <button onclick="prevBanner()"
+              class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
+              <i class="fas fa-chevron-left"></i>
+            </button>
 
-        <!-- Nút điều khiển Next -->
-        <button onclick="nextBanner()"
-          class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
-          <i class="fas fa-chevron-right"></i>
-        </button>
+            <!-- Nút điều khiển Next -->
+            <button onclick="nextBanner()"
+              class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
+              <i class="fas fa-chevron-right"></i>
+            </button>
 
-        <!-- Indicator Dots -->
-        <div class="absolute bottom-4 right-6 flex gap-2">
-          <div
-            class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
-            onclick="goToBanner(0)"></div>
-          <div
-            class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
-            onclick="goToBanner(1)"></div>
-          <div
-            class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
-            onclick="goToBanner(2)"></div>
-          <div
-            class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
-            onclick="goToBanner(3)"></div>
-          <div
-            class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
-            onclick="goToBanner(4)"></div>
+            <!-- Indicator Dots -->
+            <div class="absolute bottom-4 right-6 flex gap-2">
+              <div
+                class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
+                onclick="goToBanner(0)"></div>
+              <div
+                class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
+                onclick="goToBanner(1)"></div>
+              <div
+                class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
+                onclick="goToBanner(2)"></div>
+              <div
+                class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
+                onclick="goToBanner(3)"></div>
+              <div
+                class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all duration-300 hover:bg-white"
+                onclick="goToBanner(4)"></div>
             </div>
           </div>
 
           <!-- 5 Banner nhỏ nằm ngang (chỉ text, không có ảnh) -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 bg-gray-50 rounded-xl overflow-hidden shadow-sm border border-gray-200">
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 bg-gray-50 rounded-xl overflow-hidden shadow-sm border border-gray-200">
             <div class="text-center py-3 border-r border-gray-200 hover:bg-red-50 transition cursor-pointer"
               onclick="goToBanner(0)">
               <h4 class="text-[var(--red-main)] font-bold text-xs md:text-sm">iPhone 16 Series</h4>
@@ -601,22 +813,25 @@
 
         <!-- PHẦN PHẢI: 3 Banner phụ theo chiều dọc - Kích thước bằng nhau và vuông góc -->
         <!-- PHẦN PHẢI: 3 Banner phụ theo chiều dọc -->
-<div class="lg:w-[30%] w-full flex flex-col gap-4 h-[460px]">
-  <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1" onclick="goToBanner(1)">
-    <img src="images/samsung.webp" alt="Banner phụ 1 - Samsung S25 Ultra"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-  </div>
+        <div class="lg:w-[30%] w-full flex flex-col gap-4 h-[460px]">
+          <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1"
+            onclick="goToBanner(1)">
+            <img src="images/samsung.webp" alt="Banner phụ 1 - Samsung S25 Ultra"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
 
-  <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1" onclick="goToBanner(2)">
-    <img src="images/Sony Xperia 1 VI.webp" alt="Banner phụ 2 - Sony Xperia 1 VI"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-  </div>
+          <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1"
+            onclick="goToBanner(2)">
+            <img src="images/Sony Xperia 1 VI.webp" alt="Banner phụ 2 - Sony Xperia 1 VI"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
 
-  <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1" onclick="goToBanner(3)">
-    <img src="images/ww.webp" alt="Banner phụ 3 - Google Pixel 9 Pro"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-  </div>
-</div>
+          <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1"
+            onclick="goToBanner(3)">
+            <img src="images/ww.webp" alt="Banner phụ 3 - Google Pixel 9 Pro"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+        </div>
 
   </section>
 
@@ -801,7 +1016,7 @@
               <i class="fas fa-bolt text-[#ffc107] text-xl sm:text-2xl"></i>
             </div>
             <div>
-              <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white drop-shadow-2xl">
+              <h2 class="text-xl sm:text-2xl lg:text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
                 ⚡ GIÁ SỐC
               </h2>
               <p class="text-white text-[10px] sm:text-xs mt-0.5 font-bold">Số lượng có hạn - Nhanh tay đặt hàng!</p>
@@ -991,8 +1206,8 @@
       <!-- Khung trắng chứa sản phẩm -->
       <div class="bg-white rounded-2xl shadow-lg p-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-4xl font-black text-gray-900">
-            <span class="text-red-600">ĐIỆN THOẠI NỔI BẬT</span>
+          <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+            ĐIỆN THOẠI NỔI BẬT
           </h2>
           <a href="promotions.html"
             class="text-red-600 font-semibold hover:text-red-700 transition flex items-center gap-2">
@@ -1171,8 +1386,8 @@
       <!-- Khung trắng chứa sản phẩm -->
       <div class="bg-white rounded-2xl shadow-lg p-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-4xl font-black text-gray-900">
-            <span class="text-red-600">ĐIỆN THOẠI CHÍNH HÃNG </span>
+          <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+            ĐIỆN THOẠI CHÍNH HÃNG
           </h2>
           <a href="promotions.html"
             class="text-red-600 font-semibold hover:text-red-700 transition flex items-center gap-2">
@@ -1351,7 +1566,7 @@
 
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+          <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
             ĐÁNH GIÁ
           </h2>
           <div class="flex items-center gap-3">
@@ -1384,13 +1599,13 @@
                     alt="iPhone 17 icon" class="w-full h-full object-contain">
                 </div>
                 <div>
-                  <h3 class="text-base md:text-lg font-bold text-gray-800">Điện thoại Apple iPhone 17 Pro Max 256GB ZP/A
+                  <h3 class="text-sm md:text-base font-bold text-gray-900">Điện thoại Apple iPhone 17 Pro Max 256GB ZP/A
                   </h3>
-                  <p class="text-2xl font-black text-orange-500">37.990.000đ</p>
+                  <p class="text-lg md:text-xl font-bold text-orange-500">37.990.000đ</p>
                 </div>
               </div>
               <a href="product_detail.html?id=20"
-                class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-semibold text-base md:text-lg shadow-md transition-transform hover:scale-105">
+                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold text-sm shadow-md transition-all no-wishlist">
                 Khám phá ngay
               </a>
             </div>
@@ -1410,8 +1625,8 @@
                       alt="iPhone 15 icon" class="w-full h-full object-contain">
                   </div>
                   <div>
-                    <h4 class="text-sm font-bold text-gray-800">Điện thoại Apple iPhone 15 Pro Max 256GB - 99%</h4>
-                    <p class="text-xl font-black text-orange-500">20.990.000đ</p>
+                    <h4 class="text-xs md:text-sm font-bold text-gray-900">Điện thoại Apple iPhone 15 Pro Max 256GB - 99%</h4>
+                    <p class="text-base md:text-lg font-bold text-orange-500">20.990.000đ</p>
                   </div>
                 </div>
               </div>
@@ -1428,8 +1643,8 @@
                       alt="iPhone 14 icon" class="w-full h-full object-contain">
                   </div>
                   <div>
-                    <h4 class="text-sm font-bold text-gray-800">Điện thoại Apple iPhone 14 Pro Max 128GB - 99%</h4>
-                    <p class="text-xl font-black text-orange-500">16.390.000đ</p>
+                    <h4 class="text-xs md:text-sm font-bold text-gray-900">Điện thoại Apple iPhone 14 Pro Max 128GB - 99%</h4>
+                    <p class="text-base md:text-lg font-bold text-orange-500">16.390.000đ</p>
                   </div>
                 </div>
               </div>
@@ -1442,355 +1657,446 @@
     </div>
   </section>
 
-  <!-- ===== TESTIMONIALS / KHÁCH HÀNG ĐÁNH GIÁ ===== -->
-  <section class="py-6 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-4">
-      <!-- Khung trắng chứa testimonials -->
-      <div class="bg-white rounded-2xl shadow-lg p-6">
-        <div class="text-center mb-10"></div>
-        <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-3">
-          <i class="fas fa-star text-yellow-400 mr-2"></i>
-          KHÁCH HÀNG ĐÁNH GIÁ
-        </h2>
-        <p class="text-gray-600 text-lg">Hơn <span class="text-red-600 font-bold">50,000+</span> khách hàng tin tưởng
+ <!-- ===== TESTIMONIALS / KHÁCH HÀNG ĐÁNH GIÁ ===== -->
+<section class="py-6 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- Khung trắng chứa đánh giá khách hàng -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+
+    <!-- Tiêu đề -->
+    <div class="text-center mb-14">
+      <h2
+        class="text-3xl md:text-5xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg mb-4">
+        <i class="fas fa-star text-yellow-400 mr-2"></i>
+        KHÁCH HÀNG ĐÁNH GIÁ
+      </h2>
+      <p class="text-gray-600 text-lg font-medium">
+        Hơn <span class="text-red-600 font-bold">50,000+</span> khách hàng tin tưởng và lựa chọn QuangHưng Mobile
+      </p>
+    </div>
+
+    <!-- Vùng hiển thị đánh giá -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Review 1 -->
+      <div
+        class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-yellow-400 hover:-translate-y-2">
+        <div class="flex items-center mb-5">
+          <img src="https://i.pravatar.cc/100?img=1" alt="Avatar"
+            class="w-16 h-16 rounded-full border-4 border-yellow-100 mr-4">
+          <div>
+            <h4 class="font-bold text-gray-800 text-lg">Nguyễn Văn A</h4>
+            <div class="flex gap-1 text-yellow-400">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 italic leading-relaxed mb-4">
+          "Mua iPhone 16 Pro Max ở đây rất uy tín, giá tốt, bảo hành chu đáo. Nhân viên tư vấn nhiệt tình, giao hàng nhanh. Rất hài lòng!"
         </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Review 1 -->
-        <div
-          class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-yellow-400">
-          <div class="flex items-center mb-4">
-            <img src="https://i.pravatar.cc/100?img=1" alt="Avatar"
-              class="w-16 h-16 rounded-full border-4 border-yellow-100 mr-4">
-            <div>
-              <h4 class="font-bold text-gray-800 text-lg">Nguyễn Văn A</h4>
-              <div class="flex gap-1 text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-            </div>
-          </div>
-          <p class="text-gray-600 italic leading-relaxed">"Mua iPhone 16 Pro Max ở đây rất uy tín, giá tốt, bảo hành chu
-            đáo. Nhân viên tư vấn nhiệt tình, giao hàng nhanh. Rất hài lòng!"</p>
-          <div class="mt-4 text-sm text-gray-400">
-            <i class="far fa-clock mr-1"></i>2 ngày trước
-          </div>
-        </div>
-
-        <!-- Review 2 -->
-        <div
-          class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-green-400">
-          <div class="flex items-center mb-4">
-            <img src="https://i.pravatar.cc/100?img=5" alt="Avatar"
-              class="w-16 h-16 rounded-full border-4 border-green-100 mr-4">
-            <div>
-              <h4 class="font-bold text-gray-800 text-lg">Trần Thị B</h4>
-              <div class="flex gap-1 text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-            </div>
-          </div>
-          <p class="text-gray-600 italic leading-relaxed">"Samsung S24 Ultra chính hãng, giá cạnh tranh nhất thị trường.
-            Shop tặng thêm ốp lưng và dán cường lực. Sẽ giới thiệu bạn bè!"</p>
-          <div class="mt-4 text-sm text-gray-400">
-            <i class="far fa-clock mr-1"></i>5 ngày trước
-          </div>
-        </div>
-
-        <!-- Review 3 -->
-        <div
-          class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-blue-400">
-          <div class="flex items-center mb-4">
-            <img src="https://i.pravatar.cc/100?img=12" alt="Avatar"
-              class="w-16 h-16 rounded-full border-4 border-blue-100 mr-4">
-            <div>
-              <h4 class="font-bold text-gray-800 text-lg">Lê Minh C</h4>
-              <div class="flex gap-1 text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-            </div>
-          </div>
-          <p class="text-gray-600 italic leading-relaxed">"Dịch vụ chuyên nghiệp, máy đẹp như mới. Đổi trả linh hoạt, hỗ
-            trợ trả góp 0%. Cảm ơn QuangHưng Mobile!"</p>
-          <div class="mt-4 text-sm text-gray-400">
-            <i class="far fa-clock mr-1"></i>1 tuần trước
-          </div>
+        <div class="text-sm text-gray-400">
+          <i class="far fa-clock mr-1"></i>2 ngày trước
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-        <div class="text-center p-6 bg-white rounded-xl shadow-md">
-          <div class="text-4xl font-black text-red-600 mb-2">50,000+</div>
-          <p class="text-gray-600 font-semibold">Khách hàng</p>
+      <!-- Review 2 -->
+      <div
+        class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-green-400 hover:-translate-y-2">
+        <div class="flex items-center mb-5">
+          <img src="https://i.pravatar.cc/100?img=5" alt="Avatar"
+            class="w-16 h-16 rounded-full border-4 border-green-100 mr-4">
+          <div>
+            <h4 class="font-bold text-gray-800 text-lg">Trần Thị B</h4>
+            <div class="flex gap-1 text-yellow-400">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+          </div>
         </div>
-        <div class="text-center p-6 bg-white rounded-xl shadow-md">
-          <div class="text-4xl font-black text-green-600 mb-2">98%</div>
-          <p class="text-gray-600 font-semibold">Hài lòng</p>
+        <p class="text-gray-600 italic leading-relaxed mb-4">
+          "Samsung S24 Ultra chính hãng, giá cạnh tranh. Shop tặng thêm ốp lưng và dán cường lực. Rất hài lòng, sẽ giới thiệu bạn bè!"
+        </p>
+        <div class="text-sm text-gray-400">
+          <i class="far fa-clock mr-1"></i>5 ngày trước
         </div>
-        <div class="text-center p-6 bg-white rounded-xl shadow-md">
-          <div class="text-4xl font-black text-blue-600 mb-2">15+</div>
-          <p class="text-gray-600 font-semibold">Năm kinh nghiệm</p>
+      </div>
+
+      <!-- Review 3 -->
+      <div
+        class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-blue-400 hover:-translate-y-2">
+        <div class="flex items-center mb-5">
+          <img src="https://i.pravatar.cc/100?img=12" alt="Avatar"
+            class="w-16 h-16 rounded-full border-4 border-blue-100 mr-4">
+          <div>
+            <h4 class="font-bold text-gray-800 text-lg">Lê Minh C</h4>
+            <div class="flex gap-1 text-yellow-400">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+          </div>
         </div>
-        <div class="text-center p-6 bg-white rounded-xl shadow-md">
-          <div class="text-4xl font-black text-orange-600 mb-2">24/7</div>
-          <p class="text-gray-600 font-semibold">Hỗ trợ</p>
+        <p class="text-gray-600 italic leading-relaxed mb-4">
+          "Dịch vụ chuyên nghiệp, máy đẹp như mới. Đổi trả linh hoạt, hỗ trợ trả góp 0%. Cảm ơn QuangHưng Mobile!"
+        </p>
+        <div class="text-sm text-gray-400">
+          <i class="far fa-clock mr-1"></i>1 tuần trước
         </div>
       </div>
     </div>
+
+    <!-- Thống kê -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
+      <div
+        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+        <div class="text-4xl font-black text-red-600 mb-2">50,000+</div>
+        <p class="text-gray-700 font-semibold">Khách hàng</p>
+      </div>
+      <div
+        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+        <div class="text-4xl font-black text-green-600 mb-2">98%</div>
+        <p class="text-gray-700 font-semibold">Mức độ hài lòng</p>
+      </div>
+      <div
+        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+        <div class="text-4xl font-black text-blue-600 mb-2">15+</div>
+        <p class="text-gray-700 font-semibold">Năm kinh nghiệm</p>
+      </div>
+      <div
+        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+        <div class="text-4xl font-black text-orange-600 mb-2">24/7</div>
+        <p class="text-gray-700 font-semibold">Hỗ trợ khách hàng</p>
+      </div>
     </div>
-  </section>
+
+    </div>
+  </div>
+</section>
 
   <!-- ===== TIN TỨC CÔNG NGHỆ ===== -->
   <section id="news-section" class="py-6 bg-gray-100 scroll-mt-20">
     <div class="max-w-7xl mx-auto px-4">
       <!-- Khung trắng chứa tin tức -->
       <div class="bg-white rounded-2xl shadow-lg p-6">
-        <!-- Header with tabs -->
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-3xl md:text-4xl font-black text-gray-900">
-            Tin tức công nghệ
-          </h2>
-          <div class="flex items-center gap-3">
-            <button
-              class="px-6 py-2 bg-white border-2 border-gray-200 rounded-full text-gray-700 font-semibold hover:bg-gray-50 transition news-tab active-tab"
-              data-category="all">
-              Tin công nghệ
-            </button>
-            <a href="news.html"
-              class="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition">
-              Xem tất cả
+
+      <!-- Header Section -->
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+          Tin tức công nghệ
+        </h2>
+        
+        <!-- Navigation Arrows -->
+        <div class="flex items-center gap-3">
+          <button id="prevNewsBtn" class="w-10 h-10 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button id="nextNewsBtn" class="w-10 h-10 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="flex gap-3 mb-6">
+        <button class="px-6 py-2 rounded-full border border-gray-300 bg-white hover:bg-gray-50 transition-all text-sm font-medium">
+          Tin công nghệ
+        </button>
+        <a href="news.html" class="px-6 py-2 rounded-full bg-black text-white hover:bg-gray-800 transition-all text-sm font-medium">
+          Xem tất cả
+        </a>
+      </div>
+
+      <!-- News Carousel Container -->
+      <div class="relative overflow-hidden">
+        <div id="newsCarousel" class="flex gap-6 transition-transform duration-500 ease-out">
+
+          <!-- News Item 1 - Google Gemini -->
+          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+            <a href="news-detail.html?id=1&title=huong-dan-chi-tiet-dang-ky-gemini-pro-mien-phi-mot-nam-cho-sinh-vien"
+              class="block">
+              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                <img src="images/inta.webp" alt="Google Gemini Pro"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <!-- Date & Category Badge -->
+                <div class="absolute bottom-4 left-4 right-4">
+                  <div class="flex items-center gap-2 text-white text-sm">
+                    <span class="font-medium">08/10/2025</span>
+                    <span>•</span>
+                    <span class="bg-blue-500 px-3 py-1 rounded-full text-xs font-semibold">Mẹo hay</span>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                Hướng dẫn chi tiết đăng ký Gemini Pro miễn phí một năm cho sinh viên
+              </h3>
+              <p class="text-sm text-gray-600 line-clamp-2">
+                Google tặng sinh viên đại học, cao đẳng tại Việt Nam 1 năm sử dụng miễn phí Google One AI Premium, bao gồm 2TB lưu trữ và truy cập Gemini AI. Đăng ký ngay trước 29/04/2025.
+              </p>
             </a>
-            <!-- Navigation Arrows -->
-            <button id="news-prev"
-              class="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-100 transition">
-              <i class="fas fa-chevron-left text-gray-600"></i>
-            </button>
-            <button id="news-next"
-              class="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-100 transition">
-              <i class="fas fa-chevron-right text-gray-600"></i>
+          </article>
+
+          <!-- News Item 2 - Samsung One UI 8.5 -->
+          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+            <a href="news-detail.html?id=2&title=one-ui-8-5-he-lo-4-tinh-nang-galaxy-ai-dang-cho-doi-nhat"
+              class="block">
+              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                <img src="images/25fe.png" alt="Samsung One UI 8.5"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute bottom-4 left-4 right-4">
+                  <div class="flex items-center gap-2 text-white text-sm">
+                    <span class="font-medium">12/10/2025</span>
+                    <span>•</span>
+                    <span class="bg-orange-500 px-3 py-1 rounded-full text-xs font-semibold">Tin mới</span>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                One UI 8.5: Hé lộ 4 tính năng Galaxy AI đáng chờ đợi nhất
+              </h3>
+              <p class="text-sm text-gray-600 line-clamp-2">
+                Samsung đang phát triển 4 nhất 4 tính năng Galaxy AI mới của One UI 8.5 mới, hứa hẹn nâng tầm trải nghiệm sử dụng của người dùng Samsung.
+              </p>
+            </a>
+          </article>
+
+          <!-- News Item 3 - HyperOS 3 -->
+          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+            <a href="news-detail.html?id=3&title=day-la-nhung-tinh-bi-nhan-cap-nhat-hyperos-3-ngay-tu-dau"
+              class="block">
+              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                <img src="images/uni8.jpg" alt="HyperOS 3"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute bottom-4 left-4 right-4">
+                  <div class="flex items-center gap-2 text-white text-sm">
+                    <span class="font-medium">15/10/2025</span>
+                    <span>•</span>
+                    <span class="bg-purple-500 px-3 py-1 rounded-full text-xs font-semibold">Tin mới</span>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                Đây là những tính bị nhận cập nhật HyperOS 3 ngay từ đầu
+              </h3>
+              <p class="text-sm text-gray-600 line-clamp-2">
+                Bắt đầu từ tháng 10/2025, Xiaomi chính thức phát hành bản cập nhật HyperOS 3 - giao diện người dùng hoàn toàn mới dựa trên Android 16.
+              </p>
+            </a>
+          </article>
+
+          <!-- News Item 4 - Samsung nghiên cứu -->
+          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+            <a href="news-detail.html?id=4&title=samsung-nghien-cuu-smartphone-gap-ba-trien-khai-man-hinh-theo-cach-toan-moi"
+              class="block">
+              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                <img src="images/inta.webp" alt="Samsung Foldable"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute bottom-4 left-4 right-4">
+                  <div class="flex items-center gap-2 text-white text-sm">
+                    <span class="font-medium">08/10/2025</span>
+                    <span>•</span>
+                    <span class="bg-green-500 px-3 py-1 rounded-full text-xs font-semibold">Công nghệ</span>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                Samsung nghiên cứu smartphone gập ba, triển khai màn hình theo cách toàn mới
+              </h3>
+              <p class="text-sm text-gray-600 line-clamp-2">
+                Samsung đang nghiên cứu một thiết kế smartphone gập ba màn hình hoàn toàn mới, có thể thay đổi cách chúng ta sử dụng điện thoại trong tương lai.
+              </p>
+            </a>
+          </article>
+
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GIỚI THIỆU CỬA HÀNG ===== -->
+  <section class="py-6 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4">
+      <!-- Khung trắng chứa giới thiệu -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        
+        <!-- Tiêu đề -->
+        <div class="text-center mb-8">
+          <h2 class="text-3xl md:text-5xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg mb-4">
+            Về QuangHưng Mobile
+          </h2>
+          <p class="text-gray-600">Hơn 15 năm đồng hành cùng công nghệ</p>
+        </div>
+
+        <!-- Nội dung chính: Grid 2 cột -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          
+          <!-- Cột trái: Hình ảnh -->
+          <div class="relative rounded-2xl overflow-hidden shadow-lg">
+            <img src="images/cuahang.png" alt="QuangHưng Mobile Store" 
+              class="w-full h-[400px] object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">QuangHưng Mobile</h3>
+              <p class="text-sm">Địa chỉ tin cậy cho mọi sản phẩm công nghệ</p>
+            </div>
+          </div>
+
+          <!-- Cột phải: Nội dung văn bản -->
+          <div class="flex flex-col justify-center">
+            <div id="aboutContent" class="relative">
+              <div id="textContent" class="text-gray-700 leading-relaxed space-y-4 overflow-hidden transition-all duration-500" style="max-height: 300px;">
+                <p class="text-justify">
+                  <strong class="text-red-600">QuangHưng Mobile</strong> được thành lập từ năm 2010, bắt đầu từ một cửa hàng nhỏ tại Hà Nội. Trải qua hơn 15 năm phát triển, chúng tôi đã trở thành một trong những địa chỉ uy tín hàng đầu trong lĩnh vực kinh doanh các mặt hàng công nghệ như điện thoại di động, máy tính bảng, laptop, phụ kiện, linh kiện...
+                </p>
+                
+                <p class="text-justify">
+                  Sau hơn 16 năm phát triển, <strong>QuangHưng Mobile</strong> đã khẳng định vị thế là đại lý ủy quyền chính thức của nhiều thương hiệu công nghệ hàng đầu thế giới như Apple, Samsung, Xiaomi, OPPO.
+                </p>
+
+                <p class="text-justify">
+                  Với phương châm <strong class="text-red-600">"CHUYÊN GIAO GIÁ TRỊ VƯỢT TRỘI"</strong>, QuangHưng Mobile cam kết mang đến cho khách hàng những sản phẩm công nghệ chất lượng cao cùng dịch vụ hậu mãi vượt trội.
+                </p>
+
+                <p class="text-justify">
+                  Đội ngũ nhân viên chuyên nghiệp, nhiệt tình, am hiểu sâu sắc về sản phẩm, luôn sẵn sàng tư vấn và hỗ trợ khách hàng lựa chọn sản phẩm phù hợp nhất với nhu cầu sử dụng.
+                </p>
+
+                <p class="text-justify">
+                  Hệ thống cửa hàng được bố trí khoa học, hiện đại, tạo không gian mua sắm thoải mái. Chính sách bảo hành, đổi trả linh hoạt, minh bạch, đảm bảo quyền lợi tối đa cho người tiêu dùng.
+                </p>
+
+                <p class="text-justify">
+                  <strong>QuangHưng Mobile</strong> không ngừng đổi mới, cải tiến để mang đến trải nghiệm mua sắm tốt nhất. Với sứ mệnh kết nối công nghệ với cuộc sống, chúng tôi luôn đặt sự hài lòng của khách hàng lên hàng đầu.
+                </p>
+              </div>
+              
+              <!-- Gradient overlay khi thu gọn -->
+              <div id="gradientOverlay" class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+            </div>
+
+            <!-- Nút Xem thêm/Thu gọn -->
+            <button id="toggleBtn" class="mt-4 text-red-600 font-semibold hover:text-red-700 transition-colors flex items-center gap-2 text-sm">
+              <span id="toggleText">Xem thêm</span>
+              <i id="toggleIcon" class="fas fa-chevron-down"></i>
             </button>
           </div>
         </div>
 
-        <!-- News Carousel Container -->
-        <div class="relative overflow-hidden">
-          <div id="news-carousel" class="flex gap-6 transition-transform duration-500 ease-in-out">
+        
 
-            <!-- News 1 - Instagram iPad -->
-            <div
-              class="min-w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] sm:min-w-[calc(50%-12px)] flex-shrink-0">
-              <a href="news-detail.html?id=1&title=instagram-chinh-thuc-ra-mat-ung-dung-danh-rieng-cho-ipad-sau-15-nam"
-                class="block group">
-                <div class="relative rounded-2xl overflow-hidden mb-4 shadow-lg">
-                  <div class="absolute inset-0 bg-gradient-to-br from-pink-300 via-purple-400 to-orange-400"></div>
-                  <img src="images/inta.webp" alt="Instagram iPad"
-                    class="relative w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500 mix-blend-multiply">
-                </div>
-                <div class="mb-3">
-                  <span class="text-sm text-orange-600 font-semibold">04/09/2025 • Tin mới</span>
-                </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition">
-                  Instagram chính thức ra mắt ứng dụng dành riêng cho iPad sau 15 năm
-                </h3>
-                <p class="text-sm text-gray-600 line-clamp-2">
-                  Sau nhiều năm chờ đợi, Instagram cuối cùng đã phát hành phiên bản ứng dụng dành riêng cho iPad với
-                  giao
-                  diện tối ưu...
-                </p>
-              </a>
-            </div>
-
-            <!-- News 2 - Samsung Galaxy S25 FE -->
-            <div
-              class="min-w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] sm:min-w-[calc(50%-12px)] flex-shrink-0">
-              <a href="news-detail.html?id=2&title=samsung-ra-mat-bo-doi-san-pham-moi-galaxy-s25-fe-va-galaxy-tab-s11-series"
-                class="block group">
-                <div class="relative rounded-2xl overflow-hidden mb-4 shadow-lg">
-                  <div class="absolute inset-0 bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400"></div>
-                  <img src="images/25fe.png" alt="Samsung S25 FE"
-                    class="relative w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                </div>
-                <div class="mb-3">
-                  <span class="text-sm text-blue-600 font-semibold">05/09/2025 • Tin mới</span>
-                </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition">
-                  Samsung ra mắt bộ đôi sản phẩm mới - Galaxy S25 FE và Galaxy Tab S11 Series
-                </h3>
-                <p class="text-sm text-gray-600 line-clamp-2">
-                  Tại sự kiện Galaxy Event ngày 04.09, Samsung giới thiệu Galaxy S25 FE và Tab S11 - bộ đôi sản phẩm mới
-                  cho thấy cảm kết mang...
-                </p>
-              </a>
-            </div>
-
-            <!-- News 3 - One UI 8 -->
-            <div
-              class="min-w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] sm:min-w-[calc(50%-12px)] flex-shrink-0">
-              <a href="news-detail.html?id=3&title=chi-tiet-lich-cap-nhat-one-ui-8-android-16-cho-samsung-vua-duoc-tiet-lo"
-                class="block group">
-                <div class="relative rounded-2xl overflow-hidden mb-4 shadow-lg">
-                  <div class="absolute inset-0 bg-gradient-to-br from-blue-300 via-indigo-300 to-purple-400"></div>
-                  <img src="images/uni8.jpg" alt="One UI 8"
-                    class="relative w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                </div>
-                <div class="mb-3">
-                  <span class="text-sm text-indigo-600 font-semibold">09/09/2025 • Tin mới</span>
-                </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition">
-                  Chi tiết lịch cập nhật One UI 8 (Android 16) cho Samsung vừa được tiết lộ
-                </h3>
-                <p class="text-sm text-gray-600 line-clamp-2">
-                  Lộ trình cập nhật One UI 8 (Android 16) của Samsung vừa được tiết lộ về thời điểm nâng cấp cho loạt
-                  thiết bị Galaxy - từ flagship đến máy...
-                </p>
-              </a>
-            </div>
-
-            <!-- News 4 - Xiaomi HyperOS 2 -->
-            <div
-              class="min-w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] sm:min-w-[calc(50%-12px)] flex-shrink-0">
-              <a href="news-detail.html?id=4&title=xiaomi-co-the-ra-mat-hyperos-2-vao-ngay-thang-9-nay"
-                class="block group">
-                <div class="relative rounded-2xl overflow-hidden mb-4 shadow-lg">
-                  <div class="absolute inset-0 bg-gradient-to-br from-orange-200 via-orange-300 to-red-400"></div>
-                  <img src="images/2.0.jpg" alt="Xiaomi HyperOS 2"
-                    class="relative w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                </div>
-                <div class="mb-3">
-                  <span class="text-sm text-orange-600 font-semibold">18/10/2025 • Tin mới</span>
-                </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition">
-                  Xiaomi có thể ra mắt HyperOS 2 vào ngày tháng 9 này
-                </h3>
-                <p class="text-sm text-gray-600 line-clamp-2">
-                  Xiaomi có khả năng sẽ công bố HyperOS 2 - hệ điều hành mới kế thừa MIUI vào tháng 9 năm nay với nhiều
-                  cải tiến đáng chú ý...
-                </p>
-              </a>
-            </div>
-
-            <!-- News 5 - iPhone 17 -->
-            <div
-              class="min-w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] sm:min-w-[calc(50%-12px)] flex-shrink-0">
-              <a href="news-detail.html?id=5&title=iphone-17-pro-max-se-co-camera-48mp-voi-zoom-quang-hoc-cai-tien"
-                class="block group">
-                <div class="relative rounded-2xl overflow-hidden mb-4 shadow-lg">
-                  <div class="absolute inset-0 bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400"></div>
-                  <img src="images/ip17.jpg" alt="iPhone 17"
-                    class="relative w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                </div>
-                <div class="mb-3">
-                  <span class="text-sm text-gray-600 font-semibold">15/10/2025 • Tin mới</span>
-                </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition">
-                  iPhone 17 Pro Max sẽ có camera 48MP với zoom quang học cải tiến
-                </h3>
-                <p class="text-sm text-gray-600 line-clamp-2">
-                  Apple được cho là đang phát triển iPhone 17 Pro Max với hệ thống camera 48MP cải tiến, hỗ trợ zoom
-                  quang
-                  học tốt hơn...
-                </p>
-              </a>
-            </div>
-
-            <!-- News 6 - Google Pixel 10 -->
-            <div
-              class="min-w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] sm:min-w-[calc(50%-12px)] flex-shrink-0">
-              <a href="news-detail.html?id=6&title=google-pixel-10-lo-dien-voi-chip-tensor-g5-manh-me"
-                class="block group">
-                <div class="relative rounded-2xl overflow-hidden mb-4 shadow-lg">
-                  <div class="absolute inset-0 bg-gradient-to-br from-green-200 via-blue-300 to-blue-400"></div>
-                  <img src="https://cdn.tgdd.vn/Files/2024/10/20/1620888/google-pixel-10-201024-143504-800-resize.jpg"
-                    alt="Google Pixel 10"
-                    class="relative w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                </div>
-                <div class="mb-3">
-                  <span class="text-sm text-blue-600 font-semibold">20/10/2025 • Tin mới</span>
-                </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition">
-                  Google Pixel 10 lộ diện với chip Tensor G5 mạnh mẽ
-                </h3>
-                <p class="text-sm text-gray-600 line-clamp-2">
-                  Thông tin về Google Pixel 10 với chip Tensor G5 thế hệ mới đã xuất hiện, hứa hẹn hiệu năng vượt trội
-                  và
-                  AI tiên tiến hơn...
-                </p>
-              </a>
-            </div>
-
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
   <script>
-    // News Carousel Navigation
-    (function () {
-      const carousel = document.getElementById('news-carousel');
-      const prevBtn = document.getElementById('news-prev');
-      const nextBtn = document.getElementById('news-next');
+    // Toggle "Xem thêm" / "Thu gọn"
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleBtn = document.getElementById('toggleBtn');
+      const textContent = document.getElementById('textContent');
+      const toggleText = document.getElementById('toggleText');
+      const toggleIcon = document.getElementById('toggleIcon');
+      const gradientOverlay = document.getElementById('gradientOverlay');
+      let isExpanded = false;
 
-      if (!carousel || !prevBtn || !nextBtn) return;
-
-      let currentIndex = 0;
-      const items = carousel.children;
-      const itemsPerView = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
-      const maxIndex = Math.max(0, items.length - itemsPerView);
-
-      function updateCarousel() {
-        const itemWidth = items[0].offsetWidth;
-        const gap = 24; // 1.5rem = 24px
-        const offset = currentIndex * (itemWidth + gap);
-        carousel.style.transform = `translateX(-${offset}px)`;
-
-        // Update button states
-        prevBtn.disabled = currentIndex === 0;
-        nextBtn.disabled = currentIndex >= maxIndex;
-
-        prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
-        nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+      if (toggleBtn && textContent) {
+        toggleBtn.addEventListener('click', function() {
+          isExpanded = !isExpanded;
+          
+          if (isExpanded) {
+            textContent.style.maxHeight = textContent.scrollHeight + 'px';
+            toggleText.textContent = 'Thu gọn';
+            toggleIcon.classList.remove('fa-chevron-down');
+            toggleIcon.classList.add('fa-chevron-up');
+            gradientOverlay.style.opacity = '0';
+          } else {
+            textContent.style.maxHeight = '300px';
+            toggleText.textContent = 'Xem thêm';
+            toggleIcon.classList.remove('fa-chevron-up');
+            toggleIcon.classList.add('fa-chevron-down');
+            gradientOverlay.style.opacity = '1';
+          }
+        });
       }
-
-      prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateCarousel();
-        }
-      });
-
-      nextBtn.addEventListener('click', () => {
-        if (currentIndex < maxIndex) {
-          currentIndex++;
-          updateCarousel();
-        }
-      });
-
-      // Responsive handling
-      window.addEventListener('resize', () => {
-        currentIndex = 0;
-        updateCarousel();
-      });
-
-      // Initial state
-      updateCarousel();
-    })();
+    });
   </script>
 
   <script>
+    // News Carousel Functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      const carousel = document.getElementById('newsCarousel');
+      const prevBtn = document.getElementById('prevNewsBtn');
+      const nextBtn = document.getElementById('nextNewsBtn');
+      
+      if (carousel && prevBtn && nextBtn) {
+        let currentIndex = 0;
+        const items = carousel.children;
+        const totalItems = items.length;
+        
+        // Calculate items per view based on screen size
+        function getItemsPerView() {
+          if (window.innerWidth >= 1024) return 3; // lg
+          if (window.innerWidth >= 768) return 2;  // md
+          return 1; // mobile
+        }
+        
+        function updateCarousel() {
+          const itemsPerView = getItemsPerView();
+          const itemWidth = items[0].offsetWidth;
+          const gap = 24; // 6 * 4px (gap-6 in Tailwind)
+          const offset = currentIndex * (itemWidth + gap);
+          carousel.style.transform = `translateX(-${offset}px)`;
+          
+          // Disable/enable buttons based on position
+          prevBtn.disabled = currentIndex === 0;
+          nextBtn.disabled = currentIndex >= totalItems - itemsPerView;
+          
+          // Update button styles
+          if (prevBtn.disabled) {
+            prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          } else {
+            prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          }
+          
+          if (nextBtn.disabled) {
+            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          } else {
+            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          }
+        }
+        
+        prevBtn.addEventListener('click', () => {
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+          }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+          const itemsPerView = getItemsPerView();
+          if (currentIndex < totalItems - itemsPerView) {
+            currentIndex++;
+            updateCarousel();
+          }
+        });
+        
+        // Update on window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            const itemsPerView = getItemsPerView();
+            if (currentIndex >= totalItems - itemsPerView) {
+              currentIndex = Math.max(0, totalItems - itemsPerView);
+            }
+            updateCarousel();
+          }, 250);
+        });
+        
+        // Initial update
+        updateCarousel();
+      }
+    });
+
     // Smooth scroll to news section
     document.addEventListener('DOMContentLoaded', function () {
       // Desktop menu
@@ -1873,194 +2179,231 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div class="text-center p-6 hover:bg-gray-50 rounded-lg transition cursor-pointer">
             <i class="fas fa-shipping-fast text-4xl text-blue-600 mb-3"></i>
-            <h3 class="font-semibold mb-2">Giao hàng miễn phí</h3>
+            <h3 class="font-bold text-lg mb-2 text-blue-700">Giao hàng miễn phí</h3>
             <p class="text-sm text-gray-600">Đơn hàng trên 5 triệu</p>
           </div>
           <div class="text-center p-6 hover:bg-gray-50 rounded-lg transition cursor-pointer">
             <i class="fas fa-shield-alt text-4xl text-blue-600 mb-3"></i>
-            <h3 class="font-semibold mb-2">Bảo hành chính hãng</h3>
+            <h3 class="font-bold text-lg mb-2 text-blue-700">Bảo hành chính hãng</h3>
             <p class="text-sm text-gray-600">Lên đến 24 tháng</p>
           </div>
           <div class="text-center p-6 hover:bg-gray-50 rounded-lg transition cursor-pointer">
             <i class="fas fa-sync-alt text-4xl text-blue-600 mb-3"></i>
-            <h3 class="font-semibold mb-2">Đổi trả dễ dàng</h3>
+            <h3 class="font-bold text-lg mb-2 text-blue-700">Đổi trả dễ dàng</h3>
             <p class="text-sm text-gray-600">Trong vòng 7 ngày</p>
           </div>
           <div class="text-center p-6 hover:bg-gray-50 rounded-lg transition cursor-pointer">
             <i class="fas fa-headset text-4xl text-blue-600 mb-3"></i>
-            <h3 class="font-semibold mb-2">Hỗ trợ 24/7</h3>
+            <h3 class="font-bold text-lg mb-2 text-blue-700">Hỗ trợ 24/7</h3>
             <p class="text-sm text-gray-600">Tư vấn nhiệt tình</p>
           </div>
         </div>
       </div>
     </section> ===== -->
 
-  
 
-      
 
-  <!-- ===== PHẦN THÔNG TIN CHÂN TRANG - THIẾT KẾ THEO MẪU ===== -->
-  <section class="py-10 bg-white border-t-2 border-gray-200">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        
-        <!-- Cột 1: Về chúng tôi -->
+
+
+ <!-- ===== PHẦN THÔNG TIN CHÂN TRANG - THIẾT KẾ CHUẨN WEBSITE ===== -->
+<footer class="bg-white py-10 border-t-2 border-gray-200">
+  <div class="max-w-7xl mx-auto px-4">
+
+      <!-- GRID 4 CỘT -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+        <!-- CỘT 1: VỀ CHÚNG TÔI -->
         <div>
-          <h3 class="font-bold text-gray-800 mb-4 text-base">Về chúng tôi</h3>
-          <ul class="space-y-2 text-sm text-gray-600">
-            <li><a href="#" class="hover:text-red-600 transition">Giới thiệu </a></li>
-            <li><a href="#" class="hover:text-red-600 transition">Liên hệ hợp tác kinh doanh (B2B)</a></li>
-            <li><a href="#" class="hover:text-red-600 transition">Tuyển dụng mới nhất</a></li>
-            <li><a href="#" class="hover:text-red-600 transition">Hướng dẫn mua hàng Online</a></li>
+          <h3 class="font-extrabold text-xl text-red-600 mb-5 uppercase tracking-wide">Về chúng tôi</h3>
+          <ul class="space-y-2 text-gray-700 text-sm leading-relaxed">
+            <li><a href="#" class="hover:text-red-600 transition-colors">Giới thiệu</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Liên hệ hợp tác kinh doanh (B2B)</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Tuyển dụng mới nhất</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Hướng dẫn mua hàng Online</a></li>
           </ul>
         </div>
 
-        <!-- Cột 2: Chính sách -->
+        <!-- CỘT 2: CHÍNH SÁCH -->
         <div>
-          <h3 class="font-bold text-gray-800 mb-4 text-base">Chính sách</h3>
-          <ul class="space-y-2 text-sm text-gray-600">
-            <li><a href="#" class="hover:text-red-600 transition">Chính sách bảo hành</a></li>
-            <li><a href="#" class="hover:text-red-600 transition">Chính sách bảo mật</a></li>
-            <li><a href="#" class="hover:text-red-600 transition">Chính sách sử dụng</a></li>
+          <h3 class="font-extrabold text-xl text-red-600 mb-5 uppercase tracking-wide">Chính sách</h3>
+          <ul class="space-y-2 text-gray-700 text-sm leading-relaxed">
+            <li><a href="#" class="hover:text-red-600 transition-colors">Chính sách bảo hành</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Chính sách bảo mật</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Chính sách sử dụng</a></li>
           </ul>
         </div>
 
-        <!-- Cột 3: Tổng đài hỗ trợ & Đối tác -->
+        <!-- CỘT 3: TỔNG ĐÀI HỖ TRỢ -->
         <div>
-          <h3 class="font-bold text-gray-800 mb-4 text-base">Tổng đài hỗ trợ (Miễn phí)</h3>
-          <ul class="space-y-2 text-sm text-gray-600 mb-6">
+          <h3 class="font-extrabold text-xl text-red-600 mb-5 uppercase tracking-wide">Tổng đài hỗ trợ (Miễn phí)</h3>
+          <ul class="space-y-3 text-gray-700 text-sm leading-relaxed">
             <li>
-              <span>Mua ngay:</span>
-              <a href="tel:18006018" class="font-bold text-red-600 ml-2 text-base hover:text-red-700">1800.6018</a>
-              <span class="text-xs text-gray-500">(07:30 – 21:30)</span>
+              <span class="font-medium">Mua ngay: </span>
+              <a href="tel:18006018" class="font-bold text-red-600 text-base hover:text-red-700">1800.6018</a>
+              <span class="text-xs text-gray-500 ml-1">(07:30 – 21:30)</span>
             </li>
             <li>
-              <span>Bảo hành tại</span><br>
-              <span>QuangHưng Mobile:</span>
-              <a href="tel:18006729" class="font-bold text-red-600 ml-2 text-base hover:text-red-700">1800.6729</a>
-              <span class="text-xs text-gray-500">(08:00 – 21:00)</span>
+              <span class="font-medium">Bảo hành tại QuangHưng Mobile: </span>
+              <a href="tel:18006729" class="font-bold text-red-600 text-base hover:text-red-700">1800.6729</a>
+              <span class="text-xs text-gray-500 ml-1">(08:00 – 21:00)</span>
             </li>
             <li>
-              <span>Góp ý:</span>
-              <a href="tel:18006306" class="font-bold text-red-600 ml-2 text-base hover:text-red-700">1800.6306</a>
-              <span class="text-xs text-gray-500">(08:30 – 21:30)</span>
+              <span class="font-medium">Góp ý: </span>
+              <a href="tel:18006306" class="font-bold text-red-600 text-base hover:text-red-700">1800.6306</a>
+              <span class="text-xs text-gray-500 ml-1">(08:30 – 21:30)</span>
             </li>
           </ul>
-          
-          
         </div>
 
-        <!-- Cột 4: Kết nối & Tải ứng dụng -->
+        <!-- CỘT 4: KẾT NỐI & THANH TOÁN -->
         <div>
-          <h3 class="font-bold text-gray-800 mb-4 text-base">Kết nối với Di Động Việt</h3>
-          <div class="flex gap-3 mb-6">
-            <a href="https://zalo.me" target="_blank" class="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition">
-              <i class="fab fa-telegram text-white text-xl"></i>
+          <h3 class="font-extrabold text-xl text-red-600 mb-5 uppercase tracking-wide">Kết nối với chúng tôi</h3>
+
+          <!-- ICON MẠNG XÃ HỘI -->
+          <div class="flex flex-wrap gap-3 mb-5">
+            <a href="https://facebook.com/quanghungmobile" target="_blank"
+              class="w-9 h-9 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition"
+              title="Facebook">
+              <i class="fab fa-facebook-f text-white text-sm"></i>
             </a>
-            <a href="https://facebook.com" target="_blank" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition">
-              <i class="fab fa-facebook-f text-white text-xl"></i>
+            <a href="https://youtube.com/@quanghungmobile" target="_blank"
+              class="w-9 h-9 bg-red-600 hover:bg-red-700 rounded-lg flex items-center justify-center transition"
+              title="YouTube">
+              <i class="fab fa-youtube text-white text-sm"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" class="w-10 h-10 bg-pink-600 hover:bg-pink-700 rounded-full flex items-center justify-center transition">
-              <i class="fab fa-instagram text-white text-xl"></i>
+            <a href="https://zalo.me" target="_blank"
+              class="w-9 h-9 bg-blue-500 hover:bg-blue-600 rounded-lg flex items-center justify-center transition"
+              title="Zalo">
+              <i class="fab fa-telegram text-white text-sm"></i>
             </a>
-            <a href="https://youtube.com" target="_blank" class="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition">
-              <i class="fab fa-youtube text-white text-xl"></i>
+            <a href="https://instagram.com/quanghungmobile" target="_blank"
+              class="w-9 h-9 bg-pink-600 hover:bg-pink-700 rounded-lg flex items-center justify-center transition"
+              title="Instagram">
+              <i class="fab fa-instagram text-white text-sm"></i>
             </a>
-            <a href="https://tiktok.com" target="_blank" class="w-10 h-10 bg-black hover:bg-gray-800 rounded-full flex items-center justify-center transition">
-              <i class="fab fa-tiktok text-white text-xl"></i>
+            <a href="https://tiktok.com/@quanghungmobile" target="_blank"
+              class="w-9 h-9 bg-black hover:bg-gray-800 rounded-lg flex items-center justify-center transition"
+              title="TikTok">
+              <i class="fab fa-tiktok text-white text-sm"></i>
             </a>
           </div>
 
-          
+          <!-- HOTLINE -->
+          <div class="mb-5">
+            <p class="text-sm text-gray-600">Tư vấn mua hàng (Miễn phí)</p>
+            <a href="tel:18006018" class="text-red-600 hover:text-red-700 font-bold text-lg">
+              1800.6018
+            </a>
+          </div>
+
+          <!-- PHƯƠNG THỨC THANH TOÁN -->
+          <div>
+            <h4 class="font-extrabold text-lg text-red-600 mb-3 uppercase tracking-wide">Phương thức thanh toán</h4>
+            <div class="flex flex-wrap gap-3">
+              <img src="https://cdn-icons-png.flaticon.com/512/349/349221.png" alt="Visa"
+                class="h-6 opacity-80 hover:opacity-100 transition" />
+              <img src="https://cdn-icons-png.flaticon.com/512/349/349228.png" alt="Mastercard"
+                class="h-6 opacity-80 hover:opacity-100 transition" />
+              <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo"
+                class="h-6 opacity-80 hover:opacity-100 transition" />
+              <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay-Square.png" alt="ZaloPay"
+                class="h-6 opacity-80 hover:opacity-100 transition" />
+            </div>
           </div>
         </div>
-
       </div>
-    </div>
-  </section>
 
-  
-          <!-- Form Đăng ký khuyến mãi - Tông đỏ trắng gọn gàng -->
- 
+      <!-- ĐƯỜNG KẺ NGANG & COPYRIGHT -->
+      <div class="border-t border-gray-200 mt-10 pt-6 text-center text-sm text-gray-500">
+        © 2025 <span class="font-semibold text-red-600">QuangHưng Mobile</span>. All rights reserved.
+      </div>
+
+  </div>
+</footer>
+
+
+
+  <!-- Form Đăng ký khuyến mãi - Tông đỏ trắng gọn gàng -->
 
 
 
 
-      <style>
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
 
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+  <style>
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-slideUp {
+      animation: slideUp 0.4s ease-out;
+    }
+  </style>
+
+  <script>
+    // Newsletter Popup Logic
+    (function () {
+      const popup = document.getElementById('newsletter-popup');
+      const closeBtn = document.getElementById('newsletter-close');
+      const form = document.getElementById('newsletter-form');
+
+      if (!popup) return;
+
+      // Check if user has already seen the popup
+      const hasSeenPopup = localStorage.getItem('newsletter_popup_seen');
+      const lastShown = localStorage.getItem('newsletter_popup_last_shown');
+      const now = Date.now();
+      const dayInMs = 24 * 60 * 60 * 1000;
+
+      // Show popup after 5 seconds if not seen, or if 7 days have passed
+      if (!hasSeenPopup || (lastShown && now - parseInt(lastShown) > 7 * dayInMs)) {
+        setTimeout(() => {
+          popup.classList.remove('hidden');
+          popup.classList.add('flex');
+        }, 5000);
+      }
+
+      // Close popup
+      function closePopup() {
+        popup.classList.add('hidden');
+        popup.classList.remove('flex');
+        localStorage.setItem('newsletter_popup_seen', 'true');
+        localStorage.setItem('newsletter_popup_last_shown', Date.now().toString());
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closePopup);
+      }
+
+      // Close on overlay click
+      popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+          closePopup();
         }
+      });
 
-        .animate-slideUp {
-          animation: slideUp 0.4s ease-out;
+      // Close on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+          closePopup();
         }
-      </style>
+      });
 
-      <script>
-        // Newsletter Popup Logic
-        (function () {
-          const popup = document.getElementById('newsletter-popup');
-          const closeBtn = document.getElementById('newsletter-close');
-          const form = document.getElementById('newsletter-form');
+      // Form submission
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
 
-          if (!popup) return;
-
-          // Check if user has already seen the popup
-          const hasSeenPopup = localStorage.getItem('newsletter_popup_seen');
-          const lastShown = localStorage.getItem('newsletter_popup_last_shown');
-          const now = Date.now();
-          const dayInMs = 24 * 60 * 60 * 1000;
-
-          // Show popup after 5 seconds if not seen, or if 7 days have passed
-          if (!hasSeenPopup || (lastShown && now - parseInt(lastShown) > 7 * dayInMs)) {
-            setTimeout(() => {
-              popup.classList.remove('hidden');
-              popup.classList.add('flex');
-            }, 5000);
-          }
-
-          // Close popup
-          function closePopup() {
-            popup.classList.add('hidden');
-            popup.classList.remove('flex');
-            localStorage.setItem('newsletter_popup_seen', 'true');
-            localStorage.setItem('newsletter_popup_last_shown', Date.now().toString());
-          }
-
-          if (closeBtn) {
-            closeBtn.addEventListener('click', closePopup);
-          }
-
-          // Close on overlay click
-          popup.addEventListener('click', (e) => {
-            if (e.target === popup) {
-              closePopup();
-            }
-          });
-
-          // Close on ESC key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
-              closePopup();
-            }
-          });
-
-          // Form submission
-          if (form) {
-            form.addEventListener('submit', (e) => {
-              e.preventDefault();
-
-              // Show success message
-              const formContent = form.innerHTML;
-              form.innerHTML = `
+          // Show success message
+          const formContent = form.innerHTML;
+          form.innerHTML = `
               <div class="text-center py-8">
                 <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <i class="fas fa-check text-white text-2xl"></i>
@@ -2070,374 +2413,374 @@
               </div>
             `;
 
-              // Close popup after 3 seconds
-              setTimeout(() => {
-                closePopup();
-                form.innerHTML = formContent; // Restore form
-              }, 3000);
-            });
-          }
+          // Close popup after 3 seconds
+          setTimeout(() => {
+            closePopup();
+            form.innerHTML = formContent; // Restore form
+          }, 3000);
+        });
+      }
 
-          // Show popup on exit intent (when mouse leaves viewport)
-          let exitIntentShown = false;
-          document.addEventListener('mouseleave', (e) => {
-            if (e.clientY <= 0 && !exitIntentShown && popup.classList.contains('hidden')) {
-              popup.classList.remove('hidden');
-              popup.classList.add('flex');
-              exitIntentShown = true;
-            }
-          });
-        })();
-      </script>
+      // Show popup on exit intent (when mouse leaves viewport)
+      let exitIntentShown = false;
+      document.addEventListener('mouseleave', (e) => {
+        if (e.clientY <= 0 && !exitIntentShown && popup.classList.contains('hidden')) {
+          popup.classList.remove('hidden');
+          popup.classList.add('flex');
+          exitIntentShown = true;
+        }
+      });
+    })();
+  </script>
 
-      <button id="chatbot-toggle"
-        class="fixed bottom-6 right-6 bg-gradient-to-r from-red-600 to-red-700 text-white w-16 h-16 rounded-full shadow-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 z-60 group animate-pulse hover:animate-none">
-        <i class="fas fa-comments text-2xl group-hover:scale-110 transition-transform"></i>
+  <button id="chatbot-toggle"
+    class="fixed bottom-6 right-6 bg-gradient-to-r from-red-600 to-red-700 text-white w-16 h-16 rounded-full shadow-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 z-60 group animate-pulse hover:animate-none">
+    <i class="fas fa-comments text-2xl group-hover:scale-110 transition-transform"></i>
+  </button>
+
+  <div id="chatbot-window"
+    class="fixed bottom-24 right-6 w-96 bg-white rounded-2xl shadow-2xl hidden z-50 border-2 border-blue-200">
+    <div
+      class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-5 rounded-t-2xl flex justify-between items-center">
+      <div class="flex items-center">
+        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3 shadow-lg">
+          <i class="fas fa-robot text-blue-600 text-2xl"></i>
+        </div>
+        <div>
+          <h3 class="font-black text-xl bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">AI Tư vấn</h3>
+          <p class="text-sm text-blue-100 flex items-center">
+            <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+            Trực tuyến
+          </p>
+        </div>
+      </div>
+      <button id="chatbot-close" class="text-white hover:text-gray-200">
+        <i class="fas fa-times text-xl"></i>
       </button>
+    </div>
 
-      <div id="chatbot-window"
-        class="fixed bottom-24 right-6 w-96 bg-white rounded-2xl shadow-2xl hidden z-50 border-2 border-blue-200">
-        <div
-          class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-5 rounded-t-2xl flex justify-between items-center">
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3 shadow-lg">
-              <i class="fas fa-robot text-blue-600 text-2xl"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-lg">AI Tư vấn</h3>
-              <p class="text-sm text-blue-100 flex items-center">
-                <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                Trực tuyến
-              </p>
-            </div>
-          </div>
-          <button id="chatbot-close" class="text-white hover:text-gray-200">
-            <i class="fas fa-times text-xl"></i>
-          </button>
-        </div>
-
-        <div class="h-96 overflow-y-auto p-4 space-y-4">
-          <div class="flex items-start">
-            <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
-              <p class="text-sm">Xin chào! Tôi là trợ lý AI của QuangHưng Mobile. Tôi có thể giúp gì cho bạn?</p>
-            </div>
-          </div>
-
-          <div class="flex justify-end">
-            <div class="bg-red-600 text-white rounded-lg p-3 max-w-xs">
-              <p class="text-sm">Cho tôi xem điện thoại dưới 20 triệu</p>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
-              <p class="text-sm">Dưới đây là một số điện thoại phù hợp với ngân sách của bạn:</p>
-              <ul class="text-sm mt-2 space-y-1">
-                <li>• Xiaomi 14 Pro - 19.990.000đ</li>
-                <li>• Samsung Galaxy A54 - 10.990.000đ</li>
-                <li>• iPhone 13 - 17.990.000đ</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="border-t p-4">
-          <div class="flex space-x-2">
-            <input type="text" placeholder="Nhập tin nhắn..."
-              class="flex-1 border rounded-full px-4 py-2 outline-none focus:border-red-600" />
-            <button class="bg-red-600 text-white w-10 h-10 rounded-full hover:bg-red-700 transition">
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-3">
-            <button class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">
-              Khuyến mãi
-            </button>
-            <button class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">
-              So sánh sản phẩm
-            </button>
-            <button class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">
-              Bảo hành
-            </button>
-          </div>
+    <div class="h-96 overflow-y-auto p-4 space-y-4">
+      <div class="flex items-start">
+        <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
+          <p class="text-sm">Xin chào! Tôi là trợ lý AI của QuangHưng Mobile. Tôi có thể giúp gì cho bạn?</p>
         </div>
       </div>
 
+      <div class="flex justify-end">
+        <div class="bg-red-600 text-white rounded-lg p-3 max-w-xs">
+          <p class="text-sm">Cho tôi xem điện thoại dưới 20 triệu</p>
+        </div>
+      </div>
+
+      <div class="flex items-start">
+        <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
+          <p class="text-sm">Dưới đây là một số điện thoại phù hợp với ngân sách của bạn:</p>
+          <ul class="text-sm mt-2 space-y-1">
+            <li>• Xiaomi 14 Pro - 19.990.000đ</li>
+            <li>• Samsung Galaxy A54 - 10.990.000đ</li>
+            <li>• iPhone 13 - 17.990.000đ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t p-4">
+      <div class="flex space-x-2">
+        <input type="text" placeholder="Nhập tin nhắn..."
+          class="flex-1 border rounded-full px-4 py-2 outline-none focus:border-red-600" />
+        <button class="bg-red-600 text-white w-10 h-10 rounded-full hover:bg-red-700 transition">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <button class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">
+          Khuyến mãi
+        </button>
+        <button class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">
+          So sánh sản phẩm
+        </button>
+        <button class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">
+          Bảo hành
+        </button>
+      </div>
+    </div>
+  </div>
 
 
-      <script>
-        const chatbotToggle = document.getElementById('chatbot-toggle');
-        const chatbotWindow = document.getElementById('chatbot-window');
-        const chatbotClose = document.getElementById('chatbot-close');
 
-        chatbotToggle.addEventListener('click', () => {
-          chatbotWindow.classList.toggle('hidden');
+  <script>
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const chatbotClose = document.getElementById('chatbot-close');
+
+    chatbotToggle.addEventListener('click', () => {
+      chatbotWindow.classList.toggle('hidden');
+    });
+
+    chatbotClose.addEventListener('click', () => {
+      chatbotWindow.classList.add('hidden');
+    });
+  </script>
+
+  <script>
+    // Banner Carousel Logic
+    (function () {
+      const bannerCarousel = document.getElementById('banner-carousel');
+      if (!bannerCarousel) return;
+
+      const slides = bannerCarousel.querySelectorAll('.banner-slide');
+      if (!slides || slides.length === 0) return;
+
+      const prevBtn = document.getElementById('prevBannerBtn');
+      const nextBtn = document.getElementById('nextBannerBtn');
+      const indicators = bannerCarousel.parentElement.querySelectorAll('.banner-indicator');
+
+      let currentIndex = 0;
+      let autoPlayInterval = null;
+
+      function goToSlide(index) {
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+
+        currentIndex = index;
+
+        // Move carousel
+        const offset = -currentIndex * 100;
+        bannerCarousel.style.transform = `translateX(${offset}%)`;
+
+        // Update indicators
+        indicators.forEach((indicator, i) => {
+          if (i === currentIndex) {
+            indicator.classList.remove('bg-white/50');
+            indicator.classList.add('bg-white');
+          } else {
+            indicator.classList.remove('bg-white');
+            indicator.classList.add('bg-white/50');
+          }
         });
+      }
 
-        chatbotClose.addEventListener('click', () => {
-          chatbotWindow.classList.add('hidden');
+      function nextSlide() {
+        goToSlide(currentIndex + 1);
+      }
+
+      function prevSlide() {
+        goToSlide(currentIndex - 1);
+      }
+
+      // Event listeners for navigation buttons
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          nextSlide();
+          resetAutoPlay();
         });
-      </script>
+      }
 
-      <script>
-        // Banner Carousel Logic
-        (function () {
-          const bannerCarousel = document.getElementById('banner-carousel');
-          if (!bannerCarousel) return;
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          prevSlide();
+          resetAutoPlay();
+        });
+      }
 
-          const slides = bannerCarousel.querySelectorAll('.banner-slide');
-          if (!slides || slides.length === 0) return;
+      // Event listeners for indicators
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          goToSlide(index);
+          resetAutoPlay();
+        });
+      });
 
-          const prevBtn = document.getElementById('prevBannerBtn');
-          const nextBtn = document.getElementById('nextBannerBtn');
-          const indicators = bannerCarousel.parentElement.querySelectorAll('.banner-indicator');
+      // Auto-play functionality
+      function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+      }
 
-          let currentIndex = 0;
-          let autoPlayInterval = null;
+      function stopAutoPlay() {
+        if (autoPlayInterval) {
+          clearInterval(autoPlayInterval);
+          autoPlayInterval = null;
+        }
+      }
 
-          function goToSlide(index) {
-            if (index < 0) index = slides.length - 1;
-            if (index >= slides.length) index = 0;
+      function resetAutoPlay() {
+        stopAutoPlay();
+        startAutoPlay();
+      }
 
-            currentIndex = index;
+      // Pause auto-play on hover
+      const carouselContainer = bannerCarousel.parentElement;
+      carouselContainer.addEventListener('mouseenter', stopAutoPlay);
+      carouselContainer.addEventListener('mouseleave', startAutoPlay);
 
-            // Move carousel
-            const offset = -currentIndex * 100;
-            bannerCarousel.style.transform = `translateX(${offset}%)`;
+      // Start auto-play
+      startAutoPlay();
 
-            // Update indicators
-            indicators.forEach((indicator, i) => {
-              if (i === currentIndex) {
-                indicator.classList.remove('bg-white/50');
-                indicator.classList.add('bg-white');
-              } else {
-                indicator.classList.remove('bg-white');
-                indicator.classList.add('bg-white/50');
-              }
-            });
-          }
+      // Initialize first slide
+      goToSlide(0);
+    })();
+  </script>
 
-          function nextSlide() {
-            goToSlide(currentIndex + 1);
-          }
+  <script>
+    // Flash Sale Countdown Timer
+    (function () {
+      const hoursEl = document.getElementById('hours');
+      const minutesEl = document.getElementById('minutes');
+      const secondsEl = document.getElementById('seconds');
 
-          function prevSlide() {
-            goToSlide(currentIndex - 1);
-          }
+      if (!hoursEl || !minutesEl || !secondsEl) return;
 
-          // Event listeners for navigation buttons
-          if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-              nextSlide();
-              resetAutoPlay();
-            });
-          }
+      // Set end time to 3 hours from now (can be changed to any specific time)
+      const now = new Date().getTime();
+      const endTime = now + (3 * 60 * 60 * 1000); // 3 hours from now
 
-          if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-              prevSlide();
-              resetAutoPlay();
-            });
-          }
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = endTime - now;
 
-          // Event listeners for indicators
-          indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-              goToSlide(index);
-              resetAutoPlay();
-            });
-          });
+        if (distance < 0) {
+          // Timer expired, reset to 3 hours
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          return;
+        }
 
-          // Auto-play functionality
-          function startAutoPlay() {
-            autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
-          }
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-          function stopAutoPlay() {
-            if (autoPlayInterval) {
-              clearInterval(autoPlayInterval);
-              autoPlayInterval = null;
-            }
-          }
+        hoursEl.textContent = hours.toString().padStart(2, '0');
+        minutesEl.textContent = minutes.toString().padStart(2, '0');
+        secondsEl.textContent = seconds.toString().padStart(2, '0');
+      }
 
-          function resetAutoPlay() {
-            stopAutoPlay();
-            startAutoPlay();
-          }
+      // Update immediately
+      updateCountdown();
 
-          // Pause auto-play on hover
-          const carouselContainer = bannerCarousel.parentElement;
-          carouselContainer.addEventListener('mouseenter', stopAutoPlay);
-          carouselContainer.addEventListener('mouseleave', startAutoPlay);
+      // Update every second
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
 
-          // Start auto-play
-          startAutoPlay();
+  <script>
+    // Simple carousel logic (guarded)
+    (function () {
+      const carousel = document.getElementById('carousel');
+      if (!carousel) return;
+      const slides = carousel.querySelectorAll('.min-w-full');
+      if (!slides || slides.length <= 1) return; // nothing to rotate
 
-          // Initialize first slide
-          goToSlide(0);
-        })();
-      </script>
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      let index = 0;
+      let interval = null;
 
-      <script>
-        // Flash Sale Countdown Timer
-        (function () {
-          const hoursEl = document.getElementById('hours');
-          const minutesEl = document.getElementById('minutes');
-          const secondsEl = document.getElementById('seconds');
+      function goTo(i) {
+        index = (i + slides.length) % slides.length;
+        carousel.style.transform = `translateX(-${index * 100}%)`;
+      }
 
-          if (!hoursEl || !minutesEl || !secondsEl) return;
+      function next() { goTo(index + 1); }
+      function prev() { goTo(index - 1); }
 
-          // Set end time to 3 hours from now (can be changed to any specific time)
-          const now = new Date().getTime();
-          const endTime = now + (3 * 60 * 60 * 1000); // 3 hours from now
+      if (nextBtn) nextBtn.addEventListener('click', next);
+      if (prevBtn) prevBtn.addEventListener('click', prev);
 
-          function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = endTime - now;
+      function startAuto() { interval = setInterval(next, 4000); }
+      function stopAuto() { clearInterval(interval); }
 
-            if (distance < 0) {
-              // Timer expired, reset to 3 hours
-              hoursEl.textContent = '00';
-              minutesEl.textContent = '00';
-              secondsEl.textContent = '00';
-              return;
-            }
+      carousel.addEventListener('mouseenter', stopAuto);
+      carousel.addEventListener('mouseleave', startAuto);
 
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      startAuto();
+    })();
+  </script>
+  <script>
+    // Deals strip scrolling
+    (function () {
+      const container = document.getElementById('deals-container');
+      const prev = document.getElementById('deals-prev');
+      const next = document.getElementById('deals-next');
+      if (!container || !prev || !next) return;
 
-            hoursEl.textContent = hours.toString().padStart(2, '0');
-            minutesEl.textContent = minutes.toString().padStart(2, '0');
-            secondsEl.textContent = seconds.toString().padStart(2, '0');
-          }
+      function scrollBy(amount) {
+        container.scrollBy({ left: amount, behavior: 'smooth' });
+      }
 
-          // Update immediately
-          updateCountdown();
-
-          // Update every second
-          setInterval(updateCountdown, 1000);
-        })();
-      </script>
-
-      <script>
-        // Simple carousel logic (guarded)
-        (function () {
-          const carousel = document.getElementById('carousel');
-          if (!carousel) return;
-          const slides = carousel.querySelectorAll('.min-w-full');
-          if (!slides || slides.length <= 1) return; // nothing to rotate
-
-          const prevBtn = document.getElementById('prevBtn');
-          const nextBtn = document.getElementById('nextBtn');
-          let index = 0;
-          let interval = null;
-
-          function goTo(i) {
-            index = (i + slides.length) % slides.length;
-            carousel.style.transform = `translateX(-${index * 100}%)`;
-          }
-
-          function next() { goTo(index + 1); }
-          function prev() { goTo(index - 1); }
-
-          if (nextBtn) nextBtn.addEventListener('click', next);
-          if (prevBtn) prevBtn.addEventListener('click', prev);
-
-          function startAuto() { interval = setInterval(next, 4000); }
-          function stopAuto() { clearInterval(interval); }
-
-          carousel.addEventListener('mouseenter', stopAuto);
-          carousel.addEventListener('mouseleave', startAuto);
-
-          startAuto();
-        })();
-      </script>
-      <script>
-        // Deals strip scrolling
-        (function () {
-          const container = document.getElementById('deals-container');
-          const prev = document.getElementById('deals-prev');
-          const next = document.getElementById('deals-next');
-          if (!container || !prev || !next) return;
-
-          function scrollBy(amount) {
-            container.scrollBy({ left: amount, behavior: 'smooth' });
-          }
-
-          prev.addEventListener('click', () => scrollBy(-container.clientWidth / 2));
-          next.addEventListener('click', () => scrollBy(container.clientWidth / 2));
-        })();
-      </script>
-      <!-- Mobile fixed promo button -->
-      <a href="promotions.html"
-        class="md:hidden fixed bottom-6 right-4 bg-red-600 text-white px-4 py-3 rounded-full shadow-lg z-50"
-        id="mobile-promo-btn">
-        <i class="fas fa-tag mr-2"></i> Khuyến mãi
-      </a>
+      prev.addEventListener('click', () => scrollBy(-container.clientWidth / 2));
+      next.addEventListener('click', () => scrollBy(container.clientWidth / 2));
+    })();
+  </script>
+  <!-- Mobile fixed promo button -->
+  <a href="promotions.html"
+    class="md:hidden fixed bottom-6 right-4 bg-red-600 text-white px-4 py-3 rounded-full shadow-lg z-50"
+    id="mobile-promo-btn">
+    <i class="fas fa-tag mr-2"></i> Khuyến mãi
+  </a>
 
 
 
-      <script>
-        // Wishlist & Quick View Functionality
-        (function () {
-          let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  <script>
+    // Wishlist & Quick View Functionality
+    (function () {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
-          // Update wishlist count
-          function updateWishlistCount() {
-            const count = wishlist.length;
-            const badge = document.getElementById('wishlist-count');
-            if (count > 0) {
-              badge.textContent = count;
-              badge.classList.remove('hidden');
-            } else {
-              badge.classList.add('hidden');
-            }
-          }
+      // Update wishlist count
+      function updateWishlistCount() {
+        const count = wishlist.length;
+        const badge = document.getElementById('wishlist-count');
+        if (count > 0) {
+          badge.textContent = count;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
 
-          // Add to wishlist
-          function addToWishlist(productId, productName, productPrice, productImage) {
-            const exists = wishlist.find(item => item.id === productId);
-            if (!exists) {
-              wishlist.push({ id: productId, name: productName, price: productPrice, image: productImage });
-              localStorage.setItem('wishlist', JSON.stringify(wishlist));
-              updateWishlistCount();
-              showNotification('Đã thêm vào yêu thích!', 'success');
-            } else {
-              removeFromWishlist(productId);
-            }
-          }
+      // Add to wishlist
+      function addToWishlist(productId, productName, productPrice, productImage) {
+        const exists = wishlist.find(item => item.id === productId);
+        if (!exists) {
+          wishlist.push({ id: productId, name: productName, price: productPrice, image: productImage });
+          localStorage.setItem('wishlist', JSON.stringify(wishlist));
+          updateWishlistCount();
+          showNotification('Đã thêm vào yêu thích!', 'success');
+        } else {
+          removeFromWishlist(productId);
+        }
+      }
 
-          // Remove from wishlist
-          function removeFromWishlist(productId) {
-            wishlist = wishlist.filter(item => item.id !== productId);
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-            updateWishlistCount();
-            renderWishlist();
-            showNotification('Đã xóa khỏi yêu thích!', 'info');
-          }
+      // Remove from wishlist
+      function removeFromWishlist(productId) {
+        wishlist = wishlist.filter(item => item.id !== productId);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        updateWishlistCount();
+        renderWishlist();
+        showNotification('Đã xóa khỏi yêu thích!', 'info');
+      }
 
-          // Show notification
-          function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-24 right-6 z-[60] px-6 py-3 rounded-lg shadow-xl text-white font-semibold animate-slideIn ${type === 'success' ? 'bg-green-600' : 'bg-blue-600'}`;
-            notification.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
-            document.body.appendChild(notification);
+      // Show notification
+      function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-24 right-6 z-[60] px-6 py-3 rounded-lg shadow-xl text-white font-semibold animate-slideIn ${type === 'success' ? 'bg-green-600' : 'bg-blue-600'}`;
+        notification.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
+        document.body.appendChild(notification);
 
-            setTimeout(() => {
-              notification.remove();
-            }, 3000);
-          }
+        setTimeout(() => {
+          notification.remove();
+        }, 3000);
+      }
 
-          // Render wishlist in modal
-          function renderWishlist() {
-            const container = document.getElementById('wishlist-items');
-            if (wishlist.length === 0) {
-              container.innerHTML = '<p class="text-center text-gray-500 py-8">Chưa có sản phẩm yêu thích</p>';
-              return;
-            }
+      // Render wishlist in modal
+      function renderWishlist() {
+        const container = document.getElementById('wishlist-items');
+        if (wishlist.length === 0) {
+          container.innerHTML = '<p class="text-center text-gray-500 py-8">Chưa có sản phẩm yêu thích</p>';
+          return;
+        }
 
-            container.innerHTML = wishlist.map(item => `
+        container.innerHTML = wishlist.map(item => `
             <div class="flex items-center gap-4 p-4 border-b hover:bg-gray-50 transition">
               <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.name}" class="w-20 h-20 object-contain rounded">
               <div class="flex-1">
@@ -2449,335 +2792,335 @@
               </button>
             </div>
           `).join('');
-          }
+      }
 
-          // Toggle wishlist modal
-          const wishlistBtn = document.getElementById('wishlist-btn');
-          const wishlistModal = document.getElementById('wishlist-modal');
-          const wishlistClose = document.getElementById('wishlist-modal-close');
+      // Toggle wishlist modal
+      const wishlistBtn = document.getElementById('wishlist-btn');
+      const wishlistModal = document.getElementById('wishlist-modal');
+      const wishlistClose = document.getElementById('wishlist-modal-close');
 
-          if (wishlistBtn) {
-            wishlistBtn.addEventListener('click', (e) => {
-              e.preventDefault();
-              renderWishlist();
-              wishlistModal.classList.remove('hidden');
-              wishlistModal.classList.add('flex');
-            });
-          }
-
-          if (wishlistClose) {
-            wishlistClose.addEventListener('click', () => {
-              wishlistModal.classList.add('hidden');
-              wishlistModal.classList.remove('flex');
-            });
-          }
-
-          wishlistModal?.addEventListener('click', (e) => {
-            if (e.target === wishlistModal) {
-              wishlistModal.classList.add('hidden');
-              wishlistModal.classList.remove('flex');
-            }
-          });
-
-          // Add wishlist buttons to all products dynamically
-          document.addEventListener('DOMContentLoaded', () => {
-            const productCards = document.querySelectorAll('a[href*="product_detail.html"]');
-
-            productCards.forEach(card => {
-              // Skip if already has wishlist button
-              if (card.querySelector('.wishlist-btn')) return;
-
-              // Make card relative
-              card.style.position = 'relative';
-
-              // Create wishlist button
-              const wishlistBtn = document.createElement('button');
-              wishlistBtn.className = 'absolute top-3 right-3 z-10 w-10 h-10 bg-white/90 hover:bg-red-500 rounded-full shadow-md transition-all duration-300 flex items-center justify-center wishlist-btn';
-              wishlistBtn.innerHTML = '<i class="far fa-heart text-gray-600 hover:text-white transition-colors"></i>';
-
-              // Get product info
-              const productId = card.href.match(/id=(\d+)/)?.[1] || Math.random();
-              const productName = card.querySelector('h4')?.textContent || 'Sản phẩm';
-              const productPrice = card.querySelector('.text-red-600')?.textContent || '';
-              const productImage = card.querySelector('img')?.src || '';
-
-              wishlistBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                addToWishlist(productId, productName, productPrice, productImage);
-
-                // Toggle icon
-                const icon = wishlistBtn.querySelector('i');
-                const isInWishlist = wishlist.find(item => item.id === productId);
-                if (isInWishlist) {
-                  icon.classList.remove('far');
-                  icon.classList.add('fas');
-                  wishlistBtn.classList.add('bg-red-500');
-                } else {
-                  icon.classList.remove('fas');
-                  icon.classList.add('far');
-                  wishlistBtn.classList.remove('bg-red-500');
-                }
-              });
-
-              // Check if already in wishlist
-              const isInWishlist = wishlist.find(item => item.id === productId);
-              if (isInWishlist) {
-                wishlistBtn.querySelector('i').classList.remove('far');
-                wishlistBtn.querySelector('i').classList.add('fas');
-                wishlistBtn.classList.add('bg-red-500');
-              }
-
-              card.appendChild(wishlistBtn);
-            });
-
-            updateWishlistCount();
-          });
-
-          // Make removeFromWishlist global
-          window.removeFromWishlist = removeFromWishlist;
-        })();
-      </script>
-
-      <style>
-        @keyframes slideIn {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        .animate-slideIn {
-          animation: slideIn 0.3s ease-out;
-        }
-      </style>
-
-      <script>
-        // Ensure fixed promo button and chatbot don't overlap on small screens.
-        // Only adjust when the promo button is actually visible (md:hidden means hidden on md+).
-        function adjustFixedStacking() {
-          const promo = document.getElementById('mobile-promo-btn');
-          const chatbot = document.getElementById('chatbot-toggle');
-          if (!promo || !chatbot) return;
-
-          const promoStyle = window.getComputedStyle(promo);
-          const promoVisible = promoStyle.display !== 'none' && promoStyle.visibility !== 'hidden' && promo.offsetParent !== null;
-
-          if (window.innerWidth <= 768 && promoVisible) {
-            // Compute a safe bottom offset: promo height + a small gap.
-            const promoRect = promo.getBoundingClientRect();
-            const gap = 16; // px
-            const base = promoRect.height || 48;
-            chatbot.style.bottom = (base + gap + 16) + 'px';
-          } else {
-            // Reset to CSS default (the class bottom-6)
-            chatbot.style.bottom = '';
-          }
-        }
-        window.addEventListener('resize', adjustFixedStacking);
-        document.addEventListener('DOMContentLoaded', adjustFixedStacking);
-      </script>
-
-      <!-- Image Fallback Handler -->
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          // Xử lý lỗi ảnh - thay thế bằng placeholder khi ảnh không tải được
-          const images = document.querySelectorAll('img[loading="lazy"], img[src*="cdn.tgdd.vn"]');
-
-          images.forEach(img => {
-            img.addEventListener('error', function () {
-              // Tạo placeholder SVG với màu sắc phù hợp
-              const placeholder = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Crect fill='%23f3f4f6' width='600' height='600'/%3E%3Cg fill='%239ca3af'%3E%3Cpath d='M200 250h200v100h-200z'/%3E%3Ccircle cx='250' cy='280' r='15'/%3E%3Cpath d='M200 350l50-40 40 30 60-50 50 40v60h-200z'/%3E%3C/g%3E%3Ctext x='300' y='450' font-family='Arial' font-size='20' fill='%236b7280' text-anchor='middle'%3EH%C3%ACnh %E1%BA%A3nh kh%C3%B4ng kh%E1%BA%A3 d%E1%BB%A5ng%3C/text%3E%3C/svg%3E`;
-
-              this.src = placeholder;
-              this.classList.add('opacity-50');
-
-              // Thử tải lại sau 2 giây
-              setTimeout(() => {
-                const originalSrc = this.getAttribute('data-original-src') || this.src;
-                if (originalSrc !== placeholder) {
-                  this.setAttribute('data-original-src', originalSrc);
-                }
-              }, 2000);
-            });
-
-            // Thêm loading animation
-            img.addEventListener('load', function () {
-              this.classList.add('animate-fadeIn');
-            });
-          });
-
-          // Lazy loading cho ảnh thương hiệu
-          const brandImages = document.querySelectorAll('.brand-card img, .deal-card img, .product-card img');
-
-          const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                const img = entry.target;
-                const src = img.getAttribute('data-src') || img.src;
-
-                if (src && src !== img.src) {
-                  img.src = src;
-                }
-
-                observer.unobserve(img);
-              }
-            });
-          }, {
-            rootMargin: '50px'
-          });
-
-          brandImages.forEach(img => imageObserver.observe(img));
+      if (wishlistBtn) {
+        wishlistBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          renderWishlist();
+          wishlistModal.classList.remove('hidden');
+          wishlistModal.classList.add('flex');
         });
+      }
 
-        // Preload critical images
-        const criticalImages = [
-          'https://cdn.tgdd.vn/Products/Images/42/316126/iphone-16-pro-max-titan-sa-mac-1-750x500.jpg',
-          'https://cdn.tgdd.vn/Products/Images/42/307174/samsung-galaxy-s24-ultra-grey-thumbnew-600x600.jpg',
-          'https://cdn.tgdd.vn/Products/Images/42/313203/xiaomi-14-xanh-la-thumb-600x600.jpg'
-        ];
-
-        criticalImages.forEach(src => {
-          const link = document.createElement('link');
-          link.rel = 'preload';
-          link.as = 'image';
-          link.href = src;
-          document.head.appendChild(link);
+      if (wishlistClose) {
+        wishlistClose.addEventListener('click', () => {
+          wishlistModal.classList.add('hidden');
+          wishlistModal.classList.remove('flex');
         });
-      </script>
+      }
 
-      <!-- Mobile Menu & Touch Gestures -->
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          // Mobile Menu Toggle
-          const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-          const mobileMenu = document.querySelector('.mobile-menu');
-          const mobileMenuClose = document.querySelector('.mobile-menu-close');
+      wishlistModal?.addEventListener('click', (e) => {
+        if (e.target === wishlistModal) {
+          wishlistModal.classList.add('hidden');
+          wishlistModal.classList.remove('flex');
+        }
+      });
 
-          if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', function () {
-              mobileMenu.classList.remove('hidden');
-              document.body.style.overflow = 'hidden'; // Prevent background scroll
-            });
-          }
+      // Add wishlist buttons to all products dynamically
+      document.addEventListener('DOMContentLoaded', () => {
+        const productCards = document.querySelectorAll('a[href*="product_detail.html"]');
 
-          if (mobileMenuClose) {
-            mobileMenuClose.addEventListener('click', closeMobileMenu);
-          }
+        productCards.forEach(card => {
+          // Skip if already has wishlist button or has no-wishlist class
+          if (card.querySelector('.wishlist-btn') || card.classList.contains('no-wishlist')) return;
 
-          // Close when clicking overlay
-          if (mobileMenu) {
-            mobileMenu.addEventListener('click', function (e) {
-              if (e.target === mobileMenu) {
-                closeMobileMenu();
-              }
-            });
-          }
+          // Make card relative
+          card.style.position = 'relative';
 
-          function closeMobileMenu() {
-            mobileMenu.classList.add('hidden');
-            document.body.style.overflow = ''; // Restore scroll
-          }
+          // Create wishlist button
+          const wishlistBtn = document.createElement('button');
+          wishlistBtn.className = 'absolute top-3 right-3 z-10 w-10 h-10 bg-white/90 hover:bg-red-500 rounded-full shadow-md transition-all duration-300 flex items-center justify-center wishlist-btn';
+          wishlistBtn.innerHTML = '<i class="far fa-heart text-gray-600 hover:text-white transition-colors"></i>';
 
-          // Close menu on navigation
-          const mobileNavLinks = mobileMenu.querySelectorAll('a');
-          mobileNavLinks.forEach(link => {
-            link.addEventListener('click', closeMobileMenu);
-          });
+          // Get product info
+          const productId = card.href.match(/id=(\d+)/)?.[1] || Math.random();
+          const productName = card.querySelector('h4')?.textContent || 'Sản phẩm';
+          const productPrice = card.querySelector('.text-red-600')?.textContent || '';
+          const productImage = card.querySelector('img')?.src || '';
 
-          // Touch Swipe for Banner Carousel
-          const bannerCarouselContainer = document.querySelector('.banner-carousel-container');
-          if (bannerCarouselContainer) {
-            let touchStartX = 0;
-            let touchEndX = 0;
-            let touchStartTime = 0;
+          wishlistBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            addToWishlist(productId, productName, productPrice, productImage);
 
-            bannerCarouselContainer.addEventListener('touchstart', function (e) {
-              touchStartX = e.changedTouches[0].screenX;
-              touchStartTime = Date.now();
-            }, { passive: true });
-
-            bannerCarouselContainer.addEventListener('touchend', function (e) {
-              touchEndX = e.changedTouches[0].screenX;
-              const touchDuration = Date.now() - touchStartTime;
-              const swipeDistance = touchStartX - touchEndX;
-
-              // Swipe detection: at least 50px and within 300ms
-              if (Math.abs(swipeDistance) > 50 && touchDuration < 300) {
-                if (swipeDistance > 0) {
-                  // Swipe left - next slide
-                  document.getElementById('nextBannerBtn').click();
-                } else {
-                  // Swipe right - previous slide
-                  document.getElementById('prevBannerBtn').click();
-                }
-              }
-            }, { passive: true });
-          }
-
-          // Responsive font size adjustment
-          function adjustFontSize() {
-            const viewportWidth = window.innerWidth;
-            const root = document.documentElement;
-
-            if (viewportWidth < 375) {
-              root.style.fontSize = '14px';
-            } else if (viewportWidth < 768) {
-              root.style.fontSize = '15px';
+            // Toggle icon
+            const icon = wishlistBtn.querySelector('i');
+            const isInWishlist = wishlist.find(item => item.id === productId);
+            if (isInWishlist) {
+              icon.classList.remove('far');
+              icon.classList.add('fas');
+              wishlistBtn.classList.add('bg-red-500');
             } else {
-              root.style.fontSize = '16px';
+              icon.classList.remove('fas');
+              icon.classList.add('far');
+              wishlistBtn.classList.remove('bg-red-500');
             }
-          }
-
-          adjustFontSize();
-          window.addEventListener('resize', adjustFontSize);
-
-          // Detect device type
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-          const isTablet = /iPad|Android/i.test(navigator.userAgent) && window.innerWidth >= 768;
-
-          if (isMobile) {
-            document.body.classList.add('is-mobile');
-          }
-          if (isTablet) {
-            document.body.classList.add('is-tablet');
-          }
-
-          // Orientation change handler
-          window.addEventListener('orientationchange', function () {
-            setTimeout(() => {
-              adjustFontSize();
-              // Refresh layout after orientation change
-              window.dispatchEvent(new Event('resize'));
-            }, 100);
           });
 
-          // Prevent double-tap zoom on buttons
-          let lastTouchEnd = 0;
-          document.addEventListener('touchend', function (e) {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-              e.preventDefault();
-            }
-            lastTouchEnd = now;
-          }, { passive: false });
+          // Check if already in wishlist
+          const isInWishlist = wishlist.find(item => item.id === productId);
+          if (isInWishlist) {
+            wishlistBtn.querySelector('i').classList.remove('far');
+            wishlistBtn.querySelector('i').classList.add('fas');
+            wishlistBtn.classList.add('bg-red-500');
+          }
 
-          // Safe area insets for notch devices
-          if (CSS.supports('padding-top: env(safe-area-inset-top)')) {
-            document.body.style.paddingTop = 'env(safe-area-inset-top)';
-            document.body.style.paddingBottom = 'env(safe-area-inset-bottom)';
+          card.appendChild(wishlistBtn);
+        });
+
+        updateWishlistCount();
+      });
+
+      // Make removeFromWishlist global
+      window.removeFromWishlist = removeFromWishlist;
+    })();
+  </script>
+
+  <style>
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .animate-slideIn {
+      animation: slideIn 0.3s ease-out;
+    }
+  </style>
+
+  <script>
+    // Ensure fixed promo button and chatbot don't overlap on small screens.
+    // Only adjust when the promo button is actually visible (md:hidden means hidden on md+).
+    function adjustFixedStacking() {
+      const promo = document.getElementById('mobile-promo-btn');
+      const chatbot = document.getElementById('chatbot-toggle');
+      if (!promo || !chatbot) return;
+
+      const promoStyle = window.getComputedStyle(promo);
+      const promoVisible = promoStyle.display !== 'none' && promoStyle.visibility !== 'hidden' && promo.offsetParent !== null;
+
+      if (window.innerWidth <= 768 && promoVisible) {
+        // Compute a safe bottom offset: promo height + a small gap.
+        const promoRect = promo.getBoundingClientRect();
+        const gap = 16; // px
+        const base = promoRect.height || 48;
+        chatbot.style.bottom = (base + gap + 16) + 'px';
+      } else {
+        // Reset to CSS default (the class bottom-6)
+        chatbot.style.bottom = '';
+      }
+    }
+    window.addEventListener('resize', adjustFixedStacking);
+    document.addEventListener('DOMContentLoaded', adjustFixedStacking);
+  </script>
+
+  <!-- Image Fallback Handler -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Xử lý lỗi ảnh - thay thế bằng placeholder khi ảnh không tải được
+      const images = document.querySelectorAll('img[loading="lazy"], img[src*="cdn.tgdd.vn"]');
+
+      images.forEach(img => {
+        img.addEventListener('error', function () {
+          // Tạo placeholder SVG với màu sắc phù hợp
+          const placeholder = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Crect fill='%23f3f4f6' width='600' height='600'/%3E%3Cg fill='%239ca3af'%3E%3Cpath d='M200 250h200v100h-200z'/%3E%3Ccircle cx='250' cy='280' r='15'/%3E%3Cpath d='M200 350l50-40 40 30 60-50 50 40v60h-200z'/%3E%3C/g%3E%3Ctext x='300' y='450' font-family='Arial' font-size='20' fill='%236b7280' text-anchor='middle'%3EH%C3%ACnh %E1%BA%A3nh kh%C3%B4ng kh%E1%BA%A3 d%E1%BB%A5ng%3C/text%3E%3C/svg%3E`;
+
+          this.src = placeholder;
+          this.classList.add('opacity-50');
+
+          // Thử tải lại sau 2 giây
+          setTimeout(() => {
+            const originalSrc = this.getAttribute('data-original-src') || this.src;
+            if (originalSrc !== placeholder) {
+              this.setAttribute('data-original-src', originalSrc);
+            }
+          }, 2000);
+        });
+
+        // Thêm loading animation
+        img.addEventListener('load', function () {
+          this.classList.add('animate-fadeIn');
+        });
+      });
+
+      // Lazy loading cho ảnh thương hiệu
+      const brandImages = document.querySelectorAll('.brand-card img, .deal-card img, .product-card img');
+
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src') || img.src;
+
+            if (src && src !== img.src) {
+              img.src = src;
+            }
+
+            observer.unobserve(img);
           }
         });
-      </script>
+      }, {
+        rootMargin: '50px'
+      });
 
-      <!-- Import Shared Product Data & Utils -->
-      <script src="products-data.js"></script>
-      <script src="products-utils.js"></script>
+      brandImages.forEach(img => imageObserver.observe(img));
+    });
+
+    // Preload critical images
+    const criticalImages = [
+      'https://cdn.tgdd.vn/Products/Images/42/316126/iphone-16-pro-max-titan-sa-mac-1-750x500.jpg',
+      'https://cdn.tgdd.vn/Products/Images/42/307174/samsung-galaxy-s24-ultra-grey-thumbnew-600x600.jpg',
+      'https://cdn.tgdd.vn/Products/Images/42/313203/xiaomi-14-xanh-la-thumb-600x600.jpg'
+    ];
+
+    criticalImages.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
+  </script>
+
+  <!-- Mobile Menu & Touch Gestures -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function () {
+          mobileMenu.classList.remove('hidden');
+          document.body.style.overflow = 'hidden'; // Prevent background scroll
+        });
+      }
+
+      if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+      }
+
+      // Close when clicking overlay
+      if (mobileMenu) {
+        mobileMenu.addEventListener('click', function (e) {
+          if (e.target === mobileMenu) {
+            closeMobileMenu();
+          }
+        });
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = ''; // Restore scroll
+      }
+
+      // Close menu on navigation
+      const mobileNavLinks = mobileMenu.querySelectorAll('a');
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // Touch Swipe for Banner Carousel
+      const bannerCarouselContainer = document.querySelector('.banner-carousel-container');
+      if (bannerCarouselContainer) {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartTime = 0;
+
+        bannerCarouselContainer.addEventListener('touchstart', function (e) {
+          touchStartX = e.changedTouches[0].screenX;
+          touchStartTime = Date.now();
+        }, { passive: true });
+
+        bannerCarouselContainer.addEventListener('touchend', function (e) {
+          touchEndX = e.changedTouches[0].screenX;
+          const touchDuration = Date.now() - touchStartTime;
+          const swipeDistance = touchStartX - touchEndX;
+
+          // Swipe detection: at least 50px and within 300ms
+          if (Math.abs(swipeDistance) > 50 && touchDuration < 300) {
+            if (swipeDistance > 0) {
+              // Swipe left - next slide
+              document.getElementById('nextBannerBtn').click();
+            } else {
+              // Swipe right - previous slide
+              document.getElementById('prevBannerBtn').click();
+            }
+          }
+        }, { passive: true });
+      }
+
+      // Responsive font size adjustment
+      function adjustFontSize() {
+        const viewportWidth = window.innerWidth;
+        const root = document.documentElement;
+
+        if (viewportWidth < 375) {
+          root.style.fontSize = '14px';
+        } else if (viewportWidth < 768) {
+          root.style.fontSize = '15px';
+        } else {
+          root.style.fontSize = '16px';
+        }
+      }
+
+      adjustFontSize();
+      window.addEventListener('resize', adjustFontSize);
+
+      // Detect device type
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const isTablet = /iPad|Android/i.test(navigator.userAgent) && window.innerWidth >= 768;
+
+      if (isMobile) {
+        document.body.classList.add('is-mobile');
+      }
+      if (isTablet) {
+        document.body.classList.add('is-tablet');
+      }
+
+      // Orientation change handler
+      window.addEventListener('orientationchange', function () {
+        setTimeout(() => {
+          adjustFontSize();
+          // Refresh layout after orientation change
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+
+      // Prevent double-tap zoom on buttons
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function (e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+
+      // Safe area insets for notch devices
+      if (CSS.supports('padding-top: env(safe-area-inset-top)')) {
+        document.body.style.paddingTop = 'env(safe-area-inset-top)';
+        document.body.style.paddingBottom = 'env(safe-area-inset-bottom)';
+      }
+    });
+  </script>
+
+  <!-- Import Shared Product Data & Utils -->
+  <script src="products-data.js"></script>
+  <script src="products-utils.js"></script>
 </body>
 
 </html>
