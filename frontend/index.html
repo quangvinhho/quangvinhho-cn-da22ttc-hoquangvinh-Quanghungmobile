@@ -1147,29 +1147,42 @@
     let autoPlayInterval = null;
     let isAutoPlaying = true;
 
-    // Hàm chuyển banner với hiệu ứng mượt mà
+    // Hàm chuyển banner với hiệu ứng mượt mà như TGDĐ và Táng Cells
     function changeBanner(imgSrc, title, desc) {
       const banner = document.getElementById('main-banner');
       const titleEl = document.getElementById('banner-title');
       const descEl = document.getElementById('banner-desc');
-      const overlay = banner.parentElement.querySelector('.absolute');
+      const overlay = banner.parentElement.querySelector('.absolute.bottom-4');
 
       // Dừng autoplay khi user click
       stopAutoPlay();
 
-      // Hiệu ứng fade out
-      banner.style.opacity = 0;
-      if (overlay) overlay.style.opacity = 0;
+      // Hiệu ứng fade out + slide ra nhanh
+      banner.style.opacity = '0';
+      banner.style.transform = 'scale(1.05)';
+      
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'translateY(20px)';
+      }
 
       setTimeout(() => {
+        // Đổi nội dung
         banner.src = imgSrc;
-        titleEl.textContent = title;
-        descEl.textContent = desc;
+        if (titleEl) titleEl.textContent = title;
+        if (descEl) descEl.textContent = desc;
 
-        // Fade in
-        banner.style.opacity = 1;
-        if (overlay) overlay.style.opacity = 1;
-      }, 400);
+        // Fade in + slide vào mượt mà
+        requestAnimationFrame(() => {
+          banner.style.opacity = '1';
+          banner.style.transform = 'scale(1)';
+          
+          if (overlay) {
+            overlay.style.opacity = '1';
+            overlay.style.transform = 'translateY(0)';
+          }
+        });
+      }, 200);
 
       // Tiếp tục autoplay sau 10 giây
       setTimeout(() => {
@@ -1224,7 +1237,7 @@
       isAutoPlaying = true;
       autoPlayInterval = setInterval(() => {
         nextBanner();
-      }, 5000); // Chuyển sau mỗi 5 giây
+      }, 3000); // Chuyển sau mỗi 3 giây
     }
 
     // Dừng autoplay
@@ -1237,10 +1250,18 @@
 
     // Khởi động khi trang load xong
     document.addEventListener('DOMContentLoaded', function () {
-      // Thêm smooth transition cho banner
+      // Thêm hiệu ứng slide chuyên nghiệp như TGDĐ và Táng Cells
       const banner = document.getElementById('main-banner');
+      const bannerTitle = document.getElementById('banner-title');
+      const bannerDesc = document.getElementById('banner-desc');
+      
       if (banner) {
-        banner.style.transition = 'opacity 0.5s ease-in-out';
+        // Thêm transition nhanh và mượt mà (0.2s)
+        banner.style.transition = 'opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        // Thêm transition cho text overlay
+        if (bannerTitle) bannerTitle.style.transition = 'all 0.2s ease-out';
+        if (bannerDesc) bannerDesc.style.transition = 'all 0.2s ease-out 0.05s';
 
         // Dừng autoplay khi hover vào banner
         const bannerContainer = banner.parentElement;
