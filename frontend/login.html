@@ -5,11 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Đăng nhập - QuangHưng Mobile</title>
+    
+    <!-- Google Fonts - Roboto & Montserrat (Tối ưu Typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="header-styles.css">
     <link rel="stylesheet" href="responsive.css">
     <style>
+      * {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      }
+      
       :root {
         --red-main: #e41e26;
         --red-dark: #c5111a;
@@ -22,9 +32,9 @@
     <div id="header-nav-placeholder"></div>
     
     <script>
-        // Load header-nav component with cache busting
+        // Load header component with cache busting
         const headerVersion = '?v=' + new Date().getTime();
-        fetch('components/header-nav.html' + headerVersion)
+        fetch('components/header.html' + headerVersion)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('header-nav-placeholder').innerHTML = html;

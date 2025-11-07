@@ -1,259 +1,5 @@
-<!-- Navigation Styles -->
-
-    /* ===== KẾT THÚC PHẦN ĐỒNG BỘ FONT VÀ MÀU SẮC ===== */
-
-    /* ===== TĂNG KÍCH THƯỚC CHỮ ĐỂ CẢI THIỆN TRẢI NGHIỆM NGƯỜI DÙNG ===== */
-    /* Tăng base font-size cho toàn trang */
-    html {
-      font-size: 16px;
-      /* Base size */
-    }
-
-    body {
-      font-size: 1.125rem;
-      /* 18px - Tăng kích thước chữ nội dung */
-      line-height: 1.6;
-      background: #f3f4f6;
-    }
-
-    /* Tăng kích thước tiêu đề */
-    h1 {
-      font-size: 2.5rem !important;
-      /* 40px */
-      line-height: 1.2;
-    }
-
-    h2 {
-      font-size: 2rem !important;
-      /* 32px */
-      line-height: 1.3;
-    }
-
-    h3 {
-      font-size: 1.75rem !important;
-      /* 28px */
-      line-height: 1.3;
-    }
-
-    h4 {
-      font-size: 1.5rem !important;
-      /* 24px */
-      line-height: 1.4;
-    }
-
-    h5 {
-      font-size: 1.25rem !important;
-      /* 20px */
-      line-height: 1.4;
-    }
-
-    h6 {
-      font-size: 1.125rem !important;
-      /* 18px */
-      line-height: 1.4;
-    }
-
-    /* Tăng kích thước chữ cho các thành phần */
-    p,
-    a,
-    span,
-    li {
-      font-size: 1.125rem;
-      /* 18px */
-      line-height: 1.6;
-    }
-
-    /* Tăng kích thước input và button */
-    input,
-    textarea,
-    select {
-      font-size: 1.125rem !important;
-      /* 18px */
-      padding: 0.75rem 1rem;
-    }
-
-    button {
-      font-size: 1.125rem !important;
-      /* 18px */
-      padding: 0.75rem 1.5rem;
-    }
-
-    /* Đặc biệt: Giá sản phẩm nổi bật hơn */
-    .product-price {
-      font-size: 1.5rem !important;
-      /* 24px */
-      font-weight: bold;
-    }
-
-    /* Link và menu */
-    nav a,
-    .menu-item {
-      font-size: 1.125rem !important;
-      /* 18px */
-    }
-
-    /* Giữ các text nhỏ (như caption, helper text) ở kích thước vừa phải */
-    .text-xs {
-      font-size: 0.875rem !important;
-      /* 14px */
-    }
-
-    .text-sm {
-      font-size: 1rem !important;
-      /* 16px */
-    }
-
-    /* ===== KẾT THÚC PHẦN TĂNG KÍCH THƯỚC CHỮ ===== */
-
-    /* Layout đẹp cho section sản phẩm - Khung trắng giữa, hai bên xám */
-
-    /* Container giới hạn chiều rộng và căn giữa */
-    .max-w-7xl {
-      max-width: 1280px;
-    }
-
-    /* Khung trắng chứa sản phẩm với hiệu ứng đẹp */
-    section .bg-white.rounded-2xl,
-    section .bg-gradient-to-br.rounded-2xl {
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      transition: all 0.3s ease;
-    }
-
-    section .bg-white.rounded-2xl:hover {
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Spacing giữa các section */
-    section.py-6 {
-      margin-bottom: 0;
-    }
-
-    /* Responsive - trên mobile thì full width */
-    @media (max-width: 640px) {
-      .max-w-7xl {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
-
-      section .bg-white.rounded-2xl,
-      section .bg-gradient-to-br.rounded-2xl {
-        border-radius: 1rem;
-        padding: 1rem;
-      }
-    }
-
-    /* Hiệu ứng cho banner khuyến mãi */
-    @keyframes pulse-glow {
-
-      0%,
-      100% {
-        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3), 0 2px 4px -1px rgba(239, 68, 68, 0.2);
-      }
-
-      50% {
-        box-shadow: 0 10px 20px -3px rgba(239, 68, 68, 0.5), 0 4px 6px -2px rgba(239, 68, 68, 0.3);
-      }
-    }
-
-    section .bg-gradient-to-br.from-red-500 {
-      animation: pulse-glow 2s ease-in-out infinite;
-    }
-
-    /* Banner layout - 3 banner phải có chiều cao bằng tổng chiều cao trái */
-    @media (min-width: 1024px) {
-      .lg\:w-\[30\%\] {
-        height: 100%;
-      }
-
-      .lg\:w-\[30\%\]>div {
-        flex: 1;
-        min-height: 0;
-      }
-
-      .lg\:w-\[30\%\] img {
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-
-    /* Đảm bảo contrast cho text */
-    .high-contrast-text {
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .medium-contrast-text {
-      color: var(--text-secondary);
-    }
-
-    /* Nút bấm với contrast cao */
-    .btn-primary {
-      background-color: var(--red-dark);
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    .btn-primary:hover {
-      background-color: #8b0d12;
-    }
-
-    /* Giá khuyến mãi nổi bật */
-    .price-sale {
-      color: var(--red-accent);
-      font-weight: 700;
-      font-size: 1.125rem;
-    }
-
-    .price-original {
-      color: var(--text-muted);
-      text-decoration: line-through;
-    }
-
-    /* Navigation hover effects */
-    .nav-link {
-      position: relative;
-      transition: all 0.3s ease;
-      font-size: 0.875rem;
-    }
-
-    /* Override font size for navigation specifically */
-    nav a,
-    nav button {
-      font-size: 0.875rem !important;
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 2px;
-      background: #ffc107;
-      transition: width 0.3s ease;
-    }
-
-    .nav-link:hover::after {
-      width: 70%;
-    }
-
-    /* Dropdown animation */
-    .dropdown-menu {
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-    }
-
-    .group:hover .dropdown-menu {
-      transform: translateY(0);
-    }
-  </style>
-</head>
-
-<body class="bg-[#f8f9fa]">
-
-  <!-- ===== HEADER ===== -->
-  <header class="bg-gradient-to-r from-[#c41e26] to-[#d91e23] text-white sticky top-0 z-50 shadow-lg">
+﻿<!-- ===== HEADER ===== -->
+<header class="bg-gradient-to-r from-[#c41e26] to-[#d91e23] text-white sticky top-0 z-50 shadow-lg">
     <!-- Top Bar -->
     <div class="container mx-auto px-4 lg:px-6">
       <div class="flex items-center justify-between py-2">
@@ -271,13 +17,13 @@
         <!-- Desktop Navigation Menu -->
         <nav class="hidden lg:flex items-center gap-1 mx-3 flex-1">
           <a href="index.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap text-white">
             Trang chủ
           </a>
 
           <div class="relative group">
             <button
-              class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap flex items-center gap-1">
+              class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap flex items-center gap-1 text-white">
               Sản phẩm
               <i
                 class="fa-solid fa-chevron-down text-xs ml-1 group-hover:rotate-180 transition-transform duration-300"></i>
@@ -299,15 +45,15 @@
           </div>
 
           <a href="promotions.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap text-white">
             Khuyến mãi
           </a>
           <a href="news.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap text-white">
             Tin tức
           </a>
           <a href="contact.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap text-white">
             Liên hệ
           </a>
         </nav>
@@ -316,15 +62,15 @@
         <div
           class="hidden lg:flex flex-1 max-w-sm bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
           <input type="text" id="desktop-search-input" placeholder="Tìm kiếm sản phẩm..."
-            class="flex-grow px-3 py-2 text-[#1a1a1a] focus:outline-none text-sm font-medium placeholder:text-[#666666]" />
+            class="flex-grow px-3 py-2 text-[#1a1a1a] focus:outline-none text-base font-medium placeholder:text-[#666666]" />
           <button id="desktop-search-btn"
-            class="bg-[var(--red-dark)] px-4 text-white hover:bg-[#8b0d12] transition-all duration-300 font-semibold">
+            class="bg-[var(--red-dark)] px-4 py-2 rounded-r-lg text-white hover:bg-[#8b0d12] transition-all duration-300 font-semibold">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
 
         <!-- Right Menu -->
-        <div class="flex items-center gap-1.5 lg:gap-2 text-sm font-medium ml-2">
+        <div class="flex items-center gap-1.5 lg:gap-2 font-medium ml-2" style="font-size: 1.0625rem;">
           <!-- Mobile Menu Button - Hiển thị đầu tiên trên mobile -->
           <button id="mobile-menu-btn"
             class="lg:hidden text-white text-xl hover:scale-110 transition-transform duration-300 bg-white/10 px-2.5 py-1.5 rounded-lg hover:bg-white/20 order-1">
@@ -332,18 +78,18 @@
           </button>
           
           <a href="cart.html"
-            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-2">
-            <i class="fa-solid fa-cart-shopping text-base lg:hidden"></i>
-            <span class="font-semibold hidden lg:inline text-sm">Giỏ hàng</span>
+            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-2 text-white">
+            <i class="fa-solid fa-cart-shopping text-base lg:hidden text-white"></i>
+            <span class="font-semibold hidden lg:inline text-white">Giỏ hàng</span>
           </a>
           <a href="contact.html"
-            class="hover:scale-110 transition-transform duration-300 hidden lg:flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 order-3">
-            <span class="text-yellow-300 font-bold text-sm">1800.2097</span>
+            class="hover:scale-110 transition-transform duration-300 hidden lg:flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 order-3 text-white">
+            <span class="font-bold text-white">1800.2097</span>
           </a>
           <a href="login.html"
-            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-4">
-            <i class="fa-solid fa-user text-base lg:hidden"></i>
-            <span class="font-semibold hidden lg:inline text-sm">Đăng nhập</span>
+            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-4 text-white">
+            <i class="fa-solid fa-user text-base lg:hidden text-white"></i>
+            <span class="font-semibold hidden lg:inline text-white">Đăng nhập</span>
           </a>
         </div>
       </div>
@@ -507,12 +253,3 @@
       });
     }
   </script>
-  <!-- Tailwind + Font Awesome -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <style>
-    :root {
-      --red-main: #e41e26;
-    }
-  </style>

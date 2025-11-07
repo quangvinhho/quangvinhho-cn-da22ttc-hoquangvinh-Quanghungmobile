@@ -17,10 +17,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
-    <!-- Responsive CSS -->
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="responsive.css">
-    
     <style>
       :root {
         /* WCAG 2.1 AA Compliant Colors */
@@ -51,9 +47,9 @@
     <div id="header-nav-placeholder"></div>
     
     <script>
-        // Load header-nav component with cache busting
+        // Load header component with cache busting
         const headerVersion = '?v=' + new Date().getTime();
-        fetch('components/header-nav.html' + headerVersion)
+        fetch('components/header.html' + headerVersion)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('header-nav-placeholder').innerHTML = html;
