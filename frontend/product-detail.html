@@ -3,13 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Chi tiết sản phẩm - QuangHưng Mobile</title>
-    <meta name="description" content="Xem chi tiết sản phẩm điện thoại và phụ kiện chính hãng. Giá tốt, bảo hành chính hãng, giao hàng miễn phí.">
     
-    <!-- SEO Meta Tags -->
-    <meta name="keywords" content="điện thoại, iPhone, Samsung, Sony Xperia, phụ kiện điện thoại, tai nghe, sạc, ốp lưng">
+    <!-- Dynamic SEO Meta Tags - Will be updated by JavaScript -->
+    <title id="pageTitle">Chi tiết sản phẩm - QuangHưng Mobile</title>
+    <meta id="pageDescription" name="description" content="Xem chi tiết sản phẩm điện thoại và phụ kiện chính hãng. Giá tốt, bảo hành chính hãng, giao hàng miễn phí.">
+    <meta id="pageKeywords" name="keywords" content="điện thoại, iPhone, Samsung, Sony Xperia, phụ kiện điện thoại, tai nghe, sạc, ốp lưng">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="QuangHưng Mobile">
+    <meta id="ogTitle" property="og:title" content="Chi tiết sản phẩm - QuangHưng Mobile">
+    <meta id="ogDescription" property="og:description" content="Xem chi tiết sản phẩm điện thoại và phụ kiện chính hãng.">
+    <meta id="ogImage" property="og:image" content="">
+    <meta id="ogUrl" property="og:url" content="">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="twitterTitle" name="twitter:title" content="Chi tiết sản phẩm - QuangHưng Mobile">
+    <meta id="twitterDescription" name="twitter:description" content="Xem chi tiết sản phẩm điện thoại và phụ kiện chính hãng.">
+    <meta id="twitterImage" name="twitter:image" content="">
+    
+    <!-- General SEO -->
     <meta name="author" content="QuangHưng Mobile">
     <meta name="robots" content="index, follow">
+    <link id="canonical" rel="canonical" href="">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,28 +39,439 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
+    <!-- Swiper CSS cho slider -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    
     <style>
-      :root {
-        /* WCAG 2.1 AA Compliant Colors */
-        --red-main: #d91e23;
-        --red-dark: #b01117;
-        --red-light: #ffe5e6;
-        --red-accent: #ff1a1a;
-        
-        /* Text colors */
-        --text-primary: #1a1a1a;
-        --text-secondary: #4a4a4a;
-        --text-muted: #666666;
-        
-        /* Background colors */
-        --bg-main: #ffffff;
-        --bg-secondary: #f5f5f5;
-        --bg-card: #ffffff;
-        
-        /* Border colors */
-        --border-light: #d4d4d4;
-        --border-medium: #a3a3a3;
+      * {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+      }
+      
+      :root {
+        /* Modern E-commerce Colors */
+        --primary-red: #e53935;
+        --primary-orange: #ff9800;
+        --text-primary: #212121;
+        --text-secondary: #757575;
+        --text-muted: #9e9e9e;
+        
+        /* Backgrounds */
+        --bg-main: #ffffff;
+        --bg-light: #fafbfc;
+        --bg-gray: #f5f5f5;
+        
+        /* Borders */
+        --border-color: #eeeeee;
+        --border-light: #e0e0e0;
+        
+        /* Shadows */
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+        
+        /* Spacing */
+        --spacing-xs: 8px;
+        --spacing-sm: 12px;
+        --spacing-md: 16px;
+        --spacing-lg: 20px;
+        --spacing-xl: 24px;
+      }
+
+      /* Typography Modern */
+      body {
+        font-size: 15px;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: var(--bg-light);
+      }
+
+      h1 {
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 600;
+      }
+
+      @media (min-width: 768px) {
+        h1 {
+          font-size: 26px;
+        }
+      }
+
+      /* Gallery Modern - Bo tròn nhẹ */
+      .product-gallery {
+        background: white;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .gallery-main-image {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+        border-radius: 10px;
+      }
+
+      @media (min-width: 768px) {
+        .gallery-main-image {
+          height: 500px;
+        }
+      }
+
+      /* Thumbnail spacing */
+      .thumbnail-item {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid transparent;
+        transition: all 0.2s;
+        padding: 8px;
+        background: white;
+      }
+
+      .thumbnail-item:hover,
+      .thumbnail-item.active {
+        border-color: var(--primary-red);
+      }
+
+      /* Hide extra thumbnails on mobile */
+      @media (max-width: 767px) {
+        .swiper-slide:nth-child(n+4) {
+          display: none;
+        }
+      }
+
+      /* Product Card Modern */
+      .product-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* Button Variants - Modern, không shadow nặng */
+      .btn-primary {
+        background: var(--primary-red);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        transition: all 0.2s;
+      }
+
+      .btn-primary:hover {
+        background: #d32f2f;
+        transform: translateY(-1px);
+      }
+
+      .btn-outline {
+        background: white;
+        color: var(--primary-red);
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        border: 2px solid var(--primary-red);
+        transition: all 0.2s;
+      }
+
+      .btn-outline:hover {
+        background: #fef5f5;
+      }
+
+      /* Option Selector Modern */
+      .option-selector {
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        padding: 8px 12px;
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+
+      .option-selector:hover {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 0 3px rgba(229,57,53,0.1);
+      }
+
+      .option-selector.selected {
+        border-color: var(--primary-red);
+        border-width: 2px;
+        background: #fff5f5;
+      }
+
+      /* Color Selector */
+      .color-option {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .color-option:hover {
+        transform: scale(1.1);
+      }
+
+      .color-option.selected {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-red);
+      }
+
+      /* Tab Modern - Đơn giản */
+      .tab-button {
+        padding: 14px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+
+      .tab-button:hover {
+        color: var(--primary-red);
+      }
+
+      .tab-button.active {
+        color: var(--primary-red);
+        border-bottom-color: var(--primary-red);
+      }
+
+      /* Related Products - Hover Effects */
+      #relatedProducts .product-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      #relatedProducts .product-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      }
+
+      #relatedProducts .product-item img {
+        transition: transform 0.3s ease;
+      }
+
+      #relatedProducts .product-item:hover img {
+        transform: scale(1.05);
+      }
+
+      /* Hide extra products on mobile */
+      @media (max-width: 640px) {
+        #relatedProducts .product-item:nth-child(n+3) {
+          display: none;
+        }
+      }
+
+      /* Sticky Buy */
+      .sticky-buy {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: var(--shadow-md);
+        z-index: 50;
+        transform: translateY(100%);
+        transition: transform 0.3s;
+      }
+
+      .sticky-buy.active {
+        transform: translateY(0);
+      }
+
+      /* Related Products - Limit & Hover */
+      #relatedProducts > div:nth-child(n+5) {
+        display: none;
+      }
+
+      @media (max-width: 1023px) {
+        #relatedProducts > div:nth-child(n+5) {
+          display: block;
+        }
+      }
+
+      @media (max-width: 639px) {
+        #relatedProducts > div:nth-child(n+3) {
+          display: none;
+        }
+      }
+
+      #relatedProducts .product-item {
+        transition: all 0.3s;
+      }
+
+      #relatedProducts .product-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+      }
+
+      #relatedProducts .product-item img {
+        transition: transform 0.3s;
+      }
+
+      #relatedProducts .product-item:hover img {
+        transform: scale(1.05);
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+
+      .fade-in {
+        animation: fadeIn 0.4s ease-out;
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-slide-up {
+        animation: slideInUp 0.4s ease-out;
+      }
+
+      /* Swiper Modern */
+      .swiper-button-next,
+      .swiper-button-prev {
+        background: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .swiper-button-next:after,
+      .swiper-button-prev:after {
+        font-size: 14px;
+        color: var(--text-primary);
+        font-weight: bold;
+      }
+
+      .swiper-pagination-bullet-active {
+        background: var(--primary-red);
+      }
+
+      /* Sticky Header */
+      #header-nav-placeholder {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      }
+
+      /* Specs Table */
+      .specs-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .specs-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 15px;
+      }
+
+      .specs-table td:first-child {
+        background: var(--bg-gray);
+        font-weight: 500;
+        color: var(--text-primary);
+        width: 35%;
+      }
+
+      .specs-table td:last-child {
+        color: var(--text-secondary);
+      }
+
+      .specs-table tr:hover {
+        background: #fafafa;
+      }
+
+      /* Badge Modern */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .badge-red {
+        background: #ffebee;
+        color: #c62828;
+      }
+
+      .badge-green {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .badge-blue {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+
+      /* Filter Buttons */
+      .filter-btn {
+        background: white;
+        color: #666;
+      }
+
+      .filter-btn:hover {
+        border-color: var(--primary-red) !important;
+        color: var(--primary-red);
+      }
+
+      .filter-btn.active {
+        background: var(--primary-red);
+        border-color: var(--primary-red) !important;
+        color: white;
+      }
+
+      /* Price Modern */
+      .price-main {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--primary-red);
+      }
+
+      @media (min-width: 768px) {
+        .price-main {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body style="background: #fafbfc;">
+    
+    <!-- Header Component -->
+    <div id="header-nav-placeholder"></div>
+      
+
     </style>
   </head>
   <body class="bg-gray-50">
@@ -64,48 +497,277 @@
             .catch(error => console.error('Error loading header:', error));
     </script>
 
-    <!-- Breadcrumb -->
-    <div class="bg-white border-b">
+    <!-- Breadcrumb Modern -->
+    <div class="bg-white border-b" style="border-color: #eeeeee;">
       <div class="container mx-auto px-4 py-3">
-        <div class="flex items-center space-x-2 text-sm">
-          <a href="index.html" class="text-gray-600 hover:text-red-600">Trang chủ</a>
+        <div class="flex items-center gap-2 text-sm">
+          <a href="index.html" class="text-gray-600 hover:text-red-600 transition">Trang chủ</a>
           <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-          <a href="products.html" class="text-gray-600 hover:text-red-600">Sản phẩm</a>
+          <a href="products.html" class="text-gray-600 hover:text-red-600 transition">Sản phẩm</a>
           <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-          <span id="breadcrumbProduct" class="text-red-600">Đang tải...</span>
+          <span id="breadcrumbProduct" class="text-gray-900 font-medium">Đang tải...</span>
         </div>
       </div>
     </div>
 
-    <div class="container mx-auto px-4 py-8">
-      <!-- Product Details Container (Dynamic) -->
-      <div id="productContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-        <!-- Product content will be dynamically loaded here -->
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-6">
+      <!-- Product Details - Grid 2 cột -->
+      <div id="productContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+        <!-- Loading State -->
         <div class="col-span-2 text-center py-20">
           <i class="fas fa-spinner fa-spin text-4xl text-red-600 mb-4"></i>
           <p class="text-gray-600">Đang tải thông tin sản phẩm...</p>
         </div>
       </div>
 
-      <!-- Related Products -->
-      <div class="mb-8">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Sản phẩm liên quan</h2>
-            <p class="text-gray-600 text-sm mt-1">Khám phá thêm những sản phẩm tương tự</p>
+      <!-- Tabs Modern - Đơn giản -->
+      <div class="bg-white rounded-10 overflow-hidden mb-6" style="border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <!-- Tab Headers -->
+        <div class="border-b" style="border-color: #eeeeee;">
+          <div class="flex overflow-x-auto scrollbar-hide">
+            <button class="tab-button active" onclick="switchTab('description')">
+              <i class="fas fa-info-circle mr-1.5"></i>Mô tả
+            </button>
+            <button class="tab-button" onclick="switchTab('specs')">
+              <i class="fas fa-list-alt mr-1.5"></i>Thông số
+            </button>
+            <button class="tab-button" onclick="switchTab('reviews')">
+              <i class="fas fa-star mr-1.5"></i>Đánh giá
+            </button>
           </div>
-          <a href="products.html" class="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-2 group">
+        </div>
+
+        <!-- Tab Content - Padding vừa phải -->
+        <div class="p-5 md:p-6">
+          <!-- Description Tab -->
+          <div id="tab-description" class="tab-content">
+            <h3 class="text-lg font-semibold mb-3 text-gray-900">Mô tả sản phẩm</h3>
+            <div id="productDescription" class="prose max-w-none">
+              <p class="text-gray-700 text-base leading-relaxed">Đang tải thông tin...</p>
+            </div>
+          </div>
+
+          <!-- Specifications Tab -->
+          <div id="tab-specs" class="tab-content hidden">
+            <h3 class="text-lg font-semibold mb-3 text-gray-900">Thông số kỹ thuật</h3>
+            <div id="productSpecs" class="overflow-x-auto">
+              <!-- Specs table will be inserted here -->
+            </div>
+          </div>
+
+          <!-- Reviews Tab -->
+          <div id="tab-reviews" class="tab-content hidden">
+            <h3 class="text-lg font-semibold mb-4 text-gray-900">Đánh giá khách hàng</h3>
+            
+            <!-- Rating Summary Modern -->
+            <div class="bg-yellow-50 rounded-lg p-5 mb-5" style="border: 1px solid #fef3c7;">
+              <div class="grid md:grid-cols-2 gap-5 items-center">
+                <div class="text-center">
+                  <div class="text-5xl font-bold text-yellow-600 mb-2" id="avgRating">4.5</div>
+                  <div class="text-yellow-400 text-2xl mb-2" id="avgStars"></div>
+                  <p class="text-gray-700 text-base font-semibold"><span id="totalReviews">0</span> đánh giá</p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold w-12">5 <i class="fas fa-star text-yellow-400 text-xs"></i></span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+                      <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 70%"></div>
+                    </div>
+                    <span class="text-sm font-semibold w-10 text-right">70%</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold w-12">4 <i class="fas fa-star text-yellow-400 text-xs"></i></span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+                      <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 20%"></div>
+                    </div>
+                    <span class="text-sm font-semibold w-10 text-right">20%</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold w-12">3 <i class="fas fa-star text-yellow-400 text-xs"></i></span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+                      <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 7%"></div>
+                    </div>
+                    <span class="text-sm font-semibold w-10 text-right">7%</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold w-12">2 <i class="fas fa-star text-yellow-400 text-xs"></i></span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+                      <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 2%"></div>
+                    </div>
+                    <span class="text-sm font-semibold w-10 text-right">2%</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold w-12">1 <i class="fas fa-star text-yellow-400 text-xs"></i></span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+                      <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 1%"></div>
+                    </div>
+                    <span class="text-sm font-semibold w-10 text-right">1%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter & Write Review Actions -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div class="flex flex-wrap gap-2">
+                <button onclick="filterReviews('all')" class="filter-btn active px-4 py-2 rounded-md border text-sm font-medium transition" style="border-color: #eeeeee;">
+                  Tất cả
+                </button>
+                <button onclick="filterReviews(5)" class="filter-btn px-4 py-2 rounded-md border text-sm font-medium transition" style="border-color: #eeeeee;">
+                  5 <i class="fas fa-star text-yellow-400 text-xs"></i>
+                </button>
+                <button onclick="filterReviews(4)" class="filter-btn px-4 py-2 rounded-md border text-sm font-medium transition" style="border-color: #eeeeee;">
+                  4 <i class="fas fa-star text-yellow-400 text-xs"></i>
+                </button>
+                <button onclick="filterReviews(3)" class="filter-btn px-4 py-2 rounded-md border text-sm font-medium transition" style="border-color: #eeeeee;">
+                  3 <i class="fas fa-star text-yellow-400 text-xs"></i>
+                </button>
+              </div>
+              <button onclick="toggleReviewForm()" class="btn-primary px-4 py-2 text-sm">
+                <i class="fas fa-pen mr-2"></i>Viết đánh giá
+              </button>
+            </div>
+
+            <!-- Review Form (Hidden by default) -->
+            <div id="reviewForm" class="hidden mb-6 border rounded-lg p-5" style="border-color: #eeeeee; background: #fafbfc;">
+              <h4 class="font-semibold text-base mb-4">Viết đánh giá của bạn</h4>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium mb-2">Đánh giá của bạn</label>
+                  <div class="flex gap-2">
+                    <button onclick="setRating(1)" class="rating-star text-2xl text-gray-300 hover:text-yellow-400 transition">
+                      <i class="far fa-star"></i>
+                    </button>
+                    <button onclick="setRating(2)" class="rating-star text-2xl text-gray-300 hover:text-yellow-400 transition">
+                      <i class="far fa-star"></i>
+                    </button>
+                    <button onclick="setRating(3)" class="rating-star text-2xl text-gray-300 hover:text-yellow-400 transition">
+                      <i class="far fa-star"></i>
+                    </button>
+                    <button onclick="setRating(4)" class="rating-star text-2xl text-gray-300 hover:text-yellow-400 transition">
+                      <i class="far fa-star"></i>
+                    </button>
+                    <button onclick="setRating(5)" class="rating-star text-2xl text-gray-300 hover:text-yellow-400 transition">
+                      <i class="far fa-star"></i>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Họ tên</label>
+                  <input type="text" id="reviewName" placeholder="Nhập họ tên của bạn" class="w-full px-4 py-2.5 border rounded-md outline-none focus:border-red-500 transition" style="border-color: #eeeeee;" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Nội dung đánh giá</label>
+                  <textarea id="reviewComment" rows="4" placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm..." class="w-full px-4 py-2.5 border rounded-md outline-none focus:border-red-500 transition resize-none" style="border-color: #eeeeee;"></textarea>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="submitReview()" class="btn-primary px-6 py-2.5">
+                    <i class="fas fa-paper-plane mr-2"></i>Gửi đánh giá
+                  </button>
+                  <button onclick="toggleReviewForm()" class="btn-outline px-6 py-2.5">
+                    Hủy
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review List -->
+            <div id="reviewsList" class="space-y-6">
+              <!-- Sample reviews with avatars will be loaded dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products Modern -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Sản phẩm liên quan</h2>
+            <p class="text-gray-600 text-sm mt-0.5">Khám phá thêm sản phẩm tương tự</p>
+          </div>
+          <a href="products.html" class="text-red-600 hover:text-red-700 font-medium text-sm flex items-center gap-1.5 group transition">
             Xem tất cả
-            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            <i class="fas fa-arrow-right text-xs group-hover:translate-x-0.5 transition-transform"></i>
           </a>
         </div>
-        <div id="relatedProducts" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div id="relatedProducts" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Dynamic related products will be rendered here -->
         </div>
       </div>
     </div>
 
-    <div id="footer"></div>
+    <!-- Sticky Buy Modern (Mobile) - 2 Buttons -->
+    <div id="stickyBuy" class="sticky-buy lg:hidden">
+      <div class="container mx-auto px-4 py-2.5">
+        <div class="flex items-center gap-2.5">
+          <div class="flex-1 min-w-0">
+            <p class="text-xs text-gray-600 font-medium truncate">Giá ưu đãi</p>
+            <p id="stickyPrice" class="price-main truncate" style="font-size: 18px;">0đ</p>
+          </div>
+          <button onclick="addToCart()" class="btn-outline px-4 py-2.5 text-sm flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fas fa-cart-plus"></i>
+            <span class="hidden sm:inline">Thêm giỏ</span>
+          </button>
+          <button onclick="buyNow()" class="btn-primary px-5 py-2.5 text-sm whitespace-nowrap">
+            <i class="fas fa-bolt mr-1.5"></i>Mua ngay
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json" id="productSchema">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Sản phẩm",
+      "image": "",
+      "description": "Chi tiết sản phẩm",
+      "brand": {
+        "@type": "Brand",
+        "name": "QuangHưng Mobile"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "",
+        "priceCurrency": "VND",
+        "price": "0",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "QuangHưng Mobile"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "reviewCount": "0"
+      }
+    }
+    </script>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+      // Load footer component
+      fetch('components/footer.html')
+          .then(response => response.text())
+          .then(html => {
+              document.getElementById('footer-placeholder').innerHTML = html;
+          })
+          .catch(error => console.error('Error loading footer:', error));
+    </script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <script src="main.js"></script>
 
     <script>
@@ -191,137 +853,268 @@
 
         // Render product HTML
         const productHTML = `
-          <!-- Product Images -->
-          <div>
-            <div class="bg-white rounded-xl shadow-md p-6 mb-4">
-              <img id="mainImage" 
-                   src="${product.image}" 
-                   alt="${product.name}" 
-                   class="w-full h-96 object-contain rounded-lg" />
+          <!-- Left Column: Image Gallery với Swiper Slider -->
+          <div class="animate-slide-up">
+            <!-- Main Swiper Gallery -->
+            <div class="product-gallery">
+              <div class="swiper mainSwiper zoom-container">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img src="${product.image}" alt="${product.name}" class="gallery-main-image zoom-image" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="${product.image}" alt="${product.name} view 2" class="gallery-main-image zoom-image" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="${product.image}" alt="${product.name} view 3" class="gallery-main-image zoom-image" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="${product.image}" alt="${product.name} view 4" class="gallery-main-image zoom-image" />
+                  </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+              </div>
             </div>
-            <div class="grid grid-cols-4 gap-4">
-              <img src="${product.image}" 
-                   alt="Image 1" 
-                   class="w-full h-24 object-contain rounded-lg cursor-pointer border-2 border-red-600 hover:opacity-75 transition p-2 bg-white"
-                   onclick="changeImage(this.src)" />
-              <img src="${product.image}" 
-                   alt="Image 2" 
-                   class="w-full h-24 object-contain rounded-lg cursor-pointer border-2 border-gray-200 hover:border-red-600 hover:opacity-75 transition p-2 bg-white"
-                   onclick="changeImage(this.src)" />
-              <img src="${product.image}" 
-                   alt="Image 3" 
-                   class="w-full h-24 object-contain rounded-lg cursor-pointer border-2 border-gray-200 hover:border-red-600 hover:opacity-75 transition p-2 bg-white"
-                   onclick="changeImage(this.src)" />
-              <img src="${product.image}" 
-                   alt="Image 4" 
-                   class="w-full h-24 object-contain rounded-lg cursor-pointer border-2 border-gray-200 hover:border-red-600 hover:opacity-75 transition p-2 bg-white"
-                   onclick="changeImage(this.src)" />
+
+            <!-- Thumbnail Swiper -->
+            <div thumbsSlider="" class="swiper thumbSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide cursor-pointer">
+                  <div class="thumbnail-item active">
+                    <img src="${product.image}" alt="Thumb 1" class="w-full h-20 object-contain" />
+                  </div>
+                </div>
+                <div class="swiper-slide cursor-pointer">
+                  <div class="thumbnail-item">
+                    <img src="${product.image}" alt="Thumb 2" class="w-full h-20 object-contain" />
+                  </div>
+                </div>
+                <div class="swiper-slide cursor-pointer">
+                  <div class="thumbnail-item">
+                    <img src="${product.image}" alt="Thumb 3" class="w-full h-20 object-contain" />
+                  </div>
+                </div>
+                <div class="swiper-slide cursor-pointer">
+                  <div class="thumbnail-item">
+                    <img src="${product.image}" alt="Thumb 4" class="w-full h-20 object-contain" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Product Info -->
-          <div class="bg-white rounded-xl shadow-md p-6">
-            <div class="mb-4 flex flex-wrap gap-2">
-              ${product.discount ? `<span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Giảm ${product.discount}%</span>` : ''}
-              <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Còn hàng</span>
-              ${product.features && product.features.includes('freeship') ? '<span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold"><i class="fas fa-shipping-fast mr-1"></i>Freeship</span>' : ''}
-            </div>
-            
-            <h1 class="text-3xl font-bold mb-3 text-gray-800">${product.name}</h1>
-            
-            <div class="flex items-center mb-4 flex-wrap gap-3">
-              <div class="text-yellow-400 text-lg">
-                ${starsHTML}
+          <!-- Right Column: Product Info Card Modern -->
+          <div class="animate-slide-up" id="buySection">
+            <div class="product-card lg:sticky lg:top-4">
+              <!-- Badges Modern - Đơn giản -->
+              <div class="mb-3 flex flex-wrap gap-2">
+                ${product.discount ? `<span class="badge badge-red">-${product.discount}%</span>` : ''}
+                <span class="badge badge-green">✓ Còn hàng</span>
+                ${product.features && product.features.includes('freeship') ? '<span class="badge badge-blue"><i class="fas fa-shipping-fast mr-1"></i>Freeship</span>' : ''}
+                ${product.features && product.features.includes('tragop') ? '<span class="badge badge-blue"><i class="fas fa-credit-card mr-1"></i>Trả góp 0%</span>' : ''}
               </div>
-              <span class="text-gray-600">(${rating.toFixed(1)}/5 - ${reviews} đánh giá)</span>
-              <span class="text-gray-400">|</span>
-              <span class="text-gray-600">Đã bán: ${sold}</span>
-            </div>
-
-            <div class="border-t border-b py-4 mb-6">
-              <div class="flex items-baseline mb-2">
-                <span class="text-4xl font-bold text-red-600">${formatPrice(product.price)}</span>
-                ${product.oldPrice ? `<span class="text-xl text-gray-500 line-through ml-3">${formatPrice(product.oldPrice)}</span>` : ''}
+              
+              <!-- Product Name Modern - 22-26px -->
+              <h1 style="font-size: 22px; line-height: 1.3; font-weight: 600; margin-bottom: 16px; color: #212121;">${product.name}</h1>
+              
+              <!-- Rating & Reviews Modern with Sold Count -->
+              <div class="flex items-center flex-wrap mb-4 gap-2">
+                <div class="text-yellow-400 flex gap-0.5">
+                  ${starsHTML}
+                </div>
+                <span class="text-sm font-semibold text-gray-900">${rating.toFixed(1)}</span>
+                <span class="text-gray-300">|</span>
+                <span class="text-sm text-gray-600">${reviews} đánh giá</span>
+                <span class="text-gray-300">|</span>
+                <span class="text-sm font-medium text-gray-900">Đã bán ${Math.floor(Math.random() * 500 + 100)}+</span>
               </div>
-              ${product.oldPrice ? `<p class="text-sm text-gray-600">Tiết kiệm: ${formatPrice(product.oldPrice - product.price)}</p>` : ''}
-            </div>
 
-            ${product.colors && product.colors.length > 0 ? `
-            <!-- Color Selection -->
-            <div class="mb-6">
-              <h3 class="font-semibold mb-3">Màu sắc:</h3>
-              <div class="flex space-x-3 flex-wrap gap-2">
-                ${product.colors.map((color, index) => `
-                  <button class="w-12 h-12 rounded-full border-2 ${index === 0 ? 'border-red-600' : 'border-gray-200'} hover:scale-110 transition" 
-                          style="background-color: ${color}"></button>
-                `).join('')}
+              <!-- Social Share Icons -->
+              <div class="flex items-center gap-2 mb-4">
+                <span class="text-sm text-gray-600">Chia sẻ:</span>
+                <button onclick="shareProduct('facebook')" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-blue-50 transition" title="Share on Facebook">
+                  <i class="fab fa-facebook text-blue-600"></i>
+                </button>
+                <button onclick="shareProduct('twitter')" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-sky-50 transition" title="Share on Twitter">
+                  <i class="fab fa-twitter text-sky-500"></i>
+                </button>
+                <button onclick="shareProduct('zalo')" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-blue-50 transition" title="Share on Zalo">
+                  <i class="fas fa-comment-dots text-blue-500"></i>
+                </button>
+                <button onclick="copyLink()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition" title="Copy link">
+                  <i class="fas fa-link text-gray-600"></i>
+                </button>
               </div>
-            </div>
-            ` : ''}
 
-            ${product.category === 'dienthoai' && product.storage ? `
-            <!-- Storage Selection -->
-            <div class="mb-6">
-              <h3 class="font-semibold mb-3">Dung lượng:</h3>
-              <div class="grid grid-cols-3 md:grid-cols-4 gap-3">
-                <button class="border-2 border-red-600 bg-red-50 rounded-lg py-2 px-4 font-semibold transition text-sm">${product.storage}GB</button>
-                ${product.storage < 256 ? '<button class="border-2 border-gray-200 rounded-lg py-2 px-4 hover:border-red-600 transition text-sm">256GB</button>' : ''}
-                ${product.storage < 512 ? '<button class="border-2 border-gray-200 rounded-lg py-2 px-4 hover:border-red-600 transition text-sm">512GB</button>' : ''}
+              <!-- Price Modern - 18-20px, đỏ, bold -->
+              <div class="mb-5 pb-5" style="border-bottom: 1px solid #eeeeee;">
+                <div class="flex items-baseline gap-3 mb-1.5">
+                  <span class="price-main">${formatPrice(product.price)}</span>
+                  ${product.oldPrice ? `<span class="text-sm text-gray-500 line-through">${formatPrice(product.oldPrice)}</span>` : ''}
+                </div>
+                ${product.oldPrice ? `<div class="mt-1.5">
+                  <span class="badge badge-red">Tiết kiệm ${formatPrice(product.oldPrice - product.price)}</span>
+                </div>` : ''}
               </div>
-            </div>
-            ` : ''}
 
-            <!-- Quantity -->
-            <div class="mb-6">
-              <h3 class="font-semibold mb-3">Số lượng:</h3>
-              <div class="flex items-center space-x-4">
-                <div class="flex items-center border-2 rounded-lg">
-                  <button class="px-4 py-2 hover:bg-gray-100 transition" onclick="decreaseQuantity()">
-                    <i class="fas fa-minus"></i>
+              <!-- Action Buttons Modern - CTA nổi bật -->
+              <div class="space-y-2.5 mb-5">
+                <button onclick="buyNow()" class="btn-primary w-full flex items-center justify-center gap-2">
+                  <i class="fas fa-bolt"></i>
+                  <span class="font-semibold">Mua ngay</span>
+                </button>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <button onclick="addToCart()" class="btn-outline flex items-center justify-center gap-2">
+                    <i class="fas fa-shopping-cart"></i>
+                    Thêm giỏ
                   </button>
-                  <input type="number" id="quantity" value="1" min="1" class="w-16 text-center border-x-2 py-2 outline-none" />
-                  <button class="px-4 py-2 hover:bg-gray-100 transition" onclick="increaseQuantity()">
-                    <i class="fas fa-plus"></i>
+                  <button onclick="buyInstallment()" class="btn-outline flex items-center justify-center gap-2">
+                    <i class="fas fa-credit-card"></i>
+                    Trả góp 0%
                   </button>
                 </div>
-                <span class="text-gray-600">Còn ${stock} sản phẩm</span>
               </div>
-            </div>
 
-            <!-- Action Buttons -->
-            <div class="grid grid-cols-2 gap-4 mb-6">
-              <button class="bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition flex items-center justify-center shadow-md hover:shadow-lg">
-                <i class="fas fa-shopping-cart mr-2"></i>
-                Thêm vào giỏ
-              </button>
-              <button class="bg-gradient-to-r from-red-600 to-red-500 text-white py-3 rounded-lg font-semibold hover:from-red-700 hover:to-red-600 transition flex items-center justify-center shadow-md hover:shadow-lg">
-                <i class="fas fa-bolt mr-2"></i>
-                Mua ngay
-              </button>
-            </div>
+              ${product.colors && product.colors.length > 0 ? `
+              <!-- Color Selection Modern -->
+              <div class="mb-4">
+                <h3 class="font-semibold text-sm mb-2 text-gray-900">Chọn màu sắc</h3>
+                <div class="flex flex-wrap gap-2">
+                  ${product.colors.map((color, index) => `
+                    <button class="color-option ${index === 0 ? 'selected' : ''}" 
+                            style="background-color: ${color};"
+                            onclick="selectColor(this)">
+                      ${index === 0 ? '<i class="fas fa-check text-white text-sm"></i>' : ''}
+                    </button>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+              ` : ''}
 
-            <button class="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:border-red-600 hover:text-red-600 transition flex items-center justify-center">
-              <i class="far fa-heart mr-2"></i>
-              Thêm vào yêu thích
-            </button>
+              ${product.category === 'dienthoai' && product.storage ? `
+              <!-- Storage Selection Modern -->
+              <div class="mb-4">
+                <h3 class="font-semibold text-sm mb-2 text-gray-900">Dung lượng</h3>
+                <div class="grid grid-cols-3 gap-2">
+                  <button class="option-selector selected" onclick="selectStorage(this)" style="text-align: center;">
+                    <div class="text-base font-semibold">${product.storage}GB</div>
+                  </button>
+                  ${product.storage < 256 ? `<button class="option-selector" onclick="selectStorage(this)" style="text-align: center;">
+                    <div class="text-base font-semibold text-gray-800">256GB</div>
+                    <div class="text-xs text-gray-500 mt-0.5">+2tr</div>
+                  </button>` : ''}
+                  ${product.storage < 512 ? `<button class="option-selector" onclick="selectStorage(this)" style="text-align: center;">
+                    <div class="text-base font-semibold text-gray-800">512GB</div>
+                    <div class="text-xs text-gray-500 mt-0.5">+4tr</div>
+                  </button>` : ''}
+                </div>
+              </div>
+              ` : ''}
 
-            <!-- Product Features -->
-            <div class="mt-6 border-t pt-6">
-              <h3 class="font-semibold mb-3">Đặc điểm nổi bật:</h3>
-              <ul class="space-y-2 text-gray-700">
-                ${product.screen ? `<li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Màn hình: ${product.screen}</span></li>` : ''}
-                ${product.camera ? `<li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Camera: ${product.camera}</span></li>` : ''}
-                ${product.ram ? `<li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>RAM: ${product.ram}GB</span></li>` : ''}
-                ${product.storage ? `<li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Bộ nhớ: ${product.storage}GB</span></li>` : ''}
-                ${product.battery ? `<li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Pin: ${product.battery}</span></li>` : ''}
-                ${product.os ? `<li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>Hệ điều hành: ${product.os}</span></li>` : ''}
-                ${product.description ? `<li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i><span>${product.description}</span></li>` : ''}
-              </ul>
+              <!-- Quantity Selection Modern -->
+              <div class="mb-5">
+                <h3 class="font-semibold text-sm mb-2 text-gray-900">Số lượng</h3>
+                <div class="flex items-center gap-3">
+                  <div class="flex items-center border rounded-md overflow-hidden" style="border-color: #eeeeee;">
+                    <button class="px-4 py-2.5 hover:bg-gray-100 transition" onclick="decreaseQuantity()">
+                      <i class="fas fa-minus text-sm"></i>
+                    </button>
+                    <input type="number" id="quantity" value="1" min="1" max="${stock}" 
+                           class="w-16 text-center border-x py-2.5 outline-none font-semibold text-base" style="border-color: #eeeeee;" />
+                    <button class="px-4 py-2.5 hover:bg-gray-100 transition" onclick="increaseQuantity()">
+                      <i class="fas fa-plus text-sm"></i>
+                    </button>
+                  </div>
+                  <span class="text-sm text-gray-600">Còn <strong class="text-red-600">${stock}</strong></span>
+                </div>
+              </div>
             </div>
           </div>
         `;
 
         document.getElementById('productContainer').innerHTML = productHTML;
+
+        // Update sticky buy button price
+        document.getElementById('stickyPrice').textContent = formatPrice(product.price);
+
+        // Update SEO meta tags
+        updateSEO(product);
+
+        // Initialize Swiper after rendering
+        setTimeout(() => {
+          initSwiper();
+        }, 100);
+      }
+
+      // Update SEO Meta Tags and Structured Data
+      function updateSEO(product) {
+        const currentUrl = window.location.href;
+        const productName = product.name;
+        const productPrice = product.price;
+        const productImage = product.image;
+        const rating = product.rating || 4.5;
+        const reviews = product.reviews || 152;
+        
+        // Dynamic title and description
+        const title = `Mua ${productName} chính hãng - Giá rẻ tại QuangHưng Mobile`;
+        const description = `Mua ${productName} chính hãng, giá ${formatPrice(productPrice)}, trả góp 0%, giao hàng miễn phí toàn quốc. Bảo hành 12 tháng. ☎ Hotline: 1900.xxxx`;
+        
+        // Update page title and meta description
+        document.getElementById('pageTitle').textContent = title;
+        document.title = title;
+        document.getElementById('pageDescription').setAttribute('content', description);
+        document.getElementById('pageKeywords').setAttribute('content', `${productName}, mua ${productName}, ${productName} giá rẻ, ${productName} chính hãng`);
+        
+        // Update Open Graph
+        document.getElementById('ogTitle').setAttribute('content', title);
+        document.getElementById('ogDescription').setAttribute('content', description);
+        document.getElementById('ogImage').setAttribute('content', productImage);
+        document.getElementById('ogUrl').setAttribute('content', currentUrl);
+        
+        // Update Twitter Card
+        document.getElementById('twitterTitle').setAttribute('content', title);
+        document.getElementById('twitterDescription').setAttribute('content', description);
+        document.getElementById('twitterImage').setAttribute('content', productImage);
+        
+        // Update canonical URL
+        document.getElementById('canonical').setAttribute('href', currentUrl);
+        
+        // Update JSON-LD Structured Data
+        const schema = {
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": productName,
+          "image": productImage,
+          "description": description,
+          "brand": {
+            "@type": "Brand",
+            "name": product.brand || "QuangHưng Mobile"
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": currentUrl,
+            "priceCurrency": "VND",
+            "price": productPrice,
+            "availability": "https://schema.org/InStock",
+            "priceValidUntil": new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
+            "seller": {
+              "@type": "Organization",
+              "name": "QuangHưng Mobile"
+            }
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": rating.toString(),
+            "reviewCount": reviews.toString(),
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        };
+        
+        document.getElementById('productSchema').textContent = JSON.stringify(schema, null, 2);
       }
 
       // Change main image
@@ -349,6 +1142,392 @@
           input.value = parseInt(input.value) - 1;
         }
       }
+
+      // ===== NEW FUNCTIONS =====
+
+      // Initialize Swiper Slider
+      function initSwiper() {
+        // Thumbnail Swiper
+        const thumbSwiper = new Swiper('.thumbSwiper', {
+          spaceBetween: 10,
+          slidesPerView: 4,
+          freeMode: true,
+          watchSlidesProgress: true,
+        });
+
+        // Main Swiper
+        const mainSwiper = new Swiper('.mainSwiper', {
+          spaceBetween: 10,
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          thumbs: {
+            swiper: thumbSwiper,
+          },
+        });
+      }
+
+      // Switch Tabs
+      function switchTab(tabName) {
+        // Update tab buttons
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.remove('active', 'text-red-600');
+          btn.classList.add('text-gray-500');
+        });
+        event.target.classList.add('active', 'text-red-600');
+        event.target.classList.remove('text-gray-500');
+
+        // Update tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.add('hidden');
+        });
+        document.getElementById('tab-' + tabName).classList.remove('hidden');
+
+        // Load content based on tab
+        if (tabName === 'reviews') {
+          loadReviews();
+        } else if (tabName === 'specs') {
+          loadSpecs();
+        } else if (tabName === 'description') {
+          loadDescription();
+        }
+      }
+
+      // Load Product Description
+      function loadDescription() {
+        const descContainer = document.getElementById('productDescription');
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id')) || 5;
+        const product = PRODUCTS.find(p => p.id === productId);
+
+        if (product) {
+          descContainer.innerHTML = `
+            <div class="space-y-4">
+              <p class="text-gray-700 leading-relaxed">
+                <strong>${product.name}</strong> là sản phẩm cao cấp đến từ thương hiệu <strong>${product.brand.toUpperCase()}</strong>, 
+                mang đến cho bạn trải nghiệm tuyệt vời với thiết kế hiện đại và cấu hình mạnh mẽ.
+              </p>
+              
+              <h4 class="text-xl font-bold text-gray-800 mt-6 mb-3">Điểm nổi bật</h4>
+              <ul class="space-y-2">
+                ${product.screen ? `<li class="flex items-start gap-2"><i class="fas fa-check text-green-600 mt-1"></i><span class="text-gray-700">Màn hình ${product.screen} sắc nét, màu sắc sống động</span></li>` : ''}
+                ${product.camera ? `<li class="flex items-start gap-2"><i class="fas fa-check text-green-600 mt-1"></i><span class="text-gray-700">Camera ${product.camera} cho ảnh chụp chuyên nghiệp</span></li>` : ''}
+                ${product.ram ? `<li class="flex items-start gap-2"><i class="fas fa-check text-green-600 mt-1"></i><span class="text-gray-700">RAM ${product.ram}GB đa nhiệm mượt mà</span></li>` : ''}
+                ${product.battery ? `<li class="flex items-start gap-2"><i class="fas fa-check text-green-600 mt-1"></i><span class="text-gray-700">Pin ${product.battery} sử dụng cả ngày</span></li>` : ''}
+                <li class="flex items-start gap-2"><i class="fas fa-check text-green-600 mt-1"></i><span class="text-gray-700">Thiết kế sang trọng, chất liệu cao cấp</span></li>
+                <li class="flex items-start gap-2"><i class="fas fa-check text-green-600 mt-1"></i><span class="text-gray-700">Hiệu năng mạnh mẽ, xử lý mọi tác vụ</span></li>
+              </ul>
+
+              <h4 class="text-xl font-bold text-gray-800 mt-6 mb-3">Cam kết từ QuangHưng Mobile</h4>
+              <ul class="space-y-2">
+                <li class="flex items-start gap-2"><i class="fas fa-shield-alt text-blue-600 mt-1"></i><span class="text-gray-700">100% sản phẩm chính hãng, nguyên seal</span></li>
+                <li class="flex items-start gap-2"><i class="fas fa-box text-blue-600 mt-1"></i><span class="text-gray-700">Bảo hành chính hãng 12 tháng</span></li>
+                <li class="flex items-start gap-2"><i class="fas fa-exchange-alt text-blue-600 mt-1"></i><span class="text-gray-700">Đổi trả miễn phí trong 7 ngày</span></li>
+                <li class="flex items-start gap-2"><i class="fas fa-shipping-fast text-blue-600 mt-1"></i><span class="text-gray-700">Giao hàng nhanh chóng toàn quốc</span></li>
+              </ul>
+            </div>
+          `;
+        }
+      }
+
+      // Load Specifications Table
+      function loadSpecs() {
+        const specsContainer = document.getElementById('productSpecs');
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id')) || 5;
+        const product = PRODUCTS.find(p => p.id === productId);
+
+        if (product && product.category === 'dienthoai') {
+          specsContainer.innerHTML = `
+            <table class="specs-table">
+              <tbody>
+                ${product.screen ? `
+                  <tr>
+                    <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 w-1/3 text-lg">Màn hình</td>
+                    <td class="py-5 px-5 text-gray-800 text-lg">${product.screen}</td>
+                  </tr>
+                ` : ''}
+                ${product.os ? `
+                  <tr>
+                    <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 text-lg">Hệ điều hành</td>
+                    <td class="py-5 px-5 text-gray-800 text-lg">${product.os}</td>
+                  </tr>
+                ` : ''}
+                ${product.camera ? `
+                  <tr>
+                    <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 text-lg">Camera</td>
+                    <td class="py-5 px-5 text-gray-800 text-lg">${product.camera}</td>
+                  </tr>
+                ` : ''}
+                ${product.ram ? `
+                  <tr>
+                    <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 text-lg">RAM</td>
+                    <td class="py-5 px-5 text-gray-800 text-lg">${product.ram}GB</td>
+                  </tr>
+                ` : ''}
+                ${product.storage ? `
+                  <tr>
+                    <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 text-lg">Bộ nhớ trong</td>
+                    <td class="py-5 px-5 text-gray-800 text-lg">${product.storage}GB</td>
+                  </tr>
+                ` : ''}
+                ${product.battery ? `
+                  <tr>
+                    <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 text-lg">Pin</td>
+                    <td class="py-5 px-5 text-gray-800 text-lg">${product.battery}</td>
+                  </tr>
+                ` : ''}
+                <tr>
+                  <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 text-lg">Kết nối</td>
+                  <td class="py-5 px-5 text-gray-800 text-lg">5G, Wi-Fi 6, Bluetooth 5.3, NFC</td>
+                </tr>
+                <tr>
+                  <td class="py-5 px-5 bg-gray-50 font-bold text-gray-900 text-lg">Bảo mật</td>
+                  <td class="py-5 px-5 text-gray-800 text-lg">Vân tay, Face ID</td>
+                </tr>
+              </tbody>
+            </table>
+          `;
+        } else {
+          specsContainer.innerHTML = `
+            <p class="text-gray-600 text-lg">Thông số kỹ thuật chi tiết đang được cập nhật...</p>
+          `;
+        }
+      }
+
+      // Load Reviews
+      function loadReviews() {
+        const reviewsList = document.getElementById('reviewsList');
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id')) || 5;
+        const product = PRODUCTS.find(p => p.id === productId);
+        
+        const rating = product?.rating || 4.5;
+        const reviews = product?.reviews || 152;
+
+        // Update review count
+        document.getElementById('reviewCount').textContent = reviews;
+        document.getElementById('totalReviews').textContent = reviews;
+        document.getElementById('avgRating').textContent = rating.toFixed(1);
+
+        // Generate stars for average rating
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        let starsHTML = '';
+        for(let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>';
+        if(halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>';
+        for(let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) starsHTML += '<i class="far fa-star"></i>';
+        document.getElementById('avgStars').innerHTML = starsHTML;
+
+        // Sample reviews
+        const sampleReviews = [
+          {
+            name: 'Nguyễn Văn A',
+            rating: 5,
+            date: '3 ngày trước',
+            comment: 'Sản phẩm rất tốt, giao hàng nhanh. Màn hình đẹp, pin trâu. Rất hài lòng!',
+            verified: true
+          },
+          {
+            name: 'Trần Thị B',
+            rating: 5,
+            date: '5 ngày trước',
+            comment: 'Mình rất thích thiết kế và hiệu năng. Camera chụp ảnh đẹp lắm. Đóng gói cẩn thận, shop tư vấn nhiệt tình.',
+            verified: true
+          },
+          {
+            name: 'Lê Văn C',
+            rating: 4,
+            date: '1 tuần trước',
+            comment: 'Sản phẩm ok, chỉ có điều hơi nặng một chút. Nhưng nhìn chung rất đáng đồng tiền.',
+            verified: false
+          }
+        ];
+
+        reviewsList.innerHTML = sampleReviews.map(review => {
+          let reviewStars = '';
+          for(let i = 0; i < review.rating; i++) reviewStars += '<i class="fas fa-star"></i>';
+          for(let i = review.rating; i < 5; i++) reviewStars += '<i class="far fa-star"></i>';
+
+          return `
+            <div class="border-b pb-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                  ${review.name.charAt(0)}
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-2">
+                    <p class="font-bold text-gray-800">${review.name}</p>
+                    ${review.verified ? '<span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-semibold"><i class="fas fa-check-circle mr-1"></i>Đã mua hàng</span>' : ''}
+                  </div>
+                  <div class="text-yellow-400 text-sm mb-2">${reviewStars}</div>
+                  <p class="text-sm text-gray-500 mb-2">${review.date}</p>
+                  <p class="text-gray-700 leading-relaxed">${review.comment}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Select Color
+      function selectColor(element) {
+        document.querySelectorAll('.option-selector[style]').forEach(btn => {
+          btn.classList.remove('selected');
+          btn.innerHTML = '';
+        });
+        element.classList.add('selected');
+        element.innerHTML = '<i class="fas fa-check absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xl drop-shadow-lg"></i>';
+      }
+
+      // Select Storage
+      function selectStorage(element) {
+        document.querySelectorAll('.option-selector').forEach(btn => {
+          btn.classList.remove('selected');
+          const subtitle = btn.querySelector('.text-xs');
+          if (subtitle) subtitle.textContent = subtitle.textContent.replace('Đang chọn', '');
+        });
+        element.classList.add('selected');
+        const subtitle = element.querySelector('.text-xs');
+        if (subtitle && !subtitle.textContent.includes('Đang chọn')) {
+          subtitle.textContent = 'Đang chọn';
+        }
+      }
+
+      // Buy Now
+      function buyNow() {
+        alert('Chức năng mua ngay đang được phát triển!');
+      }
+
+      // Buy Installment
+      function buyInstallment() {
+        alert('Trả góp 0% - Duyệt hồ sơ nhanh chóng!');
+      }
+
+      // Add to Cart
+      function addToCart() {
+        alert('Đã thêm sản phẩm vào giỏ hàng!');
+      }
+
+      // Social Share Functions
+      function shareProduct(platform) {
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.querySelector('h1').textContent);
+        
+        switch(platform) {
+          case 'facebook':
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+            break;
+          case 'twitter':
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank', 'width=600,height=400');
+            break;
+          case 'zalo':
+            window.open(`https://zalo.me/share?url=${url}`, '_blank', 'width=600,height=400');
+            break;
+        }
+      }
+
+      function copyLink() {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          alert('Đã sao chép link sản phẩm!');
+        });
+      }
+
+      // Review Functions
+      let selectedRating = 0;
+
+      function toggleReviewForm() {
+        const form = document.getElementById('reviewForm');
+        form.classList.toggle('hidden');
+      }
+
+      function setRating(stars) {
+        selectedRating = stars;
+        const starButtons = document.querySelectorAll('.rating-star');
+        starButtons.forEach((btn, index) => {
+          const icon = btn.querySelector('i');
+          if (index < stars) {
+            icon.className = 'fas fa-star';
+            btn.classList.remove('text-gray-300');
+            btn.classList.add('text-yellow-400');
+          } else {
+            icon.className = 'far fa-star';
+            btn.classList.remove('text-yellow-400');
+            btn.classList.add('text-gray-300');
+          }
+        });
+      }
+
+      function submitReview() {
+        const name = document.getElementById('reviewName').value;
+        const comment = document.getElementById('reviewComment').value;
+
+        if (!selectedRating) {
+          alert('Vui lòng chọn số sao đánh giá!');
+          return;
+        }
+        if (!name || !comment) {
+          alert('Vui lòng điền đầy đủ thông tin!');
+          return;
+        }
+
+        alert('Cảm ơn bạn đã đánh giá! Đánh giá của bạn sẽ được duyệt và hiển thị sau ít phút.');
+        document.getElementById('reviewForm').classList.add('hidden');
+        document.getElementById('reviewName').value = '';
+        document.getElementById('reviewComment').value = '';
+        selectedRating = 0;
+        setRating(0);
+      }
+
+      function filterReviews(stars) {
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Filter logic would go here - for now just visual feedback
+        console.log('Filter by:', stars);
+      }
+
+      // Add to Wishlist
+      function addToWishlist() {
+        const btn = event.target.closest('button');
+        const icon = btn.querySelector('i');
+        if (icon.classList.contains('far')) {
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+          btn.classList.add('bg-red-50', 'border-red-600', 'text-red-600');
+          alert('Đã thêm vào danh sách yêu thích!');
+        } else {
+          icon.classList.remove('fas');
+          icon.classList.add('far');
+          btn.classList.remove('bg-red-50', 'border-red-600', 'text-red-600');
+        }
+      }
+
+      // Scroll to Buy Section
+      function scrollToBuySection() {
+        document.getElementById('buySection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Sticky Buy Button on Scroll
+      window.addEventListener('scroll', () => {
+        const buySection = document.getElementById('buySection');
+        const stickyBuy = document.getElementById('stickyBuy');
+        
+        if (buySection && stickyBuy) {
+          const buySectionRect = buySection.getBoundingClientRect();
+          if (buySectionRect.top < -100) {
+            stickyBuy.classList.add('active');
+          } else {
+            stickyBuy.classList.remove('active');
+          }
+        }
+      });
 
       // ===== RELATED PRODUCTS =====
 
@@ -390,7 +1569,7 @@
           for(let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) starsHTML += '<i class="far fa-star"></i>';
 
           return `
-            <a href="product-detail.html?id=${product.id}" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-2xl hover:border-red-300 transition-all duration-300 group">
+            <a href="product-detail.html?id=${product.id}" class="product-item bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 group">
               <div class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white">
                 ${product.discount ? `
                   <div class="absolute top-3 left-0 z-10">
@@ -453,6 +1632,16 @@
         
         // Render related products
         renderRelatedProducts(productId);
+
+        // Initialize Swiper after product is rendered
+        setTimeout(() => {
+          initSwiper();
+        }, 100);
+
+        // Load default tab (Description)
+        setTimeout(() => {
+          loadDescription();
+        }, 200);
 
         // Mobile menu functionality
         const mobileMenu = document.querySelector('.mobile-menu');
