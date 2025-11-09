@@ -105,21 +105,57 @@
       .product-gallery {
         background: white;
         border-radius: 10px;
-        padding: 16px;
+        padding: 20px;
         box-shadow: var(--shadow-sm);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .product-gallery:hover {
+        box-shadow: var(--shadow-md);
       }
 
       .gallery-main-image {
         width: 100%;
-        height: 400px;
+        height: 420px;
         object-fit: contain;
         border-radius: 10px;
+        cursor: zoom-in;
+        transition: transform 0.4s ease, filter 0.3s ease;
       }
 
       @media (min-width: 768px) {
         .gallery-main-image {
-          height: 500px;
+          height: 520px;
         }
+      }
+
+      /* Image Zoom Effect */
+      .zoom-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        background: #f9f9f9;
+      }
+
+      .zoom-container:hover .gallery-main-image {
+        transform: scale(1.15);
+      }
+
+      .zoom-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.02);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      .zoom-container:hover::after {
+        opacity: 1;
       }
 
       /* Thumbnail spacing */
@@ -127,122 +163,243 @@
         border-radius: 8px;
         overflow: hidden;
         border: 2px solid transparent;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
         padding: 8px;
         background: white;
+        cursor: pointer;
       }
 
-      .thumbnail-item:hover,
+      .thumbnail-item:hover {
+        border-color: var(--primary-red);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+
       .thumbnail-item.active {
         border-color: var(--primary-red);
+        background: #fff5f5;
+        box-shadow: 0 2px 8px rgba(229, 57, 53, 0.2);
       }
 
-      /* Hide extra thumbnails on mobile */
+      .thumbnail-item img {
+        transition: transform 0.3s ease;
+      }
+
+      .thumbnail-item:hover img {
+        transform: scale(1.1);
+      }
+
+      /* Responsive Gallery for Mobile */
       @media (max-width: 767px) {
-        .swiper-slide:nth-child(n+4) {
-          display: none;
+        .product-gallery {
+          padding: 15px;
+        }
+
+        .gallery-main-image {
+          height: 320px;
+        }
+
+        .zoom-container:hover .gallery-main-image {
+          transform: scale(1.08);
+        }
+
+        .thumbnail-item {
+          padding: 6px;
+        }
+
+        .thumbnail-item img {
+          height: 60px;
+        }
+
+        /* Swiper navigation for mobile */
+        .swiper-button-next,
+        .swiper-button-prev {
+          width: 32px;
+          height: 32px;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .gallery-main-image {
+          height: 280px;
+        }
+
+        .thumbnail-item img {
+          height: 50px;
+        }
+
+        /* Smaller color options on small phones */
+        .color-option {
+          width: 40px;
+          height: 40px;
+        }
+
+        /* Adjust storage grid on mobile */
+        .option-selector {
+          padding: 8px 10px;
+          font-size: 13px;
+        }
+      }
+
+      /* Additional mobile responsive */
+      @media (max-width: 767px) {
+        .product-card {
+          padding: 18px;
+        }
+
+        .color-option {
+          width: 42px;
+          height: 42px;
+        }
+
+        .btn-primary,
+        .btn-outline {
+          font-size: 13px;
+          padding: 10px 16px;
+        }
+
+        .tab-button {
+          padding: 8px 12px;
+          font-size: 13px;
         }
       }
 
       /* Product Card Modern */
       .product-card {
         background: white;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: var(--shadow-sm);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-light);
+      }
+
+      @media (min-width: 1024px) {
+        .product-card {
+          padding: 28px;
+        }
       }
 
       /* Button Variants - Modern, không shadow nặng */
       .btn-primary {
-        background: var(--primary-red);
+        background: linear-gradient(135deg, var(--primary-red) 0%, #d32f2f 100%);
         color: white;
-        padding: 12px 24px;
-        border-radius: 6px;
-        font-size: 16px;
-        font-weight: 600;
+        padding: 11px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 700;
         border: none;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(229, 57, 53, 0.25);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
       }
 
       .btn-primary:hover {
-        background: #d32f2f;
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 14px rgba(229, 57, 53, 0.35);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
       }
 
       .btn-outline {
         background: white;
         color: var(--primary-red);
-        padding: 12px 24px;
-        border-radius: 6px;
-        font-size: 16px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 14px;
         font-weight: 600;
         border: 2px solid var(--primary-red);
-        transition: all 0.2s;
+        transition: all 0.3s ease;
       }
 
       .btn-outline:hover {
-        background: #fef5f5;
+        background: var(--primary-red);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(229, 57, 53, 0.2);
       }
 
       /* Option Selector Modern */
       .option-selector {
-        border-radius: 6px;
-        border: 1px solid var(--border-color);
-        padding: 8px 12px;
-        transition: all 0.2s;
+        border-radius: 8px;
+        border: 2px solid var(--border-color);
+        padding: 10px 14px;
+        transition: all 0.25s ease;
         cursor: pointer;
+        background: white;
       }
 
       .option-selector:hover {
         border-color: var(--primary-red);
         box-shadow: 0 0 0 3px rgba(229,57,53,0.1);
+        transform: translateY(-2px);
       }
 
       .option-selector.selected {
         border-color: var(--primary-red);
         border-width: 2px;
         background: #fff5f5;
+        box-shadow: 0 0 0 3px rgba(229,57,53,0.15);
+        transform: scale(1.05);
       }
 
       /* Color Selector */
       .color-option {
-        width: 40px;
-        height: 40px;
-        border-radius: 6px;
-        border: 2px solid transparent;
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        border: 3px solid transparent;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.25s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .color-option:hover {
-        transform: scale(1.1);
+        transform: scale(1.15);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       }
 
       .color-option.selected {
         border-color: var(--primary-red);
-        box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-red);
+        box-shadow: 0 0 0 2px white, 0 0 0 5px var(--primary-red);
+        transform: scale(1.1);
       }
 
       /* Tab Modern - Đơn giản */
       .tab-button {
-        padding: 14px 20px;
+        padding: 10px 16px;
         font-size: 14px;
         font-weight: 500;
         color: var(--text-secondary);
         background: transparent;
         border: none;
-        border-bottom: 2px solid transparent;
+        border-bottom: 3px solid transparent;
         transition: all 0.2s;
         cursor: pointer;
+        position: relative;
       }
 
       .tab-button:hover {
         color: var(--primary-red);
+        background: #fff5f5;
       }
 
       .tab-button.active {
         color: var(--primary-red);
         border-bottom-color: var(--primary-red);
+        font-weight: 600;
+        background: #fff5f5;
       }
 
       /* Related Products - Hover Effects */
@@ -452,17 +609,62 @@
         color: white;
       }
 
-      /* Price Modern */
+      /* Price Modern - 18-20px, đỏ, bold */
       .price-main {
-        font-size: 20px;
-        font-weight: 700;
+        font-size: 26px;
+        font-weight: 800;
         color: var(--primary-red);
+        font-family: 'Montserrat', sans-serif;
       }
 
       @media (min-width: 768px) {
         .price-main {
-          font-size: 24px;
+          font-size: 32px;
         }
+      }
+
+      /* Loading Spinner */
+      .spinner {
+        border: 4px solid rgba(229, 57, 53, 0.1);
+        border-top: 4px solid var(--primary-red);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Success/Error Toast */
+      .toast {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        background: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast.success {
+        border-left: 4px solid #4caf50;
+      }
+
+      .toast.error {
+        border-left: 4px solid #f44336;
       }
     </style>
   </head>
@@ -747,6 +949,33 @@
       }
     }
     </script>
+
+    <!-- Breadcrumb Schema for SEO -->
+    <script type="application/ld+json" id="breadcrumbSchema">
+    {
+      "@context": "https://schema.org/",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Trang chủ",
+          "item": "https://quanghungmobile.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Sản phẩm",
+          "item": "https://quanghungmobile.com/products.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Chi tiết sản phẩm"
+        }
+      ]
+    }
+    </script>
           </button>
         </div>
       </div>
@@ -768,51 +997,13 @@
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
+    <!-- Main JS -->
     <script src="main.js"></script>
-
-    <script>
-      // ===== PRODUCT DATA (same as products.html) =====
-      const PRODUCTS = [
-        {id:1,name:'Samsung Galaxy A06 5G 4GB 128GB',brand:'samsung',category:'dienthoai',price:3420000,oldPrice:3920000,discount:13,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',battery:'5000 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#e8f5e9','#000000'],image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
-        {id:2,name:'Samsung Galaxy A07 4GB 128GB',brand:'samsung',category:'dienthoai',price:3190000,oldPrice:3390000,discount:6,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',battery:'5000 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#000000','#4fc3f7','#006064'],image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop'},
-        {id:3,name:'Samsung Galaxy A16 4GB 128GB',brand:'samsung',category:'dienthoai',price:3700000,oldPrice:5000000,discount:26,ram:4,storage:128,screen:'6.7" Super AMOLED FHD+',camera:'50MP',battery:'5000 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#000000','#e0e0e0'],image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop'},
-        {id:4,name:'OPPO A5i 4GB 64GB',brand:'oppo',category:'dienthoai',price:3290000,ram:4,storage:64,screen:'6.7 inch',camera:'50MP góc siêu rộng',battery:'5000 mAh',os:'Android 13',features:['tragop'],colors:['#9575cd','#b39ddb'],image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
-        {id:5,name:'iPhone 15 Pro Max 256GB',brand:'iphone',category:'dienthoai',price:28990000,oldPrice:34990000,discount:17,ram:8,storage:256,screen:'6.7"',camera:'48MP',battery:'4422 mAh',os:'iOS 17',features:['tragop','freeship'],colors:['#4a4a4a','#e8e8e8','#ffd700'],image:'https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=400&h=400&fit=crop'},
-        {id:6,name:'Xiaomi 14 5G 512GB',brand:'xiaomi',category:'dienthoai',price:18990000,oldPrice:24990000,discount:24,ram:12,storage:512,screen:'6.36"',camera:'50MP',battery:'4610 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#81c784','#000000'],image:'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=400&fit=crop'},
-        {id:7,name:'OPPO Reno12 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:8290000,oldPrice:9990000,discount:17,ram:8,storage:256,screen:'6.67"',camera:'50MP',battery:'5000 mAh',os:'Android 14',features:['tragop'],colors:['#ff9800','#9c27b0'],image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop'},
-        {id:8,name:'HONOR X7c 8GB 256GB',brand:'honor',category:'dienthoai',price:4790000,oldPrice:5990000,discount:20,ram:8,storage:256,screen:'6.77"',camera:'108MP',battery:'6000 mAh',os:'Android 13',features:['tragop'],colors:['#000000','#4fc3f7'],image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop'},
-        {id:9,name:'Samsung Galaxy S24 Ultra 12GB 256GB',brand:'samsung',category:'dienthoai',price:29990000,oldPrice:33990000,discount:12,ram:12,storage:256,screen:'6.8" Dynamic AMOLED 2X',camera:'200MP',battery:'5000 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#9e9e9e','#000000','#b39ddb'],image:'https://images.unsplash.com/photo-1610945264803-c22b62d2a7b4?w=400&h=400&fit=crop'},
-        {id:10,name:'iPhone 14 Pro 128GB',brand:'iphone',category:'dienthoai',price:24990000,oldPrice:27990000,discount:11,ram:6,storage:128,screen:'6.1"',camera:'48MP',battery:'3200 mAh',os:'iOS 16',features:['tragop','freeship'],colors:['#4a148c','#000000','#ffd700'],image:'https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=400&h=400&fit=crop'},
-        {id:11,name:'Xiaomi Redmi Note 13 Pro 8GB 256GB',brand:'xiaomi',category:'dienthoai',price:6990000,oldPrice:8990000,discount:22,ram:8,storage:256,screen:'6.67" AMOLED',camera:'200MP',battery:'5100 mAh',os:'Android 13',features:['tragop','freeship'],colors:['#9c27b0','#000000','#e3f2fd'],image:'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400&h=400&fit=crop'},
-        {id:12,name:'OPPO Find N3 Flip 12GB 256GB',brand:'oppo',category:'dienthoai',price:19990000,oldPrice:22990000,discount:13,ram:12,storage:256,screen:'6.8"',camera:'50MP',battery:'4300 mAh',os:'Android 13',features:['tragop','freeship'],colors:['#ffc107','#f48fb1'],image:'https://images.unsplash.com/photo-1583573503122-a3c6ce6ec1e0?w=400&h=400&fit=crop'},
-        {id:13,name:'Samsung Galaxy Z Flip5 8GB 256GB',brand:'samsung',category:'dienthoai',price:16990000,oldPrice:20990000,discount:19,ram:8,storage:256,screen:'6.7" Foldable AMOLED',camera:'12MP',battery:'3700 mAh',os:'Android 13',features:['tragop','freeship'],colors:['#b39ddb','#ffeb3b','#000000'],image:'https://images.unsplash.com/photo-1591122947157-26bad3a117d2?w=400&h=400&fit=crop'},
-        {id:14,name:'iPhone 13 128GB',brand:'iphone',category:'dienthoai',price:17990000,oldPrice:18990000,discount:5,ram:4,storage:128,screen:'6.1"',camera:'12MP',battery:'3240 mAh',os:'iOS 15',features:['tragop','freeship'],colors:['#f48fb1','#000000','#e3f2fd','#ffffff'],image:'https://images.unsplash.com/photo-1632661674318-1c8e2b54d4f7?w=400&h=400&fit=crop'},
-        {id:15,name:'Xiaomi 13T Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:12990000,oldPrice:14990000,discount:13,ram:12,storage:512,screen:'6.67" AMOLED',camera:'50MP',battery:'5000 mAh',os:'Android 13',features:['tragop','freeship'],colors:['#000000','#90caf9'],image:'https://images.unsplash.com/photo-1567581935884-3349723552ca?w=400&h=400&fit=crop'},
-        {id:16,name:'OPPO Reno11 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:7990000,oldPrice:8990000,discount:11,ram:8,storage:256,screen:'6.7"',camera:'64MP',battery:'5000 mAh',os:'Android 14',features:['tragop'],colors:['#9c27b0','#00bcd4'],image:'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&h=400&fit=crop'},
-        {id:17,name:'HONOR Magic6 Pro 12GB 512GB',brand:'honor',category:'dienthoai',price:24990000,oldPrice:29990000,discount:17,ram:12,storage:512,screen:'6.8"',camera:'180MP',battery:'5600 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#000000','#9e9e9e'],image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop'},
-        {id:18,name:'Samsung Galaxy A55 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:9490000,oldPrice:10990000,discount:14,ram:8,storage:128,screen:'6.6"',camera:'50MP',battery:'5000 mAh',os:'Android 14',features:['tragop'],colors:['#9c27b0','#000000','#90caf9'],image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
-        {id:19,name:'Xiaomi Redmi 13C 6GB 128GB',brand:'xiaomi',category:'dienthoai',price:2990000,oldPrice:3490000,discount:14,ram:6,storage:128,screen:'6.74"',camera:'50MP',battery:'5000 mAh',os:'Android 13',features:['tragop'],colors:['#000000','#4caf50'],image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
-        {id:20,name:'iPhone 15 128GB',brand:'iphone',category:'dienthoai',price:22990000,oldPrice:24990000,discount:8,ram:6,storage:128,screen:'6.1"',camera:'48MP',battery:'3349 mAh',os:'iOS 17',features:['tragop','freeship'],colors:['#f48fb1','#000000','#90caf9','#ffeb3b'],image:'https://images.unsplash.com/photo-1678685888221-cda269d3b1db?w=400&h=400&fit=crop'},
-        {id:21,name:'OPPO A79 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:6490000,oldPrice:6990000,discount:7,ram:8,storage:256,screen:'6.72"',camera:'50MP',battery:'5000 mAh',os:'Android 13',features:['tragop'],colors:['#9c27b0','#000000'],image:'https://images.unsplash.com/photo-1571066811602-716837d681de?w=400&h=400&fit=crop'},
-        {id:22,name:'Samsung Galaxy M34 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:6290000,oldPrice:6990000,discount:10,ram:8,storage:128,screen:'6.5"',camera:'50MP',battery:'6000 mAh',os:'Android 13',features:['tragop'],colors:['#000000','#2196f3'],image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop'},
-        {id:23,name:'Xiaomi POCO X6 Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:9990000,oldPrice:10990000,discount:9,ram:12,storage:512,screen:'6.67"',camera:'64MP',battery:'5000 mAh',os:'Android 14',features:['tragop'],colors:['#000000','#ffeb3b'],image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop'},
-        {id:24,name:'HONOR X9b 5G 12GB 256GB',brand:'honor',category:'dienthoai',price:6990000,oldPrice:7990000,discount:13,ram:12,storage:256,screen:'6.78"',camera:'108MP',battery:'5800 mAh',os:'Android 13',features:['tragop'],colors:['#9c27b0','#000000'],image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop'},
-        
-        // Phụ kiện
-        {id:101,name:'Tai nghe Bluetooth Apple AirPods Pro 2',brand:'apple',category:'phukien',type:'tainghe',price:5990000,oldPrice:6990000,discount:14,image:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400&h=400&fit=crop',rating:4.5,reviews:152,description:'Tai nghe cao cấp với chống ồn chủ động ANC'},
-        {id:102,name:'Tai nghe Bluetooth Samsung Galaxy Buds2 Pro',brand:'samsung',category:'phukien',type:'tainghe',price:3490000,oldPrice:4990000,discount:30,image:'https://images.unsplash.com/photo-1590658165737-15a047b7a0c1?w=400&h=400&fit=crop',rating:4.5,reviews:89,description:'Âm thanh Hi-Fi 24bit với ANC thông minh'},
-        {id:103,name:'Tai nghe Bluetooth AirPods 2 Apple',brand:'apple',category:'phukien',type:'tainghe',price:2690000,oldPrice:3190000,discount:16,image:'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=400&h=400&fit=crop',rating:4,reviews:234,description:'Kết nối tự động với thiết bị Apple'},
-        {id:104,name:'Tai nghe Bluetooth Samsung Galaxy Buds FE',brand:'samsung',category:'phukien',type:'tainghe',price:1490000,oldPrice:1990000,discount:25,image:'https://images.unsplash.com/photo-1649859394657-c2c90e82446f?w=400&h=400&fit=crop',rating:4,reviews:67,description:'Thiết kế nhỏ gọn, chống nước IPX7'},
-        {id:105,name:'Tai nghe Bluetooth Xiaomi Redmi Buds 5 Pro',brand:'xiaomi',category:'phukien',type:'tainghe',price:1390000,oldPrice:1790000,discount:22,image:'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=400&h=400&fit=crop',rating:4,reviews:43,description:'ANC 46dB, pin 38 giờ'},
-        {id:201,name:'Cáp Type C 1m Apple MM0A3',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,image:'https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400&h=400&fit=crop',rating:4.5,reviews:128,description:'Cáp sạc Type-C to Type-C chính hãng'},
-        {id:202,name:'Sạc nhanh Type C PD 20W Apple',brand:'apple',category:'phukien',type:'sac',price:490000,oldPrice:590000,discount:17,image:'https://images.unsplash.com/photo-1591290619762-c588ec6ade80?w=400&h=400&fit=crop',rating:4.5,reviews:156,description:'Sạc nhanh PD 20W cho iPhone'},
-        {id:301,name:'Ốp lưng iPhone 15 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:1190000,oldPrice:1490000,discount:20,image:'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&h=400&fit=crop',rating:4.5,reviews:234,description:'Ốp lưng silicone hỗ trợ MagSafe'},
-        {id:302,name:'Ốp lưng iPhone 14 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:990000,oldPrice:1290000,discount:23,image:'https://images.unsplash.com/photo-1618088089075-44c3b5e2e283?w=400&h=400&fit=crop',rating:4,reviews:187,description:'Chất liệu silicone mềm mại'},
-        {id:303,name:'Ốp lưng Samsung Galaxy S24 Ultra Clear',brand:'samsung',category:'phukien',type:'oplung',price:590000,oldPrice:790000,discount:25,image:'https://images.unsplash.com/photo-1585704768175-39ba0d82bda8?w=400&h=400&fit=crop',rating:4.5,reviews:145,description:'Ốp lưng trong suốt chống sốc'},
-        {id:304,name:'Ốp lưng Samsung Galaxy A55 5G Silicone',brand:'samsung',category:'phukien',type:'oplung',price:290000,oldPrice:390000,discount:26,image:'https://images.unsplash.com/photo-1601784551279-3c50e2c96d72?w=400&h=400&fit=crop',rating:4,reviews:98,description:'Mỏng nhẹ, vừa vặn'}
-      ];
-
-      // Format price
+    
+    <!-- Product Detail JS - Separated for better maintainability -->
+    <script src="product-detail.js"></script>
+  </body>
+</html>
       function formatPrice(price) {
         return price.toLocaleString('vi-VN') + 'đ';
       }

@@ -64,7 +64,9 @@
   <!-- Google Fonts - Roboto & Montserrat (Tối ưu Typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -75,249 +77,255 @@
   <!-- Product Card Styles -->
   <link rel="stylesheet" href="product-card-styles.css">
 
+  <!-- Modern E-commerce Styles - Hiệu ứng chuyên nghiệp -->
+  <link rel="stylesheet" href="modern-ecommerce-styles.css">
+
+  <!-- Product Card Optimized - Theo mẫu hình -->
+  <link rel="stylesheet" href="product-card-optimized.css">
+
   <style>
     :root {
-      /* WCAG 2.1 AA Compliant Colors - Tỷ lệ tương phản tối ưu */
-      --red-main: #d91e23;
-      /* Màu đỏ chính - Contrast 4.8:1 với white */
-      --red-dark: #b01117;
-      /* Màu đỏ tối - Contrast 7.2:1 với white */
-      --red-light: #ffe5e6;
-      /* Nền đỏ nhạt cho hover */
-      --red-accent: #ff1a1a;
-      /* Màu nhấn cho giá khuyến mãi */
+  /* WCAG 2.1 AA Compliant Colors - Tỷ lệ tương phản tối ưu */
+  --red-main: #d91e23;
+  /* Màu đỏ chính - Contrast 4.8:1 với white */
+  --red-dark: #b01117;
+  /* Màu đỏ tối - Contrast 7.2:1 với white */
+  --red-light: #ffe5e6;
+  /* Nền đỏ nhạt cho hover */
+  --red-accent: #ff1a1a;
+  /* Màu nhấn cho giá khuyến mãi */
 
-      /* Text colors - Tương phản cao */
-      --text-primary: #1a1a1a;
-      /* Chữ chính - Contrast 16:1 với white */
-      --text-secondary: #4a4a4a;
-      /* Chữ phụ - Contrast 9:1 với white */
-      --text-muted: #666666;
-      /* Chữ mờ - Contrast 5.7:1 với white */
+  /* Text colors - Tương phản cao */
+  --text-primary: #1a1a1a;
+  /* Chữ chính - Contrast 16:1 với white */
+  --text-secondary: #4a4a4a;
+  /* Chữ phụ - Contrast 9:1 với white */
+  --text-muted: #666666;
+  /* Chữ mờ - Contrast 5.7:1 với white */
 
-      /* Background colors */
-      --bg-main: #ffffff;
-      --bg-secondary: #f5f5f5;
-      /* Nền phụ sáng hơn */
-      --bg-card: #ffffff;
+  /* Background colors */
+  --bg-main: #ffffff;
+  --bg-secondary: #f5f5f5;
+  /* Nền phụ sáng hơn */
+  --bg-card: #ffffff;
 
-      /* Border colors */
-      --border-light: #d4d4d4;
-      --border-medium: #a3a3a3;
+  /* Border colors */
+  --border-light: #d4d4d4;
+  --border-medium: #a3a3a3;
 
-      /* Success/Promotion colors */
-      --success-bg: #00752e;
-      /* Xanh đậm - Contrast 7:1 */
-      --success-text: #ffffff;
-      --promo-bg: #ff6b00;
-      /* Cam đậm - Contrast 4.8:1 */
-      --promo-text: #ffffff;
-    }
+  /* Success/Promotion colors */
+  --success-bg: #00752e;
+  /* Xanh đậm - Contrast 7:1 */
+  --success-text: #ffffff;
+  --promo-bg: #ff6b00;
+  /* Cam đậm - Contrast 4.8:1 */
+  --promo-text: #ffffff;
+  }
 
-    /* ===== ĐỒNG BỘ FONT VÀ MÀU SẮC CHO TOÀN BỘ WEBSITE ===== */
-    /* Thiết lập font chữ thống nhất - Roboto cho toàn bộ trang */
-    * {
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-    }
+  /* ===== ĐỒNG BỘ FONT VÀ MÀU SẮC CHO TOÀN BỘ WEBSITE ===== */
+  /* Thiết lập font chữ thống nhất - Roboto cho toàn bộ trang */
+  * {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  }
 
-    body,
-    p,
-    a,
-    span,
-    li,
-    input,
-    button,
-    textarea,
-    select {
-      font-family: 'Roboto', Arial, sans-serif;
-      color: #222;
-      /* Màu chữ tối, dễ đọc trên nền sáng */
-    }
+  body,
+  p,
+  a,
+  span,
+  li,
+  input,
+  button,
+  textarea,
+  select {
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #222;
+  /* Màu chữ tối, dễ đọc trên nền sáng */
+  }
 
-    /* Màu sắc cho tiêu đề - Sử dụng màu đỏ chủ đạo của QuangHưng Mobile */
-    h1,
-    h2,
-    h3 {
-      font-family: 'Roboto', Arial, sans-serif;
-      color: #d91e23;
-      /* Màu đỏ chính của thương hiệu */
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+  /* Màu sắc cho tiêu đề - Sử dụng màu đỏ chủ đạo của QuangHưng Mobile */
+  h1,
+  h2,
+  h3 {
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #d91e23;
+  /* Màu đỏ chính của thương hiệu */
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  }
 
-    h4,
-    h5,
-    h6 {
-      font-family: 'Roboto', Arial, sans-serif;
-      color: #b01117;
-      /* Màu đỏ tối cho tiêu đề nhỏ */
-      font-weight: 600;
-    }
+  h4,
+  h5,
+  h6 {
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #b01117;
+  /* Màu đỏ tối cho tiêu đề nhỏ */
+  font-weight: 600;
+  }
 
-    /* Màu chữ nội dung đồng nhất */
-    p,
-    li,
-    span {
-      color: #333;
-      /* Màu chữ nội dung, dễ tiếp nhận */
-      font-weight: 400;
-    }
+  /* Màu chữ nội dung đồng nhất */
+  p,
+  li,
+  span {
+  color: #333;
+  /* Màu chữ nội dung, dễ tiếp nhận */
+  font-weight: 400;
+  }
 
-    /* Màu cho link */
-    a {
-      color: #333;
-      font-weight: 400;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
+  /* Màu cho link */
+  a {
+  color: #333;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  }
 
-    a:hover {
-      color: #d91e23;
-      /* Chuyển sang màu đỏ khi hover */
-    }
+  a:hover {
+  color: #d91e23;
+  /* Chuyển sang màu đỏ khi hover */
+  }
 
-    /* Input và Button */
-    input,
-    textarea,
-    select {
-      font-family: 'Roboto', Arial, sans-serif;
-      color: #333;
-      border: 1px solid #d4d4d4;
-    }
+  /* Input và Button */
+  input,
+  textarea,
+  select {
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #333;
+  border: 1px solid #d4d4d4;
+  }
 
-    button {
-      font-family: 'Roboto', Arial, sans-serif;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
+  button {
+  font-family: 'Roboto', Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  }
 
-    /* Giá sản phẩm - Màu đỏ nổi bật */
-    .product-price,
-    .price {
-      color: #d91e23 !important;
-      font-weight: 700;
-    }
+  /* Giá sản phẩm - Màu đỏ nổi bật */
+  .product-price,
+  .price {
+  color: #d91e23 !important;
+  font-weight: 700;
+  }
 
-    /* Giá cũ (gạch ngang) */
-    .old-price {
-      color: #999 !important;
-      font-weight: 400;
-    }
+  /* Giá cũ (gạch ngang) */
+  .old-price {
+  color: #999 !important;
+  font-weight: 400;
+  }
 
-    /* Text phụ */
-    .text-muted,
-    .text-gray-500,
-    .text-gray-600 {
-      color: #666 !important;
-    }
+  /* Text phụ */
+  .text-muted,
+  .text-gray-500,
+  .text-gray-600 {
+  color: #666 !important;
+  }
 
-    /* Text thành công */
-    .text-success,
-    .text-green-600 {
-      color: #00752e !important;
-    }
+  /* Text thành công */
+  .text-success,
+  .text-green-600 {
+  color: #00752e !important;
+  }
 
-    /* ===== KẾT THÚC PHẦN ĐỒNG BỘ FONT VÀ MÀU SẮC ===== */
+  /* ===== KẾT THÚC PHẦN ĐỒNG BỘ FONT VÀ MÀU SẮC ===== */
 
-    /* ===== TĂNG KÍCH THƯỚC CHỮ ĐỂ CẢI THIỆN TRẢI NGHIỆM NGƯỜI DÙNG ===== */
-    /* Tăng base font-size cho toàn trang */
-    html {
-      font-size: 16px;
-      /* Base size */
-    }
+  /* ===== TĂNG KÍCH THƯỚC CHỮ ĐỂ CẢI THIỆN TRẢI NGHIỆM NGƯỜI DÙNG ===== */
+  /* Tăng base font-size cho toàn trang */
+  html {
+  font-size: 16px;
+  /* Base size */
+  }
 
-    body {
-      font-size: 1.125rem;
-      /* 18px - Tăng kích thước chữ nội dung */
-      line-height: 1.6;
-      background: #f3f4f6;
-    }
+  body {
+  font-size: 1.125rem;
+  /* 18px - Tăng kích thước chữ nội dung */
+  line-height: 1.6;
+  background: #f3f4f6;
+  }
 
-    /* Tăng kích thước tiêu đề */
-    h1 {
-      font-size: 2.5rem !important;
-      /* 40px */
-      line-height: 1.2;
-    }
+  /* Tăng kích thước tiêu đề */
+  h1 {
+  font-size: 2.5rem !important;
+  /* 40px */
+  line-height: 1.2;
+  }
 
-    h2 {
-      font-size: 2rem !important;
-      /* 32px */
-      line-height: 1.3;
-    }
+  h2 {
+  font-size: 2rem !important;
+  /* 32px */
+  line-height: 1.3;
+  }
 
-    h3 {
-      font-size: 1.75rem !important;
-      /* 28px */
-      line-height: 1.3;
-    }
+  h3 {
+  font-size: 1.75rem !important;
+  /* 28px */
+  line-height: 1.3;
+  }
 
-    h4 {
-      font-size: 1.5rem !important;
-      /* 24px */
-      line-height: 1.4;
-    }
+  h4 {
+  font-size: 1.5rem !important;
+  /* 24px */
+  line-height: 1.4;
+  }
 
-    h5 {
-      font-size: 1.25rem !important;
-      /* 20px */
-      line-height: 1.4;
-    }
+  h5 {
+  font-size: 1.25rem !important;
+  /* 20px */
+  line-height: 1.4;
+  }
 
-    h6 {
-      font-size: 1.125rem !important;
-      /* 18px */
-      line-height: 1.4;
-    }
+  h6 {
+  font-size: 1.125rem !important;
+  /* 18px */
+  line-height: 1.4;
+  }
 
-    /* Tăng kích thước chữ cho các thành phần (KHÔNG bao gồm <a> để tránh conflict với nav) */
+  /* Tăng kích thước chữ cho các thành phần (KHÔNG bao gồm <a> để tránh conflict với nav) */
     p {
-      font-size: 1.125rem;
-      /* 18px */
-      line-height: 1.6;
+    font-size: 1.125rem;
+    /* 18px */
+    line-height: 1.6;
     }
 
     li {
-      font-size: 1.125rem;
-      /* 18px */
-      line-height: 1.6;
+    font-size: 1.125rem;
+    /* 18px */
+    line-height: 1.6;
     }
 
     span {
-      font-size: 1.125rem;
-      /* 18px */
-      line-height: 1.6;
+    font-size: 1.125rem;
+    /* 18px */
+    line-height: 1.6;
     }
 
     /* Tăng kích thước input và button */
     input,
     textarea,
     select {
-      font-size: 1.125rem !important;
-      /* 18px */
-      padding: 0.75rem 1rem;
+    font-size: 1.125rem !important;
+    /* 18px */
+    padding: 0.75rem 1rem;
     }
 
     /* Button - KHÔNG áp dụng cho nav button và search button */
     button:not(nav button):not(.nav-link):not(#desktop-search-btn):not(#mobile-search-btn) {
-      font-size: 1.125rem !important;
-      /* 18px */
-      padding: 0.75rem 1.5rem;
+    font-size: 1.125rem !important;
+    /* 18px */
+    padding: 0.75rem 1.5rem;
     }
 
     /* Đặc biệt: Giá sản phẩm nổi bật hơn */
     .product-price {
-      font-size: 1.5rem !important;
-      /* 24px */
-      font-weight: bold;
+    font-size: 1.5rem !important;
+    /* 24px */
+    font-weight: bold;
     }
 
     /* KHÔNG override font-size cho nav a - Để CSS riêng xử lý (0.875rem) */
 
     /* Giữ các text nhỏ (như caption, helper text) ở kích thước vừa phải */
     .text-xs {
-      font-size: 0.875rem !important;
-      /* 14px */
+    font-size: 0.875rem !important;
+    /* 14px */
     }
 
     /* KHÔNG override .text-sm - Để Tailwind quản lý (0.875rem = 14px) */
@@ -328,109 +336,186 @@
 
     /* Container giới hạn chiều rộng và căn giữa */
     .max-w-7xl {
-      max-width: 1280px;
+    max-width: 1280px;
     }
 
     /* Khung trắng chứa sản phẩm với hiệu ứng đẹp */
     section .bg-white.rounded-2xl,
     section .bg-gradient-to-br.rounded-2xl {
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
     }
 
     section .bg-white.rounded-2xl:hover {
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
 
     /* Spacing giữa các section */
     section.py-6 {
-      margin-bottom: 0;
+    margin-bottom: 0;
     }
 
     /* Responsive - trên mobile thì full width */
     @media (max-width: 640px) {
-      .max-w-7xl {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
+    .max-w-7xl {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    }
 
-      section .bg-white.rounded-2xl,
-      section .bg-gradient-to-br.rounded-2xl {
-        border-radius: 1rem;
-        padding: 1rem;
-      }
+    section .bg-white.rounded-2xl,
+    section .bg-gradient-to-br.rounded-2xl {
+    border-radius: 1rem;
+    padding: 1rem;
+    }
     }
 
     /* ===== PRODUCT CARD STYLING - Tối ưu theo yêu cầu ===== */
     /* Product card containers */
     .grid.grid-cols-2.md\:grid-cols-3.lg\:grid-cols-6 {
-      justify-items: center; /* Căn giữa các card */
+    justify-items: stretch;
+    /* Căn đều các card */
+    gap: 16px;
     }
-    
+
+    /* Override grid to 5 columns on large screens */
+    @media (min-width: 1024px) {
+    .grid.grid-cols-2.md\:grid-cols-3.lg\:grid-cols-6 {
+    grid-template-columns: repeat(5, 1fr) !important;
+    }
+    }
+
+    /* Product card layout */
+    .grid a {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    background: white !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    }
+
+    .grid a:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+    border: 1px solid #d91e23 !important;
+    }
+
+    /* Image container with aspect ratio */
+    .grid a > div:first-child {
+    position: relative !important;
+    width: 100% !important;
+    padding-top: 100% !important; /* 1:1 aspect ratio */
+    background: #f8f9fa !important;
+    overflow: hidden !important;
+    }
+
+    .grid a > div:first-child img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    padding: 12px !important;
+    }
+
+    /* Product info padding */
+    .grid a > div:last-child {
+    padding: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    flex: 1 !important;
+    }
+
     /* Product card title - Tên sản phẩm nổi bật, dễ đọc */
     .grid a h4 {
-      font-size: 18px !important; /* 18px cho title - nổi bật, dễ đọc */
-      font-weight: 600 !important;
-      line-height: 1.3 !important;
-      color: #1a1a1a !important;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      hyphens: auto;
-      margin-bottom: 6px !important;
+    font-size: 14px !important;
+    /* 14px cho title - vừa phải, dễ đọc */
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    color: #1a1a1a !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    margin-bottom: 8px !important;
+    min-height: 40px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
     }
-    
+
     /* Product price - Giá sản phẩm rất rõ ràng, thu hút */
     .grid a .text-red-600 {
-      font-size: 19px !important; /* 19px cho giá - rất rõ ràng, thu hút */
-      font-weight: 700 !important;
-      color: #d91e23 !important;
+    font-size: 16px !important;
+    /* 16px cho giá - rõ ràng, cân đối */
+    font-weight: 700 !important;
+    color: #d91e23 !important;
+    line-height: 1.2 !important;
     }
-    
+
     /* Product old price - Giá gốc vừa phải */
     .grid a .text-gray-400 {
-      font-size: 13px !important; /* 13px cho giá gốc */
-      font-weight: 400 !important;
-      color: #999 !important;
+    font-size: 12px !important;
+    /* 12px cho giá gốc */
+    font-weight: 400 !important;
+    color: #999 !important;
+    line-height: 1.2 !important;
     }
-    
+
     /* Product description - Mô tả phụ vừa phải */
     .grid a p.text-gray-500 {
-      font-size: 13px !important; /* 13px cho phần phụ */
-      font-weight: 400 !important;
-      color: #666 !important;
-      line-height: 1.4 !important;
+    font-size: 11px !important;
+    /* 11px cho phần phụ */
+    font-weight: 400 !important;
+    color: #666 !important;
+    line-height: 1.4 !important;
+    min-height: 30px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
     }
-    
+
     /* Badge giảm giá - Icon nhỏ gọn, không lấn bố cục */
     .grid a span.absolute {
-      font-size: 12px !important; /* Font vừa cho badge */
-      font-weight: 600 !important;
-      padding: 4px 8px !important;
+    font-size: 11px !important;
+    /* Font vừa cho badge */
+    font-weight: 600 !important;
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     /* Rating stars - Icon vừa phải */
     .grid a .fas.fa-star,
     .grid a .far.fa-star,
     .grid a .fas.fa-star-half-alt {
-      font-size: 13px !important; /* Icon sao vừa */
+    font-size: 12px !important;
+    /* Icon sao vừa */
+    color: #ffc107 !important;
     }
-    
+
     /* Rating count - Đánh giá vừa phải */
     .grid a .flex.items-center span.text-xs {
-      font-size: 12px !important;
-      color: #666 !important;
+    font-size: 12px !important;
+    color: #666 !important;
     }
-    
+
     /* Flash Sale Products - Giá sốc */
     .min-w-\[200px\] h4,
     .min-w-\[180px\] h4,
     #flash-sale-container h4 {
-      font-size: 18px !important; /* 18px cho tên sản phẩm flash sale */
-      font-weight: 600 !important;
-      line-height: 1.3 !important;
-      color: #1a1a1a !important;
+    font-size: 18px !important;
+    /* 18px cho tên sản phẩm flash sale */
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    color: #1a1a1a !important;
     }
-    
+
     .min-w-\[200px\] .text-red-600,
     .min-w-\[200px\] .text-\[\#d91e23\],
     .min-w-\[180px\] .text-red-600,
@@ -439,299 +524,306 @@
     #flash-sale-container .text-\[\#d91e23\],
     #flash-sale-container .font-black,
     #flash-sale-container .font-bold.text-base {
-      font-size: 19px !important; /* 19px cho giá flash sale */
-      font-weight: 700 !important;
+    font-size: 19px !important;
+    /* 19px cho giá flash sale */
+    font-weight: 700 !important;
     }
-    
+
     .min-w-\[200px\] .text-gray-400,
     .min-w-\[200px\] .text-\[\#666666\],
     .min-w-\[180px\] .text-gray-400,
     .min-w-\[180px\] .text-\[\#666666\],
     #flash-sale-container .line-through {
-      font-size: 13px !important; /* 13px cho giá gốc flash sale */
+    font-size: 13px !important;
+    /* 13px cho giá gốc flash sale */
     }
-    
+
     .min-w-\[200px\] .text-gray-600,
     .min-w-\[200px\] .text-\[\#4a4a4a\],
     .min-w-\[180px\] .text-gray-600,
     .min-w-\[180px\] .text-\[\#4a4a4a\],
     #flash-sale-container p {
-      font-size: 12px !important; /* 12px cho "Đã bán" */
-      font-weight: 600 !important;
+    font-size: 12px !important;
+    /* 12px cho "Đã bán" */
+    font-weight: 600 !important;
     }
-    
+
     /* Flash Sale badges */
     .min-w-\[200px\] .absolute,
     .min-w-\[180px\] .absolute,
     #flash-sale-container .absolute {
-      font-size: 11px !important;
-      font-weight: 700 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
     }
-    
+
     /* ===== ĐÁNH GIÁ KHÁCH HÀNG STYLING ===== */
     /* Tên khách hàng */
     .rounded-2xl.p-8 h4 {
-      font-size: 18px !important;
-      font-weight: 700 !important;
-      color: #1a1a1a !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
     }
-    
+
     /* Nội dung đánh giá */
     .rounded-2xl.p-8 p.italic {
-      font-size: 15px !important;
-      line-height: 1.6 !important;
-      color: #4a4a4a !important;
-      font-weight: 400 !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    color: #4a4a4a !important;
+    font-weight: 400 !important;
     }
-    
+
     /* Thời gian đánh giá */
     .rounded-2xl.p-8 .text-sm {
-      font-size: 13px !important;
-      color: #999 !important;
+    font-size: 13px !important;
+    color: #999 !important;
     }
-    
+
     /* Icon sao đánh giá */
     .rounded-2xl.p-8 .fa-star {
-      font-size: 14px !important;
+    font-size: 14px !important;
     }
-    
+
     /* ===== VIDEO REVIEW SECTION (iPhone 17, 15, 14) ===== */
     /* Tên sản phẩm video lớn (iPhone 17) */
     .lg\:col-span-2 h3 {
-      font-size: 18px !important;
-      font-weight: 700 !important;
-      color: #1a1a1a !important;
-      line-height: 1.3 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+    line-height: 1.3 !important;
     }
-    
+
     /* Giá sản phẩm video lớn */
     .lg\:col-span-2 p.text-orange-500 {
-      font-size: 19px !important;
-      font-weight: 700 !important;
-      color: #ff6b00 !important;
+    font-size: 19px !important;
+    font-weight: 700 !important;
+    color: #ff6b00 !important;
     }
-    
+
     /* Button "Khám phá ngay" */
     .lg\:col-span-2 a.bg-orange-500 {
-      font-size: 14px !important;
-      font-weight: 600 !important;
-      padding: 10px 16px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    padding: 10px 16px !important;
     }
-    
+
     /* Tên sản phẩm video nhỏ (iPhone 15, 14) */
     .bg-gray-50.rounded-2xl h4 {
-      font-size: 16px !important;
-      font-weight: 600 !important;
-      color: #1a1a1a !important;
-      line-height: 1.3 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    line-height: 1.3 !important;
     }
-    
+
     /* Giá sản phẩm video nhỏ */
     .bg-gray-50.rounded-2xl p.text-orange-500 {
-      font-size: 18px !important;
-      font-weight: 700 !important;
-      color: #ff6b00 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #ff6b00 !important;
     }
-    
+
     /* ===== TIN TỨC CÔNG NGHỆ STYLING ===== */
     /* News title */
     #news-section article h3 {
-      font-size: 18px !important; /* 18px cho tiêu đề tin tức */
-      font-weight: 700 !important;
-      line-height: 1.4 !important;
-      color: #1a1a1a !important;
+    font-size: 18px !important;
+    /* 18px cho tiêu đề tin tức */
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    color: #1a1a1a !important;
     }
-    
+
     /* News description */
     #news-section article p {
-      font-size: 15px !important; /* 15px cho mô tả tin tức */
-      font-weight: 400 !important;
-      line-height: 1.5 !important;
-      color: #666 !important;
+    font-size: 15px !important;
+    /* 15px cho mô tả tin tức */
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #666 !important;
     }
-    
+
     /* News date and category */
     #news-section article .text-white span {
-      font-size: 13px !important; /* 13px cho ngày và category */
+    font-size: 13px !important;
+    /* 13px cho ngày và category */
     }
-    
+
     /* News category badge */
     #news-section article .rounded-full {
-      font-size: 12px !important; /* 12px cho badge category */
-      padding: 4px 10px !important;
+    font-size: 12px !important;
+    /* 12px cho badge category */
+    padding: 4px 10px !important;
     }
-    
+
     /* ===== FOOTER STYLING ===== */
     /* Tiêu đề cột footer */
     footer h3,
     footer h4 {
-      font-size: 17px !important;
-      font-weight: 700 !important;
-      color: #d91e23 !important;
-      margin-bottom: 16px !important;
-      line-height: 1.3 !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    color: #d91e23 !important;
+    margin-bottom: 16px !important;
+    line-height: 1.3 !important;
     }
-    
+
     /* Link footer */
     footer ul li a,
     footer ul li {
-      font-size: 15px !important;
-      line-height: 1.8 !important;
-      color: #333 !important;
-      font-weight: 400 !important;
+    font-size: 15px !important;
+    line-height: 1.8 !important;
+    color: #333 !important;
+    font-weight: 400 !important;
     }
-    
+
     /* Số hotline trong footer */
     footer .font-bold.text-red-600 {
-      font-size: 18px !important;
-      font-weight: 700 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
     }
-    
+
     /* Thời gian làm việc */
     footer .text-xs.text-gray-500 {
-      font-size: 13px !important;
-      color: #666 !important;
+    font-size: 13px !important;
+    color: #666 !important;
     }
-    
+
     /* Label tổng đài */
     footer .font-medium {
-      font-size: 14px !important;
-      font-weight: 500 !important;
-      color: #4a4a4a !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #4a4a4a !important;
     }
-    
+
     /* Tư vấn mua hàng text */
     footer .text-sm.text-gray-600 {
-      font-size: 14px !important;
-      margin-bottom: 6px !important;
+    font-size: 14px !important;
+    margin-bottom: 6px !important;
     }
-    
+
     /* Hotline lớn */
     footer .text-lg {
-      font-size: 20px !important;
-      font-weight: 700 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
     }
-    
+
     /* Copyright */
     footer .text-center.text-sm {
-      font-size: 14px !important;
-      color: #666 !important;
+    font-size: 14px !important;
+    color: #666 !important;
     }
-    
+
     footer .font-semibold.text-red-600 {
-      font-weight: 600 !important;
+    font-weight: 600 !important;
     }
 
     /* Hiệu ứng cho banner khuyến mãi */
     @keyframes pulse-glow {
 
-      0%,
-      100% {
-        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3), 0 2px 4px -1px rgba(239, 68, 68, 0.2);
-      }
+    0%,
+    100% {
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3), 0 2px 4px -1px rgba(239, 68, 68, 0.2);
+    }
 
-      50% {
-        box-shadow: 0 10px 20px -3px rgba(239, 68, 68, 0.5), 0 4px 6px -2px rgba(239, 68, 68, 0.3);
-      }
+    50% {
+    box-shadow: 0 10px 20px -3px rgba(239, 68, 68, 0.5), 0 4px 6px -2px rgba(239, 68, 68, 0.3);
+    }
     }
 
     section .bg-gradient-to-br.from-red-500 {
-      animation: pulse-glow 2s ease-in-out infinite;
+    animation: pulse-glow 2s ease-in-out infinite;
     }
 
     /* Banner layout - 3 banner phải có chiều cao bằng tổng chiều cao trái */
     @media (min-width: 1024px) {
-      .lg\:w-\[30\%\] {
-        height: 100%;
-      }
+    .lg\:w-\[30\%\] {
+    height: 100%;
+    }
 
-      .lg\:w-\[30\%\]>div {
-        flex: 1;
-        min-height: 0;
-      }
+    .lg\:w-\[30\%\]>div {
+    flex: 1;
+    min-height: 0;
+    }
 
-      .lg\:w-\[30\%\] img {
-        height: 100%;
-        object-fit: cover;
-      }
+    .lg\:w-\[30\%\] img {
+    height: 100%;
+    object-fit: cover;
+    }
     }
 
     /* Đảm bảo contrast cho text */
     .high-contrast-text {
-      color: var(--text-primary);
-      font-weight: 500;
+    color: var(--text-primary);
+    font-weight: 500;
     }
 
     .medium-contrast-text {
-      color: var(--text-secondary);
+    color: var(--text-secondary);
     }
 
     /* Nút bấm với contrast cao */
     .btn-primary {
-      background-color: var(--red-dark);
-      color: #ffffff;
-      font-weight: 600;
+    background-color: var(--red-dark);
+    color: #ffffff;
+    font-weight: 600;
     }
 
     .btn-primary:hover {
-      background-color: #8b0d12;
+    background-color: #8b0d12;
     }
 
     /* Giá khuyến mãi nổi bật */
     .price-sale {
-      color: var(--red-accent);
-      font-weight: 700;
-      font-size: 1.125rem;
+    color: var(--red-accent);
+    font-weight: 700;
+    font-size: 1.125rem;
     }
 
     .price-original {
-      color: var(--text-muted);
-      text-decoration: line-through;
+    color: var(--text-muted);
+    text-decoration: line-through;
     }
 
     /* Navigation hover effects */
     .nav-link {
-      position: relative;
-      transition: all 0.3s ease;
-      font-size: 1.0625rem;
-      font-weight: 600 !important;
-      color: white !important;
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 1.0625rem;
+    font-weight: 600 !important;
+    color: white !important;
     }
 
     /* Override font size for navigation specifically */
     nav a,
     nav button {
-      font-size: 1.0625rem !important;
-      font-weight: 600 !important;
-      color: white !important;
+    font-size: 1.0625rem !important;
+    font-weight: 600 !important;
+    color: white !important;
     }
 
     .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 2px;
-      background: #ffc107;
-      transition: width 0.3s ease;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #ffc107;
+    transition: width 0.3s ease;
     }
 
     .nav-link:hover::after {
-      width: 70%;
+    width: 70%;
     }
 
     /* Dropdown animation */
     .dropdown-menu {
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
     }
 
     .group:hover .dropdown-menu {
-      transform: translateY(0);
+    transform: translateY(0);
     }
-  </style>
+    </style>
 </head>
 
 <body class="bg-[#f8f9fa]">
@@ -744,12 +836,12 @@
 
         <!-- Logo -->
         <a href="index.html"
-  class="flex items-center gap-2 hover:opacity-90 transition-all duration-300 flex-shrink-0 group">
-  <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo"
-    class="h-9 sm:h-10 lg:h-12 rounded-md shadow-md group-hover:scale-105 transition-transform duration-300">
+          class="flex items-center gap-2 hover:opacity-90 transition-all duration-300 flex-shrink-0 group">
+          <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo"
+            class="h-9 sm:h-10 lg:h-12 rounded-md shadow-md group-hover:scale-105 transition-transform duration-300">
           <h1 class="text-xs sm:text-sm lg:text-base font-extrabold uppercase tracking-wide text-white drop-shadow-md">
-    QuangHưng Mobile
-  </h1>
+            QuangHưng Mobile
+          </h1>
         </a>
 
         <!-- Desktop Navigation Menu -->
@@ -797,7 +889,7 @@
         </nav>
 
         <!-- Search - Desktop (phiên bản gọn hơn) -->
-       <div
+        <div
           class="hidden lg:flex flex-1 max-w-sm bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
           <input type="text" id="desktop-search-input" placeholder="Tìm kiếm sản phẩm..."
             class="flex-grow px-3 py-2 text-[#1a1a1a] focus:outline-none text-base font-medium placeholder:text-[#666666]" />
@@ -814,7 +906,7 @@
             class="lg:hidden text-white text-xl hover:scale-110 transition-transform duration-300 bg-white/10 px-2.5 py-1.5 rounded-lg hover:bg-white/20 order-1">
             <i class="fa-solid fa-bars"></i>
           </button>
-          
+
           <a href="cart.html"
             class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-2 text-white">
             <i class="fa-solid fa-cart-shopping text-base lg:hidden text-white"></i>
@@ -1017,8 +1109,11 @@
 
             <!-- Overlay nội dung -->
             <div class="absolute bottom-4 left-6 bg-black/40 text-white p-3 rounded-lg transition-opacity duration-500">
-              <h2 class="text-xl md:text-2xl font-black bg-gradient-to-r from-yellow-300 via-orange-300 to-red-400 bg-clip-text text-transparent drop-shadow-lg" id="banner-title">iPhone 16 Series – Siêu phẩm 2025</h2>
-              <p class="text-sm text-gray-200 font-semibold" id="banner-desc">Đặt trước ngay – Ưu đãi đến 5 triệu đồng</p>
+              <h2
+                class="text-xl md:text-2xl font-black bg-gradient-to-r from-yellow-300 via-orange-300 to-red-400 bg-clip-text text-transparent drop-shadow-lg"
+                id="banner-title">iPhone 16 Series – Siêu phẩm 2025</h2>
+              <p class="text-sm text-gray-200 font-semibold" id="banner-desc">Đặt trước ngay – Ưu đãi đến 5 triệu đồng
+              </p>
             </div>
 
             <!-- Nút điều khiển Previous -->
@@ -1112,12 +1207,11 @@
 
   </section>
 
-  <!-- ===== SCRIPT CHUYỂN BANNER ===== -->
   <script>
     // Danh sách banner để tự động chuyển
     const banners = [
       {
-        img: 'images/BC.jpg',
+        img: 'images/BC.jpg', // Đảm bảo đường dẫn ảnh đúng
         title: 'iPhone 16 Series – Siêu phẩm 2025',
         desc: 'Đặt trước ngay – Ưu đãi đến 5 triệu đồng'
       },
@@ -1145,22 +1239,21 @@
 
     let currentBannerIndex = 0;
     let autoPlayInterval = null;
-    let isAutoPlaying = true;
+    const AUTO_PLAY_DELAY = 5000; // Thời gian chuyển banner tự động (5 giây)
 
-    // Hàm chuyển banner với hiệu ứng mượt mà như TGDĐ và Táng Cells
-    function changeBanner(imgSrc, title, desc) {
+    // Hàm chuyển banner với hiệu ứng mượt mà
+    function changeBanner(imgSrc, title, desc, resetAutoPlay = true) {
       const banner = document.getElementById('main-banner');
       const titleEl = document.getElementById('banner-title');
       const descEl = document.getElementById('banner-desc');
-      const overlay = banner.parentElement.querySelector('.absolute.bottom-4');
+      const overlay = banner ? banner.parentElement.querySelector('.absolute.bottom-0') : null; // Cập nhật selector overlay
 
-      // Dừng autoplay khi user click
-      stopAutoPlay();
+      if (!banner) return; // Đảm bảo banner tồn tại
 
       // Hiệu ứng fade out + slide ra nhanh
       banner.style.opacity = '0';
       banner.style.transform = 'scale(1.05)';
-      
+
       if (overlay) {
         overlay.style.opacity = '0';
         overlay.style.transform = 'translateY(20px)';
@@ -1176,107 +1269,132 @@
         requestAnimationFrame(() => {
           banner.style.opacity = '1';
           banner.style.transform = 'scale(1)';
-          
+
           if (overlay) {
             overlay.style.opacity = '1';
             overlay.style.transform = 'translateY(0)';
           }
         });
-      }, 200);
+      }, 200); // Thời gian của hiệu ứng fade out
 
-      // Tiếp tục autoplay sau 10 giây
-      setTimeout(() => {
-        if (!isAutoPlaying) startAutoPlay();
-      }, 10000);
+      // Sau khi chuyển, nếu resetAutoPlay là true, khởi động lại autoplay
+      if (resetAutoPlay) {
+        startAutoPlay();
+      }
     }
 
     // Chuyển đến banner tiếp theo
-    function nextBanner() {
+    function nextBanner(resetAutoPlay = true) {
       currentBannerIndex = (currentBannerIndex + 1) % banners.length;
-      const banner = banners[currentBannerIndex];
-      changeBanner(banner.img, banner.title, banner.desc);
+      const bannerData = banners[currentBannerIndex];
+      changeBanner(bannerData.img, bannerData.title, bannerData.desc, resetAutoPlay);
       updateIndicators();
     }
 
     // Chuyển về banner trước
-    function prevBanner() {
+    function prevBanner(resetAutoPlay = true) {
       currentBannerIndex = (currentBannerIndex - 1 + banners.length) % banners.length;
-      const banner = banners[currentBannerIndex];
-      changeBanner(banner.img, banner.title, banner.desc);
+      const bannerData = banners[currentBannerIndex];
+      changeBanner(bannerData.img, bannerData.title, bannerData.desc, resetAutoPlay);
       updateIndicators();
     }
 
     // Chuyển đến banner cụ thể
     function goToBanner(index) {
-      if (index === currentBannerIndex) return;
+      if (index === currentBannerIndex) return; // Không làm gì nếu click vào banner hiện tại
       currentBannerIndex = index;
-      const banner = banners[index];
-      changeBanner(banner.img, banner.title, banner.desc);
+      const bannerData = banners[index];
+      changeBanner(bannerData.img, bannerData.title, bannerData.desc); // Gọi changeBanner với resetAutoPlay mặc định là true
       updateIndicators();
     }
 
     // Cập nhật indicator dots
     function updateIndicators() {
-      const indicators = document.querySelectorAll('.banner-indicator');
-      indicators.forEach((indicator, index) => {
-        if (index === currentBannerIndex) {
-          indicator.classList.add('active');
-          indicator.style.backgroundColor = '#e41e26';
-          indicator.style.width = '24px';
-        } else {
-          indicator.classList.remove('active');
-          indicator.style.backgroundColor = 'rgba(255,255,255,0.5)';
-          indicator.style.width = '8px';
-        }
+      const indicatorsContainer = document.getElementById('banner-indicators');
+      if (!indicatorsContainer) return;
+
+      // Xóa các indicator cũ
+      indicatorsContainer.innerHTML = '';
+
+      // Tạo lại các indicator mới
+      banners.forEach((_, index) => {
+        const indicator = document.createElement('span');
+        indicator.classList.add('banner-indicator', 'block', 'w-2', 'h-2', 'rounded-full', 'mx-1', 'cursor-pointer', 'transition-all', 'duration-300');
+        indicator.style.backgroundColor = 'rgba(255,255,255,0.5)';
+        indicator.dataset.index = index; // Lưu index để biết banner nào được click
+        indicator.addEventListener('click', () => {
+          stopAutoPlay(); // Dừng autoplay khi người dùng click
+          goToBanner(index);
+        });
+        indicatorsContainer.appendChild(indicator);
       });
+
+      // Cập nhật trạng thái active cho indicator hiện tại
+      const currentIndicator = indicatorsContainer.querySelector(`[data-index="${currentBannerIndex}"]`);
+      if (currentIndicator) {
+        currentIndicator.classList.add('active');
+        currentIndicator.style.backgroundColor = '#e41e26'; // Màu đỏ của bạn
+        currentIndicator.style.width = '24px';
+      }
     }
 
     // Bắt đầu autoplay
     function startAutoPlay() {
-      if (autoPlayInterval) clearInterval(autoPlayInterval);
-      isAutoPlaying = true;
+      stopAutoPlay(); // Đảm bảo không có interval nào đang chạy
       autoPlayInterval = setInterval(() => {
-        nextBanner();
-      }, 3000); // Chuyển sau mỗi 3 giây
+        nextBanner(false); // Chuyển banner mà không reset autoplay (để tránh vòng lặp)
+      }, AUTO_PLAY_DELAY);
     }
 
     // Dừng autoplay
     function stopAutoPlay() {
       if (autoPlayInterval) {
         clearInterval(autoPlayInterval);
-        isAutoPlaying = false;
+        autoPlayInterval = null;
       }
     }
 
     // Khởi động khi trang load xong
     document.addEventListener('DOMContentLoaded', function () {
-      // Thêm hiệu ứng slide chuyên nghiệp như TGDĐ và Táng Cells
       const banner = document.getElementById('main-banner');
       const bannerTitle = document.getElementById('banner-title');
       const bannerDesc = document.getElementById('banner-desc');
-      
-      if (banner) {
-        // Thêm transition nhanh và mượt mà (0.2s)
-        banner.style.transition = 'opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
-        
-        // Thêm transition cho text overlay
-        if (bannerTitle) bannerTitle.style.transition = 'all 0.2s ease-out';
-        if (bannerDesc) bannerDesc.style.transition = 'all 0.2s ease-out 0.05s';
 
-        // Dừng autoplay khi hover vào banner
-        const bannerContainer = banner.parentElement;
-        bannerContainer.addEventListener('mouseenter', stopAutoPlay);
-        bannerContainer.addEventListener('mouseleave', startAutoPlay);
+      if (banner) {
+        // Dừng autoplay khi hover vào banner container
+        const bannerContainer = banner.parentElement; // Container chứa banner và overlay
+        if (bannerContainer) {
+          bannerContainer.addEventListener('mouseenter', stopAutoPlay);
+          bannerContainer.addEventListener('mouseleave', startAutoPlay);
+        }
       }
 
-      // Bắt đầu autoplay
+      // Gán sự kiện cho các nút điều hướng
+      const prevBtn = document.getElementById('prev-banner-btn');
+      const nextBtn = document.getElementById('next-banner-btn');
+      if (prevBtn) prevBtn.addEventListener('click', () => {
+        stopAutoPlay();
+        prevBanner();
+      });
+      if (nextBtn) nextBtn.addEventListener('click', () => {
+        stopAutoPlay();
+        nextBanner();
+      });
+
+      // Bắt đầu autoplay lần đầu
       startAutoPlay();
 
       // Cập nhật indicators ban đầu
       updateIndicators();
+
+      // Hiển thị banner đầu tiên ngay lập tức
+      const initialBanner = banners[currentBannerIndex];
+      if (banner) banner.src = initialBanner.img;
+      if (bannerTitle) bannerTitle.textContent = initialBanner.title;
+      if (bannerDesc) bannerDesc.textContent = initialBanner.desc;
     });
 
-    // Dừng autoplay khi user rời khỏi trang
+    // Dừng autoplay khi user rời khỏi trang và tiếp tục khi quay lại
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) {
         stopAutoPlay();
@@ -1287,213 +1405,221 @@
   </script>
 
 
-
   <!-- ===== KHUYẾN MÃI HOT ===== -->
-
-
-
   <!-- FLASH SALE - HOT DEALS với Countdown -->
   <section class="py-6 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4">
-      <!-- Khung trắng chứa Flash Sale -->
-      <div
-        class="bg-gradient-to-br from-[#d91e23] via-[#b01117] to-[#8b0d12] rounded-2xl shadow-lg p-6 relative overflow-hidden">
-
+      <!-- Khung Flash Sale nền cam/đỏ -->
+      <div class="bg-gradient-to-br from-[#ff1744] to-[#ff9800] rounded-2xl shadow-lg p-6 relative overflow-hidden">
         <!-- Animated background elements -->
         <div class="absolute inset-0 opacity-10">
           <div class="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse"></div>
-          <div class="absolute bottom-10 right-10 w-40 h-40 bg-[#ffc107] rounded-full blur-3xl animate-pulse delay-75">
+          <div class="absolute bottom-10 right-10 w-40 h-40 bg-yellow-400 rounded-full blur-3xl animate-pulse delay-75">
           </div>
         </div>
 
-        <div class="relative z-10"></div>
-        <div class="flex flex-col md:flex-row items-center justify-between mb-4 gap-3">
-          <div class="flex items-center gap-2 sm:gap-3">
-            <div
-              class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-xl flex items-center justify-center shadow-xl animate-bounce">
-              <i class="fas fa-bolt text-[#ffc107] text-xl sm:text-2xl"></i>
+        <div class="relative z-10">
+          <div class="flex flex-col md:flex-row items-center justify-between mb-4 gap-3">
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div
+                class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-xl flex items-center justify-center shadow-xl animate-bounce">
+                <i class="fas fa-bolt text-yellow-400 text-xl sm:text-2xl"></i>
+              </div>
+              <div>
+                <h2 class="text-3xl md:text-5xl font-black text-white drop-shadow-lg mb-4">
+                  HOT SALE CUỐI TUẦN
+                </h2>
+
+                <p class="text-white text-[16px] mt-1 font-bold tracking-wide">Số lượng có hạn - Nhanh tay đặt hàng!</p>
+              </div>
             </div>
-            <div>
-              <h2 class="text-xl sm:text-2xl lg:text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
-                ⚡ GIÁ SỐC
-              </h2>
-             <p class="text-white text-[16px] mt-1 font-bold tracking-wide">Số lượng có hạn - Nhanh tay đặt hàng!</p>
-            </div>
-          </div>
-          <!-- Countdown Timer -->
-          <div class="bg-white rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-xl border-2 border-[#ffc107]">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-clock text-[#d91e23] text-base sm:text-lg animate-pulse"></i>
-              <div class="text-center">
-                <div class="text-[14px] sm:text-[12px] text-[#1a1a1a] font-bold mb-0.5">KẾT THÚC TRONG</div>
-                <div class="flex gap-1 items-center">
-                  <div
-                    class="bg-gradient-to-br from-[#d91e23] to-[#b01117] text-white rounded px-2 py-1 font-black text-sm sm:text-base shadow-lg"
-                    id="hours">00</div>
-                  <span class="text-[#1a1a1a] font-bold text-sm">:</span>
-                  <div
-                    class="bg-gradient-to-br from-[#d91e23] to-[#b01117] text-white rounded px-2 py-1 font-black text-sm sm:text-base shadow-lg"
-                    id="minutes">00</div>
-                  <span class="text-[#1a1a1a] font-bold text-sm">:</span>
-                  <div class="bg-[#d91e23] text-white rounded px-2 py-1 font-bold text-sm sm:text-base shadow-lg"
-                    id="seconds">00</div>
+
+            <!-- Countdown Timer -->
+            <div class="bg-white rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-xl border-2 border-yellow-400">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-clock text-[#d91e23] text-base sm:text-lg animate-pulse"></i>
+                <div class="text-center">
+                  <div class="text-[14px] sm:text-[12px] text-[#1a1a1a] font-bold mb-0.5">KẾT THÚC TRONG</div>
+                  <div class="flex gap-1 items-center">
+                    <div
+                      class="bg-gradient-to-br from-[#ff1744] to-[#ff9800] text-white rounded px-2 py-1 font-black text-sm sm:text-base shadow-lg"
+                      id="hours">00</div>
+                    <span class="text-[#1a1a1a] font-bold text-sm">:</span>
+                    <div
+                      class="bg-gradient-to-br from-[#ff1744] to-[#ff9800] text-white rounded px-2 py-1 font-black text-sm sm:text-base shadow-lg"
+                      id="minutes">00</div>
+                    <span class="text-[#1a1a1a] font-bold text-sm">:</span>
+                    <div
+                      class="bg-gradient-to-br from-[#ff1744] to-[#ff9800] text-white rounded px-2 py-1 font-black text-sm sm:text-base shadow-lg"
+                      id="seconds">00</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Flash Sale Products - Horizontal Scroll -->
-        <div class="relative">
-          <div class="flex overflow-x-auto gap-3 pb-3 snap-x snap-mandatory scroll-smooth" id="flash-sale-container">
-            <!-- Flash Sale Product 1 -->
-            <div class="min-w-[180px] bg-white rounded-xl p-2.5 shadow-lg snap-start border-2 border-[#ffc107]">
-              <div class="relative mb-2 h-32 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1696446702883-74b4a7b3be1d?w=300&h=300&fit=crop" alt="iPhone 16 Pro Max" class="w-full h-full object-contain" />
-                <div
-                  class="absolute top-1 left-1 bg-[#d91e23] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-md">
-                  -30%</div>
-                <div
-                  class="absolute bottom-1 left-1 bg-[#ffc107] text-[#1a1a1a] text-[10px] font-bold px-1.5 py-0.5 rounded shadow-md">
-                  Còn 5 SP</div>
-              </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 text-[#1a1a1a]">iPhone 16 Pro Max 256GB</h4>
-              <div class="mb-1">
-                <div class="text-base font-black text-[#d91e23]">28.990K</div>
-                <div class="text-[10px] text-[#666666] line-through">33.990K</div>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1">
-                <div class="bg-gradient-to-r from-[#ff6b00] to-[#d91e23] h-1.5 rounded-full" style="width: 60%"></div>
-              </div>
-              <p class="text-[10px] text-[#4a4a4a] text-center font-semibold">Đã bán 15/25</p>
-            </div>
-
-            <!-- Flash Sale Product 2 -->
-            <div class="min-w-[180px] bg-white rounded-xl p-2.5 shadow-lg snap-start border-2 border-[#ffc107]">
-              <div class="relative mb-2 h-32 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop" alt="Samsung S24 Ultra" class="w-full h-full object-contain" />
-                <div
-                  class="absolute top-1 left-1 bg-[#d91e23] text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                  -25%</div>
-                <div
-                  class="absolute bottom-1 left-1 bg-[#ffc107] text-[#1a1a1a] text-xs font-bold px-2 py-0.5 rounded shadow-md">
-                  Còn 8 SP</div>
-              </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 text-[#1a1a1a]">Samsung S24 Ultra 512GB</h4>
-              <div class="mb-1">
-                <div class="text-lg font-black text-[#d91e23]">30.990K</div>
-                <div class="text-xs text-[#666666] line-through">38.990K</div>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                <div class="bg-gradient-to-r from-[#ff6b00] to-[#d91e23] h-2 rounded-full" style="width: 40%"></div>
-              </div>
-              <p class="text-xs text-[#4a4a4a] text-center font-semibold">Đã bán 8/20</p>
-            </div>
-
-            <!-- Flash Sale Product 3 -->
-            <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
-              <div class="relative mb-2">
-                <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300&h=300&fit=crop" alt="Xiaomi 14" class="w-full h-36 object-contain rounded" />
-                <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-35%
+          <!-- Flash Sale Products - Horizontal Scroll -->
+          <div class="relative">
+            <div class="flex overflow-x-auto gap-3 pb-3 snap-x snap-mandatory scroll-smooth" id="flash-sale-container">
+              <!-- Flash Sale Product 1 -->
+              <div class="min-w-[180px] bg-white rounded-xl p-2.5 shadow-lg snap-start border-2 border-[#ffc107]">
+                <div class="relative mb-2 h-32 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1696446702883-74b4a7b3be1d?w=300&h=300&fit=crop"
+                    alt="iPhone 16 Pro Max" class="w-full h-full object-contain" />
+                  <div
+                    class="absolute top-1 left-1 bg-[#d91e23] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-md">
+                    -30%</div>
+                  <div
+                    class="absolute bottom-1 left-1 bg-[#ffc107] text-[#1a1a1a] text-[10px] font-bold px-1.5 py-0.5 rounded shadow-md">
+                    Còn 5 SP</div>
                 </div>
-                <div class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
-                  Còn 3 SP</div>
-              </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2">Xiaomi 14 5G 512GB</h4>
-              <div class="mb-1">
-                <div class="text-lg font-black text-red-600">17.990K</div>
-                <div class="text-xs text-gray-400 line-through">24.990K</div>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 85%"></div>
-              </div>
-              <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 17/20</p>
-            </div>
-
-            <!-- Flash Sale Product 4 -->
-            <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
-              <div class="relative mb-2">
-                <img src="https://images.unsplash.com/photo-1678652197635-5c863846b1f0?w=300&h=300&fit=crop" alt="iPhone 15 Pro Max" class="w-full h-36 object-contain rounded" />
-                <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-20%
+                <h4 class="font-bold text-sm mb-1 line-clamp-2 text-[#1a1a1a]">iPhone 16 Pro Max 256GB</h4>
+                <div class="mb-1">
+                  <div class="text-base font-black text-[#d91e23]">28.990K</div>
+                  <div class="text-[10px] text-[#666666] line-through">33.990K</div>
                 </div>
-                <div class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
-                  Còn 12 SP</div>
-              </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2">iPhone 15 Pro Max 256GB</h4>
-              <div class="mb-1">
-                <div class="text-lg font-black text-red-600">27.990K</div>
-                <div class="text-xs text-gray-400 line-through">34.990K</div>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 50%"></div>
-              </div>
-              <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 12/24</p>
-            </div>
-
-            <!-- Flash Sale Product 5 -->
-            <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
-              <div class="relative mb-2">
-                <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop" alt="Galaxy Z Fold6" class="w-full h-36 object-contain rounded" />
-                <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-15%
+                <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1">
+                  <div class="bg-gradient-to-r from-[#ff6b00] to-[#d91e23] h-1.5 rounded-full" style="width: 60%"></div>
                 </div>
-                <div class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
-                  Còn 6 SP</div>
+                <p class="text-[10px] text-[#4a4a4a] text-center font-semibold">Đã bán 15/25</p>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2">Galaxy Z Fold6 512GB</h4>
-              <div class="mb-1">
-                <div class="text-lg font-black text-red-600">44.990K</div>
-                <div class="text-xs text-gray-400 line-through">52.990K</div>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 70%"></div>
-              </div>
-              <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 14/20</p>
-            </div>
 
-            <!-- Flash Sale Product 5 -->
-            <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
-              <div class="relative mb-2">
-                <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop" alt="Galaxy Z Fold6" class="w-full h-36 object-contain rounded" />
-                <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-15%
+              <!-- Flash Sale Product 2 -->
+              <div class="min-w-[180px] bg-white rounded-xl p-2.5 shadow-lg snap-start border-2 border-[#ffc107]">
+                <div class="relative mb-2 h-32 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop"
+                    alt="Samsung S24 Ultra" class="w-full h-full object-contain" />
+                  <div
+                    class="absolute top-1 left-1 bg-[#d91e23] text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                    -25%</div>
+                  <div
+                    class="absolute bottom-1 left-1 bg-[#ffc107] text-[#1a1a1a] text-xs font-bold px-2 py-0.5 rounded shadow-md">
+                    Còn 8 SP</div>
                 </div>
-                <div class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
-                  Còn 6 SP</div>
+                <h4 class="font-bold text-sm mb-1 line-clamp-2 text-[#1a1a1a]">Samsung S24 Ultra 512GB</h4>
+                <div class="mb-1">
+                  <div class="text-lg font-black text-[#d91e23]">30.990K</div>
+                  <div class="text-xs text-[#666666] line-through">38.990K</div>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                  <div class="bg-gradient-to-r from-[#ff6b00] to-[#d91e23] h-2 rounded-full" style="width: 40%"></div>
+                </div>
+                <p class="text-xs text-[#4a4a4a] text-center font-semibold">Đã bán 8/20</p>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2">Galaxy Z Fold6 512GB</h4>
-              <div class="mb-1">
-                <div class="text-lg font-black text-red-600">44.990K</div>
-                <div class="text-xs text-gray-400 line-through">52.990K</div>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 70%"></div>
-              </div>
-              <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 14/20</p>
-            </div>
 
-            <!-- Flash Sale Product 6 -->
-            <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
-              <div class="relative mb-2">
-                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop"
-                  alt="Redmi Turbo 4" class="w-full h-36 object-contain rounded" />
-                <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-40%
+              <!-- Flash Sale Product 3 -->
+              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
+                <div class="relative mb-2">
+                  <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300&h=300&fit=crop"
+                    alt="Xiaomi 14" class="w-full h-36 object-contain rounded" />
+                  <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-35%
+                  </div>
+                  <div
+                    class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
+                    Còn 3 SP</div>
                 </div>
-                <div class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
-                  Còn 15 SP</div>
+                <h4 class="font-bold text-sm mb-1 line-clamp-2">Xiaomi 14 5G 512GB</h4>
+                <div class="mb-1">
+                  <div class="text-lg font-black text-red-600">17.990K</div>
+                  <div class="text-xs text-gray-400 line-through">24.990K</div>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                  <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 85%"></div>
+                </div>
+                <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 17/20</p>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2">Redmi Turbo 4 5G 256GB</h4>
-              <div class="mb-1">
-                <div class="text-lg font-black text-red-600">5.990K</div>
-                <div class="text-xs text-gray-400 line-through">9.890K</div>
+
+              <!-- Flash Sale Product 4 -->
+              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
+                <div class="relative mb-2">
+                  <img src="https://images.unsplash.com/photo-1678652197635-5c863846b1f0?w=300&h=300&fit=crop"
+                    alt="iPhone 15 Pro Max" class="w-full h-36 object-contain rounded" />
+                  <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-20%
+                  </div>
+                  <div
+                    class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
+                    Còn 12 SP</div>
+                </div>
+                <h4 class="font-bold text-sm mb-1 line-clamp-2">iPhone 15 Pro Max 256GB</h4>
+                <div class="mb-1">
+                  <div class="text-lg font-black text-red-600">27.990K</div>
+                  <div class="text-xs text-gray-400 line-through">34.990K</div>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                  <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 50%"></div>
+                </div>
+                <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 12/24</p>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 30%"></div>
+
+              <!-- Flash Sale Product 5 -->
+              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
+                <div class="relative mb-2">
+                  <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop"
+                    alt="Galaxy Z Fold6" class="w-full h-36 object-contain rounded" />
+                  <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-15%
+                  </div>
+                  <div
+                    class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
+                    Còn 6 SP</div>
+                </div>
+                <h4 class="font-bold text-sm mb-1 line-clamp-2">Galaxy Z Fold6 512GB</h4>
+                <div class="mb-1">
+                  <div class="text-lg font-black text-red-600">44.990K</div>
+                  <div class="text-xs text-gray-400 line-through">52.990K</div>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                  <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 70%"></div>
+                </div>
+                <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 14/20</p>
               </div>
-              <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 9/30</p>
+
+              <!-- Flash Sale Product 5 -->
+              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
+                <div class="relative mb-2">
+                  <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop"
+                    alt="Galaxy Z Fold6" class="w-full h-36 object-contain rounded" />
+                  <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-15%
+                  </div>
+                  <div
+                    class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
+                    Còn 6 SP</div>
+                </div>
+                <h4 class="font-bold text-sm mb-1 line-clamp-2">Galaxy Z Fold6 512GB</h4>
+                <div class="mb-1">
+                  <div class="text-lg font-black text-red-600">44.990K</div>
+                  <div class="text-xs text-gray-400 line-through">52.990K</div>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                  <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 70%"></div>
+                </div>
+                <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 14/20</p>
+              </div>
+
+              <!-- Flash Sale Product 6 -->
+              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start border-2 border-yellow-400">
+                <div class="relative mb-2">
+                  <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop"
+                    alt="Redmi Turbo 4" class="w-full h-36 object-contain rounded" />
+                  <div class="absolute top-1 left-1 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">-40%
+                  </div>
+                  <div
+                    class="absolute bottom-1 left-1 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded">
+                    Còn 15 SP</div>
+                </div>
+                <h4 class="font-bold text-sm mb-1 line-clamp-2">Redmi Turbo 4 5G 256GB</h4>
+                <div class="mb-1">
+                  <div class="text-lg font-black text-red-600">5.990K</div>
+                  <div class="text-xs text-gray-400 line-through">9.890K</div>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                  <div class="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" style="width: 30%"></div>
+                </div>
+                <p class="text-xs text-gray-600 text-center font-semibold">Đã bán 9/30</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </section>
 
@@ -1504,7 +1630,8 @@
       <!-- Khung trắng chứa sản phẩm -->
       <div class="bg-white rounded-2xl shadow-lg p-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+          <h2
+            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
             ĐIỆN THOẠI NỔI BẬT
           </h2>
           <a href="promotions.html"
@@ -1684,7 +1811,8 @@
       <!-- Khung trắng chứa sản phẩm -->
       <div class="bg-white rounded-2xl shadow-lg p-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+          <h2
+            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
             ĐIỆN THOẠI CHÍNH HÃNG
           </h2>
           <a href="promotions.html"
@@ -1864,7 +1992,8 @@
 
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+          <h2
+            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
             ĐÁNH GIÁ
           </h2>
           <div class="flex items-center gap-3">
@@ -1893,8 +2022,8 @@
             <div class="flex items-center justify-between bg-white p-4 md:p-6 rounded-b-2xl">
               <div class="flex items-center gap-4">
                 <div class="w-16 h-16 bg-gray-100 rounded-xl p-1.5 shadow-sm">
-                  <img src="images/Điện%20thoại%20Apple%20iPhone%2017%20Pro%20Max%20256GB.jpg"
-                    alt="iPhone 17 icon" class="w-full h-full object-contain" onerror="this.src='images/iphone.jpg'">
+                  <img src="images/Điện%20thoại%20Apple%20iPhone%2017%20Pro%20Max%20256GB.jpg" alt="iPhone 17 icon"
+                    class="w-full h-full object-contain" onerror="this.src='images/iphone.jpg'">
                 </div>
                 <div>
                   <h3 class="text-base font-bold text-gray-900 mb-1">Điện thoại Apple iPhone 17 Pro Max 256GB ZP/A
@@ -1923,7 +2052,8 @@
                       alt="iPhone 15 icon" class="w-full h-full object-contain" onerror="this.src='images/ip17.jpg'">
                   </div>
                   <div>
-                    <h4 class="text-sm font-semibold text-gray-900 mb-1">Điện thoại Apple iPhone 15 Pro Max 256GB - 99%</h4>
+                    <h4 class="text-sm font-semibold text-gray-900 mb-1">Điện thoại Apple iPhone 15 Pro Max 256GB - 99%
+                    </h4>
                     <p class="text-base font-bold text-orange-500">20.990.000đ</p>
                   </div>
                 </div>
@@ -1941,7 +2071,8 @@
                       alt="iPhone 14 icon" class="w-full h-full object-contain" onerror="this.src='images/iphone.jpg'">
                   </div>
                   <div>
-                    <h4 class="text-sm font-semibold text-gray-900 mb-1">Điện thoại Apple iPhone 14 Pro Max 128GB - 99%</h4>
+                    <h4 class="text-sm font-semibold text-gray-900 mb-1">Điện thoại Apple iPhone 14 Pro Max 128GB - 99%
+                    </h4>
                     <p class="text-base font-bold text-orange-500">16.390.000đ</p>
                   </div>
                 </div>
@@ -1955,141 +2086,143 @@
     </div>
   </section>
 
- <!-- ===== TESTIMONIALS / KHÁCH HÀNG ĐÁNH GIÁ ===== -->
-<section class="py-6 bg-gray-100">
-  <div class="max-w-7xl mx-auto px-4">
-    <!-- Khung trắng chứa đánh giá khách hàng -->
-    <div class="bg-white rounded-2xl shadow-lg p-6">
+  <!-- ===== TESTIMONIALS / KHÁCH HÀNG ĐÁNH GIÁ ===== -->
+  <section class="py-6 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4">
+      <!-- Khung trắng chứa đánh giá khách hàng -->
+      <div class="bg-white rounded-2xl shadow-lg p-6">
 
-    <!-- Tiêu đề -->
-    <div class="text-center mb-14">
-      <h2
-        class="text-3xl md:text-5xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg mb-4">
-        <i class="fas fa-star text-yellow-400 mr-2"></i>
-        KHÁCH HÀNG ĐÁNH GIÁ
-      </h2>
-      <p class="text-gray-600 text-lg font-medium">
-        Hơn <span class="text-red-600 font-bold">50,000+</span> khách hàng tin tưởng và lựa chọn QuangHưng Mobile
-      </p>
-    </div>
+        <!-- Tiêu đề -->
+        <div class="text-center mb-14">
+          <h2
+            class="text-3xl md:text-5xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg mb-4">
+            <i class="fas fa-star text-yellow-400 mr-2"></i>
+            KHÁCH HÀNG ĐÁNH GIÁ
+          </h2>
+          <p class="text-gray-600 text-lg font-medium">
+            Hơn <span class="text-red-600 font-bold">50,000+</span> khách hàng tin tưởng và lựa chọn QuangHưng Mobile
+          </p>
+        </div>
 
-    <!-- Vùng hiển thị đánh giá -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Review 1 -->
-      <div
-        class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-yellow-400 hover:-translate-y-2">
-        <div class="flex items-center mb-5">
-          <img src="https://i.pravatar.cc/100?img=1" alt="Avatar"
-            class="w-16 h-16 rounded-full border-4 border-yellow-100 mr-4">
-          <div>
-            <h4 class="font-bold text-gray-800 text-lg">Nguyễn Văn A</h4>
-            <div class="flex gap-1 text-yellow-400">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <!-- Vùng hiển thị đánh giá -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Review 1 -->
+          <div
+            class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-yellow-400 hover:-translate-y-2">
+            <div class="flex items-center mb-5">
+              <img src="https://i.pravatar.cc/100?img=1" alt="Avatar"
+                class="w-16 h-16 rounded-full border-4 border-yellow-100 mr-4">
+              <div>
+                <h4 class="font-bold text-gray-800 text-lg">Nguyễn Văn A</h4>
+                <div class="flex gap-1 text-yellow-400">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ảnh sản phẩm đã mua -->
+            <div class="mb-4 rounded-xl overflow-hidden bg-gray-50 p-3">
+              <img src="https://images.unsplash.com/photo-1696446702883-74b4a7b3be1d?w=300&h=200&fit=crop"
+                alt="iPhone 16 Pro Max" class="w-full h-40 object-cover rounded-lg">
+            </div>
+
+            <p class="text-gray-600 italic leading-relaxed mb-4">
+              "Mua iPhone 16 Pro Max ở đây rất uy tín, giá tốt, bảo hành chu đáo. Nhân viên tư vấn nhiệt tình, giao hàng
+              nhanh. Rất hài lòng!"
+            </p>
+            <div class="text-sm text-gray-400">
+              <i class="far fa-clock mr-1"></i>2 ngày trước
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div
+            class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-green-400 hover:-translate-y-2">
+            <div class="flex items-center mb-5">
+              <img src="https://i.pravatar.cc/100?img=5" alt="Avatar"
+                class="w-16 h-16 rounded-full border-4 border-green-100 mr-4">
+              <div>
+                <h4 class="font-bold text-gray-800 text-lg">Trần Thị B</h4>
+                <div class="flex gap-1 text-yellow-400">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ảnh sản phẩm đã mua -->
+            <div class="mb-4 rounded-xl overflow-hidden bg-gray-50 p-3">
+              <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=200&fit=crop"
+                alt="Samsung S24 Ultra" class="w-full h-40 object-cover rounded-lg">
+            </div>
+
+            <p class="text-gray-600 italic leading-relaxed mb-4">
+              "Samsung S24 Ultra chính hãng, giá cạnh tranh. Shop tặng thêm ốp lưng và dán cường lực. Rất hài lòng, sẽ
+              giới thiệu bạn bè!"
+            </p>
+            <div class="text-sm text-gray-400">
+              <i class="far fa-clock mr-1"></i>5 ngày trước
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div
+            class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-blue-400 hover:-translate-y-2">
+            <div class="flex items-center mb-5">
+              <img src="https://i.pravatar.cc/100?img=12" alt="Avatar"
+                class="w-16 h-16 rounded-full border-4 border-blue-100 mr-4">
+              <div>
+                <h4 class="font-bold text-gray-800 text-lg">Lê Minh C</h4>
+                <div class="flex gap-1 text-yellow-400">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ảnh sản phẩm đã mua -->
+            <div class="mb-4 rounded-xl overflow-hidden bg-gray-50 p-3">
+              <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300&h=200&fit=crop"
+                alt="Xiaomi Phone" class="w-full h-40 object-cover rounded-lg">
+            </div>
+
+            <p class="text-gray-600 italic leading-relaxed mb-4">
+              "Dịch vụ chuyên nghiệp, máy đẹp như mới. Đổi trả linh hoạt, hỗ trợ trả góp 0%. Cảm ơn QuangHưng Mobile!"
+            </p>
+            <div class="text-sm text-gray-400">
+              <i class="far fa-clock mr-1"></i>1 tuần trước
             </div>
           </div>
         </div>
-        
-        <!-- Ảnh sản phẩm đã mua -->
-        <div class="mb-4 rounded-xl overflow-hidden bg-gray-50 p-3">
-          <img src="https://images.unsplash.com/photo-1696446702883-74b4a7b3be1d?w=300&h=200&fit=crop" 
-            alt="iPhone 16 Pro Max" class="w-full h-40 object-cover rounded-lg">
-        </div>
-        
-        <p class="text-gray-600 italic leading-relaxed mb-4">
-          "Mua iPhone 16 Pro Max ở đây rất uy tín, giá tốt, bảo hành chu đáo. Nhân viên tư vấn nhiệt tình, giao hàng nhanh. Rất hài lòng!"
-        </p>
-        <div class="text-sm text-gray-400">
-          <i class="far fa-clock mr-1"></i>2 ngày trước
-        </div>
-      </div>
 
-      <!-- Review 2 -->
-      <div
-        class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-green-400 hover:-translate-y-2">
-        <div class="flex items-center mb-5">
-          <img src="https://i.pravatar.cc/100?img=5" alt="Avatar"
-            class="w-16 h-16 rounded-full border-4 border-green-100 mr-4">
-          <div>
-            <h4 class="font-bold text-gray-800 text-lg">Trần Thị B</h4>
-            <div class="flex gap-1 text-yellow-400">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-            </div>
+        <!-- Thống kê -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
+          <div
+            class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+            <div class="text-4xl font-black text-red-600 mb-2">50,000+</div>
+            <p class="text-gray-700 font-semibold">Khách hàng</p>
+          </div>
+          <div
+            class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+            <div class="text-4xl font-black text-green-600 mb-2">98%</div>
+            <p class="text-gray-700 font-semibold">Mức độ hài lòng</p>
+          </div>
+          <div
+            class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+            <div class="text-4xl font-black text-blue-600 mb-2">15+</div>
+            <p class="text-gray-700 font-semibold">Năm kinh nghiệm</p>
+          </div>
+          <div
+            class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
+            <div class="text-4xl font-black text-orange-600 mb-2">24/7</div>
+            <p class="text-gray-700 font-semibold">Hỗ trợ khách hàng</p>
           </div>
         </div>
-        
-        <!-- Ảnh sản phẩm đã mua -->
-        <div class="mb-4 rounded-xl overflow-hidden bg-gray-50 p-3">
-          <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=200&fit=crop" 
-            alt="Samsung S24 Ultra" class="w-full h-40 object-cover rounded-lg">
-        </div>
-        
-        <p class="text-gray-600 italic leading-relaxed mb-4">
-          "Samsung S24 Ultra chính hãng, giá cạnh tranh. Shop tặng thêm ốp lưng và dán cường lực. Rất hài lòng, sẽ giới thiệu bạn bè!"
-        </p>
-        <div class="text-sm text-gray-400">
-          <i class="far fa-clock mr-1"></i>5 ngày trước
-        </div>
-      </div>
 
-      <!-- Review 3 -->
-      <div
-        class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-blue-400 hover:-translate-y-2">
-        <div class="flex items-center mb-5">
-          <img src="https://i.pravatar.cc/100?img=12" alt="Avatar"
-            class="w-16 h-16 rounded-full border-4 border-blue-100 mr-4">
-          <div>
-            <h4 class="font-bold text-gray-800 text-lg">Lê Minh C</h4>
-            <div class="flex gap-1 text-yellow-400">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <i class="fas fa-star"></i><i class="fas fa-star"></i>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Ảnh sản phẩm đã mua -->
-        <div class="mb-4 rounded-xl overflow-hidden bg-gray-50 p-3">
-          <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300&h=200&fit=crop" 
-            alt="Xiaomi Phone" class="w-full h-40 object-cover rounded-lg">
-        </div>
-        
-        <p class="text-gray-600 italic leading-relaxed mb-4">
-          "Dịch vụ chuyên nghiệp, máy đẹp như mới. Đổi trả linh hoạt, hỗ trợ trả góp 0%. Cảm ơn QuangHưng Mobile!"
-        </p>
-        <div class="text-sm text-gray-400">
-          <i class="far fa-clock mr-1"></i>1 tuần trước
-        </div>
       </div>
     </div>
-
-    <!-- Thống kê -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
-      <div
-        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
-        <div class="text-4xl font-black text-red-600 mb-2">50,000+</div>
-        <p class="text-gray-700 font-semibold">Khách hàng</p>
-      </div>
-      <div
-        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
-        <div class="text-4xl font-black text-green-600 mb-2">98%</div>
-        <p class="text-gray-700 font-semibold">Mức độ hài lòng</p>
-      </div>
-      <div
-        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
-        <div class="text-4xl font-black text-blue-600 mb-2">15+</div>
-        <p class="text-gray-700 font-semibold">Năm kinh nghiệm</p>
-      </div>
-      <div
-        class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-xl transition-all hover:-translate-y-2 duration-300">
-        <div class="text-4xl font-black text-orange-600 mb-2">24/7</div>
-        <p class="text-gray-700 font-semibold">Hỗ trợ khách hàng</p>
-      </div>
-    </div>
-
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- ===== TIN TỨC CÔNG NGHỆ ===== -->
   <section id="news-section" class="py-6 bg-gray-100 scroll-mt-20">
@@ -2097,136 +2230,149 @@
       <!-- Khung trắng chứa tin tức -->
       <div class="bg-white rounded-2xl shadow-lg p-6">
 
-      <!-- Header Section -->
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
-          Tin tức công nghệ
-        </h2>
-        
-        <!-- Navigation Arrows -->
-        <div class="flex items-center gap-3">
-          <button id="prevNewsBtn" class="w-10 h-10 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <button id="nextNewsBtn" class="w-10 h-10 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
-            <i class="fas fa-chevron-right"></i>
-          </button>
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-6">
+          <h2
+            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+            Tin tức công nghệ
+          </h2>
+
+          <!-- Navigation Arrows -->
+          <div class="flex items-center gap-3">
+            <button id="prevNewsBtn"
+              class="w-10 h-10 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="nextNewsBtn"
+              class="w-10 h-10 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Tab Buttons -->
-      <div class="flex gap-3 mb-6">
-        <button class="px-6 py-2 rounded-full border border-gray-300 bg-white hover:bg-gray-50 transition-all text-sm font-medium">
-          Tin công nghệ
-        </button>
-        <a href="news.html" class="px-6 py-2 rounded-full bg-black text-white hover:bg-gray-800 transition-all text-sm font-medium">
-          Xem tất cả
-        </a>
-      </div>
-
-      <!-- News Carousel Container -->
-      <div class="relative overflow-hidden">
-        <div id="newsCarousel" class="flex gap-6 transition-transform duration-500 ease-out">
-
-          <!-- News Item 1 - Google Gemini -->
-          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
-            <a href="news-detail.html?id=1&title=huong-dan-chi-tiet-dang-ky-gemini-pro-mien-phi-mot-nam-cho-sinh-vien"
-              class="block">
-              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
-                <img src="images/inta.webp" alt="Google Gemini Pro"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                <!-- Date & Category Badge -->
-                <div class="absolute bottom-4 left-4 right-4">
-                  <div class="flex items-center gap-2 text-white text-sm">
-                    <span class="font-medium">08/10/2025</span>
-                    <span>•</span>
-                    <span class="bg-blue-500 px-3 py-1 rounded-full text-xs font-semibold">Mẹo hay</span>
-                  </div>
-                </div>
-              </div>
-              <h3 class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
-                Hướng dẫn chi tiết đăng ký Gemini Pro miễn phí một năm cho sinh viên
-              </h3>
-              <p class="text-sm text-gray-600 line-clamp-2">
-                Google tặng sinh viên đại học, cao đẳng tại Việt Nam 1 năm sử dụng miễn phí Google One AI Premium, bao gồm 2TB lưu trữ và truy cập Gemini AI. Đăng ký ngay trước 29/04/2025.
-              </p>
-            </a>
-          </article>
-
-          <!-- News Item 2 - Samsung One UI 8.5 -->
-          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
-            <a href="news-detail.html?id=2&title=one-ui-8-5-he-lo-4-tinh-nang-galaxy-ai-dang-cho-doi-nhat"
-              class="block">
-              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
-                <img src="images/25fe.png" alt="Samsung One UI 8.5"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                <div class="absolute bottom-4 left-4 right-4">
-                  <div class="flex items-center gap-2 text-white text-sm">
-                    <span class="font-medium">12/10/2025</span>
-                    <span>•</span>
-                    <span class="bg-orange-500 px-3 py-1 rounded-full text-xs font-semibold">Tin mới</span>
-                  </div>
-                </div>
-              </div>
-              <h3 class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
-                One UI 8.5: Hé lộ 4 tính năng Galaxy AI đáng chờ đợi nhất
-              </h3>
-              <p class="text-sm text-gray-600 line-clamp-2">
-                Samsung đang phát triển 4 nhất 4 tính năng Galaxy AI mới của One UI 8.5 mới, hứa hẹn nâng tầm trải nghiệm sử dụng của người dùng Samsung.
-              </p>
-            </a>
-          </article>
-
-          <!-- News Item 3 - HyperOS 3 -->
-          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
-            <a href="news-detail.html?id=3&title=day-la-nhung-tinh-bi-nhan-cap-nhat-hyperos-3-ngay-tu-dau"
-              class="block">
-              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
-                <img src="images/uni8.jpg" alt="HyperOS 3"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                <div class="absolute bottom-4 left-4 right-4">
-                  <div class="flex items-center gap-2 text-white text-sm">
-                    <span class="font-medium">15/10/2025</span>
-                    <span>•</span>
-                    <span class="bg-purple-500 px-3 py-1 rounded-full text-xs font-semibold">Tin mới</span>
-                  </div>
-                </div>
-              </div>
-              <h3 class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
-                Đây là những tính bị nhận cập nhật HyperOS 3 ngay từ đầu
-              </h3>
-              <p class="text-sm text-gray-600 line-clamp-2">
-                Bắt đầu từ tháng 10/2025, Xiaomi chính thức phát hành bản cập nhật HyperOS 3 - giao diện người dùng hoàn toàn mới dựa trên Android 16.
-              </p>
-            </a>
-          </article>
-
-          <!-- News Item 4 - Samsung nghiên cứu -->
-          <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
-            <a href="news-detail.html?id=4&title=samsung-nghien-cuu-smartphone-gap-ba-trien-khai-man-hinh-theo-cach-toan-moi"
-              class="block">
-              <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
-                <img src="images/inta.webp" alt="Samsung Foldable"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                <div class="absolute bottom-4 left-4 right-4">
-                  <div class="flex items-center gap-2 text-white text-sm">
-                    <span class="font-medium">08/10/2025</span>
-                    <span>•</span>
-                    <span class="bg-green-500 px-3 py-1 rounded-full text-xs font-semibold">Công nghệ</span>
-                  </div>
-                </div>
-              </div>
-              <h3 class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
-                Samsung nghiên cứu smartphone gập ba, triển khai màn hình theo cách toàn mới
-              </h3>
-              <p class="text-sm text-gray-600 line-clamp-2">
-                Samsung đang nghiên cứu một thiết kế smartphone gập ba màn hình hoàn toàn mới, có thể thay đổi cách chúng ta sử dụng điện thoại trong tương lai.
-              </p>
-            </a>
-          </article>
-
+        <!-- Tab Buttons -->
+        <div class="flex gap-3 mb-6">
+          <button
+            class="px-6 py-2 rounded-full border border-gray-300 bg-white hover:bg-gray-50 transition-all text-sm font-medium">
+            Tin công nghệ
+          </button>
+          <a href="news.html"
+            class="px-6 py-2 rounded-full bg-black text-white hover:bg-gray-800 transition-all text-sm font-medium">
+            Xem tất cả
+          </a>
         </div>
-      </div>
+
+        <!-- News Carousel Container -->
+        <div class="relative overflow-hidden">
+          <div id="newsCarousel" class="flex gap-6 transition-transform duration-500 ease-out">
+
+            <!-- News Item 1 - Google Gemini -->
+            <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+              <a href="news-detail.html?id=1&title=huong-dan-chi-tiet-dang-ky-gemini-pro-mien-phi-mot-nam-cho-sinh-vien"
+                class="block">
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                  <img src="images/inta.webp" alt="Google Gemini Pro"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  <!-- Date & Category Badge -->
+                  <div class="absolute bottom-4 left-4 right-4">
+                    <div class="flex items-center gap-2 text-white text-sm">
+                      <span class="font-medium">08/10/2025</span>
+                      <span>•</span>
+                      <span class="bg-blue-500 px-3 py-1 rounded-full text-xs font-semibold">Mẹo hay</span>
+                    </div>
+                  </div>
+                </div>
+                <h3
+                  class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                  Hướng dẫn chi tiết đăng ký Gemini Pro miễn phí một năm cho sinh viên
+                </h3>
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  Google tặng sinh viên đại học, cao đẳng tại Việt Nam 1 năm sử dụng miễn phí Google One AI Premium, bao
+                  gồm 2TB lưu trữ và truy cập Gemini AI. Đăng ký ngay trước 29/04/2025.
+                </p>
+              </a>
+            </article>
+
+            <!-- News Item 2 - Samsung One UI 8.5 -->
+            <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+              <a href="news-detail.html?id=2&title=one-ui-8-5-he-lo-4-tinh-nang-galaxy-ai-dang-cho-doi-nhat"
+                class="block">
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                  <img src="images/25fe.png" alt="Samsung One UI 8.5"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  <div class="absolute bottom-4 left-4 right-4">
+                    <div class="flex items-center gap-2 text-white text-sm">
+                      <span class="font-medium">12/10/2025</span>
+                      <span>•</span>
+                      <span class="bg-orange-500 px-3 py-1 rounded-full text-xs font-semibold">Tin mới</span>
+                    </div>
+                  </div>
+                </div>
+                <h3
+                  class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                  One UI 8.5: Hé lộ 4 tính năng Galaxy AI đáng chờ đợi nhất
+                </h3>
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  Samsung đang phát triển 4 nhất 4 tính năng Galaxy AI mới của One UI 8.5 mới, hứa hẹn nâng tầm trải
+                  nghiệm sử dụng của người dùng Samsung.
+                </p>
+              </a>
+            </article>
+
+            <!-- News Item 3 - HyperOS 3 -->
+            <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+              <a href="news-detail.html?id=3&title=day-la-nhung-tinh-bi-nhan-cap-nhat-hyperos-3-ngay-tu-dau"
+                class="block">
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                  <img src="images/uni8.jpg" alt="HyperOS 3"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  <div class="absolute bottom-4 left-4 right-4">
+                    <div class="flex items-center gap-2 text-white text-sm">
+                      <span class="font-medium">15/10/2025</span>
+                      <span>•</span>
+                      <span class="bg-purple-500 px-3 py-1 rounded-full text-xs font-semibold">Tin mới</span>
+                    </div>
+                  </div>
+                </div>
+                <h3
+                  class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                  Đây là những tính bị nhận cập nhật HyperOS 3 ngay từ đầu
+                </h3>
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  Bắt đầu từ tháng 10/2025, Xiaomi chính thức phát hành bản cập nhật HyperOS 3 - giao diện người dùng
+                  hoàn toàn mới dựa trên Android 16.
+                </p>
+              </a>
+            </article>
+
+            <!-- News Item 4 - Samsung nghiên cứu -->
+            <article class="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[30%] group cursor-pointer">
+              <a href="news-detail.html?id=4&title=samsung-nghien-cuu-smartphone-gap-ba-trien-khai-man-hinh-theo-cach-toan-moi"
+                class="block">
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                  <img src="images/inta.webp" alt="Samsung Foldable"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  <div class="absolute bottom-4 left-4 right-4">
+                    <div class="flex items-center gap-2 text-white text-sm">
+                      <span class="font-medium">08/10/2025</span>
+                      <span>•</span>
+                      <span class="bg-green-500 px-3 py-1 rounded-full text-xs font-semibold">Công nghệ</span>
+                    </div>
+                  </div>
+                </div>
+                <h3
+                  class="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                  Samsung nghiên cứu smartphone gập ba, triển khai màn hình theo cách toàn mới
+                </h3>
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  Samsung đang nghiên cứu một thiết kế smartphone gập ba màn hình hoàn toàn mới, có thể thay đổi cách
+                  chúng ta sử dụng điện thoại trong tương lai.
+                </p>
+              </a>
+            </article>
+
+          </div>
+        </div>
 
       </div>
     </div>
@@ -2237,10 +2383,11 @@
     <div class="max-w-7xl mx-auto px-4">
       <!-- Khung trắng chứa giới thiệu -->
       <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-        
+
         <!-- Tiêu đề -->
         <div class="text-center mb-8">
-          <h2 class="text-3xl md:text-5xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg mb-4">
+          <h2
+            class="text-3xl md:text-5xl font-black bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg mb-4">
             Về QuangHưng Mobile
           </h2>
           <p class="text-gray-600">Hơn 15 năm đồng hành cùng công nghệ</p>
@@ -2248,11 +2395,10 @@
 
         <!-- Nội dung chính: Grid 2 cột -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          
+
           <!-- Cột trái: Hình ảnh -->
           <div class="relative rounded-2xl overflow-hidden shadow-lg">
-            <img src="images/cuahang.png" alt="QuangHưng Mobile Store" 
-              class="w-full h-[400px] object-cover">
+            <img src="images/cuahang.png" alt="QuangHưng Mobile Store" class="w-full h-[400px] object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6 text-white">
               <h3 class="text-2xl font-bold mb-2">QuangHưng Mobile</h3>
@@ -2263,45 +2409,60 @@
           <!-- Cột phải: Nội dung văn bản -->
           <div class="flex flex-col justify-center">
             <div id="aboutContent" class="relative">
-              <div id="textContent" class="text-gray-700 leading-relaxed space-y-4 overflow-hidden transition-all duration-500" style="max-height: 300px;">
+              <div id="textContent"
+                class="text-gray-700 leading-relaxed space-y-4 overflow-hidden transition-all duration-500"
+                style="max-height: 300px;">
                 <p class="text-justify">
-                  <strong class="text-red-600">QuangHưng Mobile</strong> được thành lập từ năm 2010, bắt đầu từ một cửa hàng nhỏ tại Hà Nội. Trải qua hơn 15 năm phát triển, chúng tôi đã trở thành một trong những địa chỉ uy tín hàng đầu trong lĩnh vực kinh doanh các mặt hàng công nghệ như điện thoại di động, máy tính bảng, laptop, phụ kiện, linh kiện...
-                </p>
-                
-                <p class="text-justify">
-                  Sau hơn 16 năm phát triển, <strong>QuangHưng Mobile</strong> đã khẳng định vị thế là đại lý ủy quyền chính thức của nhiều thương hiệu công nghệ hàng đầu thế giới như Apple, Samsung, Xiaomi, OPPO.
-                </p>
-
-                <p class="text-justify">
-                  Với phương châm <strong class="text-red-600">"CHUYÊN GIAO GIÁ TRỊ VƯỢT TRỘI"</strong>, QuangHưng Mobile cam kết mang đến cho khách hàng những sản phẩm công nghệ chất lượng cao cùng dịch vụ hậu mãi vượt trội.
+                  <strong class="text-red-600">QuangHưng Mobile</strong> được thành lập từ năm 2010, bắt đầu từ một cửa
+                  hàng nhỏ tại Hà Nội. Trải qua hơn 15 năm phát triển, chúng tôi đã trở thành một trong những địa chỉ uy
+                  tín hàng đầu trong lĩnh vực kinh doanh các mặt hàng công nghệ như điện thoại di động, máy tính bảng,
+                  laptop, phụ kiện, linh kiện...
                 </p>
 
                 <p class="text-justify">
-                  Đội ngũ nhân viên chuyên nghiệp, nhiệt tình, am hiểu sâu sắc về sản phẩm, luôn sẵn sàng tư vấn và hỗ trợ khách hàng lựa chọn sản phẩm phù hợp nhất với nhu cầu sử dụng.
+                  Sau hơn 16 năm phát triển, <strong>QuangHưng Mobile</strong> đã khẳng định vị thế là đại lý ủy quyền
+                  chính thức của nhiều thương hiệu công nghệ hàng đầu thế giới như Apple, Samsung, Xiaomi, OPPO.
                 </p>
 
                 <p class="text-justify">
-                  Hệ thống cửa hàng được bố trí khoa học, hiện đại, tạo không gian mua sắm thoải mái. Chính sách bảo hành, đổi trả linh hoạt, minh bạch, đảm bảo quyền lợi tối đa cho người tiêu dùng.
+                  Với phương châm <strong class="text-red-600">"CHUYÊN GIAO GIÁ TRỊ VƯỢT TRỘI"</strong>, QuangHưng
+                  Mobile cam kết mang đến cho khách hàng những sản phẩm công nghệ chất lượng cao cùng dịch vụ hậu mãi
+                  vượt trội.
                 </p>
 
                 <p class="text-justify">
-                  <strong>QuangHưng Mobile</strong> không ngừng đổi mới, cải tiến để mang đến trải nghiệm mua sắm tốt nhất. Với sứ mệnh kết nối công nghệ với cuộc sống, chúng tôi luôn đặt sự hài lòng của khách hàng lên hàng đầu.
+                  Đội ngũ nhân viên chuyên nghiệp, nhiệt tình, am hiểu sâu sắc về sản phẩm, luôn sẵn sàng tư vấn và hỗ
+                  trợ khách hàng lựa chọn sản phẩm phù hợp nhất với nhu cầu sử dụng.
+                </p>
+
+                <p class="text-justify">
+                  Hệ thống cửa hàng được bố trí khoa học, hiện đại, tạo không gian mua sắm thoải mái. Chính sách bảo
+                  hành, đổi trả linh hoạt, minh bạch, đảm bảo quyền lợi tối đa cho người tiêu dùng.
+                </p>
+
+                <p class="text-justify">
+                  <strong>QuangHưng Mobile</strong> không ngừng đổi mới, cải tiến để mang đến trải nghiệm mua sắm tốt
+                  nhất. Với sứ mệnh kết nối công nghệ với cuộc sống, chúng tôi luôn đặt sự hài lòng của khách hàng lên
+                  hàng đầu.
                 </p>
               </div>
-              
+
               <!-- Gradient overlay khi thu gọn -->
-              <div id="gradientOverlay" class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+              <div id="gradientOverlay"
+                class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none">
+              </div>
             </div>
 
             <!-- Nút Xem thêm/Thu gọn -->
-            <button id="toggleBtn" class="mt-4 text-red-600 font-semibold hover:text-red-700 transition-colors flex items-center gap-2 text-sm">
+            <button id="toggleBtn"
+              class="mt-4 text-red-600 font-semibold hover:text-red-700 transition-colors flex items-center gap-2 text-sm">
               <span id="toggleText">Xem thêm</span>
               <i id="toggleIcon" class="fas fa-chevron-down"></i>
             </button>
           </div>
         </div>
 
-        
+
 
       </div>
     </div>
@@ -2309,7 +2470,7 @@
 
   <script>
     // Toggle "Xem thêm" / "Thu gọn"
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const toggleBtn = document.getElementById('toggleBtn');
       const textContent = document.getElementById('textContent');
       const toggleText = document.getElementById('toggleText');
@@ -2318,9 +2479,9 @@
       let isExpanded = false;
 
       if (toggleBtn && textContent) {
-        toggleBtn.addEventListener('click', function() {
+        toggleBtn.addEventListener('click', function () {
           isExpanded = !isExpanded;
-          
+
           if (isExpanded) {
             textContent.style.maxHeight = textContent.scrollHeight + 'px';
             toggleText.textContent = 'Thu gọn';
@@ -2345,51 +2506,51 @@
       const carousel = document.getElementById('newsCarousel');
       const prevBtn = document.getElementById('prevNewsBtn');
       const nextBtn = document.getElementById('nextNewsBtn');
-      
+
       if (carousel && prevBtn && nextBtn) {
         let currentIndex = 0;
         const items = carousel.children;
         const totalItems = items.length;
-        
+
         // Calculate items per view based on screen size
         function getItemsPerView() {
           if (window.innerWidth >= 1024) return 3; // lg
           if (window.innerWidth >= 768) return 2;  // md
           return 1; // mobile
         }
-        
+
         function updateCarousel() {
           const itemsPerView = getItemsPerView();
           const itemWidth = items[0].offsetWidth;
           const gap = 24; // 6 * 4px (gap-6 in Tailwind)
           const offset = currentIndex * (itemWidth + gap);
           carousel.style.transform = `translateX(-${offset}px)`;
-          
+
           // Disable/enable buttons based on position
           prevBtn.disabled = currentIndex === 0;
           nextBtn.disabled = currentIndex >= totalItems - itemsPerView;
-          
+
           // Update button styles
           if (prevBtn.disabled) {
             prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
           } else {
             prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
           }
-          
+
           if (nextBtn.disabled) {
             nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
           } else {
             nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
           }
         }
-        
+
         prevBtn.addEventListener('click', () => {
           if (currentIndex > 0) {
             currentIndex--;
             updateCarousel();
           }
         });
-        
+
         nextBtn.addEventListener('click', () => {
           const itemsPerView = getItemsPerView();
           if (currentIndex < totalItems - itemsPerView) {
@@ -2397,7 +2558,7 @@
             updateCarousel();
           }
         });
-        
+
         // Update on window resize
         let resizeTimer;
         window.addEventListener('resize', () => {
@@ -2410,7 +2571,7 @@
             updateCarousel();
           }, 250);
         });
-        
+
         // Initial update
         updateCarousel();
       }
@@ -2524,9 +2685,9 @@
 
 
 
- <!-- ===== PHẦN THÔNG TIN CHÂN TRANG - THIẾT KẾ CHUẨN WEBSITE ===== -->
-<footer class="bg-white py-12 border-t-2 border-gray-200">
-  <div class="max-w-7xl mx-auto px-4">
+  <!-- ===== PHẦN THÔNG TIN CHÂN TRANG - THIẾT KẾ CHUẨN WEBSITE ===== -->
+  <footer class="bg-white py-12 border-t-2 border-gray-200">
+    <div class="max-w-7xl mx-auto px-4">
 
       <!-- GRID 4 CỘT -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -2626,37 +2787,44 @@
             <h4 class="font-bold text-base text-red-600 mb-3 uppercase tracking-wide">Phương thức thanh toán</h4>
             <div class="grid grid-cols-4 gap-2">
               <!-- Hàng 1 -->
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay"
                   class="h-5 w-auto object-contain" />
               </div>
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
                 <img src="https://www.vnpay.vn/s1/statics.vnpay.vn/2023/9/06ncktiwd6dc1694418196384.png" alt="VNPay"
                   class="h-5 w-auto object-contain" />
               </div>
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
-                <img src="https://developers.momo.vn/v3/img/logo.png" alt="MoMo"
-                  class="h-5 w-auto object-contain" />
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://developers.momo.vn/v3/img/logo.png" alt="MoMo" class="h-5 w-auto object-contain" />
               </div>
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
                 <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-OnePay.png" alt="OnePay"
                   class="h-5 w-auto object-contain" />
               </div>
-              
+
               <!-- Hàng 2 -->
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
                 <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-Kredivo-V.png" alt="Kredivo"
                   class="h-5 w-auto object-contain" />
               </div>
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
                 <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay.png" alt="ZaloPay"
                   class="h-5 w-auto object-contain" />
               </div>
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
                 <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-QlaPay.png" alt="QlaPay"
                   class="h-5 w-auto object-contain" />
               </div>
-              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+              <div
+                class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
                 <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-Fundiin.png" alt="Fundiin"
                   class="h-5 w-auto object-contain" />
               </div>
@@ -2670,8 +2838,8 @@
         © 2025 <span class="font-semibold text-red-600">QuangHưng Mobile</span>. All rights reserved.
       </div>
 
-  </div>
-</footer>
+    </div>
+  </footer>
 
 
 
@@ -2799,7 +2967,8 @@
           <i class="fas fa-robot text-blue-600 text-2xl"></i>
         </div>
         <div>
-          <h3 class="font-black text-xl bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">AI Tư vấn</h3>
+          <h3 class="font-black text-xl bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">AI Tư vấn
+          </h3>
           <p class="text-sm text-blue-100 flex items-center">
             <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
             Trực tuyến
@@ -3473,6 +3642,9 @@
   <!-- Import Shared Product Data & Utils -->
   <script src="products-data.js"></script>
   <script src="products-utils.js"></script>
+
+  <!-- Modern Interactions - Hiệu ứng tương tác chuyên nghiệp -->
+  <script src="modern-interactions.js"></script>
 </body>
 
 </html>

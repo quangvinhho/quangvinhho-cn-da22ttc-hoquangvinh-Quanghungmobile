@@ -1,114 +1,151 @@
-<footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16">
-  <div class="container mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-      <div>
-        <div class="flex items-center mb-6">
-          <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-full p-3 mr-3 shadow-lg">
-            <i class="fas fa-mobile-alt text-white text-2xl"></i>
+<!-- FOOTER CSS -->
+<link rel="stylesheet" href="footer-styles.css">
+
+<footer class="bg-white py-12 border-t-2 border-gray-200">
+  <div class="max-w-7xl mx-auto px-4">
+
+      <!-- GRID 4 CỘT -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <!-- CỘT 1: VỀ CHÚNG TÔI -->
+        <div>
+          <h3 class="font-bold text-lg text-red-600 mb-4 uppercase tracking-wide">Về chúng tôi</h3>
+          <ul class="space-y-2.5 text-gray-700 text-base leading-relaxed">
+            <li><a href="#" class="hover:text-red-600 transition-colors">Giới thiệu</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Liên hệ hợp tác kinh doanh (B2B)</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Tuyển dụng mới nhất</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Hướng dẫn mua hàng Online</a></li>
+          </ul>
+        </div>
+
+        <!-- CỘT 2: CHÍNH SÁCH -->
+        <div>
+          <h3 class="font-bold text-lg text-red-600 mb-4 uppercase tracking-wide">Chính sách</h3>
+          <ul class="space-y-2.5 text-gray-700 text-base leading-relaxed">
+            <li><a href="#" class="hover:text-red-600 transition-colors">Chính sách bảo hành</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Chính sách bảo mật</a></li>
+            <li><a href="#" class="hover:text-red-600 transition-colors">Chính sách sử dụng</a></li>
+          </ul>
+        </div>
+
+        <!-- CỘT 3: TỔNG ĐÀI HỖ TRỢ -->
+        <div>
+          <h3 class="font-bold text-lg text-red-600 mb-4 uppercase tracking-wide">Tổng đài hỗ trợ (Miễn phí)</h3>
+          <ul class="space-y-3 text-gray-700 leading-relaxed">
+            <li class="flex flex-col">
+              <span class="text-sm font-medium text-gray-600 mb-0.5">Mua ngay:</span>
+              <div class="flex items-baseline gap-2">
+                <a href="tel:18006018" class="font-bold text-red-600 text-lg hover:text-red-700">1800.6018</a>
+                <span class="text-xs text-gray-500">(07:30 – 21:30)</span>
+              </div>
+            </li>
+            <li class="flex flex-col">
+              <span class="text-sm font-medium text-gray-600 mb-0.5">Bảo hành tại QuangHưng Mobile:</span>
+              <div class="flex items-baseline gap-2">
+                <a href="tel:18006729" class="font-bold text-red-600 text-lg hover:text-red-700">1800.6729</a>
+                <span class="text-xs text-gray-500">(08:00 – 21:00)</span>
+              </div>
+            </li>
+            <li class="flex flex-col">
+              <span class="text-sm font-medium text-gray-600 mb-0.5">Góp ý:</span>
+              <div class="flex items-baseline gap-2">
+                <a href="tel:18006306" class="font-bold text-red-600 text-lg hover:text-red-700">1800.6306</a>
+                <span class="text-xs text-gray-500">(08:30 – 21:30)</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- CỘT 4: KẾT NỐI & THANH TOÁN -->
+        <div>
+          <h3 class="font-bold text-lg text-red-600 mb-4 uppercase tracking-wide">Kết nối với chúng tôi</h3>
+
+          <!-- ICON MẠNG XÃ HỘI -->
+          <div class="flex flex-wrap gap-3 mb-6">
+            <a href="https://facebook.com/quanghungmobile" target="_blank"
+              class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition shadow-sm"
+              title="Facebook">
+              <i class="fab fa-facebook-f text-white text-base"></i>
+            </a>
+            <a href="https://youtube.com/@quanghungmobile" target="_blank"
+              class="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-lg flex items-center justify-center transition shadow-sm"
+              title="YouTube">
+              <i class="fab fa-youtube text-white text-base"></i>
+            </a>
+            <a href="https://zalo.me" target="_blank"
+              class="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-lg flex items-center justify-center transition shadow-sm"
+              title="Zalo">
+              <i class="fab fa-telegram text-white text-base"></i>
+            </a>
+            <a href="https://instagram.com/quanghungmobile" target="_blank"
+              class="w-10 h-10 bg-pink-600 hover:bg-pink-700 rounded-lg flex items-center justify-center transition shadow-sm"
+              title="Instagram">
+              <i class="fab fa-instagram text-white text-base"></i>
+            </a>
+            <a href="https://tiktok.com/@quanghungmobile" target="_blank"
+              class="w-10 h-10 bg-black hover:bg-gray-800 rounded-lg flex items-center justify-center transition shadow-sm"
+              title="TikTok">
+              <i class="fab fa-tiktok text-white text-base"></i>
+            </a>
           </div>
-          <h3 class="text-2xl font-bold">QuangHưngShop</h3>
-        </div>
-        <p class="text-gray-400 mb-6 leading-relaxed">Cửa hàng điện thoại di động uy tín, chất lượng hàng đầu Việt Nam. Cam kết 100% hàng chính hãng.</p>
-        <div class="flex space-x-4">
-          <a href="https://facebook.com" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-            <i class="fab fa-facebook text-xl"></i>
-          </a>
-          <a href="https://instagram.com" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-pink-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-            <i class="fab fa-instagram text-xl"></i>
-          </a>
-          <a href="https://twitter.com" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-blue-400 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-            <i class="fab fa-twitter text-xl"></i>
-          </a>
-          <a href="https://youtube.com" target="_blank" class="w-12 h-12 bg-gray-700 hover:bg-red-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-            <i class="fab fa-youtube text-xl"></i>
-          </a>
+
+          <!-- HOTLINE -->
+          <div class="mb-6">
+            <p class="text-sm text-gray-600 mb-1">Tư vấn mua hàng (Miễn phí)</p>
+            <a href="tel:18006018" class="text-red-600 hover:text-red-700 font-bold text-xl block">
+              1800.6018
+            </a>
+          </div>
+
+          <!-- PHƯƠNG THỨC THANH TOÁN -->
+          <div>
+            <h4 class="font-bold text-base text-red-600 mb-3 uppercase tracking-wide">Phương thức thanh toán</h4>
+            <div class="grid grid-cols-4 gap-2">
+              <!-- Hàng 1 -->
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay"
+                  class="h-5 w-auto object-contain" />
+              </div>
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://www.vnpay.vn/s1/statics.vnpay.vn/2023/9/06ncktiwd6dc1694418196384.png" alt="VNPay"
+                  class="h-5 w-auto object-contain" />
+              </div>
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://developers.momo.vn/v3/img/logo.png" alt="MoMo"
+                  class="h-5 w-auto object-contain" />
+              </div>
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-OnePay.png" alt="OnePay"
+                  class="h-5 w-auto object-contain" />
+              </div>
+              
+              <!-- Hàng 2 -->
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-Kredivo-V.png" alt="Kredivo"
+                  class="h-5 w-auto object-contain" />
+              </div>
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay.png" alt="ZaloPay"
+                  class="h-5 w-auto object-contain" />
+              </div>
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-QlaPay.png" alt="QlaPay"
+                  class="h-5 w-auto object-contain" />
+              </div>
+              <div class="bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center hover:shadow-md transition h-10">
+                <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-Fundiin.png" alt="Fundiin"
+                  class="h-5 w-auto object-contain" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div>
-        <h3 class="text-xl font-bold mb-6 text-red-400">
-          <i class="fas fa-info-circle mr-2"></i>Về Chúng Tôi
-        </h3>
-        <ul class="space-y-3 text-gray-400">
-          <li><a href="index.html" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Giới thiệu</a></li>
-          <li><a href="contact.html" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Tuyển dụng</a></li>
-          <li><a href="contact.html" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Hệ thống cửa hàng</a></li>
-          <li><a href="contact.html" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Liên hệ</a></li>
-        </ul>
+      <!-- ĐƯỜNG KẺ NGANG & COPYRIGHT -->
+      <div class="border-t border-gray-200 mt-10 pt-6 text-center text-sm text-gray-600">
+        © 2025 <span class="font-semibold text-red-600">QuangHưng Mobile</span>. All rights reserved.
       </div>
 
-      <div>
-        <h3 class="text-xl font-bold mb-6 text-red-400">
-          <i class="fas fa-file-alt mr-2"></i>Chính Sách
-        </h3>
-        <ul class="space-y-3 text-gray-400">
-          <li><a href="#" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Chính sách bảo hành</a></li>
-          <li><a href="#" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Chính sách đổi trả</a></li>
-          <li><a href="#" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Chính sách bảo mật</a></li>
-          <li><a href="#" class="hover:text-red-400 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i>Điều khoản sử dụng</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h3 class="text-xl font-bold mb-6 text-red-400">
-          <i class="fas fa-phone-alt mr-2"></i>Liên Hệ
-        </h3>
-        <ul class="space-y-4 text-gray-400">
-          <li class="flex items-start">
-            <i class="fas fa-map-marker-alt text-red-400 mr-3 mt-1"></i>
-            <span>Số 215 Giáp Nhất, Nhân Chính, Thanh Xuân, Hà Nội</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-phone text-red-400 mr-3"></i>
-            <a href="tel:0815208208" class="hover:text-red-400 transition">0815.208.208</a>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-envelope text-red-400 mr-3"></i>
-            <a href="mailto:support@quanghungshop.vn" class="hover:text-red-400 transition">support@quanghungshop.vn</a>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-clock text-red-400 mr-3"></i>
-            <span>8:00 - 22:00 (Tất cả các ngày)</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Payment methods -->
-    <div class="border-t border-gray-700 pt-8 pb-8">
-      <h4 class="text-center text-gray-400 mb-6 font-semibold">
-        <i class="fas fa-credit-card mr-2"></i>Phương thức thanh toán
-      </h4>
-      <div class="flex flex-wrap justify-center items-center gap-6">
-        <div class="bg-white rounded-lg px-4 py-2 shadow-md">
-          <i class="fab fa-cc-visa text-blue-600 text-3xl"></i>
-        </div>
-        <div class="bg-white rounded-lg px-4 py-2 shadow-md">
-          <i class="fab fa-cc-mastercard text-red-600 text-3xl"></i>
-        </div>
-        <div class="bg-white rounded-lg px-4 py-2 shadow-md">
-          <i class="fab fa-cc-paypal text-blue-700 text-3xl"></i>
-        </div>
-        <div class="bg-white rounded-lg px-4 py-2 shadow-md">
-          <span class="font-bold text-blue-600">MOMO</span>
-        </div>
-        <div class="bg-white rounded-lg px-4 py-2 shadow-md">
-          <span class="font-bold text-red-600">VNPAY</span>
-        </div>
-        <div class="bg-white rounded-lg px-4 py-2 shadow-md">
-          <i class="fas fa-money-bill-wave text-green-600 text-3xl"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-- Copyright -->
-    <div class="border-t border-gray-700 pt-8 text-center">
-      <p class="text-gray-400 mb-2">
-        © 2024 <span class="text-red-400 font-bold">QuangHưngShop</span>. Tất cả các quyền được bảo lưu.
-      </p>
-      <p class="text-gray-500 text-sm">
-        Giấy CNĐKDN: 0123456789 - Nơi cấp: Sở KH & ĐT TP. Hà Nội
-      </p>
-    </div>
   </div>
 </footer>
+  

@@ -1897,6 +1897,19 @@
             
     </section>
 
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+      // Load footer component
+      fetch('components/footer.html')
+          .then(response => response.text())
+          .then(html => {
+              document.getElementById('footer-placeholder').innerHTML = html;
+          })
+          .catch(error => console.error('Error loading footer:', error));
+    </script>
+
 </body>
 </html>
 

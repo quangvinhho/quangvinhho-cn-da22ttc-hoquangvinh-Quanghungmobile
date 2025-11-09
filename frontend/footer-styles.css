@@ -1,0 +1,82 @@
+/* ===== FOOTER STYLING ===== */
+/* Tiêu đề cột footer */
+footer h3,
+footer h4 {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: #d91e23 !important;
+  margin-bottom: 16px !important;
+  line-height: 1.3 !important;
+}
+
+/* Link footer */
+footer ul li a,
+footer ul li {
+  font-size: 15px !important;
+  line-height: 1.8 !important;
+  color: #333 !important;
+  font-weight: 400 !important;
+}
+
+/* Số hotline trong footer */
+footer .font-bold.text-red-600 {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+/* Thời gian làm việc */
+footer .text-xs.text-gray-500 {
+  font-size: 13px !important;
+  color: #666 !important;
+}
+
+/* Label tổng đài */
+footer .font-medium {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #4a4a4a !important;
+}
+
+/* Tư vấn mua hàng text */
+footer .text-sm.text-gray-600 {
+  font-size: 14px !important;
+  margin-bottom: 6px !important;
+}
+
+/* Hotline lớn */
+footer .text-lg {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+
+/* Copyright */
+footer .text-center.text-sm {
+  font-size: 14px !important;
+  color: #666 !important;
+}
+
+footer .font-semibold.text-red-600 {
+  font-weight: 600 !important;
+}
+
+/* Footer responsive */
+@media (max-width: 768px) {
+  footer h3,
+  footer h4 {
+    font-size: 16px !important;
+    margin-bottom: 12px !important;
+  }
+
+  footer ul li a,
+  footer ul li {
+    font-size: 14px !important;
+  }
+
+  footer .font-bold.text-red-600 {
+    font-size: 16px !important;
+  }
+
+  footer .text-lg {
+    font-size: 18px !important;
+  }
+}

@@ -196,7 +196,7 @@
 @media (max-width: 768px) {
   /* Reduce padding on mobile */
   .mobile-compact {
-    padding: 0.75rem !important;
+    padding: 0.6rem !important;
   }
   
   /* Stack items vertically */
@@ -211,7 +211,7 @@
   
   /* Smaller text on mobile */
   .mobile-text-sm {
-    font-size: 0.875rem !important;
+    font-size: 0.8rem !important;
   }
   
   /* Hide on mobile */

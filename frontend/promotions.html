@@ -88,11 +88,11 @@
     /* Mobile Optimization */
     @media (max-width: 768px) {
       .promo-card {
-        padding: 1rem;
+        padding: 0.75rem;
       }
       .countdown-box {
-        padding: 0.5rem;
-        font-size: 0.875rem;
+        padding: 0.4rem;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -225,14 +225,14 @@
   </header>
 
     
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-3 md:px-4 py-5 md:py-6">
       <!-- Flash Sale Section -->
-      <section class="mb-12">
-  <div class="bg-red-600 text-white rounded-t-lg p-4">
+      <section class="mb-8">
+  <div class="bg-red-600 text-white rounded-t-lg p-3 md:p-4">
           <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <i class="fas fa-bolt text-2xl"></i>
-              <h2 class="text-xl font-bold">Flash Sale</h2>
+            <div class="flex items-center space-x-2 md:space-x-3">
+              <i class="fas fa-bolt text-lg md:text-xl"></i>
+              <h2 class="text-base md:text-lg lg:text-xl font-bold">Flash Sale</h2>
             </div>
             <div class="flex items-center space-x-2">
               <span>Kết thúc trong:</span>
@@ -242,11 +242,11 @@
             </div>
           </div>
         </div>
-        <div class="bg-white rounded-b-lg shadow-md p-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-b-lg shadow-md p-3 md:p-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <!-- Flash Sale Item 1 -->
-            <div class="border rounded-lg p-4">
-              <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg" alt="iPhone 15" class="w-full h-48 object-cover rounded-lg mb-4" />
+            <div class="border rounded-lg p-3">
+              <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg" alt="iPhone 15" class="w-full h-48 object-cover rounded-lg mb-3" />
               <h3 class="font-semibold mb-2">iPhone 15 Pro Max</h3>
               <div class="flex items-center space-x-2 mb-2">
                 <span class="text-red-600 font-bold">29.990.000đ</span>
@@ -259,8 +259,8 @@
             </div>
 
             <!-- Flash Sale Item 2 -->
-            <div class="border rounded-lg p-4">
-              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg" alt="Samsung S24" class="w-full h-48 object-cover rounded-lg mb-4" />
+            <div class="border rounded-lg p-3">
+              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg" alt="Samsung S24" class="w-full h-48 object-cover rounded-lg mb-3" />
               <h3 class="font-semibold mb-2">Samsung Galaxy S24 Ultra</h3>
               <div class="flex items-center space-x-2 mb-2">
                 <span class="text-red-600 font-bold">27.990.000đ</span>
@@ -278,24 +278,24 @@
       </section>
 
       <!-- Voucher Section -->
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold mb-6">Mã giảm giá</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section class="mb-8">
+        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-5">Mã giảm giá</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           <!-- Voucher 1 -->
           <div class="relative bg-white rounded-lg shadow-md overflow-hidden">
             <div class="absolute top-0 left-4 bg-red-600 text-white px-4 py-1 rounded-b-lg">Hot</div>
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-4">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                  <i class="fas fa-percentage text-2xl text-red-600"></i>
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                  <i class="fas fa-percentage text-xl md:text-2xl text-red-600"></i>
                 </div>
                 <div class="text-right">
                   <span class="text-sm text-gray-500">Giảm</span>
-                  <p class="text-2xl font-bold text-red-600">500.000đ</p>
+                  <p class="text-xl md:text-2xl font-bold text-red-600">500.000đ</p>
                 </div>
               </div>
-              <h3 class="font-semibold mb-2">Đơn hàng từ 10 triệu</h3>
-              <p class="text-sm text-gray-600 mb-4">Áp dụng cho tất cả sản phẩm</p>
+              <h3 class="font-semibold mb-2 text-base">Đơn hàng từ 10 triệu</h3>
+              <p class="text-sm text-gray-600 mb-3">Áp dụng cho tất cả sản phẩm</p>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Còn 2 ngày</span>
                 <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
@@ -307,18 +307,18 @@
 
           <!-- Voucher 2 -->
           <div class="relative bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-4">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                  <i class="fas fa-shipping-fast text-2xl text-green-600"></i>
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center">
+                  <i class="fas fa-shipping-fast text-xl md:text-2xl text-green-600"></i>
                 </div>
                 <div class="text-right">
                   <span class="text-sm text-gray-500">Free</span>
-                  <p class="text-2xl font-bold text-green-600">Ship</p>
+                  <p class="text-xl md:text-2xl font-bold text-green-600">Ship</p>
                 </div>
               </div>
-              <h3 class="font-semibold mb-2">Miễn phí vận chuyển</h3>
-              <p class="text-sm text-gray-600 mb-4">Đơn hàng từ 2 triệu</p>
+              <h3 class="font-semibold mb-2 text-base">Miễn phí vận chuyển</h3>
+              <p class="text-sm text-gray-600 mb-3">Đơn hàng từ 2 triệu</p>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Còn 5 ngày</span>
                 <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
@@ -334,14 +334,14 @@
 
       <!-- Promotion Programs -->
       <section>
-        <h2 class="text-2xl font-bold mb-6">Chương trình khuyến mãi</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-5">Chương trình khuyến mãi</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <!-- Promotion 1 -->
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <img src="https://images.pexels.com/photos/1092671/pexels-photo-1092671.jpeg" alt="Promotion" class="w-full h-48 object-cover" />
-            <div class="p-6">
-              <h3 class="font-semibold text-xl mb-2">Sinh nhật QuangHưngShop - Sale cực sốc</h3>
-              <p class="text-gray-600 mb-4">Giảm đến 50% cho tất cả sản phẩm nhân dịp sinh nhật 5 năm thành lập</p>
+            <div class="p-4">
+              <h3 class="font-semibold text-lg mb-2">Sinh nhật QuangHưngShop - Sale cực sốc</h3>
+              <p class="text-sm text-gray-600 mb-3">Giảm đến 50% cho tất cả sản phẩm nhân dịp sinh nhật 5 năm thành lập</p>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Từ 01/10 - 15/10/2025</span>
                 <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Xem chi tiết</a>
@@ -352,9 +352,9 @@
           <!-- Promotion 2 -->
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg" alt="Promotion" class="w-full h-48 object-cover" />
-            <div class="p-6">
-              <h3 class="font-semibold text-xl mb-2">Thu cũ đổi mới - Trợ giá lên đến 5 triệu</h3>
-              <p class="text-gray-600 mb-4">Mang điện thoại cũ đến đổi lấy smartphone mới với ưu đãi cực lớn</p>
+            <div class="p-4">
+              <h3 class="font-semibold text-lg mb-2">Thu cũ đổi mới - Trợ giá lên đến 5 triệu</h3>
+              <p class="text-sm text-gray-600 mb-3">Mang điện thoại cũ đến đổi lấy smartphone mới với ưu đãi cực lớn</p>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Đến hết 31/10/2025</span>
                 <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Xem chi tiết</a>
