@@ -1,255 +1,96 @@
-﻿<!-- ===== HEADER ===== -->
-<header class="bg-gradient-to-r from-[#c41e26] to-[#d91e23] text-white sticky top-0 z-50 shadow-lg">
-    <!-- Top Bar -->
-    <div class="container mx-auto px-4 lg:px-6">
-      <div class="flex items-center justify-between py-2">
+<!-- ===== HEADER ===== -->
+<header class="header-wrapper bg-white shadow-lg">
+  <!-- Top Bar -->
+  <div class="top-bar bg-gradient-to-r from-red-600 to-red-500 text-white text-sm py-2">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <div class="flex items-center gap-4">
+        <a href="tel:18002097" class="flex items-center gap-1 hover:text-yellow-300">
+          <i class="fas fa-phone-alt"></i> Hotline: 1800.2097
+        </a>
+        <span>|</span>
+        <a href="contact.html" class="flex items-center gap-1 hover:text-yellow-300">
+          <i class="fas fa-map-marker-alt"></i> Hệ thống 50+ cửa hàng
+        </a>
+      </div>
+      <a href="promotions.html" class="flex items-center gap-1 font-semibold hover:text-yellow-300">
+        <i class="fas fa-gift"></i> Khuyến mãi hot - Giảm đến 50%
+      </a>
+    </div>
+  </div>
 
-        <!-- Logo -->
-        <a href="index.html"
-  class="flex items-center gap-2 hover:opacity-90 transition-all duration-300 flex-shrink-0 group">
-  <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo"
-    class="h-9 sm:h-10 lg:h-12 rounded-md shadow-md group-hover:scale-105 transition-transform duration-300">
-          <h1 class="text-xs sm:text-sm lg:text-base font-extrabold uppercase tracking-wide text-white drop-shadow-md">
-    QuangHưng Mobile
-  </h1>
+  <!-- Main Header -->
+  <div class="main-header py-4 border-b">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="images/Logo.jpg" alt="Logo" class="w-14 h-14 rounded-xl shadow">
+        <div class="leading-tight">
+          <h1 class="text-2xl font-bold text-red-600">QuangHưng Mobile</h1>
+          <p class="text-sm text-gray-600">Uy tín - Chất lượng - Giá tốt</p>
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="flex items-center border-2 border-red-500 rounded-full overflow-hidden w-1/2 max-w-lg">
+        <input
+          type="text"
+          class="flex-grow px-4 py-2 outline-none text-gray-700"
+          placeholder="Bạn cần tìm gì? iPhone, Samsung, OPPO..."
+        >
+        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-6">
+        <a href="tel:18002097" class="flex items-center gap-2 text-gray-700 hover:text-red-600">
+          <i class="fas fa-phone-volume text-xl"></i>
+          <div class="text-sm">
+            <p>Gọi mua hàng</p>
+            <strong>1800.2097</strong>
+          </div>
         </a>
 
-        <!-- Desktop Navigation Menu -->
-        <nav class="hidden lg:flex items-center gap-1 mx-3 flex-1">
-          <a href="index.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
-            Trang chủ
-          </a>
+        <a href="cart.html" class="relative flex items-center gap-2 text-gray-700 hover:text-red-600">
+          <i class="fas fa-shopping-cart text-2xl"></i>
+          <span class="text-sm">Giỏ hàng</span>
+          <span class="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+        </a>
 
-          <div class="relative group">
-            <button
-              class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap flex items-center gap-1">
-              Sản phẩm
-              <i
-                class="fa-solid fa-chevron-down text-xs ml-1 group-hover:rotate-180 transition-transform duration-300"></i>
-            </button>
-            <!-- Dropdown -->
-            <div
-              class="absolute left-0 top-full mt-2 w-56 bg-white shadow-2xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-100 overflow-hidden">
-              <div class="py-2">
-                <a href="products.html?category=dienthoai"
-                  class="flex items-center gap-3 px-5 py-3 hover:bg-gradient-to-r hover:from-[#ffe5e6] hover:to-white transition-all duration-300 text-[#1a1a1a] font-medium text-sm border-l-4 border-transparent hover:border-[#d91e23]">
-                  <span>Điện thoại</span>
-                </a>
-                <a href="products.html?category=phukien"
-                  class="flex items-center gap-3 px-5 py-3 hover:bg-gradient-to-r hover:from-[#ffe5e6] hover:to-white transition-all duration-300 text-[#1a1a1a] font-medium text-sm border-l-4 border-transparent hover:border-[#d91e23]">
-                  <span>Phụ kiện</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <a href="promotions.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
-            Khuyến mãi
-          </a>
-          <a href="news.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
-            Tin tức
-          </a>
-          <a href="contact.html"
-            class="nav-link px-3 py-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 text-sm font-semibold whitespace-nowrap">
-            Liên hệ
-          </a>
-        </nav>
-
-        <!-- Search - Desktop -->
-        <div
-          class="hidden lg:flex flex-1 max-w-sm bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-          <input type="text" id="desktop-search-input" placeholder="Tìm kiếm sản phẩm..."
-            class="flex-grow px-3 py-2 text-[#1a1a1a] focus:outline-none text-sm font-medium placeholder:text-[#666666]" />
-          <button id="desktop-search-btn"
-            class="bg-[var(--red-dark)] px-4 text-white hover:bg-[#8b0d12] transition-all duration-300 font-semibold">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-
-        <!-- Right Menu -->
-        <div class="flex items-center gap-1.5 lg:gap-2 text-sm font-medium ml-2">
-          <!-- Mobile Menu Button - Hiển thị đầu tiên trên mobile -->
-          <button id="mobile-menu-btn"
-            class="lg:hidden text-white text-xl hover:scale-110 transition-transform duration-300 bg-white/10 px-2.5 py-1.5 rounded-lg hover:bg-white/20 order-1">
-            <i class="fa-solid fa-bars"></i>
-          </button>
-          
-          <a href="cart.html"
-            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-2">
-            <i class="fa-solid fa-cart-shopping text-base lg:hidden"></i>
-            <span class="font-semibold hidden lg:inline text-sm">Giỏ hàng</span>
-          </a>
-          <a href="contact.html"
-            class="hover:scale-110 transition-transform duration-300 hidden lg:flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 order-3">
-            <span class="text-yellow-300 font-bold text-sm">1800.2097</span>
-          </a>
-          <a href="login.html"
-            class="hover:scale-110 transition-transform duration-300 flex items-center gap-1.5 whitespace-nowrap bg-white/10 px-2.5 lg:px-3 py-1.5 rounded-lg hover:bg-white/20 order-4">
-            <i class="fa-solid fa-user text-base lg:hidden"></i>
-            <span class="font-semibold hidden lg:inline text-sm">Đăng nhập</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Mobile Search -->
-      <div class="lg:hidden pb-3">
-        <div class="flex bg-white rounded-lg overflow-hidden shadow-md">
-          <input type="text" id="mobile-search-input" placeholder="Tìm kiếm sản phẩm..."
-            class="flex-grow px-3 py-2.5 text-gray-700 focus:outline-none text-sm" />
-          <button id="mobile-search-btn"
-            class="bg-[var(--red-dark)] px-4 text-white hover:bg-[#8b0d12] transition-colors">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile Menu Sidebar -->
-  <div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden backdrop-blur-sm">
-    <div
-      class="fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-white to-gray-50 shadow-2xl transform transition-transform duration-300 -translate-x-full"
-      id="mobile-menu-sidebar">
-      <div class="p-5">
-        <div class="flex items-center justify-between mb-8 pb-4 border-b-2 border-red-100">
-          <div class="flex items-center gap-2">
-            <img src="images/Logo.jpg" alt="Logo" class="h-10 rounded-md shadow">
-            <h2 class="text-xl font-bold text-red-600">Menu</h2>
-          </div>
-          <button id="mobile-menu-close"
-            class="text-gray-600 text-2xl hover:text-red-600 hover:rotate-90 transition-all duration-300">
-            <i class="fa-solid fa-times"></i>
-          </button>
-        </div>
-
-        <nav class="space-y-1">
-          <a href="index.html"
-            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
-            <span>Trang chủ</span>
-          </a>
-
-          <div class="border-t border-gray-200 my-2 pt-2">
-            <p class="text-xs text-gray-500 px-4 mb-2 font-semibold uppercase tracking-wider">Sản phẩm</p>
-          </div>
-
-          <a href="products.html?category=dienthoai"
-            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
-            <span>Điện thoại</span>
-          </a>
-          <a href="products.html?category=phukien"
-            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
-            <span>Phụ kiện</span>
-          </a>
-
-          <div class="border-t border-gray-200 my-2 pt-2">
-            <p class="text-xs text-gray-500 px-4 mb-2 font-semibold uppercase tracking-wider">Khác</p>
-          </div>
-
-          <a href="promotions.html"
-            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:text-orange-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-orange-600 hover:shadow-md">
-            <span>Khuyến mãi</span>
-          </a>
-          <a href="news.html"
-            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
-            <span>Tin tức</span>
-          </a>
-          <a href="contact.html"
-            class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 rounded-xl transition-all duration-300 font-medium border-l-4 border-transparent hover:border-red-600 hover:shadow-md">
-            <span>Liên hệ</span>
-          </a>
-        </nav>
-
-        <!-- Contact Info in Mobile Menu -->
-        <div class="mt-6 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-100">
-          <p class="text-sm font-semibold text-gray-700 mb-2">Hotline hỗ trợ</p>
-          <a href="tel:18002097" class="flex items-center gap-2 text-red-600 font-bold text-lg">
-            1800.2097
-          </a>
-        </div>
+        <a href="login.html" class="flex items-center gap-2 text-gray-700 hover:text-red-600">
+          <i class="fas fa-user-circle text-2xl"></i>
+          <span class="text-sm">Tài khoản</span>
+        </a>
       </div>
     </div>
   </div>
 
-  <script>
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuSidebar = document.getElementById('mobile-menu-sidebar');
-    const mobileMenuClose = document.getElementById('mobile-menu-close');
+  <!-- Navigation -->
+  <nav class="main-nav bg-gradient-to-r from-red-600 to-red-500 text-white py-3 shadow-md">
+    <div class="container mx-auto">
+      <ul class="flex justify-center items-center gap-10 font-semibold text-lg">
+        <li><a href="index.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-home"></i> Trang chủ</a></li>
+        <li><a href="about.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
 
-    if (mobileMenuBtn) {
-      mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.remove('hidden');
-        setTimeout(() => {
-          mobileMenuSidebar.classList.remove('-translate-x-full');
-        }, 10);
-      });
-    }
+        <li class="relative group">
+          <a href="products.html" class="hover:text-yellow-300 flex items-center gap-2">
+            <i class="fas fa-mobile-alt"></i> Sản phẩm <i class="fas fa-chevron-down text-xs"></i>
+          </a>
+          <ul class="absolute hidden group-hover:block bg-white text-gray-800 shadow-lg rounded-lg mt-2 w-56 text-base font-normal">
+            <li><a href="products.html?category=iphone" class="block px-4 py-2 hover:bg-gray-100"><i class="fab fa-apple"></i> iPhone</a></li>
+            <li><a href="products.html?category=samsung" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-mobile"></i> Samsung</a></li>
+            <li><a href="products.html?category=oppo" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-mobile-alt"></i> OPPO</a></li>
+            <li><a href="products.html?category=xiaomi" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-mobile-screen"></i> Xiaomi</a></li>
+            <li class="border-t"></li>
+            <li><a href="products.html?category=phukien" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-headphones"></i> Phụ kiện</a></li>
+          </ul>
+        </li>
 
-    if (mobileMenuClose) {
-      mobileMenuClose.addEventListener('click', () => {
-        mobileMenuSidebar.classList.add('-translate-x-full');
-        setTimeout(() => {
-          mobileMenu.classList.add('hidden');
-        }, 300);
-      });
-    }
-
-    if (mobileMenu) {
-      mobileMenu.addEventListener('click', (e) => {
-        if (e.target === mobileMenu) {
-          mobileMenuSidebar.classList.add('-translate-x-full');
-          setTimeout(() => {
-            mobileMenu.classList.add('hidden');
-          }, 300);
-        }
-      });
-    }
-
-    // Search functionality
-    function handleSearch(input) {
-      const searchTerm = input.value.trim();
-      if (searchTerm) {
-        window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}`;
-      }
-    }
-
-    // Desktop search
-    const desktopSearchInput = document.getElementById('desktop-search-input');
-    const desktopSearchBtn = document.getElementById('desktop-search-btn');
-
-    if (desktopSearchInput) {
-      desktopSearchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          handleSearch(desktopSearchInput);
-        }
-      });
-    }
-
-    if (desktopSearchBtn) {
-      desktopSearchBtn.addEventListener('click', () => {
-        handleSearch(desktopSearchInput);
-      });
-    }
-
-    // Mobile search
-    const mobileSearchInput = document.getElementById('mobile-search-input');
-    const mobileSearchBtn = document.getElementById('mobile-search-btn');
-
-    if (mobileSearchInput) {
-      mobileSearchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          handleSearch(mobileSearchInput);
-        }
-      });
-    }
-
-    if (mobileSearchBtn) {
-      mobileSearchBtn.addEventListener('click', () => {
-        handleSearch(mobileSearchInput);
-      });
-    }
-  </script>
+        <li><a href="news.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+        <li><a href="promotions.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-tags"></i> Khuyến mãi <span class="bg-yellow-400 text-red-600 font-bold text-xs px-2 py-0.5 rounded-full ml-1">HOT</span></a></li>
+        <li><a href="contact.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-phone"></i> Liên hệ</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>

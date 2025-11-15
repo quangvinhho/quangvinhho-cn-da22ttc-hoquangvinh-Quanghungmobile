@@ -12,528 +12,12 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="header-styles.css">
-    <link rel="stylesheet" href="responsive.css">
-    
-    <style>
-        * {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-        }
-        
-        :root {
-            /* WCAG 2.1 AA Compliant Colors - Giống index.html */
-            --red-main: #d91e23;        /* Màu đỏ chính */
-            --red-dark: #b01117;         /* Màu đỏ tối */
-            --red-light: #ffe5e6;        /* Nền đỏ nhạt */
-            --red-accent: #ff1a1a;       /* Màu nhấn */
-            
-            --text-primary: #1a1a1a;     /* Chữ chính */
-            --text-secondary: #4a4a4a;   /* Chữ phụ */
-            --text-muted: #666666;       /* Chữ mờ */
-            
-            --bg-main: #ffffff;
-            --bg-secondary: #f3f4f6;     /* Nền phụ - Giống index */
-            --bg-card: #ffffff;
-            
-            --border-light: #d4d4d4;
-            --border-medium: #a3a3a3;
-        }
-        
-        body { 
-            background: var(--bg-secondary); 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: var(--text-primary);
-        }
-        
-        .brand-box {
-            position: relative; border: 2px solid var(--border-light); border-radius: 8px; padding: 16px;
-            cursor: pointer; transition: all 0.2s; background: white;
-        }
-        .brand-box:hover { border-color: var(--border-medium); }
-        .brand-box.selected { border-color: var(--red-main); background: var(--red-light); }
-        .brand-box.selected::after {
-            content: '✓'; position: absolute; top: -8px; right: -8px;
-            background: var(--red-main); color: white; width: 24px; height: 24px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: bold; border: 2px solid white;
-        }
-        
-        .filter-tag {
-            display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px;
-            background: var(--border-light); border-radius: 20px; font-size: 14px; margin: 4px;
-        }
-        .filter-tag .close { cursor: pointer; font-weight: bold; color: var(--text-muted); }
-        
-        .product-card {
-            background: white; 
-            border-radius: 10px; 
-            overflow: hidden;
-            transition: all 0.3s ease; 
-            border: 1px solid #e5e5e5;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-            padding: 16px;
-            margin-bottom: 0;
-            height: auto;
-            max-height: 480px;
-            display: flex;
-            flex-direction: column;
-        }
-        .product-card:hover { 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); 
-            transform: translateY(-2px); 
-            border-color: #d0d0d0;
-        }
-        
-        .spec-badge {
-            background: #f5f5f5;
-            padding: 4px 8px; 
-            border-radius: 4px;
-            font-size: 0.85rem; 
-            color: var(--text-secondary); 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 3px;
-            font-weight: 400;
-            border: none;
-            line-height: 1.2;
-        }
-        
-        .color-dot {
-            width: 24px; 
-            height: 24px; 
-            border-radius: 50%;
-            border: 2px solid #e0e0e0; 
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .color-dot:hover {
-            transform: scale(1.15);
-            border-color: var(--red-main);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-        
-        /* Sort Bar - Tự động điều chỉnh theo grid */
-        #filterTags,
-        .sort-bar-container {
-            max-width: 100%;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* Sidebar Filter - Responsive width */
-        #filterSidebar {
-            transition: width 0.3s ease;
-        }
-        
-        /* Products Section - Tự động dãn */
-        section.flex-1 {
-            min-width: 0; /* Cho phép flex-shrink hoạt động */
-            width: 100%;
-        }
-        
-        /* Responsive adjustments để match với grid */
-        @media (min-width: 640px) {
-            /* 3 cột - sm breakpoint */
-            #filterTags,
-            .sort-bar-container {
-                width: 100%;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            /* 4 cột - lg breakpoint */
-            #filterSidebar {
-                width: 256px; /* w-64 */
-            }
-            
-            #filterTags,
-            .sort-bar-container {
-                width: 100%;
-            }
-        }
-        
-        @media (min-width: 1280px) {
-            /* 5 cột - xl breakpoint */
-            #filterSidebar {
-                width: 288px; /* w-72 - wider sidebar */
-            }
-            
-            #filterTags,
-            .sort-bar-container {
-                width: 100%;
-                max-width: none;
-            }
-        }
-        
-        /* Smooth scrollbar for filters */
-        #filterSidebar .space-y-3::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        #filterSidebar .space-y-3::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        
-        #filterSidebar .space-y-3::-webkit-scrollbar-thumb {
-            background: #d1d1d1;
-            border-radius: 10px;
-        }
-        
-        #filterSidebar .space-y-3::-webkit-scrollbar-thumb:hover {
-            background: #b1b1b1;
-        }
-        
-        .color-dot:hover {
-            transform: scale(1.2);
-            border-color: var(--red-main);
-        }
-        
-        /* Custom Checkbox Styling */
-        input[type="checkbox"] {
-            cursor: pointer;
-            accent-color: var(--red-main);
-        }
-        
-        /* Filter Labels */
-        label:has(input[type="checkbox"]):hover {
-            background: var(--red-light);
-            border-radius: 6px;
-        }
-        
-        /* Product Card Hover */
-        .product-card img {
-            transition: transform 0.3s ease;
-        }
-        
-        .product-card:hover img {
-            transform: scale(1.05);
-        }
-        
-        /* CTA Buttons */
-        .cta-button {
-            background: #d91e23;
-            color: white;
-            transition: all 0.2s ease;
-            border-radius: 6px;
-            font-weight: 700;
-            padding: 12px 20px;
-            letter-spacing: 0.3px;
-            border: none;
-        }
-        
-        .cta-button:hover {
-            background: #b01117;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(217, 30, 35, 0.3);
-        }
-        
-        /* CTA Buttons */
-        .cta-button {
-            background: #d91e23;
-            color: white;
-            transition: all 0.2s ease;
-            border-radius: 6px;
-            font-weight: 700;
-            padding: 12px 20px;
-            letter-spacing: 0.3px;
-            border: none;
-            width: 100%;
-            height: 42px;
-            font-size: 0.95rem;
-        }
-        
-        .cta-button:hover {
-            background: var(--red-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(217, 30, 35, 0.3);
-        }
-        
-        .cta-secondary {
-            color: #d91e23;
-            border: 1px solid #e0e0e0;
-            background: white;
-            transition: all 0.2s;
-            border-radius: 6px;
-            padding: 10px 18px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            width: 100%;
-            height: 40px;
-            font-size: 0.90rem;
-        }
-        
-        .cta-secondary:hover {
-            background: #fff5f5;
-            border-color: #d91e23;
-            color: #b01117;
-        }
-        
-        /* View Toggle Buttons */
-        .view-toggle.active {
-            background: var(--red-main);
-            color: white;
-        }
-        
-        /* Rating Stars */
-        .product-rating {
-            margin-top: 4px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .product-rating .stars {
-            color: #FFD700;
-            font-size: 0.85rem;
-            line-height: 1;
-            letter-spacing: 0.5px;
-        }
-        
-        .product-rating .reviews {
-            color: #666;
-            font-size: 0.8rem;
-            font-weight: 400;
-        }
-        
-        /* Scrollbar */
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        
-        #filterSidebar {
-            max-height: calc(100vh - 180px);
-            overflow-y: auto;
-        }
-        
-        #filterSidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        #filterSidebar::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-            border-radius: 10px;
-        }
-        
-        #filterSidebar::-webkit-scrollbar-thumb {
-            background: var(--red-main);
-            border-radius: 10px;
-        }
-        
-        #filterSidebar::-webkit-scrollbar-thumb:hover {
-            background: var(--red-dark);
-        }
-        
-        /* Brand Logo Carousel Animation */
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-        
-        .animate-scroll {
-            animation: scroll 30s linear infinite;
-        }
-        
-        .animate-scroll:hover {
-            animation-play-state: paused;
-        }
-        
-        /* Brand Text Buttons */
-        .brand-text-btn {
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        
-        .brand-text-btn:hover {
-            opacity: 0.7;
-        }
-        
-        .brand-text-btn:active {
-            transform: scale(0.95);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            #productsGrid {
-                gap: 12px !important;
-            }
-            
-            .product-card {
-                padding: 12px;
-                margin-bottom: 0;
-                max-height: 420px;
-            }
-            
-            .spec-badge {
-                padding: 3px 6px;
-                font-size: 0.8rem;
-            }
-            
-            .product-rating .stars {
-                font-size: 0.8rem;
-            }
-            
-            .product-rating .reviews {
-                font-size: 0.75rem;
-            }
-            
-            .cta-button {
-                height: 38px;
-                font-size: 0.9rem;
-                padding: 10px 16px;
-            }
-            
-            .animate-scroll {
-                animation: scroll 20s linear infinite;
-            }
-        }
-        
-        @media (min-width: 769px) and (max-width: 1023px) {
-            #productsGrid {
-                gap: 16px !important;
-            }
-            
-            .product-card {
-                padding: 14px;
-                max-height: 450px;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            #productsGrid {
-                gap: 20px !important;
-            }
-            
-            .product-card {
-                padding: 16px;
-                max-height: 480px;
-            }
-        }
-        
-        @media (min-width: 1280px) {
-            #productsGrid {
-                gap: 20px !important;
-            }
-            
-            .product-card {
-                padding: 16px;
-                max-width: 260px;
-                max-height: 480px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products-styles.css">
 </head>
 <body>
-
-    <!-- Header Navigation Component -->
-    <div id="header-nav-placeholder"></div>
-    
-    <script>
-     
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-nav-placeholder').innerHTML = html;
-            })
-            .catch(error => console.error('Error loading header:', error));
-    </script>
-
-    <!-- Old Header - Will be hidden/removed -->
-    <header class="bg-[var(--red-main)] text-white sticky top-0 z-50 shadow-lg" style="display:none;">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between py-3 gap-4">
-                <!-- Logo -->
-                <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
-                    <img src="images/Logo.jpg" alt="QuangHưng Mobile Logo" class="h-8 lg:h-10 rounded-md">
-                    <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap">QuangHưng Mobile</h1>
-                </a>
-
-                <!-- Desktop Navigation Menu -->
-                <nav class="hidden lg:flex items-center gap-1 mx-4 flex-1">
-                    <a href="index.html" class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap">
-                        Trang chủ
-                    </a>
-                    
-                    <div class="relative group">
-                        <button class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap flex items-center gap-1">
-                            Sản phẩm
-                            <i class="fa-solid fa-chevron-down text-xs"></i>
-                        </button>
-                        <!-- Dropdown -->
-                        <div class="absolute left-0 top-full mt-1 w-56 bg-white shadow-2xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-200 z-50">
-                            <div class="py-2">
-                                <a href="products.html?category=dienthoai" class="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors text-gray-800 font-semibold text-sm border-b border-gray-100" onclick="event.preventDefault(); filterByCategory('dienthoai')">
-                                    <i class="fa-solid fa-mobile-alt text-[var(--red-main)] text-lg"></i>
-                                    <div>
-                                        <div class="font-bold text-gray-900">Điện thoại</div>
-                                       
-                                    </div>
-                                </a>
-                                <a href="products.html?category=phukien" class="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors text-gray-800 font-semibold text-sm" onclick="event.preventDefault(); filterByCategory('phukien')">
-                                    <i class="fa-solid fa-headphones text-[var(--red-main)] text-lg"></i>
-                                    <div>
-                                        <div class="font-bold text-gray-900">Phụ kiện</div>
-                                        
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <a href="promotions.html" class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap flex items-center gap-1">
-                        Khuyến mãi
-                        <span class="bg-yellow-400 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full">HOT</span>
-                    </a>
-                    <a href="news.html" class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap">
-                        Tin tức
-                    </a>
-                    <a href="contact.html" class="px-3 py-2 hover:bg-[#8b0d12] rounded transition-colors text-sm font-semibold whitespace-nowrap">
-                        Liên hệ
-                    </a>
-                </nav>
-
-                <!-- Search - Desktop -->
-                <div class="hidden lg:flex flex-1 max-w-md bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300">
-                    <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
-                        class="flex-grow px-4 py-2 text-gray-800 focus:outline-none text-sm font-medium placeholder:text-gray-600" />
-                    <button class="bg-[var(--red-main-dark)] px-4 text-white hover:bg-[#8b0d12] transition-colors font-semibold">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
-
-                <!-- User & Cart Actions -->
-                <div class="flex items-center gap-3">
-                    <a href="cart.html" class="hover:bg-[#8b0d12] px-3 py-2 rounded transition-colors flex items-center gap-2">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span class="hidden lg:inline text-sm font-semibold">Giỏ hàng</span>
-                    </a>
-                    
-                    <!-- Mobile Filter Button -->
-                    <button id="mobileFilterBtn" class="lg:hidden bg-white text-[var(--red-main)] px-3 py-2 rounded-lg text-sm font-semibold">
-                        <i class="fas fa-filter"></i> Lọc
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Mobile Search -->
-            <div class="lg:hidden pb-3">
-                <input type="text" id="searchInputMobile" placeholder="Tìm kiếm sản phẩm..."
-                    class="w-full px-4 py-2 rounded-lg text-gray-800 focus:outline-none">
-            </div>
-        </div>
-    </header>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
 
     <!-- Banner Slider -->
     <section class="bg-gray-100 py-3">
@@ -684,28 +168,28 @@
         <div class="flex flex-col lg:flex-row gap-4 lg:gap-5 lg:items-start">
             
             <!-- Sidebar Filter - Kéo dài theo products -->
-            <aside id="filterSidebar" class="hidden lg:block lg:w-72 flex-shrink-0 lg:sticky lg:top-4 lg:self-start">
+            <aside id="filterSidebar" class="hidden lg:block flex-shrink-0 lg:sticky lg:top-4 lg:self-start">
                 
                 <!-- Bộ lọc tìm kiếm Header -->
-                <div class="bg-white rounded-lg p-4 mb-3 shadow-sm border border-gray-200">
+                <div class="bg-white rounded-lg p-3.5 mb-3 shadow-sm border border-gray-200">
                     <h2 class="font-bold text-base text-gray-900">
                         Bộ lọc tìm kiếm
                     </h2>
                 </div>
 
                 <!-- Filters Container - Kéo dài full height -->
-                <div class="space-y-3 overflow-y-auto" style="max-height: calc(100vh - 120px);">
+                <div class="space-y-2.5 overflow-y-auto" style="max-height: calc(100vh - 120px);">
                 
                 <!-- Hãng sản xuất -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('brandSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('brandSection')">
                         <h3 class="font-semibold text-sm text-gray-900">
                             Hãng sản xuất
                         </h3>
                         <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="brandIcon"></i>
                     </button>
                     
-                    <div id="brandSection" class="space-y-1.5">
+                    <div id="brandSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
                             <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="iphone" onchange="toggleBrandFilter('iphone')">
                             <span class="text-sm text-gray-600">Apple</span>
@@ -736,15 +220,15 @@
                 </div>
 
                 <!-- Loại phụ kiện -->
-                <div id="accessoryFilter" class="bg-white rounded-lg p-4 shadow-sm border border-gray-200" style="display:none;">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('accessorySection')">
+                <div id="accessoryFilter" class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200" style="display:none;">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('accessorySection')">
                         <h3 class="font-semibold text-sm text-gray-900">
                             Loại phụ kiện
                         </h3>
                         <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="accessoryIcon"></i>
                     </button>
                     
-                    <div id="accessorySection" class="space-y-1.5">
+                    <div id="accessorySection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
                             <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="tainghe" onchange="toggleAccessoryFilter('tainghe')">
                             <span class="text-sm text-gray-600">Tai nghe</span>
@@ -777,15 +261,15 @@
                 </div>
 
                 <!-- Mức giá -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('priceSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('priceSection')">
                         <h3 class="font-semibold text-sm text-gray-900">
                             Mức giá
                         </h3>
                         <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="priceIcon"></i>
                     </button>
                     
-                    <div id="priceSection" class="space-y-1.5">
+                    <div id="priceSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">Tất cả</span>
@@ -817,28 +301,28 @@
                     </div>
                     
                     <!-- Price Range Slider -->
-                    <div class="mt-3 pt-3 border-t">
-                        <p class="text-xs text-gray-600 mb-3">Hoặc nhập khoảng giá phù hợp với bạn:</p>
+                    <div class="mt-2.5 pt-2.5 border-t">
+                        <p class="text-xs text-gray-600 mb-2">Hoặc nhập khoảng giá phù hợp với bạn:</p>
                         <div class="flex items-center gap-2">
-                            <input type="number" id="minPrice" placeholder="390.000" class="w-full px-3 py-2 border rounded text-sm" value="390000">
-                            <span class="text-gray-500">~</span>
-                            <input type="number" id="maxPrice" placeholder="63.990.000" class="w-full px-3 py-2 border rounded text-sm" value="63990000">
+                            <input type="number" id="minPrice" placeholder="390.000" class="w-full px-2.5 py-1.5 border rounded text-xs" value="390000">
+                            <span class="text-gray-500 text-sm">~</span>
+                            <input type="number" id="maxPrice" placeholder="63.990.000" class="w-full px-2.5 py-1.5 border rounded text-xs" value="63990000">
                         </div>
-                        <button onclick="applyCustomPriceRange()" class="w-full mt-2 bg-[var(--red-main)] text-white py-2 rounded text-sm font-semibold hover:bg-[var(--red-main-dark)] transition">
+                        <button onclick="applyCustomPriceRange()" class="w-full mt-2 bg-[var(--red-main)] text-white py-1.5 rounded text-xs font-semibold hover:bg-[var(--red-main-dark)] transition">
                             Áp dụng
                         </button>
                     </div>
                 </div>
 
                 <!-- Hệ điều hành -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('osSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('osSection')">
                         <h3 class="font-semibold text-sm text-gray-900">Hệ điều hành
                         </h3>
                         <i class="fas fa-chevron-up text-gray-500 text-sm" id="osIcon"></i>
                     </button>
                     
-                    <div id="osSection" class="space-y-1.5">
+                    <div id="osSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="os-filter w-4 h-4 accent-blue-600" value="ios" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">iOS</span>
@@ -851,14 +335,14 @@
                 </div>
 
                 <!-- Dung lượng ROM -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('romSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('romSection')">
                         <h3 class="font-semibold text-sm text-gray-900">Dung lượng ROM
                         </h3>
                         <i class="fas fa-chevron-up text-gray-500 text-sm" id="romIcon"></i>
                     </button>
                     
-                    <div id="romSection" class="space-y-1.5">
+                    <div id="romSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="128" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">≤128 GB</span>
@@ -879,14 +363,14 @@
                 </div>
 
                 <!-- Kết nối -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('connectSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('connectSection')">
                         <h3 class="font-semibold text-sm text-gray-900">Kết nối
                         </h3>
                         <i class="fas fa-chevron-up text-gray-500 text-sm" id="connectIcon"></i>
                     </button>
                     
-                    <div id="connectSection" class="space-y-1.5">
+                    <div id="connectSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="nfc" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">NFC</span>
@@ -903,15 +387,15 @@
                 </div>
 
                 <!-- Hiệu năng và Pin -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('batterySection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('batterySection')">
                         <h3 class="font-semibold text-sm text-gray-900">
                             Hiệu năng và Pin
                         </h3>
                         <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="batteryIcon"></i>
                     </button>
                     
-                    <div id="batterySection" class="space-y-1.5">
+                    <div id="batterySection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
                             <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">Tất cả</span>
@@ -936,15 +420,15 @@
                 </div>
 
                 <!-- Hỗ trợ mạng -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('networkSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('networkSection')">
                         <h3 class="font-semibold text-sm text-gray-900">
                             Hỗ trợ mạng
                         </h3>
                         <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="networkIcon"></i>
                     </button>
                     
-                    <div id="networkSection" class="space-y-1.5">
+                    <div id="networkSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
                             <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="5g" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">5G</span>
@@ -957,14 +441,14 @@
                 </div>
 
                 <!-- RAM -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('ramSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('ramSection')">
                         <h3 class="font-semibold text-sm text-gray-900">RAM
                         </h3>
                         <i class="fas fa-chevron-up text-gray-500 text-sm" id="ramIcon"></i>
                     </button>
                     
-                    <div id="ramSection" class="space-y-1.5">
+                    <div id="ramSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="16" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">16 GB</span>
@@ -993,15 +477,15 @@
                 </div>
 
                 <!-- Thẻ nhớ -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('sdSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('sdSection')">
                         <h3 class="font-semibold text-sm text-gray-900">
                             Thẻ nhớ
                         </h3>
                         <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="sdIcon"></i>
                     </button>
                     
-                    <div id="sdSection" class="space-y-1.5">
+                    <div id="sdSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
                             <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">Tất cả</span>
@@ -1018,14 +502,14 @@
                 </div>
 
                 <!-- Màn hình -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('screenSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('screenSection')">
                         <h3 class="font-semibold text-sm text-gray-900">Màn hình
                         </h3>
                         <i class="fas fa-chevron-up text-gray-500 text-sm" id="screenIcon"></i>
                     </button>
                     
-                    <div id="screenSection" class="space-y-1.5">
+                    <div id="screenSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">Tất cả</span>
@@ -1049,9 +533,9 @@
                     </div>
                     
                     <!-- Chuẩn màn hình -->
-                    <div class="mt-3 pt-3 border-t">
+                    <div class="mt-2.5 pt-2.5 border-t">
                         <p class="text-sm font-semibold mb-2">Chuẩn màn hình</p>
-                        <div class="space-y-1.5">
+                        <div class="space-y-1">
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="retina" onchange="applyFilters()">
                                 <span class="text-sm text-gray-600">Retina (iPhone)</span>
@@ -1084,9 +568,9 @@
                     </div>
                     
                     <!-- Tần số quét -->
-                    <div class="mt-3 pt-3 border-t">
+                    <div class="mt-2.5 pt-2.5 border-t">
                         <p class="text-sm font-semibold mb-2">Tần số quét</p>
-                        <div class="space-y-1.5">
+                        <div class="space-y-1">
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="144+" onchange="applyFilters()">
                                 <span class="text-sm text-gray-600">Trên 144 Hz</span>
@@ -1108,14 +592,14 @@
                 </div>
 
                 <!-- Camera -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('cameraSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('cameraSection')">
                         <h3 class="font-semibold text-sm text-gray-900">Camera
                         </h3>
                         <i class="fas fa-chevron-up text-gray-500 text-sm" id="cameraIcon"></i>
                     </button>
                     
-                    <div id="cameraSection" class="space-y-1.5">
+                    <div id="cameraSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">Tất cả</span>
@@ -1146,14 +630,14 @@
                 </div>
 
                 <!-- Tính năng đặc biệt -->
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-3" onclick="toggleSection('featureSection')">
+                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('featureSection')">
                         <h3 class="font-semibold text-sm text-gray-900">Tính năng đặc biệt
                         </h3>
                         <i class="fas fa-chevron-up text-gray-500 text-sm" id="featureIcon"></i>
                     </button>
                     
-                    <div id="featureSection" class="space-y-1.5">
+                    <div id="featureSection" class="space-y-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">Tất cả</span>
@@ -1211,7 +695,7 @@
                 </div>
 
                 <!-- Products Grid - 4-5 cột responsive -->
-                <div id="productsGrid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+                <div id="productsGrid" class="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4"></div>
 
             </section>
         </div>
@@ -1784,6 +1268,18 @@
     <div id="footer-placeholder"></div>
 
     <script>
+      // Load header component
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('header-placeholder').innerHTML = html;
+          // Load header JavaScript after HTML is loaded
+          const script = document.createElement('script');
+          script.src = 'components/header.js';
+          document.body.appendChild(script);
+        })
+        .catch(error => console.error('Error loading header:', error));
+
       // Load footer component
       fetch('components/footer.html')
           .then(response => response.text())

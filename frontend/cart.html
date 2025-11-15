@@ -17,189 +17,15 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Header Styles -->
-  <link rel="stylesheet" href="header-styles.css">
-
-  <!-- Responsive CSS -->
-  <link rel="stylesheet" href="responsive.css">
-
-  <style>
-    * {
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-    }
-    
-    :root {
-      --red-main: #e41e26;
-      --red-dark: #c5111a;
-    }
-  </style>
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-50">
 
-  <!-- Header Navigation Component -->
-  <div id="header-nav-placeholder"></div>
-  
-  <script>
-      // Load header component with cache busting
-      const headerVersion = '?v=' + new Date().getTime();
-      fetch('components/header.html' + headerVersion)
-          .then(response => response.text())
-          .then(html => {
-              document.getElementById('header-nav-placeholder').innerHTML = html;
-              
-              // Initialize mobile menu after header is loaded
-              setTimeout(() => {
-                  const script = document.createElement('script');
-                  script.src = 'components/header-menu.js';
-                  document.body.appendChild(script);
-              }, 100);
-          })
-          .catch(error => console.error('Error loading header:', error));
-  </script>
+  <!-- Header Component -->
+  <div id="header-placeholder"></div>
 
-  <!-- Old Header - Hidden -->
-  <header class="bg-[var(--red-main)] text-white sticky top-0 z-50" style="display:none;">
-    <!-- Top Bar -->
-    <div class="container mx-auto px-4 lg:px-6">
-      <div class="flex items-center justify-between py-2 lg:py-3">
-        
-        <!-- Logo -->
-        <a href="index.html" class="flex items-center gap-2 hover:opacity-90 flex-shrink-0">
-          <img src="images/logo.png" alt="Logo" class="h-8 lg:h-10">
-          <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap">QuangHưng Mobile</h1>
-        </a>
-
-        <!-- Desktop Navigation Menu -->
-        <nav class="hidden lg:flex items-center gap-1 mx-4 flex-1">
-          <a href="index.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
-            Trang chủ
-          </a>
-          
-          <div class="relative group">
-            <button class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap flex items-center gap-1">
-              Điện thoại
-              <i class="fa-solid fa-chevron-down text-xs"></i>
-            </button>
-            <!-- Dropdown -->
-            <div class="absolute left-0 top-full mt-1 w-48 bg-white shadow-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-              <div class="py-2">
-                <a href="products.html?brand=iphone" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
-                  <i class="fa-brands fa-apple"></i>
-                  iPhone
-                </a>
-                <a href="products.html?brand=samsung" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
-                  <i class="fa-solid fa-mobile"></i>
-                  Samsung
-                </a>
-                <a href="products.html?brand=sony" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
-                  <i class="fa-solid fa-mobile-alt"></i>
-                  Sony Xperia
-                </a>
-                <a href="products.html?brand=google" class="flex items-center gap-2 px-4 py-2 hover:bg-red-50 transition-colors text-gray-700 text-sm">
-                  <i class="fa-brands fa-google"></i>
-                  Google Pixel
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <a href="products.html?category=phukien" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
-            Phụ kiện
-          </a>
-          <a href="promotions.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap flex items-center gap-1">
-            Khuyến mãi
-            <span class="bg-yellow-400 text-red-800 text-xs font-bold px-1.5 py-0.5 rounded-full">HOT</span>
-          </a>
-          <a href="news.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
-            Tin tức
-          </a>
-          <a href="contact.html" class="px-3 py-2 hover:bg-red-600 rounded transition-colors text-sm font-medium whitespace-nowrap">
-            Liên hệ
-          </a>
-        </nav>
-
-        <!-- Search - Desktop -->
-        <div class="hidden lg:flex flex-1 max-w-md bg-white rounded-lg overflow-hidden">
-          <input type="text" placeholder="Tìm kiếm sản phẩm..."
-            class="flex-grow px-4 py-2 text-gray-700 focus:outline-none text-sm" />
-          <button class="bg-[var(--red-dark)] px-4 text-white hover:bg-red-700 transition-colors">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-
-        <!-- Right Menu -->
-        <div class="flex items-center gap-2 lg:gap-4 text-sm font-medium ml-4">
-          <a href="cart.html" class="hover:opacity-90 flex items-center gap-1 lg:gap-2 whitespace-nowrap">
-            <i class="fa-solid fa-cart-shopping text-lg"></i>
-            <span class="hidden xl:inline">Giỏ hàng</span>
-          </a>
-          <a href="contact.html" class="hover:opacity-90 hidden lg:flex items-center gap-2 whitespace-nowrap">
-            <i class="fa-solid fa-phone text-base"></i> 
-            <span class="text-yellow-300 font-bold hidden xl:inline">1800.2097</span>
-          </a>
-          <a href="login.html" class="hover:opacity-90 flex items-center gap-1 lg:gap-2 whitespace-nowrap">
-            <i class="fa-solid fa-user text-base"></i>
-            <span class="hidden xl:inline">Đăng nhập</span>
-          </a>
-          <!-- Mobile Menu Button -->
-          <button id="mobile-menu-btn" class="lg:hidden text-white text-xl">
-            <i class="fa-solid fa-bars"></i>
-          </button>
-        </div>
-      </div>
-      
-      <!-- Mobile Search -->
-      <div class="lg:hidden pb-3">
-        <div class="flex bg-white rounded-lg overflow-hidden">
-          <input type="text" placeholder="Tìm kiếm sản phẩm..."
-            class="flex-grow px-3 py-2 text-gray-700 focus:outline-none text-sm" />
-          <button class="bg-[var(--red-dark)] px-3 text-white">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-   
-    <script>
-      // Mobile menu toggle
-      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const mobileMenuSidebar = document.getElementById('mobile-menu-sidebar');
-      const mobileMenuClose = document.getElementById('mobile-menu-close');
-      
-      if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', () => {
-          mobileMenu.classList.remove('hidden');
-          setTimeout(() => {
-            mobileMenuSidebar.classList.remove('-translate-x-full');
-          }, 10);
-        });
-      }
-      
-      if (mobileMenuClose) {
-        mobileMenuClose.addEventListener('click', () => {
-          mobileMenuSidebar.classList.add('-translate-x-full');
-          setTimeout(() => {
-            mobileMenu.classList.add('hidden');
-          }, 300);
-        });
-      }
-      
-      if (mobileMenu) {
-        mobileMenu.addEventListener('click', (e) => {
-          if (e.target === mobileMenu) {
-            mobileMenuSidebar.classList.add('-translate-x-full');
-            setTimeout(() => {
-              mobileMenu.classList.add('hidden');
-            }, 300);
-          }
-        });
-      }
-    </script>
-
-    <div class="bg-gradient-to-r from-red-600 to-red-700 text-white py-8">
+  <div class="bg-gradient-to-r from-red-600 to-red-700 text-white py-8">
       <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold">Giỏ hàng của bạn</h1>
         <p class="text-red-100 mt-2">Có 3 sản phẩm trong giỏ hàng</p>
@@ -554,6 +380,18 @@
     <div id="footer-placeholder"></div>
 
     <script>
+      // Load header component
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('header-placeholder').innerHTML = html;
+          // Load header JavaScript after HTML is loaded
+          const script = document.createElement('script');
+          script.src = 'components/header.js';
+          document.body.appendChild(script);
+        })
+        .catch(error => console.error('Error loading header:', error));
+
       // Load footer component
       fetch('components/footer.html')
           .then(response => response.text())
@@ -562,8 +400,6 @@
           })
           .catch(error => console.error('Error loading footer:', error));
     </script>
-    
-    <script src="header-menu.js"></script>
   </body>
 </html>
 

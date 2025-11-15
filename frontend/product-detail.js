@@ -305,27 +305,30 @@ function updateSEO(product) {
   const title = `Mua ${productName} chính hãng - Giá rẻ ${formatPrice(productPrice)} tại QuangHưng Mobile`;
   const description = `${productName} chính hãng, giá ${formatPrice(productPrice)}${product.oldPrice ? ` (tiết kiệm ${formatPrice(product.oldPrice - product.price)})` : ''}, trả góp 0%, freeship toàn quốc. Bảo hành 12 tháng chính hãng. ☎ Hotline: 1900.xxxx`;
   
-  // Update page title and meta description
-  document.getElementById('pageTitle').textContent = title;
+  // Update page title and meta description (guarded)
+  const elPageTitle = document.getElementById('pageTitle');
+  if (elPageTitle) elPageTitle.textContent = title;
   document.title = title;
-  document.getElementById('pageDescription').setAttribute('content', description);
-  document.getElementById('pageKeywords').setAttribute('content', `${productName}, mua ${productName}, ${productName} giá rẻ, ${productName} chính hãng, ${product.brand}`);
-  
-  // Update Open Graph
-  document.getElementById('ogTitle').setAttribute('content', title);
-  document.getElementById('ogDescription').setAttribute('content', description);
-  document.getElementById('ogImage').setAttribute('content', productImage);
-  document.getElementById('ogUrl').setAttribute('content', currentUrl);
-  
-  // Update Twitter Card
-  document.getElementById('twitterTitle').setAttribute('content', title);
-  document.getElementById('twitterDescription').setAttribute('content', description);
-  document.getElementById('twitterImage').setAttribute('content', productImage);
-  
-  // Update canonical URL
-  document.getElementById('canonical').setAttribute('href', currentUrl);
-  
-  // Update Product JSON-LD Structured Data
+  const elPageDesc = document.getElementById('pageDescription');
+  if (elPageDesc) elPageDesc.setAttribute('content', description);
+  const elPageKeywords = document.getElementById('pageKeywords');
+  if (elPageKeywords) elPageKeywords.setAttribute('content', `${productName}, mua ${productName}, ${productName} giá rẻ, ${productName} chính hãng, ${product.brand}`);
+
+  // Update Open Graph (guarded)
+  const elOgTitle = document.getElementById('ogTitle'); if (elOgTitle) elOgTitle.setAttribute('content', title);
+  const elOgDesc = document.getElementById('ogDescription'); if (elOgDesc) elOgDesc.setAttribute('content', description);
+  const elOgImage = document.getElementById('ogImage'); if (elOgImage) elOgImage.setAttribute('content', productImage);
+  const elOgUrl = document.getElementById('ogUrl'); if (elOgUrl) elOgUrl.setAttribute('content', currentUrl);
+
+  // Update Twitter Card (guarded)
+  const elTwTitle = document.getElementById('twitterTitle'); if (elTwTitle) elTwTitle.setAttribute('content', title);
+  const elTwDesc = document.getElementById('twitterDescription'); if (elTwDesc) elTwDesc.setAttribute('content', description);
+  const elTwImage = document.getElementById('twitterImage'); if (elTwImage) elTwImage.setAttribute('content', productImage);
+
+  // Update canonical URL (guarded)
+  const elCanonical = document.getElementById('canonical'); if (elCanonical) elCanonical.setAttribute('href', currentUrl);
+
+  // Update Product JSON-LD Structured Data (guarded)
   const productSchema = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -359,8 +362,9 @@ function updateSEO(product) {
     }
   };
   
-  document.getElementById('productSchema').textContent = JSON.stringify(productSchema, null, 2);
-  
+  const elProductSchema = document.getElementById('productSchema');
+  if (elProductSchema) elProductSchema.textContent = JSON.stringify(productSchema, null, 2);
+
   // Update Breadcrumb Schema
   const breadcrumbSchema = {
     "@context": "https://schema.org/",
@@ -387,7 +391,8 @@ function updateSEO(product) {
     ]
   };
   
-  document.getElementById('breadcrumbSchema').textContent = JSON.stringify(breadcrumbSchema, null, 2);
+  const elBreadcrumbSchema = document.getElementById('breadcrumbSchema');
+  if (elBreadcrumbSchema) elBreadcrumbSchema.textContent = JSON.stringify(breadcrumbSchema, null, 2);
 }
 
 // Initialize Swiper Slider
@@ -418,18 +423,20 @@ function initSwiper() {
 }
 
 // ===== TAB FUNCTIONS =====
-function switchTab(tabName) {
+function switchTab(tabName, ev) {
   // Update tab buttons
   document.querySelectorAll('.tab-button').forEach(btn => {
     btn.classList.remove('active');
   });
-  event.target.classList.add('active');
+  const target = ev ? (ev.currentTarget || ev.target) : (window.event ? window.event.target : null);
+  if (target) target.classList.add('active');
 
   // Update tab content
   document.querySelectorAll('.tab-content').forEach(content => {
     content.classList.add('hidden');
   });
-  document.getElementById('tab-' + tabName).classList.remove('hidden');
+  const tab = document.getElementById('tab-' + tabName);
+  if (tab) tab.classList.remove('hidden');
 
   // Load content based on tab
   if (tabName === 'reviews') {
@@ -752,12 +759,13 @@ function submitReview() {
   setRating(0);
 }
 
-function filterReviews(stars) {
+function filterReviews(stars, ev) {
   // Update active button
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
+  const target = ev ? (ev.currentTarget || ev.target) : (window.event ? window.event.target : null);
+  if (target) target.classList.add('active');
 
-  // Filter logic
+  // Filter logic (demo)
   console.log('Filter by:', stars);
   showToast(`Đang lọc đánh giá ${stars === 'all' ? 'tất cả' : stars + ' sao'}...`, 'success');
 }

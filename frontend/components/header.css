@@ -1,0 +1,36 @@
+/* Header Component - Minimal Custom CSS */
+/* Tailwind handles most styling */
+
+/* Fixed Navigation Bar Only */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* Active nav link indicator */
+.nav-link.active {
+  position: relative;
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+/* Submenu animation */
+.submenu {
+  transition: max-height 0.3s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.submenu.active {
+  max-height: 500px;
+}
+
+/* Submenu toggle icon rotation */
+.submenu-toggle .fa-chevron-down {
+  transition: transform 0.3s ease;
+}
+
+.submenu-toggle.active .fa-chevron-down {
+  transform: rotate(180deg);
+}
