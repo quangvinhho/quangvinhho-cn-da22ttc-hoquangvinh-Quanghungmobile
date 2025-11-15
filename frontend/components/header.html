@@ -1,5 +1,5 @@
 <!-- ===== HEADER ===== -->
-<header class="header-wrapper bg-white shadow-lg">
+<header class="header-wrapper bg-white shadow-lg fixed top-0 left-0 right-0 z-50 w-full">
   <!-- Top Bar -->
   <div class="top-bar bg-gradient-to-r from-red-600 to-red-500 text-white text-sm py-2">
     <div class="container mx-auto flex justify-between items-center px-4">
@@ -33,11 +33,12 @@
       <!-- Search Bar -->
       <div class="flex items-center border-2 border-red-500 rounded-full overflow-hidden w-1/2 max-w-lg">
         <input
+          id="header-search-input"
           type="text"
           class="flex-grow px-4 py-2 outline-none text-gray-700"
           placeholder="Bạn cần tìm gì? iPhone, Samsung, OPPO..."
         >
-        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2">
+        <button id="header-search-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2">
           <i class="fas fa-search"></i>
         </button>
       </div>
@@ -55,7 +56,7 @@
         <a href="cart.html" class="relative flex items-center gap-2 text-gray-700 hover:text-red-600">
           <i class="fas fa-shopping-cart text-2xl"></i>
           <span class="text-sm">Giỏ hàng</span>
-          <span class="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+          <span class="cart-badge absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
         </a>
 
         <a href="login.html" class="flex items-center gap-2 text-gray-700 hover:text-red-600">
@@ -67,29 +68,29 @@
   </div>
 
   <!-- Navigation -->
-  <nav class="main-nav bg-gradient-to-r from-red-600 to-red-500 text-white py-3 shadow-md">
+  <nav class="bg-gradient-to-r from-red-600 to-red-500 text-white py-3 shadow-md">
     <div class="container mx-auto">
       <ul class="flex justify-center items-center gap-10 font-semibold text-lg">
-        <li><a href="index.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-home"></i> Trang chủ</a></li>
-        <li><a href="about.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
+        <li><a href="index.html" class="nav-link hover:text-yellow-300 flex items-center gap-2 transition-colors"><i class="fas fa-home"></i> Trang chủ</a></li>
+        <li><a href="about.html" class="nav-link hover:text-yellow-300 flex items-center gap-2 transition-colors"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
 
         <li class="relative group">
-          <a href="products.html" class="hover:text-yellow-300 flex items-center gap-2">
+          <a href="products.html" class="nav-link hover:text-yellow-300 flex items-center gap-2 transition-colors">
             <i class="fas fa-mobile-alt"></i> Sản phẩm <i class="fas fa-chevron-down text-xs"></i>
           </a>
-          <ul class="absolute hidden group-hover:block bg-white text-gray-800 shadow-lg rounded-lg mt-2 w-56 text-base font-normal">
-            <li><a href="products.html?category=iphone" class="block px-4 py-2 hover:bg-gray-100"><i class="fab fa-apple"></i> iPhone</a></li>
-            <li><a href="products.html?category=samsung" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-mobile"></i> Samsung</a></li>
-            <li><a href="products.html?category=oppo" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-mobile-alt"></i> OPPO</a></li>
-            <li><a href="products.html?category=xiaomi" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-mobile-screen"></i> Xiaomi</a></li>
+          <ul class="absolute hidden group-hover:block bg-white text-gray-800 shadow-xl rounded-lg mt-2 w-56 text-base font-normal z-50">
+            <li><a href="products.html?category=iphone" class="block px-4 py-2 hover:bg-gray-100 transition-colors"><i class="fab fa-apple"></i> iPhone</a></li>
+            <li><a href="products.html?category=samsung" class="block px-4 py-2 hover:bg-gray-100 transition-colors"><i class="fas fa-mobile"></i> Samsung</a></li>
+            <li><a href="products.html?category=oppo" class="block px-4 py-2 hover:bg-gray-100 transition-colors"><i class="fas fa-mobile-alt"></i> OPPO</a></li>
+            <li><a href="products.html?category=xiaomi" class="block px-4 py-2 hover:bg-gray-100 transition-colors"><i class="fas fa-mobile-screen"></i> Xiaomi</a></li>
             <li class="border-t"></li>
-            <li><a href="products.html?category=phukien" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-headphones"></i> Phụ kiện</a></li>
+            <li><a href="products.html?category=phukien" class="block px-4 py-2 hover:bg-gray-100 transition-colors"><i class="fas fa-headphones"></i> Phụ kiện</a></li>
           </ul>
         </li>
 
-        <li><a href="news.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-newspaper"></i> Tin tức</a></li>
-        <li><a href="promotions.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-tags"></i> Khuyến mãi <span class="bg-yellow-400 text-red-600 font-bold text-xs px-2 py-0.5 rounded-full ml-1">HOT</span></a></li>
-        <li><a href="contact.html" class="hover:text-yellow-300 flex items-center gap-2"><i class="fas fa-phone"></i> Liên hệ</a></li>
+        <li><a href="news.html" class="nav-link hover:text-yellow-300 flex items-center gap-2 transition-colors"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+        <li><a href="promotions.html" class="nav-link hover:text-yellow-300 flex items-center gap-2 transition-colors"><i class="fas fa-tags"></i> Khuyến mãi <span class="bg-yellow-400 text-red-600 font-bold text-xs px-2 py-0.5 rounded-full ml-1">HOT</span></a></li>
+        <li><a href="contact.html" class="nav-link hover:text-yellow-300 flex items-center gap-2 transition-colors"><i class="fas fa-phone"></i> Liên hệ</a></li>
       </ul>
     </div>
   </nav>

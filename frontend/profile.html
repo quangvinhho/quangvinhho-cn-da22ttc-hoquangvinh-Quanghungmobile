@@ -27,26 +27,11 @@
   </head>
   <body class="bg-gray-50">
     
-    <!-- Header Navigation Component -->
-    <div id="header-nav-placeholder"></div>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
     
-    <script>
-        // Load header component with cache busting
-        const headerVersion = '?v=' + new Date().getTime();
-        fetch('components/header.html' + headerVersion)
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-nav-placeholder').innerHTML = html;
-                
-                // Initialize mobile menu after header is loaded
-                setTimeout(() => {
-                    const script = document.createElement('script');
-                    script.src = 'components/header-menu.js';
-                    document.body.appendChild(script);
-                }, 100);
-            })
-            .catch(error => console.error('Error loading header:', error));
-    </script>
+    <!-- Spacer for fixed header -->
+    <div class="h-[180px]"></div>
 
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-8">
       <div class="container mx-auto px-4">

@@ -1,17 +1,6 @@
-/* Index Page - Minimal Custom CSS */
-/* Tailwind handles most styling */
+/* Index Page - Pure Tailwind CSS */
 
-/* Product Card Hover */
-.product-card {
-  transition: all 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-/* Banner Slide Animation */
+/* Only custom animations that Tailwind doesn't provide */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -25,27 +14,4 @@
 
 .banner-slide {
   animation: slideIn 0.5s ease-in-out;
-}
-
-/* Smooth Scroll */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #d91e23;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #b01117;
 }

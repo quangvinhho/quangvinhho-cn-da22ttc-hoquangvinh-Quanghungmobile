@@ -6,11 +6,15 @@ async function loadComponent(elementId, componentPath) {
         if (element) {
             element.innerHTML = html;
             
-            // If header is loaded, initialize menu highlighting
-            if (elementId === 'header') {
+            // If header is loaded, initialize menu highlighting and load header.js
+            if (elementId === 'header-placeholder' || elementId === 'header') {
                 setTimeout(() => {
                     highlightActiveMenu();
                     initMobileMenu();
+                    // Load header JavaScript
+                    const script = document.createElement('script');
+                    script.src = 'components/header.js';
+                    document.body.appendChild(script);
                 }, 100);
             }
         }
@@ -111,12 +115,23 @@ function initMobileMenu() {
 
 // Load all components when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    loadComponent('header', 'components/header.html');
-    loadComponent('footer', 'components/footer.html');
+    // Load header - support both old and new ID
+    if (document.getElementById('header-placeholder')) {
+        loadComponent('header-placeholder', 'components/header.html');
+    } else if (document.getElementById('header')) {
+        loadComponent('header', 'components/header.html');
+    }
+    
+    // Load footer
+    if (document.getElementById('footer-placeholder')) {
+        loadComponent('footer-placeholder', 'components/footer.html');
+    } else if (document.getElementById('footer')) {
+        loadComponent('footer', 'components/footer.html');
+    }
     
     // Load profile sidebar if it exists on the page
     const profileSidebar = document.getElementById('profile-sidebar');
     if (profileSidebar) {
-        loadComponent('profile-sidebar', '/components/profile-sidebar.html');
+        loadComponent('profile-sidebar', 'components/profile-sidebar.html');
     }
 });

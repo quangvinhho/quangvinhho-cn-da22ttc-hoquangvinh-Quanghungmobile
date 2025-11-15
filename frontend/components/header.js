@@ -1,6 +1,6 @@
 // Header JavaScript - Mobile Menu & Search Functionality
 
-document.addEventListener('DOMContentLoaded', function() {
+(function initHeader() {
   // Mobile Menu Toggle
   const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -134,19 +134,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Sticky header on scroll
+  // Fixed header on scroll with effects
   let lastScroll = 0;
   const header = document.querySelector('.header-wrapper');
   
   window.addEventListener('scroll', function() {
     const currentScroll = window.pageYOffset;
     
-    if (currentScroll > 100) {
-      header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+    if (currentScroll > 50) {
+      // Tăng shadow khi cuộn
+      if (header) {
+        header.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)';
+      }
     } else {
-      header.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+      // Shadow nhẹ hơn
+      if (header) {
+        header.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+      }
     }
     
     lastScroll = currentScroll;
   });
-});
+})();

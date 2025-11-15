@@ -95,22 +95,30 @@ function renderProductDetail(productId) {
   // Render product HTML with lazy loading images
   const productHTML = `
     <!-- Left Column: Image Gallery với Swiper Slider -->
-    <div class="animate-slide-up">
+    <div class="lg:sticky lg:top-4">
       <!-- Main Swiper Gallery -->
-      <div class="product-gallery">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-4">
         <div class="swiper mainSwiper zoom-container">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <img src="${product.image}" alt="${product.name}" class="gallery-main-image zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
+                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              </div>
             </div>
             <div class="swiper-slide">
-              <img src="${product.image}" alt="${product.name} view 2" class="gallery-main-image zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
+                <img src="${product.image}" alt="${product.name} view 2" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              </div>
             </div>
             <div class="swiper-slide">
-              <img src="${product.image}" alt="${product.name} view 3" class="gallery-main-image zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
+                <img src="${product.image}" alt="${product.name} view 3" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              </div>
             </div>
             <div class="swiper-slide">
-              <img src="${product.image}" alt="${product.name} view 4" class="gallery-main-image zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
+                <img src="${product.image}" alt="${product.name} view 4" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              </div>
             </div>
           </div>
           <div class="swiper-button-next"></div>
@@ -120,26 +128,26 @@ function renderProductDetail(productId) {
       </div>
 
       <!-- Thumbnail Swiper -->
-      <div thumbsSlider="" class="swiper thumbSwiper mt-4">
+      <div thumbsSlider="" class="swiper thumbSwiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide cursor-pointer">
-            <div class="thumbnail-item active">
+          <div class="swiper-slide">
+            <div class="thumbnail-item active bg-white">
               <img src="${product.image}" alt="Thumb 1" class="w-full h-20 object-contain" loading="lazy" />
             </div>
           </div>
-          <div class="swiper-slide cursor-pointer">
-            <div class="thumbnail-item">
+          <div class="swiper-slide">
+            <div class="thumbnail-item bg-white">
               <img src="${product.image}" alt="Thumb 2" class="w-full h-20 object-contain" loading="lazy" />
             </div>
           </div>
-          <div class="swiper-slide cursor-pointer">
-            <div class="thumbnail-item">
+          <div class="swiper-slide">
+            <div class="thumbnail-item bg-white">
               <img src="${product.image}" alt="Thumb 3" class="w-full h-20 object-contain" loading="lazy" />
             </div>
           </div>
-          <div class="swiper-slide cursor-pointer">
-            <div class="thumbnail-item">
-              <img src="${product.image}" alt="Thumb 4" class="w-full h-20 object-contain" loading="lazy" />
+          <div class="swiper-slide">
+            <div class="thumbnail-item bg-white">
+              <img src="${product.image}" alt="Thumb 4" class="w-full h-full object-contain" loading="lazy" />
             </div>
           </div>
         </div>
@@ -147,87 +155,53 @@ function renderProductDetail(productId) {
     </div>
 
     <!-- Right Column: Product Info Card Modern -->
-    <div class="animate-slide-up" id="buySection">
-      <div class="product-card lg:sticky lg:top-4">
-        <!-- Badges Modern - Đơn giản -->
+    <div id="buySection">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 lg:p-6">
+        <!-- Badges Modern -->
         <div class="mb-4 flex flex-wrap gap-2">
-          ${product.discount ? `<span class="badge badge-red"><i class="fas fa-tag mr-1"></i>-${product.discount}%</span>` : ''}
-          <span class="badge badge-green"><i class="fas fa-check-circle mr-1"></i>Còn hàng</span>
-          ${product.features && product.features.includes('freeship') ? '<span class="badge badge-blue"><i class="fas fa-shipping-fast mr-1"></i>Freeship</span>' : ''}
-          ${product.features && product.features.includes('tragop') ? '<span class="badge badge-blue"><i class="fas fa-credit-card mr-1"></i>Trả góp 0%</span>' : ''}
+          ${product.discount ? `<span class="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-tag"></i>Giảm ${product.discount}%</span>` : ''}
+          <span class="inline-flex items-center gap-1.5 bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-check-circle"></i>Còn hàng</span>
+          ${product.features && product.features.includes('freeship') ? '<span class="inline-flex items-center gap-1.5 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-shipping-fast"></i>Freeship</span>' : ''}
+          ${product.features && product.features.includes('tragop') ? '<span class="inline-flex items-center gap-1.5 bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-credit-card"></i>Trả góp 0%</span>' : ''}
         </div>
         
-        <!-- Product Name Modern - 22-26px -->
-        <h1 style="font-size: 24px; line-height: 1.3; font-weight: 700; margin-bottom: 18px; color: #212121;">${product.name}</h1>
+        <!-- Product Name -->
+        <h1 class="text-xl lg:text-2xl font-extrabold mb-4 text-gray-900 leading-tight">${product.name}</h1>
         
-        <!-- Rating & Reviews Modern with Sold Count -->
-        <div class="flex items-center flex-wrap mb-5 gap-2.5">
+        <!-- Rating & Reviews -->
+        <div class="flex items-center flex-wrap mb-5 gap-2.5 pb-5 border-b border-gray-200">
           <div class="text-yellow-400 flex gap-0.5 text-base">
             ${starsHTML}
           </div>
-          <span class="text-base font-bold text-gray-900">${rating.toFixed(1)}</span>
-          <span class="text-gray-300">|</span>
-          <span class="text-sm text-gray-600 hover:text-red-600 cursor-pointer transition">${reviews} đánh giá</span>
-          <span class="text-gray-300">|</span>
-          <span class="text-sm font-semibold text-gray-900">Đã bán ${sold}+</span>
+          <span class="text-base font-extrabold text-gray-900">${rating.toFixed(1)}</span>
+          <span class="text-gray-300 font-bold">|</span>
+          <span class="text-sm text-gray-700 hover:text-red-600 cursor-pointer transition font-semibold">${reviews} đánh giá</span>
+          <span class="text-gray-300 font-bold">|</span>
+          <span class="text-sm font-bold text-gray-900">Đã bán ${sold}+</span>
         </div>
 
-        <!-- Social Share Icons -->
-        <div class="flex items-center gap-2.5 mb-5 pb-5 border-b border-gray-200">
-          <span class="text-sm font-medium text-gray-700">Chia sẻ:</span>
-          <button onclick="shareProduct('facebook')" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 transition-all hover:scale-110" title="Share on Facebook">
-            <i class="fab fa-facebook text-blue-600 text-lg"></i>
-          </button>
-          <button onclick="shareProduct('twitter')" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-sky-50 transition-all hover:scale-110" title="Share on Twitter">
-            <i class="fab fa-twitter text-sky-500 text-lg"></i>
-          </button>
-          <button onclick="shareProduct('zalo')" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 transition-all hover:scale-110" title="Share on Zalo">
-            <i class="fas fa-comment-dots text-blue-500 text-lg"></i>
-          </button>
-          <button onclick="copyLink()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-all hover:scale-110" title="Copy link">
-            <i class="fas fa-link text-gray-600 text-lg"></i>
-          </button>
-        </div>
-
-        <!-- Price Modern - Lớn hơn, nổi bật hơn -->
-        <div class="mb-6 pb-6 border-b border-gray-200">
+        <!-- Price -->
+        <div class="mb-5 pb-5 border-b border-gray-200">
           <div class="flex items-baseline gap-3 mb-2">
-            <span class="price-main">${formatPrice(product.price)}</span>
-            ${product.oldPrice ? `<span class="text-base text-gray-400 line-through font-medium">${formatPrice(product.oldPrice)}</span>` : ''}
+            <span class="text-3xl lg:text-4xl font-black text-red-600">${formatPrice(product.price)}</span>
+            ${product.oldPrice ? `<span class="text-lg text-gray-400 line-through font-semibold">${formatPrice(product.oldPrice)}</span>` : ''}
           </div>
-          ${product.oldPrice ? `<div class="mt-2">
-            <span class="badge badge-red"><i class="fas fa-piggy-bank mr-1.5"></i>Tiết kiệm ${formatPrice(product.oldPrice - product.price)}</span>
+          ${product.oldPrice ? `<div class="inline-flex items-center gap-2 bg-gradient-to-r from-red-50 to-orange-50 text-red-700 px-4 py-2 rounded-lg border border-red-200">
+            <i class="fas fa-piggy-bank text-red-600"></i>
+            <span class="font-bold text-sm">Tiết kiệm ${formatPrice(product.oldPrice - product.price)}</span>
           </div>` : ''}
         </div>
 
-        <!-- Action Buttons Modern - CTA nổi bật hơn -->
-        <div class="space-y-3 mb-6">
-          <button onclick="buyNow()" class="btn-primary w-full flex items-center justify-center gap-2.5">
-            <i class="fas fa-bolt text-lg"></i>
-            <span class="font-bold text-base">Mua ngay</span>
-          </button>
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="addToCart()" class="btn-outline flex items-center justify-center gap-2">
-              <i class="fas fa-shopping-cart"></i>
-              <span class="font-semibold">Thêm giỏ</span>
-            </button>
-            <button onclick="buyInstallment()" class="btn-outline flex items-center justify-center gap-2">
-              <i class="fas fa-credit-card"></i>
-              <span class="font-semibold">Trả góp 0%</span>
-            </button>
-          </div>
-        </div>
-
         ${product.colors && product.colors.length > 0 ? `
-        <!-- Color Selection Modern -->
+        <!-- Color Selection -->
         <div class="mb-5 pb-5 border-b border-gray-200">
-          <h3 class="font-semibold text-base mb-3.5 text-gray-900">Chọn màu sắc</h3>
-          <div class="flex flex-wrap gap-3">
+          <h3 class="font-bold text-sm mb-3 text-gray-900">Chọn màu sắc</h3>
+          <div class="flex flex-wrap gap-2.5">
             ${product.colors.map((color, index) => `
-              <button class="color-option ${index === 0 ? 'selected' : ''}" 
+              <button class="w-11 h-11 rounded-full border-4 transition-all hover:scale-110 ${index === 0 ? 'border-red-600 ring-2 ring-red-200' : 'border-gray-300 hover:border-red-400'}" 
                       style="background-color: ${color};"
                       onclick="selectColor(this)">
-                ${index === 0 ? '<i class="fas fa-check text-white text-sm drop-shadow-lg"></i>' : ''}
+                ${index === 0 ? '<i class="fas fa-check text-white text-xs drop-shadow-lg"></i>' : ''}
               </button>
             `).join('')}
           </div>
@@ -235,41 +209,76 @@ function renderProductDetail(productId) {
         ` : ''}
 
         ${product.category === 'dienthoai' && product.storage ? `
-        <!-- Storage Selection Modern -->
+        <!-- Storage Selection -->
         <div class="mb-5 pb-5 border-b border-gray-200">
-          <h3 class="font-semibold text-base mb-3.5 text-gray-900">Dung lượng</h3>
-          <div class="grid grid-cols-3 gap-3">
-            <button class="option-selector selected" onclick="selectStorage(this)" style="text-align: center;">
-              <div class="text-sm font-bold text-gray-900">${product.storage}GB</div>
+          <h3 class="font-bold text-sm mb-3 text-gray-900">Dung lượng</h3>
+          <div class="grid grid-cols-3 gap-2.5">
+            <button class="border-2 border-red-600 bg-red-50 text-red-700 rounded-lg px-3 py-2.5 font-bold text-sm hover:bg-red-100 transition" onclick="selectStorage(this)">
+              ${product.storage}GB
             </button>
-            ${product.storage < 256 ? `<button class="option-selector" onclick="selectStorage(this)" style="text-align: center;">
-              <div class="text-sm font-bold text-gray-800">256GB</div>
-              <div class="text-xs text-gray-500 mt-1">+2tr</div>
+            ${product.storage < 256 ? `<button class="border-2 border-gray-300 rounded-lg px-3 py-2.5 hover:border-red-600 hover:bg-red-50 transition" onclick="selectStorage(this)">
+              <div class="font-bold text-sm text-gray-900">256GB</div>
+              <div class="text-xs text-gray-600 mt-0.5">+2tr</div>
             </button>` : ''}
-            ${product.storage < 512 ? `<button class="option-selector" onclick="selectStorage(this)" style="text-align: center;">
-              <div class="text-sm font-bold text-gray-800">512GB</div>
-              <div class="text-xs text-gray-500 mt-1">+4tr</div>
+            ${product.storage < 512 ? `<button class="border-2 border-gray-300 rounded-lg px-3 py-2.5 hover:border-red-600 hover:bg-red-50 transition" onclick="selectStorage(this)">
+              <div class="font-bold text-sm text-gray-900">512GB</div>
+              <div class="text-xs text-gray-600 mt-0.5">+4tr</div>
             </button>` : ''}
           </div>
         </div>
         ` : ''}
 
-        <!-- Quantity Selection Modern -->
-        <div class="mb-0">
-          <h3 class="font-semibold text-base mb-3 text-gray-900">Số lượng</h3>
-          <div class="flex items-center gap-4">
-            <div class="flex items-center border-2 rounded-lg overflow-hidden border-gray-200 hover:border-red-500 transition">
-              <button class="px-4 py-3 hover:bg-gray-100 transition active:bg-gray-200" onclick="decreaseQuantity()">
-                <i class="fas fa-minus text-sm text-gray-700"></i>
+        <!-- Quantity Selection -->
+        <div class="mb-5 pb-5 border-b border-gray-200">
+          <h3 class="font-bold text-sm mb-3 text-gray-900">Số lượng</h3>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center border-2 rounded-lg overflow-hidden border-gray-300 hover:border-red-600 transition">
+              <button class="px-4 py-2.5 hover:bg-gray-100 transition active:bg-gray-200" onclick="decreaseQuantity()">
+                <i class="fas fa-minus text-xs text-gray-700"></i>
               </button>
               <input type="number" id="quantity" value="1" min="1" max="${stock}" 
-                     class="w-16 text-center border-x-2 py-3 outline-none font-bold text-base border-gray-200" />
-              <button class="px-4 py-3 hover:bg-gray-100 transition active:bg-gray-200" onclick="increaseQuantity()">
-                <i class="fas fa-plus text-sm text-gray-700"></i>
+                     class="w-16 text-center border-x-2 py-2.5 outline-none font-bold text-base border-gray-300" />
+              <button class="px-4 py-2.5 hover:bg-gray-100 transition active:bg-gray-200" onclick="increaseQuantity()">
+                <i class="fas fa-plus text-xs text-gray-700"></i>
               </button>
             </div>
-            <span class="text-sm text-gray-600">Còn <strong class="text-red-600 font-bold">${stock}</strong> sản phẩm</span>
+            <span class="text-xs text-gray-700">Còn <strong class="text-red-600 font-bold text-sm">${stock}</strong> sản phẩm</span>
           </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-2.5 mb-5">
+          <button onclick="buyNow()" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-extrabold py-3.5 px-6 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2.5 text-base">
+            <i class="fas fa-bolt text-lg"></i>
+            <span>Mua ngay</span>
+          </button>
+          <div class="grid grid-cols-2 gap-2.5">
+            <button onclick="addToCart()" class="border-2 border-red-600 text-red-600 hover:bg-red-50 font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-2 text-sm">
+              <i class="fas fa-shopping-cart"></i>
+              <span>Thêm giỏ</span>
+            </button>
+            <button onclick="buyInstallment()" class="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-2 text-sm">
+              <i class="fas fa-credit-card"></i>
+              <span>Trả góp 0%</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Social Share -->
+        <div class="flex items-center gap-2.5 pt-5 border-t border-gray-200">
+          <span class="text-xs font-bold text-gray-700">Chia sẻ:</span>
+          <button onclick="shareProduct('facebook')" class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-50 hover:bg-blue-100 transition-all hover:scale-110" title="Facebook">
+            <i class="fab fa-facebook text-blue-600 text-lg"></i>
+          </button>
+          <button onclick="shareProduct('twitter')" class="w-9 h-9 flex items-center justify-center rounded-full bg-sky-50 hover:bg-sky-100 transition-all hover:scale-110" title="Twitter">
+            <i class="fab fa-twitter text-sky-500 text-lg"></i>
+          </button>
+          <button onclick="shareProduct('zalo')" class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-50 hover:bg-blue-100 transition-all hover:scale-110" title="Zalo">
+            <i class="fas fa-comment-dots text-blue-500 text-lg"></i>
+          </button>
+          <button onclick="copyLink()" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-all hover:scale-110" title="Copy link">
+            <i class="fas fa-link text-gray-600 text-lg"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -277,7 +286,9 @@ function renderProductDetail(productId) {
 
   document.getElementById('productContainer').innerHTML = productHTML;
 
-  // Update sticky buy button price
+  // Update sticky buy button
+  document.getElementById('stickyImage').src = product.image;
+  document.getElementById('stickyName').textContent = product.name;
   document.getElementById('stickyPrice').textContent = formatPrice(product.price);
 
   // Update SEO meta tags
@@ -426,10 +437,14 @@ function initSwiper() {
 function switchTab(tabName, ev) {
   // Update tab buttons
   document.querySelectorAll('.tab-button').forEach(btn => {
-    btn.classList.remove('active');
+    btn.classList.remove('active', 'text-red-600', 'border-red-600');
+    btn.classList.add('text-gray-600');
   });
   const target = ev ? (ev.currentTarget || ev.target) : (window.event ? window.event.target : null);
-  if (target) target.classList.add('active');
+  if (target) {
+    target.classList.add('active', 'text-red-600', 'border-red-600');
+    target.classList.remove('text-gray-600');
+  }
 
   // Update tab content
   document.querySelectorAll('.tab-content').forEach(content => {
@@ -558,6 +573,8 @@ function loadReviews() {
 
   // Update review count
   document.getElementById('totalReviews').textContent = reviews;
+  const totalReviews2 = document.getElementById('totalReviews2');
+  if (totalReviews2) totalReviews2.textContent = reviews;
   document.getElementById('avgRating').textContent = rating.toFixed(1);
 
   // Generate stars for average rating
@@ -646,12 +663,20 @@ function decreaseQuantity() {
 
 // Select Color
 function selectColor(element) {
-  document.querySelectorAll('.color-option').forEach(btn => {
-    btn.classList.remove('selected');
+  document.querySelectorAll('[onclick*="selectColor"]').forEach(btn => {
+    btn.className = 'w-12 h-12 rounded-full border-4 transition-all hover:scale-110 border-gray-300 hover:border-red-400';
     btn.innerHTML = '';
   });
-  element.classList.add('selected');
-  element.innerHTML = '<i class="fas fa-check text-white text-sm drop-shadow"></i>';
+  element.className = 'w-12 h-12 rounded-full border-4 transition-all hover:scale-110 border-red-600 ring-2 ring-red-200';
+  element.innerHTML = '<i class="fas fa-check text-white text-sm drop-shadow-lg"></i>';
+}
+
+// Select Storage
+function selectStorage(element) {
+  document.querySelectorAll('[onclick*="selectStorage"]').forEach(btn => {
+    btn.className = 'border-2 border-gray-300 rounded-lg px-4 py-3 hover:border-red-600 hover:bg-red-50 transition';
+  });
+  element.className = 'border-2 border-red-600 bg-red-50 text-red-700 rounded-lg px-4 py-3 font-bold hover:bg-red-100 transition text-white text-sm drop-shadow"></i>';
 }
 
 // Select Storage
@@ -761,9 +786,15 @@ function submitReview() {
 
 function filterReviews(stars, ev) {
   // Update active button
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active', 'bg-red-600', 'text-white', 'border-red-600');
+    btn.classList.add('border-gray-300', 'text-gray-700');
+  });
   const target = ev ? (ev.currentTarget || ev.target) : (window.event ? window.event.target : null);
-  if (target) target.classList.add('active');
+  if (target) {
+    target.classList.add('active', 'bg-red-600', 'text-white', 'border-red-600');
+    target.classList.remove('border-gray-300', 'text-gray-700');
+  }
 
   // Filter logic (demo)
   console.log('Filter by:', stars);

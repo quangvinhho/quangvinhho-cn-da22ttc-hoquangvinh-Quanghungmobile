@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Thanh toán - QuangHưng Mobile</title>
+  <meta name="description" content="Hoàn tất đơn hàng của bạn tại QuangHưng Mobile">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'red-main': '#d91e23',
+            'red-dark': '#b01117',
+            'red-light': '#ffe5e6',
+          },
+          fontFamily: {
+            'roboto': ['Roboto', 'sans-serif'],
+            'montserrat': ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="components/header.css">
+
+  <style>
+    .step-item {
+      position: relative;
+    }
+    
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: #e5e7eb;
+      z-index: -1;
+    }
+    
+    .step-item.active:not(:last-child)::after {
+      background: #d91e23;
+    }
+
+    .payment-method {
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .payment-method:hover {
+      border-color: #d91e23;
+      background: #fff5f5;
+    }
+
+    .payment-method.selected {
+      border-color: #d91e23;
+      background: #fff5f5;
+    }
+
+    .shipping-method {
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .shipping-method:hover {
+      border-color: #d91e23;
+    }
+
+    .shipping-method.selected {
+      border-color: #d91e23;
+      background: #fff5f5;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 font-roboto text-gray-900">
+  <!-- Header Component -->
+  <div id="header-placeholder"></div>
+  
+  <!-- Spacer for fixed header -->
+  <div class="h-[180px]"></div>
+
+  <!-- Checkout Steps -->
+  <section class="bg-white border-b border-gray-200 py-6">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between">
+        <div class="step-item active flex-1 text-center">
+          <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <p class="text-sm font-semibold text-red-600">Giỏ hàng</p>
+        </div>
+        <div class="step-item active flex-1 text-center">
+          <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">
+            <i class="fas fa-file-invoice"></i>
+          </div>
+          <p class="text-sm font-semibold text-red-600">Thanh toán</p>
+        </div>
+        <div class="step-item flex-1 text-center">
+          <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center mx-auto mb-2 font-bold">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <p class="text-sm font-semibold text-gray-500">Hoàn tất</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-3 gap-6">
+      
+      <!-- Left Column: Forms -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Customer Information -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-user text-red-600"></i>
+            Thông tin khách hàng
+          </h2>
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                Họ và tên <span class="text-red-600">*</span>
+              </label>
+              <input type="text" id="fullName" placeholder="Nguyễn Văn A" 
+                     class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                Số điện thoại <span class="text-red-600">*</span>
+              </label>
+              <input type="tel" id="phone" placeholder="0912345678" 
+                     class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
+            </div>
+            
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                Email
+              </label>
+              <input type="email" id="email" placeholder="example@email.com" 
+                     class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-map-marker-alt text-red-600"></i>
+            Địa chỉ giao hàng
+          </h2>
+          
+          <div class="space-y-4">
+            <div class="grid md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  Tỉnh/Thành phố <span class="text-red-600">*</span>
+                </label>
+                <select id="province" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
+                  <option value="">Chọn Tỉnh/TP</option>
+                  <option value="hanoi">Hà Nội</option>
+                  <option value="hcm">TP. Hồ Chí Minh</option>
+                  <option value="danang">Đà Nẵng</option>
+                  <option value="haiphong">Hải Phòng</option>
+                  <option value="cantho">Cần Thơ</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  Quận/Huyện <span class="text-red-600">*</span>
+                </label>
+                <select id="district" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
+                  <option value="">Chọn Quận/Huyện</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  Phường/Xã <span class="text-red-600">*</span>
+                </label>
+                <select id="ward" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
+                  <option value="">Chọn Phường/Xã</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                Địa chỉ cụ thể <span class="text-red-600">*</span>
+              </label>
+              <input type="text" id="address" placeholder="Số nhà, tên đường..." 
+                     class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                Ghi chú đơn hàng (tùy chọn)
+              </label>
+              <textarea id="note" rows="3" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn..." 
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping Method -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-shipping-fast text-red-600"></i>
+            Phương thức vận chuyển
+          </h2>
+          
+          <div class="space-y-3">
+            <div class="shipping-method selected border-2 border-gray-300 rounded-lg p-4" onclick="selectShipping(this, 'standard')">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="shipping" value="standard" checked class="w-5 h-5 text-red-600">
+                  <div>
+                    <p class="font-bold text-gray-900">Giao hàng tiêu chuẩn</p>
+                    <p class="text-sm text-gray-600">Giao trong 2-3 ngày</p>
+                  </div>
+                </div>
+                <span class="font-bold text-green-600">Miễn phí</span>
+              </div>
+            </div>
+            
+            <div class="shipping-method border-2 border-gray-300 rounded-lg p-4" onclick="selectShipping(this, 'express')">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="shipping" value="express" class="w-5 h-5 text-red-600">
+                  <div>
+                    <p class="font-bold text-gray-900">Giao hàng nhanh</p>
+                    <p class="text-sm text-gray-600">Giao trong 2 giờ (nội thành)</p>
+                  </div>
+                </div>
+                <span class="font-bold text-gray-900">30.000đ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-credit-card text-red-600"></i>
+            Phương thức thanh toán
+          </h2>
+          
+          <div class="space-y-3">
+            <div class="payment-method selected border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'cod')">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment" value="cod" checked class="w-5 h-5 text-red-600">
+                <i class="fas fa-money-bill-wave text-2xl text-green-600"></i>
+                <div>
+                  <p class="font-bold text-gray-900">Thanh toán khi nhận hàng (COD)</p>
+                  <p class="text-sm text-gray-600">Thanh toán bằng tiền mặt khi nhận hàng</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'bank')">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment" value="bank" class="w-5 h-5 text-red-600">
+                <i class="fas fa-university text-2xl text-blue-600"></i>
+                <div>
+                  <p class="font-bold text-gray-900">Chuyển khoản ngân hàng</p>
+                  <p class="text-sm text-gray-600">Chuyển khoản qua Internet Banking</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'momo')">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment" value="momo" class="w-5 h-5 text-red-600">
+                <i class="fas fa-wallet text-2xl text-pink-600"></i>
+                <div>
+                  <p class="font-bold text-gray-900">Ví MoMo</p>
+                  <p class="text-sm text-gray-600">Thanh toán qua ví điện tử MoMo</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'vnpay')">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment" value="vnpay" class="w-5 h-5 text-red-600">
+                <i class="fas fa-credit-card text-2xl text-blue-700"></i>
+                <div>
+                  <p class="font-bold text-gray-900">VNPay</p>
+                  <p class="text-sm text-gray-600">Thanh toán qua cổng VNPay</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'installment')">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment" value="installment" class="w-5 h-5 text-red-600">
+                <i class="fas fa-percentage text-2xl text-purple-600"></i>
+                <div>
+                  <p class="font-bold text-gray-900">Trả góp 0%</p>
+                  <p class="text-sm text-gray-600">Trả góp qua thẻ tín dụng hoặc công ty tài chính</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Order Summary -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-[200px]">
+          <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-receipt text-red-600"></i>
+            Đơn hàng của bạn
+          </h2>
+          
+          <!-- Cart Items -->
+          <div id="cartItems" class="space-y-4 mb-4 pb-4 border-b border-gray-200">
+            <!-- Items will be loaded here -->
+          </div>
+          
+          <!-- Voucher -->
+          <div class="mb-4 pb-4 border-b border-gray-200">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <i class="fas fa-tag text-red-600 mr-1"></i>
+              Mã giảm giá
+            </label>
+            <div class="flex gap-2">
+              <input type="text" id="voucherCode" placeholder="Nhập mã giảm giá" 
+                     class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none">
+              <button onclick="applyVoucher()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition">
+                Áp dụng
+              </button>
+            </div>
+          </div>
+          
+          <!-- Price Summary -->
+          <div class="space-y-3 mb-6">
+            <div class="flex justify-between text-gray-700">
+              <span>Tạm tính:</span>
+              <span id="subtotal" class="font-semibold">0đ</span>
+            </div>
+            <div class="flex justify-between text-gray-700">
+              <span>Phí vận chuyển:</span>
+              <span id="shippingFee" class="font-semibold text-green-600">Miễn phí</span>
+            </div>
+            <div id="discountRow" class="flex justify-between text-green-600 hidden">
+              <span>Giảm giá:</span>
+              <span id="discount" class="font-semibold">-0đ</span>
+            </div>
+            <div class="flex justify-between text-xl font-bold text-red-600 pt-3 border-t-2 border-gray-200">
+              <span>Tổng cộng:</span>
+              <span id="total">0đ</span>
+            </div>
+          </div>
+          
+          <!-- Place Order Button -->
+          <button onclick="placeOrder()" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+            <i class="fas fa-check-circle text-lg"></i>
+            <span>Đặt hàng</span>
+          </button>
+          
+          <p class="text-xs text-gray-500 text-center mt-4">
+            Bằng việc đặt hàng, bạn đồng ý với 
+            <a href="#" class="text-red-600 hover:underline">Điều khoản sử dụng</a> của chúng tôi
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer Component -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Load Header Component -->
+  <script>
+    (function () {
+      function loadHeader() {
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        if (!headerPlaceholder) return;
+
+        fetch('components/header.html')
+          .then(response => response.text())
+          .then(html => {
+            headerPlaceholder.innerHTML = html;
+            const script = document.createElement('script');
+            script.src = 'components/header.js';
+            document.body.appendChild(script);
+          })
+          .catch(error => console.error('Error loading header:', error));
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadHeader);
+      } else {
+        loadHeader();
+      }
+    })();
+  </script>
+
+  <!-- Load Footer Component -->
+  <script>
+    (function () {
+      function loadFooter() {
+        const footerPlaceholder = document.getElementById('footer-placeholder');
+        if (!footerPlaceholder) return;
+
+        fetch('components/footer.html')
+          .then(response => response.text())
+          .then(html => {
+            footerPlaceholder.innerHTML = html;
+          })
+          .catch(error => console.error('Error loading footer:', error));
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadFooter);
+      } else {
+        loadFooter();
+      }
+    })();
+  </script>
+
+  <!-- Checkout Logic -->
+  <script src="checkout.js"></script>
+
+</body>
+</html>

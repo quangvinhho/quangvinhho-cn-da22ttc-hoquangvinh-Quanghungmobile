@@ -27,41 +27,11 @@
   </head>
   <body class="bg-gradient-to-br from-red-50 to-orange-100">
     
-    <!-- Header Navigation Component -->
-    <div id="header-nav-placeholder"></div>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
     
-    <script>
-        // Load header component with cache busting
-        const headerVersion = '?v=' + new Date().getTime();
-        fetch('components/header.html' + headerVersion)
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-nav-placeholder').innerHTML = html;
-                
-                // Initialize mobile menu after header is loaded
-                setTimeout(() => {
-                    const script = document.createElement('script');
-                    script.src = 'components/header-menu.js';
-                    document.body.appendChild(script);
-                }, 100);
-            })
-            .catch(error => console.error('Error loading header:', error));
-    </script>
-
-    <!-- Old Header - Hidden -->
-    <header class="bg-[var(--red-main)] text-white sticky top-0 z-50" style="display:none;">
-      <div class="container mx-auto px-4 lg:px-6">
-        <div class="flex items-center justify-between py-2 lg:py-3">
-          <a href="index.html" class="flex items-center gap-2 hover:opacity-90">
-            <img src="images/logo.png" alt="Logo" class="h-8 lg:h-10">
-            <h1 class="text-sm lg:text-lg font-bold uppercase hidden sm:block whitespace-nowrap">QuangHưng Mobile</h1>
-          </a>
-          <a href="index.html" class="text-white hover:text-yellow-300 transition text-sm">
-            <i class="fa-solid fa-arrow-left mr-2"></i>Quay lại trang chủ
-          </a>
-        </div>
-      </div>
-    </header>
+    <!-- Spacer for fixed header -->
+    <div class="h-[180px]"></div>
     
     <div class="min-h-screen flex items-center justify-center px-4 py-12">
       <div class="max-w-md w-full">
@@ -151,6 +121,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Load Components Script -->
+    <script src="components/load-components.js"></script>
 
     <script>
       function handleLogin(event) {
