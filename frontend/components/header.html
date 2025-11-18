@@ -1,62 +1,84 @@
 <!-- ===== HEADER ===== -->
-<header class="header-wrapper bg-white shadow-lg fixed top-0 left-0 right-0 z-50 w-full">
+<header
+  class="header-wrapper bg-red-600 shadow-lg fixed top-0 left-0 right-0 z-50 w-full"
+>
   <!-- Main Header -->
-  <div class="main-header py-3 md:py-4 border-b">
-    <div class="container mx-auto flex justify-between items-center px-3 md:px-4">
+  <div class="main-header py-2 md:py-3">
+    <div
+      class="container mx-auto flex justify-between items-center px-3 md:px-6"
+    >
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-2 md:gap-3">
-        <img src="images/Screenshot.png" alt="Logo" class="w-20 h-1 md:w-14 md:h-14 rounded-xl shadow">
-        <div class="leading-tight">
-          <h1 class="text-base md:text-2xl font-bold text-red-600">QuangHưng Mobile</h1>
-          <p class="text-xs md:text-sm text-gray-600 hidden sm:block">Uy tín - Chất lượng - Giá tốt</p>
+        <img
+          src="images/Screenshot.png"
+          alt="Logo"
+          class="w-12 h-12 md:w-14 md:h-14 rounded-lg"
+        />
+        <div class="leading-tight hidden sm:block">
+          <h1 class="text-base md:text-xl font-bold text-white">
+            QuangHưng Mobile
+          </h1>
+          <p class="text-xs text-red-100">Uy tín - Chất lượng - Giá tốt</p>
         </div>
       </a>
 
       <!-- Search Bar - Hidden on mobile, shown on tablet+ -->
-      <div class="hidden md:flex items-center border-2 border-red-500 rounded-full overflow-hidden w-1/2 max-w-lg">
+      <div
+        class="hidden md:flex items-center bg-white rounded-lg overflow-hidden flex-1 max-w-2xl mx-4"
+      >
+        <button class="text-gray-600 px-4 py-2.5">
+          <i class="fas fa-search"></i>
+        </button>
         <input
           id="header-search-input"
           type="text"
-          class="flex-grow px-4 py-2 outline-none text-gray-700"
-          placeholder="Bạn cần tìm gì? iPhone, Samsung, OPPO..."
-        >
-        <button id="header-search-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2">
-          <i class="fas fa-search"></i>
-        </button>
+          class="flex-grow px-2 py-2.5 outline-none text-gray-700"
+          placeholder="Bạn tìm gì..."
+        />
       </div>
 
       <!-- Actions - Desktop -->
       <div class="hidden lg:flex items-center gap-4 xl:gap-6">
-        <a href="tel:18002097" class="flex items-center gap-2 text-gray-700 hover:text-red-600">
-          <i class="fas fa-phone-volume text-xl"></i>
-          <div class="text-sm">
-            <p>Gọi mua hàng</p>
-            <strong>1800.2097</strong>
-          </div>
-        </a>
-
-        <a href="cart.html" class="relative flex items-center gap-2 text-gray-700 hover:text-red-600">
-          <i class="fas fa-shopping-cart text-2xl"></i>
+        <a
+          href="cart.html"
+          class="relative flex items-center gap-2 text-white hover:text-red-100"
+        >
+          <i class="fas fa-shopping-cart text-xl"></i>
           <span class="text-sm">Giỏ hàng</span>
-          <span class="cart-badge absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+          <span
+            class="cart-badge absolute -top-2 -right-2 bg-yellow-400 text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center"
+            >0</span
+          >
         </a>
 
-        <a href="login.html" class="flex items-center gap-2 text-gray-700 hover:text-red-600">
-          <i class="fas fa-user-circle text-2xl"></i>
+        <a
+          href="login.html"
+          class="flex items-center gap-2 text-white hover:text-red-100"
+        >
+          <i class="fas fa-user-circle text-xl"></i>
           <span class="text-sm">Tài khoản</span>
         </a>
       </div>
 
       <!-- Mobile Actions -->
       <div class="flex lg:hidden items-center gap-3">
-        <button id="mobile-search-btn" class="text-gray-700 hover:text-red-600 text-xl">
+        <button
+          id="mobile-search-btn"
+          class="text-white hover:text-red-100 text-xl"
+        >
           <i class="fas fa-search"></i>
         </button>
-        <a href="cart.html" class="relative text-gray-700 hover:text-red-600">
+        <a href="cart.html" class="relative text-white hover:text-red-100">
           <i class="fas fa-shopping-cart text-xl"></i>
-          <span class="cart-badge absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">0</span>
+          <span
+            class="cart-badge absolute -top-2 -right-2 bg-yellow-400 text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center"
+            >0</span
+          >
         </a>
-        <button id="mobile-menu-btn" class="text-gray-700 hover:text-red-600 text-2xl">
+        <button
+          id="mobile-menu-btn"
+          class="text-white hover:text-red-100 text-xl"
+        >
           <i class="fas fa-bars"></i>
         </button>
       </div>
@@ -64,74 +86,226 @@
 
     <!-- Mobile Search Bar (Hidden by default) -->
     <div id="mobile-search-bar" class="hidden md:hidden px-3 pb-3">
-      <div class="flex items-center border-2 border-red-500 rounded-full overflow-hidden">
+      <div class="flex items-center bg-white rounded-lg overflow-hidden">
+        <button class="text-gray-600 px-3 py-2">
+          <i class="fas fa-search"></i>
+        </button>
         <input
           id="mobile-search-input"
           type="text"
-          class="flex-grow px-4 py-2 outline-none text-gray-700 text-sm"
+          class="flex-grow px-2 py-2 outline-none text-gray-700 text-sm"
           placeholder="Tìm kiếm sản phẩm..."
-        >
-        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2">
-          <i class="fas fa-search"></i>
-        </button>
+        />
       </div>
     </div>
   </div>
 
-<!-- Navigation - Desktop -->
-<nav class="hidden lg:block bg-gradient-to-r from-red-600 to-red-500 text-white py-3 shadow-md">
-  <div class="container mx-auto">
-    <ul class="flex justify-center items-center gap-6 xl:gap-10 font-semibold text-base xl:text-lg">
-      <li><a href="index.html" class="nav-link hover:text-yellow-300 transition-colors">Trang chủ</a></li>
-      <li><a href="about.html" class="nav-link hover:text-yellow-300 transition-colors">Giới thiệu</a></li>
-
-      <li class="relative group">
-        <a href="products.html" class="nav-link hover:text-yellow-300 transition-colors">
-          Sản phẩm <i class="fas fa-chevron-down text-xs"></i>
-        </a>
-        <ul class="absolute hidden group-hover:block bg-white text-gray-800 shadow-xl rounded-lg mt-2 w-56 text-base font-normal z-50">
-          <li><a href="products.html?category=iphone" class="block px-4 py-2 hover:bg-gray-100 transition-colors">iPhone</a></li>
-          <li><a href="products.html?category=samsung" class="block px-4 py-2 hover:bg-gray-100 transition-colors">Samsung</a></li>
-          <li><a href="products.html?category=oppo" class="block px-4 py-2 hover:bg-gray-100 transition-colors">OPPO</a></li>
-          <li><a href="products.html?category=xiaomi" class="block px-4 py-2 hover:bg-gray-100 transition-colors">Xiaomi</a></li>
-          <li class="border-t"></li>
-          <li><a href="products.html?category=phukien" class="block px-4 py-2 hover:bg-gray-100 transition-colors">Phụ kiện</a></li>
-        </ul>
-      </li>
-
-      <li><a href="news.html" class="nav-link hover:text-yellow-300 transition-colors">Tin tức</a></li>
-      <li><a href="promotions.html" class="nav-link hover:text-yellow-300 transition-colors">Khuyến mãi <span class="bg-yellow-400 text-red-600 font-bold text-xs px-2 py-0.5 rounded-full ml-1">HOT</span></a></li>
-      <li><a href="contact.html" class="nav-link hover:text-yellow-300 transition-colors">Liên hệ</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- Mobile Menu -->
-<div id="mobile-menu" class="hidden lg:hidden bg-white border-t">
-  <nav class="container mx-auto py-2">
-    <ul class="space-y-1">
-      <li><a href="index.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors">Trang chủ</a></li>
-      <li><a href="about.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors">Giới thiệu</a></li>
-      
-      <li>
-        <button onclick="toggleMobileSubmenu()" class="flex items-center justify-between w-full px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors">
-          Sản phẩm
-          <i class="fas fa-chevron-down text-sm" id="submenu-icon"></i>
-        </button>
-        <ul id="mobile-submenu" class="hidden bg-gray-50 border-l-4 border-red-500">
-          <li><a href="products.html?category=iphone" class="block px-8 py-2 text-gray-600 hover:bg-red-50 hover:text-red-600">iPhone</a></li>
-          <li><a href="products.html?category=samsung" class="block px-8 py-2 text-gray-600 hover:bg-red-50 hover:text-red-600">Samsung</a></li>
-          <li><a href="products.html?category=oppo" class="block px-8 py-2 text-gray-600 hover:bg-red-50 hover:text-red-600">OPPO</a></li>
-          <li><a href="products.html?category=xiaomi" class="block px-8 py-2 text-gray-600 hover:bg-red-50 hover:text-red-600">Xiaomi</a></li>
-          <li class="border-t border-gray-200"></li>
-          <li><a href="products.html?category=phukien" class="block px-8 py-2 text-gray-600 hover:bg-red-50 hover:text-red-600">Phụ kiện</a></li>
-        </ul>
-      </li>
-
-      <li><a href="news.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors">Tin tức</a></li>
-      <li><a href="promotions.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors">Khuyến mãi <span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full ml-2">HOT</span></a></li>
-      <li><a href="contact.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors">Liên hệ</a></li>
-    </ul>
+  <!-- Navigation - Desktop -->
+  <nav
+    class="hidden lg:block bg-red-700 text-white py-2.5 border-t border-red-800"
+  >
+    <div class="container mx-auto px-6">
+      <ul
+        class="flex justify-start items-center gap-6 xl:gap-8 text-base font-medium"
+      >
+        <li class="relative group">
+          <a
+            href="#"
+            class="nav-link hover:text-red-100 transition-colors flex items-center gap-1 py-2"
+          >
+            Dịch vụ <i class="fas fa-chevron-down text-xs"></i>
+          </a>
+          <ul
+            class="absolute hidden group-hover:block bg-white text-gray-800 shadow-xl rounded-lg w-56 text-base font-normal z-50 top-full left-0"
+          >
+            <li>
+              <a
+                href="index.html"
+                class="block px-4 py-2.5 hover:bg-red-50 transition-colors border-b"
+                >Trang chủ</a
+              >
+            </li>
+            <li>
+              <a
+                href="about.html"
+                class="block px-4 py-2.5 hover:bg-red-50 transition-colors border-b"
+                >Giới thiệu</a
+              >
+            </li>
+            <li>
+              <a
+                href="products.html"
+                class="block px-4 py-2.5 hover:bg-red-50 transition-colors border-b"
+                >Sản phẩm</a
+              >
+            </li>
+            <li>
+              <a
+                href="news.html"
+                class="block px-4 py-2.5 hover:bg-red-50 transition-colors border-b"
+                >Tin tức</a
+              >
+            </li>
+            <li>
+              <a
+                href="promotions.html"
+                class="block px-4 py-2.5 hover:bg-red-50 transition-colors border-b"
+                >Khuyến mãi</a
+              >
+            </li>
+            <li>
+              <a
+                href="contact.html"
+                class="block px-4 py-2.5 hover:bg-red-50 transition-colors"
+                >Liên hệ</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a
+            href="products.html?category=iphone"
+            class="nav-link hover:text-red-100 transition-colors"
+            >iPhone</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=ipad"
+            class="nav-link hover:text-red-100 transition-colors"
+            >iPad</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=samsung"
+            class="nav-link hover:text-red-100 transition-colors"
+            >Samsung</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=oppo"
+            class="nav-link hover:text-red-100 transition-colors"
+            >OPPO</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=xiaomi"
+            class="nav-link hover:text-red-100 transition-colors"
+            >Xiaomi</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=phukien"
+            class="nav-link hover:text-red-100 transition-colors"
+            >Phụ kiện</a
+          >
+        </li>
+      </ul>
+    </div>
   </nav>
-</div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="hidden lg:hidden bg-red-700 text-white border-t border-red-800"
+  >
+    <nav class="container mx-auto py-2">
+      <ul class="space-y-1">
+        <li>
+          <a
+            href="index.html"
+            class="flex items-center px-4 py-3 hover:bg-red-600 transition-colors text-base"
+            >Trang chủ</a
+          >
+        </li>
+        <li>
+          <button
+            onclick="toggleMobileSubmenu()"
+            class="flex items-center justify-between w-full px-4 py-3 hover:bg-red-600 transition-colors text-base"
+          >
+            Dịch vụ
+            <i class="fas fa-chevron-down text-sm" id="submenu-icon"></i>
+          </button>
+          <ul id="mobile-submenu" class="hidden bg-red-800">
+            <li>
+              <a href="index.html" class="block px-8 py-2 hover:bg-red-600 text-base"
+                >Trang chủ</a
+              >
+            </li>
+            <li>
+              <a href="about.html" class="block px-8 py-2 hover:bg-red-600 text-base"
+                >Giới thiệu</a
+              >
+            </li>
+            <li>
+              <a href="products.html" class="block px-8 py-2 hover:bg-red-600 text-base"
+                >Sản phẩm</a
+              >
+            </li>
+            <li>
+              <a href="news.html" class="block px-8 py-2 hover:bg-red-600 text-base"
+                >Tin tức</a
+              >
+            </li>
+            <li>
+              <a href="promotions.html" class="block px-8 py-2 hover:bg-red-600 text-base"
+                >Khuyến mãi</a
+              >
+            </li>
+            <li>
+              <a href="contact.html" class="block px-8 py-2 hover:bg-red-600 text-base"
+                >Liên hệ</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a
+            href="products.html?category=iphone"
+            class="flex items-center px-4 py-3 hover:bg-red-600 transition-colors text-base"
+            >iPhone</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=ipad"
+            class="flex items-center px-4 py-3 hover:bg-red-600 transition-colors text-base"
+            >iPad</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=samsung"
+            class="flex items-center px-4 py-3 hover:bg-red-600 transition-colors text-base"
+            >Samsung</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=oppo"
+            class="flex items-center px-4 py-3 hover:bg-red-600 transition-colors text-base"
+            >OPPO</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=xiaomi"
+            class="flex items-center px-4 py-3 hover:bg-red-600 transition-colors text-base"
+            >Xiaomi</a
+          >
+        </li>
+        <li>
+          <a
+            href="products.html?category=phukien"
+            class="flex items-center px-4 py-3 hover:bg-red-600 transition-colors text-base"
+            >Phụ kiện</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
 </header>

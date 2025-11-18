@@ -1,25 +1,31 @@
-/* Header Component - Pure Tailwind CSS */
+/* Header Component - Red Theme Style */
 
 /* Fixed header styles */
 .header-wrapper {
   transition: box-shadow 0.3s ease-in-out;
+  background-color: #dc2626;
 }
 
-/* Only custom animations not in Tailwind */
-.submenu {
-  transition: max-height 0.3s ease-in-out;
-  max-height: 0;
-  overflow: hidden;
+/* Dropdown menu hover fix */
+.group:hover .group-hover\:block {
+  display: block;
 }
 
-.submenu.active {
-  max-height: 500px;
+/* Ensure dropdown stays visible when hovering over it */
+.group {
+  position: relative;
+}
+
+.group ul {
+  margin-top: 0;
 }
 
 /* Active nav link */
 .nav-link.active {
-  color: #fbbf24 !important;
-  font-weight: 700;
+  color: #fef3c7 !important;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* Mobile menu animation */
@@ -38,7 +44,12 @@
   }
 }
 
-/* Mobile submenu animation */
+/* Mobile search bar animation */
+#mobile-search-bar {
+  animation: slideDown 0.2s ease-out;
+}
+
+/* Mobile submenu */
 #mobile-submenu {
   transition: max-height 0.3s ease-in-out;
   max-height: 0;
@@ -46,5 +57,5 @@
 }
 
 #mobile-submenu.show {
-  max-height: 300px;
+  max-height: 500px;
 }

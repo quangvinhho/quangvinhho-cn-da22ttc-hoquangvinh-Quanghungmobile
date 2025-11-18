@@ -87,7 +87,7 @@
   <div id="header-placeholder"></div>
 
   <!-- Spacer for fixed header -->
-  <div class="h-[140px] md:h-[180px]"></div>
+  <div class="h-[120px] md:h-[130px]"></div>
 
   <!-- ===== BANNER QUẢNG CÁO ===== -->
   <section class="py-2 md:py-3">
@@ -241,50 +241,22 @@
     let autoPlayInterval = null;
     const AUTO_PLAY_DELAY = 5000; // Thời gian chuyển banner tự động (5 giây)
 
-    // Hàm chuyển banner với hiệu ứng trượt
-    function changeBanner(imgSrc, title, desc, direction = 'next', resetAutoPlay = true) {
+    // Hàm chuyển banner ngay lập tức
+    function changeBanner(imgSrc, title, desc, resetAutoPlay = true) {
       const banner = document.getElementById('main-banner');
       const titleEl = document.getElementById('banner-title');
       const descEl = document.getElementById('banner-desc');
-      const overlay = banner ? banner.parentElement.querySelector('.absolute.bottom-4') : null;
 
       if (!banner) return;
 
-      // Xác định hướng trượt
-      const slideOut = direction === 'next' ? '-100%' : '100%';
-      const slideIn = direction === 'next' ? '100%' : '-100%';
+      // Đổi nội dung ngay lập tức
+      banner.src = imgSrc;
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.textContent = desc;
 
-      // Trượt ảnh hiện tại ra ngoài
-      banner.style.transition = 'transform 0.5s ease-in-out';
-      banner.style.transform = `translateX(${slideOut})`;
-
-      if (overlay) {
-        overlay.style.transition = 'opacity 0.3s ease-in-out';
-        overlay.style.opacity = '0';
-      }
-
-      setTimeout(() => {
-        // Đổi nội dung
-        banner.src = imgSrc;
-        if (titleEl) titleEl.textContent = title;
-        if (descEl) descEl.textContent = desc;
-
-        // Đặt ảnh mới ở vị trí bên kia
-        banner.style.transition = 'none';
-        banner.style.transform = `translateX(${slideIn})`;
-
-        // Trượt ảnh mới vào
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            banner.style.transition = 'transform 0.5s ease-in-out';
-            banner.style.transform = 'translateX(0)';
-
-            if (overlay) {
-              overlay.style.opacity = '1';
-            }
-          }, 50);
-        });
-      }, 500);
+      // Reset transform về vị trí ban đầu (nếu có)
+      banner.style.transition = 'none';
+      banner.style.transform = 'translateX(0)';
 
       if (resetAutoPlay) {
         startAutoPlay();
@@ -295,7 +267,7 @@
     function nextBanner(resetAutoPlay = true) {
       currentBannerIndex = (currentBannerIndex + 1) % banners.length;
       const bannerData = banners[currentBannerIndex];
-      changeBanner(bannerData.img, bannerData.title, bannerData.desc, 'next', resetAutoPlay);
+      changeBanner(bannerData.img, bannerData.title, bannerData.desc, resetAutoPlay);
       updateIndicators();
     }
 
@@ -303,17 +275,16 @@
     function prevBanner(resetAutoPlay = true) {
       currentBannerIndex = (currentBannerIndex - 1 + banners.length) % banners.length;
       const bannerData = banners[currentBannerIndex];
-      changeBanner(bannerData.img, bannerData.title, bannerData.desc, 'prev', resetAutoPlay);
+      changeBanner(bannerData.img, bannerData.title, bannerData.desc, resetAutoPlay);
       updateIndicators();
     }
 
     // Chuyển đến banner cụ thể
     function goToBanner(index) {
       if (index === currentBannerIndex) return;
-      const direction = index > currentBannerIndex ? 'next' : 'prev';
       currentBannerIndex = index;
       const bannerData = banners[index];
-      changeBanner(bannerData.img, bannerData.title, bannerData.desc, direction);
+      changeBanner(bannerData.img, bannerData.title, bannerData.desc);
       updateIndicators();
     }
 
@@ -436,109 +407,109 @@
             <div id="daily-deals"
               class="flex overflow-x-auto gap-4 pb-3 snap-x snap-mandatory scroll-smooth hide-scrollbar">
               <!-- Product 1 -->
-              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start flex-shrink-0">
-                <div class="relative mb-2">
-                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Giảm
+              <div class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-lg snap-start flex-shrink-0">
+                <div class="relative mb-3">
+                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Giảm
                     sốc</span>
                   <span
-                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-30%</span>
+                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-30%</span>
                   <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop"
-                    alt="Samsung Galaxy A71" class="w-full h-40 object-contain rounded">
+                    alt="Samsung Galaxy A71" class="w-full h-48 object-contain rounded">
                 </div>
-                <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">Samsung Galaxy A71 5G (8GB | 128GB) Chính Hãng</h4>
+                <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">Samsung Galaxy A71 5G (8GB | 128GB) Chính Hãng</h4>
                 <div class="mb-2">
                   <div class="text-lg font-black text-red-600">4.599.000₫</div>
                   <div class="text-xs text-gray-400 line-through">6.590.000₫</div>
                 </div>
                 <div class="text-xs text-gray-500 mb-2">Trả trước: 1.274.700₫</div>
-                <div class="flex items-center justify-between text-xs">
-                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+                <div class="text-xs">
+                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
                 </div>
               </div>
 
               <!-- Product 2 -->
-              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start flex-shrink-0">
-                <div class="relative mb-2">
-                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Giảm
+              <div class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-lg snap-start flex-shrink-0">
+                <div class="relative mb-3">
+                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Giảm
                     sốc</span>
                   <span
-                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-25%</span>
+                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
                   <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300&h=300&fit=crop"
-                    alt="Samsung Galaxy Z Flip2" class="w-full h-40 object-contain rounded">
+                    alt="Samsung Galaxy Z Flip2" class="w-full h-48 object-contain rounded">
                 </div>
-                <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">Samsung Galaxy Z Flip2 5G (12GB | 256GB) Chính Hãng
+                <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">Samsung Galaxy Z Flip2 5G (12GB | 256GB) Chính Hãng
                 </h4>
                 <div class="mb-2">
                   <div class="text-lg font-black text-red-600">35.799.000₫</div>
                   <div class="text-xs text-gray-400 line-through">47.990.000₫</div>
                 </div>
                 <div class="text-xs text-gray-500 mb-2">Trả trước: 14.734.700₫</div>
-                <div class="flex items-center justify-between text-xs">
-                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+                <div class="text-xs">
+                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
                 </div>
               </div>
 
               <!-- Product 3 -->
-              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start flex-shrink-0">
-                <div class="relative mb-2">
-                  <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">Siêu
+              <div class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-lg snap-start flex-shrink-0">
+                <div class="relative mb-3">
+                  <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Siêu
                     giảm giá</span>
                   <span
-                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-35%</span>
+                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-35%</span>
                   <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop"
-                    alt="Samsung Galaxy Z Flip2" class="w-full h-40 object-contain rounded">
+                    alt="Samsung Galaxy Z Flip2" class="w-full h-48 object-contain rounded">
                 </div>
-                <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">Samsung Galaxy Z Flip2 5G (12GB | 256GB) Chính Hãng
+                <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">Samsung Galaxy Z Flip2 5G (12GB | 256GB) Chính Hãng
                   Flashsale Vô Cực</h4>
                 <div class="mb-2">
                   <div class="text-lg font-black text-red-600">20.999.000₫</div>
                   <div class="text-xs text-gray-400 line-through">32.990.000₫</div>
                 </div>
                 <div class="text-xs text-gray-500 mb-2">Trả trước: 6.346.700₫</div>
-                <div class="flex items-center justify-between text-xs">
-                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+                <div class="text-xs">
+                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
                 </div>
               </div>
 
               <!-- Product 4 -->
-              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start flex-shrink-0">
-                <div class="relative mb-2">
-                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Giảm
+              <div class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-lg snap-start flex-shrink-0">
+                <div class="relative mb-3">
+                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Giảm
                     sốc</span>
                   <span
-                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-20%</span>
+                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-20%</span>
                   <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=300&fit=crop"
-                    alt="iPad Gen 13" class="w-full h-40 object-contain rounded">
+                    alt="iPad Gen 13" class="w-full h-48 object-contain rounded">
                 </div>
-                <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">iPad Gen 13 Wifi 128GB 2025 Chính Hãng Apple</h4>
+                <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">iPad Gen 13 Wifi 128GB 2025 Chính Hãng Apple</h4>
                 <div class="mb-2">
                   <div class="text-lg font-black text-red-600">7.399.000₫</div>
                   <div class="text-xs text-gray-400 line-through">9.290.000₫</div>
                 </div>
                 <div class="text-xs text-gray-500 mb-2">Trả trước: 2.318.700₫</div>
-                <div class="flex items-center justify-between text-xs">
-                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+                <div class="text-xs">
+                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
                 </div>
               </div>
 
               <!-- Product 5 -->
-              <div class="min-w-[200px] bg-white rounded-xl p-3 shadow-lg snap-start flex-shrink-0">
-                <div class="relative mb-2">
-                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Trả góp
+              <div class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-lg snap-start flex-shrink-0">
+                <div class="relative mb-3">
+                  <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Trả góp
                     0%</span>
                   <span
-                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-28%</span>
+                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-28%</span>
                   <img src="https://images.unsplash.com/photo-1696446702883-74b4a7b3be1d?w=300&h=300&fit=crop"
-                    alt="OPPO Find X8" class="w-full h-40 object-contain rounded">
+                    alt="OPPO Find X8" class="w-full h-48 object-contain rounded">
                 </div>
-                <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">OPPO Find X8 5G (16GB | 512GB) Chính Hãng</h4>
+                <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">OPPO Find X8 5G (16GB | 512GB) Chính Hãng</h4>
                 <div class="mb-2">
                   <div class="text-lg font-black text-red-600">30.599.000₫</div>
                   <div class="text-xs text-gray-400 line-through">42.490.000₫</div>
                 </div>
                 <div class="text-xs text-gray-500 mb-2">Trả trước: 9.176.700₫</div>
-                <div class="flex items-center justify-between text-xs">
-                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+                <div class="text-xs">
+                  <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
                 </div>
               </div>
             </div>
@@ -571,111 +542,111 @@
             class="flex overflow-x-auto gap-4 pb-3 snap-x snap-mandatory scroll-smooth hide-scrollbar">
             <!-- Product 1 -->
             <div
-              class="min-w-[200px] bg-white rounded-xl p-3 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
-              <div class="relative mb-2">
-                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Trả góp
+              class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
+              <div class="relative mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Trả góp
                   0%</span>
                 <span
-                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-25%</span>
+                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
                 <img src="https://images.unsplash.com/photo-1696446702883-74b4a7b3be1d?w=300&h=300&fit=crop"
-                  alt="OPPO Find X8 Pro" class="w-full h-40 object-contain rounded">
+                  alt="OPPO Find X8 Pro" class="w-full h-48 object-contain rounded">
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">OPPO Find X8 Pro 5G (12GB | 256GB) Chính Hãng</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">OPPO Find X8 Pro 5G (12GB | 256GB) Chính Hãng</h4>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">16.999.000₫</div>
                 <div class="text-xs text-gray-400 line-through">22.690.000₫</div>
               </div>
               <div class="text-xs text-gray-500 mb-2">Trả trước: 5.194.700₫</div>
-              <div class="flex items-center justify-between text-xs">
-                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+              <div class="text-xs">
+                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
               </div>
             </div>
 
             <!-- Product 2 -->
             <div
-              class="min-w-[200px] bg-white rounded-xl p-3 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
-              <div class="relative mb-2">
-                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Trả góp
+              class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
+              <div class="relative mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Trả góp
                   0%</span>
                 <span
-                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-20%</span>
+                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-20%</span>
                 <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop"
-                  alt="OPPO Find X8 Pro" class="w-full h-40 object-contain rounded">
+                  alt="OPPO Find X8 Pro" class="w-full h-48 object-contain rounded">
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">OPPO Find X8 Pro 5G (16GB | 512GB) Chính Hãng</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">OPPO Find X8 Pro 5G (16GB | 512GB) Chính Hãng</h4>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">26.799.000₫</div>
                 <div class="text-xs text-gray-400 line-through">33.490.000₫</div>
               </div>
               <div class="text-xs text-gray-500 mb-2">Trả trước: 8.134.700₫</div>
-              <div class="flex items-center justify-between text-xs">
-                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+              <div class="text-xs">
+                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
               </div>
             </div>
 
             <!-- Product 3 -->
             <div
-              class="min-w-[200px] bg-white rounded-xl p-3 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
-              <div class="relative mb-2">
-                <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">Siêu giảm
+              class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
+              <div class="relative mb-3">
+                <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Siêu giảm
                   giá</span>
                 <span
-                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-18%</span>
+                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-18%</span>
                 <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300&h=300&fit=crop"
-                  alt="Xiaomi Redmi 13C" class="w-full h-40 object-contain rounded">
+                  alt="Xiaomi Redmi 13C" class="w-full h-48 object-contain rounded">
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">Xiaomi Redmi 13C 5G (8GB | 128GB) Chính Hãng</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">Xiaomi Redmi 13C 5G (8GB | 128GB) Chính Hãng</h4>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">2.999.000₫</div>
                 <div class="text-xs text-gray-400 line-through">3.690.000₫</div>
               </div>
               <div class="text-xs text-gray-500 mb-2">Trả trước: 855.700₫</div>
-              <div class="flex items-center justify-between text-xs">
-                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+              <div class="text-xs">
+                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
               </div>
             </div>
 
             <!-- Product 4 -->
             <div
-              class="min-w-[200px] bg-white rounded-xl p-3 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
-              <div class="relative mb-2">
-                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Trả góp
+              class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
+              <div class="relative mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Trả góp
                   0%</span>
                 <span
-                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-22%</span>
+                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-22%</span>
                 <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=300&fit=crop"
-                  alt="OPPO A6 Pro" class="w-full h-40 object-contain rounded">
+                  alt="OPPO A6 Pro" class="w-full h-48 object-contain rounded">
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">OPPO A6 Pro (8GB | 256GB) Chính Hãng</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">OPPO A6 Pro (8GB | 256GB) Chính Hãng</h4>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">5.999.000₫</div>
                 <div class="text-xs text-gray-400 line-through">7.690.000₫</div>
               </div>
               <div class="text-xs text-gray-500 mb-2">Trả trước: 1.795.700₫</div>
-              <div class="flex items-center justify-between text-xs">
-                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+              <div class="text-xs">
+                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
               </div>
             </div>
 
             <!-- Product 5 -->
             <div
-              class="min-w-[200px] bg-white rounded-xl p-3 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
-              <div class="relative mb-2">
-                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">Trả góp
+              class="min-w-[220px] max-w-[220px] bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all snap-start flex-shrink-0 border border-gray-100">
+              <div class="relative mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">Trả góp
                   0%</span>
                 <span
-                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-15%</span>
+                  class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-15%</span>
                 <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop"
-                  alt="Vivo Y80 Lite" class="w-full h-40 object-contain rounded">
+                  alt="Vivo Y80 Lite" class="w-full h-48 object-contain rounded">
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">Vivo Y80 Lite 5G (8GB | 256GB) Chính Hãng</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">Vivo Y80 Lite 5G (8GB | 256GB) Chính Hãng</h4>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">8.449.000₫</div>
                 <div class="text-xs text-gray-400 line-through">9.990.000₫</div>
               </div>
               <div class="text-xs text-gray-500 mb-2">Trả trước: 2.534.700₫</div>
-              <div class="flex items-center justify-between text-xs">
-                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold">Còn 6/10 suất</div>
+              <div class="text-xs">
+                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-semibold text-center">Còn 6/10 suất</div>
               </div>
             </div>
           </div>
@@ -703,21 +674,27 @@
           </a>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 py-3">
+        <div class="relative group">
+          <button onclick="scrollProducts('genuine-phones', -1)"
+            class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 text-gray-800 w-10 h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+
+          <div id="genuine-phones" class="flex overflow-x-auto gap-4 pb-3 snap-x snap-mandatory scroll-smooth hide-scrollbar">
 
           <!-- Deal 1 -->
           <a href="product_detail.html?id=20"
-            class="bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between">
+            class="min-w-[220px] max-w-[220px] bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between snap-start flex-shrink-0">
             <div>
               <div class="relative mb-3">
                 <img loading="lazy"
                   src="https://images.unsplash.com/photo-1696446702883-74b4a7b3be1d?w=400&h=400&fit=crop"
-                  alt="iPhone 16 Pro Max" class="w-full h-36 object-contain rounded" />
+                  alt="iPhone 16 Pro Max" class="w-full h-48 object-contain rounded" />
                 <span
-                  class="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-pink-600 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">Giảm
+                  class="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-pink-600 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg z-10">Giảm
                   5tr</span>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">iPhone 16 Pro Max 256GB</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">iPhone 16 Pro Max 256GB</h4>
               <p class="text-xs text-gray-500 mb-2">Chính Hãng VN/A - Mới 100%</p>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">33.990.000₫</div>
@@ -736,16 +713,16 @@
 
           <!-- Deal 2 -->
           <a href="product_detail.html?id=21"
-            class="bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between">
+            class="min-w-[220px] max-w-[220px] bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between snap-start flex-shrink-0">
             <div>
               <div class="relative mb-3">
                 <img loading="lazy"
                   src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop"
-                  alt="Samsung S24 Ultra" class="w-full h-36 object-contain rounded" />
+                  alt="Samsung S24 Ultra" class="w-full h-48 object-contain rounded" />
                 <span
-                  class="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-red-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">-15%</span>
+                  class="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-red-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg z-10">-15%</span>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">Samsung S24 Ultra 512GB</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">Samsung S24 Ultra 512GB</h4>
               <p class="text-xs text-gray-500 mb-2">Snap 8 Gen 3 - Chính Hãng</p>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">32.990.000₫</div>
@@ -764,16 +741,16 @@
 
           <!-- Deal 3 -->
           <a href="product_detail.html?id=22"
-            class="bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between">
+            class="min-w-[220px] max-w-[220px] bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between snap-start flex-shrink-0">
             <div>
               <div class="relative mb-3">
                 <img loading="lazy"
                   src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=400&fit=crop"
-                  alt="Xiaomi 14" class="w-full h-36 object-contain rounded" />
+                  alt="Xiaomi 14" class="w-full h-48 object-contain rounded" />
                 <span
-                  class="absolute top-2 left-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">-20%</span>
+                  class="absolute top-2 left-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg z-10">-20%</span>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">Xiaomi 14 5G 512GB</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">Xiaomi 14 5G 512GB</h4>
               <p class="text-xs text-gray-500 mb-2">Leica Camera - Snap 8 Gen 3</p>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">19.990.000₫</div>
@@ -792,17 +769,17 @@
 
           <!-- Deal 4 -->
           <a href="product_detail.html?id=23"
-            class="bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between">
+            class="min-w-[220px] max-w-[220px] bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between snap-start flex-shrink-0">
             <div>
               <div class="relative mb-3">
                 <img loading="lazy"
                   src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop"
-                  alt="iQOO NEO 10" class="w-full h-36 object-contain rounded" />
+                  alt="iQOO NEO 10" class="w-full h-48 object-contain rounded" />
                 <span
-                  class="absolute top-2 left-2 bg-gradient-to-r from-orange-600 to-red-600 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">SALE
+                  class="absolute top-2 left-2 bg-gradient-to-r from-orange-600 to-red-600 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg z-10">SALE
                   SỐC</span>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">iQOO NEO 10 5G 512GB</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">iQOO NEO 10 5G 512GB</h4>
               <p class="text-xs text-gray-500 mb-2">Snap 8 Gen 3 - Màn 144Hz</p>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">8.090.000₫</div>
@@ -821,17 +798,17 @@
 
           <!-- Deal 5 -->
           <a href="product_detail.html?id=24"
-            class="bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between">
+            class="min-w-[220px] max-w-[220px] bg-white text-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 p-4 border border-gray-100 hover:border-yellow-300 flex flex-col justify-between snap-start flex-shrink-0">
             <div>
               <div class="relative mb-3">
                 <img loading="lazy"
                   src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop"
-                  alt="OPPO Reno12 F" class="w-full h-36 object-contain rounded" />
+                  alt="OPPO Reno12 F" class="w-full h-48 object-contain rounded" />
                 <span
-                  class="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">MỚI
+                  class="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg z-10">MỚI
                   VỀ</span>
               </div>
-              <h4 class="font-bold text-sm mb-1 line-clamp-2 h-10">OPPO Reno12 F 5G 256GB</h4>
+              <h4 class="font-bold text-sm mb-2 line-clamp-2 h-10">OPPO Reno12 F 5G 256GB</h4>
               <p class="text-xs text-gray-500 mb-2">8GB RAM - Chính Hãng VN</p>
               <div class="mb-2">
                 <div class="text-lg font-black text-red-600">9.490.000₫</div>
@@ -847,7 +824,12 @@
               <span class="text-xs text-gray-500 ml-1">(187)</span>
             </div>
           </a>
+          </div>
 
+          <button onclick="scrollProducts('genuine-phones', 1)"
+            class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 text-gray-800 w-10 h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all">
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
   </section>
@@ -877,71 +859,71 @@
         </div>
 
         <!-- Grid layout -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
 
           <!-- Video lớn bên trái -->
-          <div class="lg:col-span-2 bg-gray-50 rounded-2xl shadow-lg overflow-hidden">
+          <div class="lg:col-span-2 bg-gray-50 rounded-xl shadow-lg overflow-hidden">
             <div class="relative">
               <video src="images/17 prm web.mp4" autoplay muted loop playsinline
-                class="w-full h-[450px] object-cover rounded-t-2xl"></video>
+                class="w-full h-[350px] object-cover rounded-t-xl"></video>
             </div>
 
             <!-- Box thông tin -->
-            <div class="flex items-center justify-between bg-white p-4 md:p-6 rounded-b-2xl">
-              <div class="flex items-center gap-4">
-                <div class="w-16 h-16 bg-gray-100 rounded-xl p-1.5 shadow-sm">
+            <div class="flex items-center justify-between bg-white p-3 md:p-4 rounded-b-xl">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gray-100 rounded-lg p-1 shadow-sm">
                   <img src="images/Điện%20thoại%20Apple%20iPhone%2017%20Pro%20Max%20256GB.jpg" alt="iPhone 17 icon"
                     class="w-full h-full object-contain" onerror="this.src='images/iphone.jpg'">
                 </div>
                 <div>
-                  <h3 class="text-base font-bold text-gray-900 mb-1">Điện thoại Apple iPhone 17 Pro Max 256GB ZP/A
+                  <h3 class="text-sm font-bold text-gray-900 mb-1">Điện thoại Apple iPhone 17 Pro Max 256GB ZP/A
                   </h3>
-                  <p class="text-lg font-bold text-orange-500">37.990.000đ</p>
+                  <p class="text-base font-bold text-orange-500">37.990.000đ</p>
                 </div>
               </div>
               <a href="product_detail.html?id=20"
-                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm shadow-md transition-all no-wishlist">
+                class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg font-semibold text-sm shadow-md transition-all no-wishlist">
                 Khám phá ngay
               </a>
             </div>
           </div>
 
           <!-- Hai video nhỏ bên phải -->
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-3">
 
             <!-- Video nhỏ 1 -->
-            <div class="bg-gray-50 rounded-2xl shadow-lg overflow-hidden">
+            <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden">
               <video src="images/15 PRM.mp4" autoplay muted loop playsinline
-                class="w-full h-[215px] object-cover rounded-t-2xl"></video>
-              <div class="flex items-center justify-between bg-white p-4 rounded-b-2xl">
-                <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 bg-gray-100 rounded-lg p-1 shadow-sm">
+                class="w-full h-[170px] object-cover rounded-t-xl"></video>
+              <div class="flex items-center justify-between bg-white p-3 rounded-b-xl">
+                <div class="flex items-center gap-2">
+                  <div class="w-10 h-10 bg-gray-100 rounded-lg p-1 shadow-sm">
                     <img src="images/Điện%20thoại%20Apple%20iPhone%2015%20Pro%20Max%20256GB%20-%2099%25.png"
                       alt="iPhone 15 icon" class="w-full h-full object-contain" onerror="this.src='images/ip17.jpg'">
                   </div>
                   <div>
-                    <h4 class="text-sm font-semibold text-gray-900 mb-1">Điện thoại Apple iPhone 15 Pro Max 256GB - 99%
+                    <h4 class="text-xs font-semibold text-gray-900 mb-0.5">Điện thoại Apple iPhone 15 Pro Max 256GB - 99%
                     </h4>
-                    <p class="text-base font-bold text-orange-500">20.990.000đ</p>
+                    <p class="text-sm font-bold text-orange-500">20.990.000đ</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Video nhỏ 2 -->
-            <div class="bg-gray-50 rounded-2xl shadow-lg overflow-hidden">
+            <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden">
               <video src="images/14 PRM.mp4" autoplay muted loop playsinline
-                class="w-full h-[215px] object-cover rounded-t-2xl"></video>
-              <div class="flex items-center justify-between bg-white p-4 rounded-b-2xl">
-                <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 bg-gray-100 rounded-lg p-1 shadow-sm">
+                class="w-full h-[170px] object-cover rounded-t-xl"></video>
+              <div class="flex items-center justify-between bg-white p-3 rounded-b-xl">
+                <div class="flex items-center gap-2">
+                  <div class="w-10 h-10 bg-gray-100 rounded-lg p-1 shadow-sm">
                     <img src="images/Điện%20thoại%20Apple%20iPhone%2014%20Pro%20Max%20128GB%20-%2099%25.webp"
                       alt="iPhone 14 icon" class="w-full h-full object-contain" onerror="this.src='images/iphone.jpg'">
                   </div>
                   <div>
-                    <h4 class="text-sm font-semibold text-gray-900 mb-1">Điện thoại Apple iPhone 14 Pro Max 128GB - 99%
+                    <h4 class="text-xs font-semibold text-gray-900 mb-0.5">Điện thoại Apple iPhone 14 Pro Max 128GB - 99%
                     </h4>
-                    <p class="text-base font-bold text-orange-500">16.390.000đ</p>
+                    <p class="text-sm font-bold text-orange-500">16.390.000đ</p>
                   </div>
                 </div>
               </div>
