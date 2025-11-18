@@ -12,9 +12,14 @@ async function loadComponent(elementId, componentPath) {
                     highlightActiveMenu();
                     initMobileMenu();
                     // Load header JavaScript
-                    const script = document.createElement('script');
-                    script.src = 'components/header.js';
-                    document.body.appendChild(script);
+                    const headerScript = document.createElement('script');
+                    headerScript.src = 'components/header.js';
+                    document.body.appendChild(headerScript);
+                    
+                    // Load mobile menu JavaScript
+                    const mobileScript = document.createElement('script');
+                    mobileScript.src = 'components/mobile-menu.js';
+                    document.body.appendChild(mobileScript);
                 }, 100);
             }
         }

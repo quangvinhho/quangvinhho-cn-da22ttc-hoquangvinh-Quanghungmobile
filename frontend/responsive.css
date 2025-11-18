@@ -1,0 +1,143 @@
+/* Responsive Design - Mobile First Approach */
+
+/* Base styles for all devices */
+* {
+  box-sizing: border-box;
+}
+
+/* Mobile devices (default) */
+@media (max-width: 640px) {
+  /* Typography */
+  h1 { font-size: 1.5rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  h3 { font-size: 1.125rem !important; }
+  
+  /* Container padding */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  /* Product cards */
+  .product-card {
+    padding: 0.75rem;
+  }
+  
+  .product-card img {
+    height: 150px;
+  }
+  
+  /* Buttons */
+  .cta-button,
+  .cta-secondary {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* Banner adjustments */
+  .banner-slide h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .banner-slide p {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Hide desktop elements */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* Grid adjustments */
+  .grid {
+    gap: 0.75rem;
+  }
+}
+
+/* Tablets (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Container */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Product grid */
+  #productsGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+  
+  /* Typography */
+  h1 { font-size: 1.875rem !important; }
+  h2 { font-size: 1.5rem !important; }
+  
+  /* Hide mobile-only elements */
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* Desktop (1025px and above) */
+@media (min-width: 1025px) {
+  /* Hide mobile elements */
+  .mobile-only {
+    display: none !important;
+  }
+  
+  /* Product grid */
+  #productsGrid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* Large desktop (1536px and above) */
+@media (min-width: 1536px) {
+  #productsGrid {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 896px) and (orientation: landscape) {
+  /* Reduce header height */
+  .header-wrapper {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Adjust banner height */
+  .banner-slide {
+    height: 200px !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  header,
+  nav,
+  .mobile-menu,
+  .cta-button,
+  .cta-secondary {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+}

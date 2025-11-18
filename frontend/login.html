@@ -25,23 +25,22 @@
       }
     </style>
   </head>
-  <body class="bg-gradient-to-br from-red-50 to-orange-100">
+  <body class="relative min-h-screen">
+    <!-- Background Image with Overlay -->
+    <div class="fixed inset-0 z-0">
+      <img src="images/cuahang.png" alt="QuangHưng Mobile Store" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-br from-red-600/80 via-orange-500/70 to-red-700/80 backdrop-blur-sm"></div>
+    </div>
     
-    <!-- Header Component -->
-    <div id="header-placeholder"></div>
-    
-    <!-- Spacer for fixed header -->
-    <div class="h-[180px]"></div>
-    
-    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
       <div class="max-w-md w-full">
         <div class="text-center mb-8">
           <a href="index.html" class="inline-block">
-            <h1 class="text-4xl font-bold text-red-600">
+            <h1 class="text-4xl font-bold text-white drop-shadow-lg">
               <i class="fas fa-mobile-alt mr-2"></i>QuangHưng Mobile
             </h1>
           </a>
-          <p class="text-gray-600 mt-2">Đăng nhập để tiếp tục mua sắm</p>
+          <p class="text-white/90 mt-2 font-medium drop-shadow">Đăng nhập để tiếp tục mua sắm</p>
         </div>
 
         <div class="bg-white rounded-lg shadow-xl p-8">

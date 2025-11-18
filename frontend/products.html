@@ -14,13 +14,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="products-styles.css">
+    <link rel="stylesheet" href="components/header.css">
+    <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
     
-    <!-- Spacer for fixed header -->
-    <div class="h-[180px]"></div>
+    <!-- Spacer for fixed header - Responsive -->
+    <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
     <!-- Banner Slider -->
     <section class="bg-gray-100 py-3">
@@ -697,8 +699,8 @@
                     </div>
                 </div>
 
-                <!-- Products Grid - 4-5 cột responsive -->
-                <div id="productsGrid" class="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4"></div>
+                <!-- Products Grid - 4-5 cột responsive (ẨN) -->
+                <div id="productsGrid" class="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4" style="display: none;"></div>
 
             </section>
         </div>
@@ -1270,27 +1272,11 @@
     <!-- Footer Component -->
     <div id="footer-placeholder"></div>
 
-    <script>
-      // Load header component
-      fetch('components/header.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('header-placeholder').innerHTML = html;
-          // Load header JavaScript after HTML is loaded
-          const script = document.createElement('script');
-          script.src = 'components/header.js';
-          document.body.appendChild(script);
-        })
-        .catch(error => console.error('Error loading header:', error));
-
-      // Load footer component
-      fetch('components/footer.html')
-          .then(response => response.text())
-          .then(html => {
-              document.getElementById('footer-placeholder').innerHTML = html;
-          })
-          .catch(error => console.error('Error loading footer:', error));
-    </script>
+    <!-- Load Components Script -->
+    <script src="components/load-components.js"></script>
+    
+    <!-- Products Page Script -->
+    <script src="products.js"></script>
 
 </body>
 </html>
