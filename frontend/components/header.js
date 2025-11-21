@@ -155,12 +155,14 @@ function toggleMobileSubmenu() {
   if (submenu && icon) {
     if (submenu.classList.contains("show")) {
       submenu.classList.remove("show");
-      icon.classList.remove("fa-chevron-up");
-      icon.classList.add("fa-chevron-down");
+      // Switch icon to bars when closed
+      icon.classList.remove("fa-times");
+      icon.classList.add("fa-bars");
     } else {
       submenu.classList.add("show");
-      icon.classList.remove("fa-chevron-down");
-      icon.classList.add("fa-chevron-up");
+      // Switch icon to close (X) when open
+      icon.classList.remove("fa-bars");
+      icon.classList.add("fa-times");
     }
   }
 }
