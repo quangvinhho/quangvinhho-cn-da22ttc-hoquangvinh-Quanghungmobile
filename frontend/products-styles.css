@@ -260,3 +260,72 @@
     gap: 20px !important;
   }
 }
+
+/* --- STYLE GIỐNG FPT SHOP (Horizontal Filter toolbar & dropdowns) --- */
+:root { --fpt-red: #cb1c22; }
+
+.fpt-btn {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #444;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+.fpt-btn:hover, .fpt-btn.active { border-color: var(--fpt-red); color: var(--fpt-red); background: #fff5f5; }
+
+.fpt-dropdown { position: absolute; top: calc(100% + 8px); left: 0; background: white; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid #eee; z-index: 50; animation: slideDown 0.2s ease-out; }
+.fpt-footer { border-top: 1px solid #eee; padding: 10px; display: flex; justify-content: space-between; background: #fafafa; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+.fpt-item { display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; padding:4px 0; }
+.fpt-item:hover { color: var(--fpt-red); }
+.fpt-item input { accent-color: var(--fpt-red); }
+
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.quick-brand-btn { border: 1px solid #e5e7eb; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #4b5563; background: white; transition: 0.2s; }
+.quick-brand-btn:hover, .quick-brand-btn.active { border-color: var(--fpt-red); color: var(--fpt-red); background: #fff5f5; box-shadow: 0 2px 6px rgba(203, 28, 34, 0.15); }
+
+.product-card { background: white; border-radius: 12px; border: 1px solid transparent; transition: all 0.3s; position: relative; overflow: hidden; }
+.product-card:hover { border-color: #e5e7eb; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transform: translateY(-4px); z-index: 10; }
+.product-card .img-scale { transition: transform 0.5s; }
+.product-card:hover .img-scale { transform: scale(1.08); }
+
+.filter-tag { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+
+/* Đảm bảo ảnh sản phẩm hiển thị chuẩn */
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Giữ nguyên tỉ lệ ảnh, không bị cắt */
+  padding: 12px; /* Tạo khoảng cách an toàn */
+  transition: transform 0.5s ease;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Hiệu ứng hover zoom nhẹ */
+.product-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Container ảnh vuông để đồng bộ chiều cao các card */
+.product-card .relative.aspect-square {
+  background-color: #fff; /* Nền trắng cho ảnh PNG/Transparent */
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Đảm bảo ảnh không bị lỗi hiển thị */
+.product-card .aspect-square img {
+  mix-blend-mode: multiply;
+  background: transparent;
+}

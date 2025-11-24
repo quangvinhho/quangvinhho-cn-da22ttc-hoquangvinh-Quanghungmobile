@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sản phẩm - QuangHưng Mobile</title>
-    
+
     <!-- Google Fonts - Roboto & Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -17,10 +20,11 @@
     <link rel="stylesheet" href="components/header.css">
     <link rel="stylesheet" href="responsive.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
-    
+
     <!-- Spacer for fixed header - Responsive -->
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
@@ -28,153 +32,222 @@
     <section class="bg-gray-100 py-3">
         <div class="container mx-auto px-4">
             <div class="relative rounded-2xl overflow-hidden shadow-lg group">
-                <div id="bannerSlider" class="relative h-48 md:h-64">
+                <div id="bannerSlider" class="relative h-48 md:h-64 bg-white">
                     <!-- Slide 1 - iPhone 17 Pro Max -->
                     <div class="banner-slide absolute inset-0 transition-all duration-700 ease-in-out">
-                        <div class="relative w-full h-full bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
-                                    <div class="text-white max-w-md z-10">
-                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">iPhone 17 Pro Max</h2>
-                                        <p class="text-base md:text-xl mb-1 md:mb-2">Chỉ từ <span class="text-yellow-300 font-bold">28.990.000đ</span></p>
-                                        <p class="text-xs md:text-base mb-3 md:mb-3">Thu cũ đổi mới - Giảm thêm 2 triệu</p>
-                                        <button class="bg-[var(--red-main)] hover:bg-[var(--red-main-dark)] text-white px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
-                                            Mua ngay
-                                        </button>
-                                    </div>
-                                    <div class="hidden md:block">
-                                        <img src="images/ip17.jpg" alt="iPhone 17 Pro Max" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                        <div class="relative w-full h-full">
+                            <img src="images/17.jpg" alt="iPhone 17" class="w-full h-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center">
+                                <div class="container mx-auto px-6 md:px-12">
+                                    <div class="text-white max-w-lg">
+                                        <h2 class="text-2xl md:text-4xl font-bold mb-2">iPhone 17 Pro Max</h2>
+                                        <p class="text-lg mb-4 text-gray-200">Thiết kế đẳng cấp - Hiệu năng vượt trội
+                                        </p>
+                                        <button
+                                            class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full font-bold transition">Mua
+                                            ngay</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Slide 2 - Samsung Galaxy -->
                     <div class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out">
-                        <div class="relative w-full h-full bg-gradient-to-br from-purple-900 via-purple-800 to-pink-900">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
-                                    <div class="text-white max-w-md z-10">
-                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">Samsung Galaxy</h2>
-                                        <p class="text-base md:text-xl mb-1 md:mb-2">Giá sốc <span class="text-yellow-300 font-bold">29.990.000đ</span></p>
-                                        <p class="text-xs md:text-base mb-3 md:mb-3">Tặng tai nghe Galaxy Buds 2 Pro</p>
-                                        <button class="bg-white hover:bg-gray-100 text-purple-900 px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
-                                            Xem chi tiết
-                                        </button>
-                                    </div>
-                                    <div class="hidden md:block">
-                                        <img src="images/samsung.webp" alt="Samsung Galaxy" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                        <div class="relative w-full h-full">
+                            <img src="images/samsung.webp" alt="Samsung" class="w-full h-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center">
+                                <div class="container mx-auto px-6 md:px-12">
+                                    <div class="text-white max-w-lg">
+                                        <h2 class="text-2xl md:text-4xl font-bold mb-2">Samsung Galaxy S25</h2>
+                                        <p class="text-lg mb-4 text-gray-200">Kỷ nguyên AI mới</p>
+                                        <button
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-bold transition">Khám
+                                            phá</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Slide 3 - iPhone -->
+
+                    <!-- Slide 3 - Sale -->
                     <div class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out">
-                        <div class="relative w-full h-full bg-gradient-to-br from-green-900 via-teal-800 to-blue-900">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
-                                    <div class="text-white max-w-md z-10">
-                                        <h2 class="text-xl md:text-4xl font-bold mb-2 md:mb-3">iPhone Hot Deal</h2>
-                                        <p class="text-base md:text-xl mb-1 md:mb-2">Giảm sốc <span class="text-yellow-300 font-bold">18.990.000đ</span></p>
-                                        <p class="text-xs md:text-base mb-3 md:mb-3">Trả góp 0% - Freeship toàn quốc</p>
-                                        <button class="bg-white hover:bg-gray-100 text-green-900 px-4 md:px-6 py-2 md:py-2 rounded-lg text-sm md:text-base font-semibold transition transform hover:scale-105 shadow-lg">
-                                            Đặt hàng ngay
-                                        </button>
-                                    </div>
-                                    <div class="hidden md:block">
-                                        <img src="images/iphone.jpg" alt="iPhone" class="h-48 md:h-56 object-contain drop-shadow-2xl">
+                        <div class="relative w-full h-full">
+                            <img src="images/sale.jpg" alt="Sale" class="w-full h-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center">
+                                <div class="container mx-auto px-6 md:px-12">
+                                    <div class="text-white max-w-lg">
+                                        <h2 class="text-2xl md:text-4xl font-bold mb-2">Siêu Sale Tháng 10</h2>
+                                        <p class="text-lg mb-4 text-yellow-300 font-bold">Giảm đến 50%</p>
+                                        <button
+                                            class="bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-full font-bold transition">Săn
+                                            deal ngay</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Slider Controls -->
-                <button onclick="prevSlide()" class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 md:p-3 shadow-lg transition transform hover:scale-110 opacity-0 group-hover:opacity-100">
-                    <i class="fas fa-chevron-left text-gray-800 text-sm md:text-base"></i>
+                <button onclick="prevSlide()"
+                    class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white rounded-full p-2 md:p-3 shadow-lg transition transform hover:scale-110 opacity-0 group-hover:opacity-100">
+                    <i class="fas fa-chevron-left text-gray-800"></i>
                 </button>
-                <button onclick="nextSlide()" class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 md:p-3 shadow-lg transition transform hover:scale-110 opacity-0 group-hover:opacity-100">
-                    <i class="fas fa-chevron-right text-gray-800 text-sm md:text-base"></i>
+                <button onclick="nextSlide()"
+                    class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white rounded-full p-2 md:p-3 shadow-lg transition transform hover:scale-110 opacity-0 group-hover:opacity-100">
+                    <i class="fas fa-chevron-right text-gray-800"></i>
                 </button>
-                
+
                 <!-- Dots -->
                 <div class="absolute bottom-2 md:bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-                    <button class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition" onclick="goToSlide(0)"></button>
-                    <button class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition" onclick="goToSlide(1)"></button>
-                    <button class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition" onclick="goToSlide(2)"></button>
+                    <button
+                        class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition"
+                        onclick="goToSlide(0)"></button>
+                    <button
+                        class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition"
+                        onclick="goToSlide(1)"></button>
+                    <button
+                        class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition"
+                        onclick="goToSlide(2)"></button>
                 </div>
             </div>
         </div>
     </section>
 
 
-<!-- Hãng sản xuất -->
-<section class="bg-white py-6 border-t border-b border-gray-200">
-  <div class="container mx-auto px-4">
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Hãng sản xuất</h2>
+    <!-- Hãng sản xuất -->
+    <section class="bg-gray-50 py-6 border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <!-- Grid Layout: 2 cột mobile, 4 cột tablet, 8 cột desktop để giống ảnh mẫu -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
 
-    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
-      <!-- Xiaomi -->
-      <button onclick="filterByBrand('xiaomi')"
-        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-        <img src="images/xiaomi.png" alt="Xiaomi" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
-      </button>
+                <!-- 1. Samsung -->
+                <button onclick="filterByBrand('samsung')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="images/logo_samsung_ngang_1624d75bd8.webp" alt="Samsung"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
 
-      <!-- Vivo -->
-      <button onclick="filterByBrand('vivo')"
-        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-        <img src="images/vivo.png" alt="Vivo" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
-      </button>
+                <!-- 2. HONOR -->
+                <button onclick="filterByBrand('honor')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="https://cdn.tgdd.vn/Brand/1/logo-honor-149x40.png" alt="HONOR"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
 
-      <!-- HONOR -->
-      <button onclick="filterByBrand('honor')"
-        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-        <img src="images/honor.png" alt="HONOR" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
-      </button>
+                <!-- 3. TECNO -->
+                <button onclick="filterByBrand('tecno')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="images/logo_tecno_ngang_c587e5f1fa.webp" alt="TECNO"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
 
-      <!-- TECNO -->
-      <button onclick="filterByBrand('tecno')"
-        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-        <img src="images/tecno.png" alt="TECNO" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
-      </button>
+                <!-- 4. Nokia -->
+                <button onclick="filterByBrand('nokia')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="https://cdn.tgdd.vn/Brand/1/Nokia42-b_21.jpg" alt="Nokia"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
 
-      <!-- TCL -->
-      <button onclick="filterByBrand('tcl')"
-        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-        <img src="images/tcl.png" alt="TCL" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
-      </button>
+                <!-- 5. Viettel (Giả lập ảnh nếu chưa có file) -->
+                <button onclick="filterByBrand('viettel')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <span class="text-red-600 font-bold text-lg">viettel</span>
+                </button>
 
-      <!-- Masstel -->
-      <button onclick="filterByBrand('masstel')"
-        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-        <img src="images/masstel.png" alt="Masstel" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
-      </button>
+                <!-- 6. Realme -->
+                <button onclick="filterByBrand('realme')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="images/logo_realme_ngang_0185815a13.webp" alt="Realme"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
 
-      <!-- Nokia -->
-      <button onclick="filterByBrand('nokia')"
-        class="flex items-center justify-center bg-white border border-gray-200 rounded-xl py-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-        <img src="images/nokia.png" alt="Nokia" class="h-6 object-contain grayscale hover:grayscale-0 transition-all duration-300">
-      </button>
-    </div>
-  </div>
-</section>
+                <!-- 7. Mobell -->
+                <button onclick="filterByBrand('mobell')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="https://cdn.tgdd.vn/Brand/1/Mobell42-b_19.jpg" alt="Mobell"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
+
+                <!-- 8. Vivo -->
+                <button onclick="filterByBrand('vivo')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="images/logo_vivo_ngang_45494ff733.webp" alt="Vivo"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
+
+                <!-- 9. OPPO -->
+                <button onclick="filterByBrand('oppo')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="images/logo_oppo_ngang_68d31fcd73.webp" alt="OPPO"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
+
+                <!-- 10. RedMagic -->
+                <button onclick="filterByBrand('redmagic')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <span class="font-bold text-gray-800"><i class="fas fa-dragon text-red-600 mr-1"></i>REDMAGIC</span>
+                </button>
+
+                <!-- 11. ZTE / Nubia -->
+                <button onclick="filterByBrand('zte')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <span class="text-blue-500 font-bold">ZTE</span><span
+                        class="text-red-500 font-bold ml-1">nubia</span>
+                </button>
+
+                <!-- 12. Masstel -->
+                <button onclick="filterByBrand('masstel')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="https://cdn.tgdd.vn/Brand/1/Masstel42-b_0.png" alt="Masstel"
+                        class="h-5 object-contain group-hover:scale-110 transition-transform">
+                </button>
+
+                <!-- 13. TCL -->
+                <button onclick="filterByBrand('tcl')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <span class="text-red-600 font-bold text-xl">TCL</span>
+                </button>
+
+                <!-- 14. Benco -->
+                <button onclick="filterByBrand('benco')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <span class="text-orange-500 font-bold text-lg">benco</span>
+                </button>
+
+                <!-- 15. Inoi -->
+                <button onclick="filterByBrand('inoi')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <span class="text-purple-600 font-bold text-lg">inoi</span>
+                </button>
+
+                <!-- 16. Itel -->
+                <button onclick="filterByBrand('itel')"
+                    class="group bg-white border border-gray-300 rounded-lg h-[50px] flex items-center justify-center hover:shadow-md hover:border-blue-500 transition-all duration-200">
+                    <img src="https://cdn.tgdd.vn/Brand/1/Itel42-b_54.jpg" alt="Itel"
+                        class="h-6 object-contain group-hover:scale-110 transition-transform">
+                </button>
+
+            </div>
+        </div>
+    </section>
 
 
 
 
-    
+
 
     <!-- Main Content -->
     <main class="container mx-auto px-3 md:px-4 lg:px-6 py-4 md:py-5">
         <div class="flex flex-col lg:flex-row gap-4 lg:gap-5 lg:items-start">
-            
+
             <!-- Sidebar Filter - Kéo dài theo products -->
             <aside id="filterSidebar" class="hidden lg:block flex-shrink-0 lg:sticky lg:top-4 lg:self-start">
-                
+
                 <!-- Bộ lọc tìm kiếm Header -->
                 <div class="bg-white rounded-lg p-3.5 mb-3 shadow-sm border border-gray-200">
                     <h2 class="font-bold text-base text-gray-900">
@@ -184,480 +257,595 @@
 
                 <!-- Filters Container - Kéo dài full height -->
                 <div class="space-y-2.5 overflow-y-auto" style="max-height: calc(100vh - 120px);">
-                
-                <!-- Hãng sản xuất -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('brandSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
-                            Hãng sản xuất
-                        </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="brandIcon"></i>
-                    </button>
-                    
-                    <div id="brandSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="iphone" onchange="toggleBrandFilter('iphone')">
-                            <span class="text-sm text-gray-600">Apple</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="samsung" onchange="toggleBrandFilter('samsung')">
-                            <span class="text-sm text-gray-600">Samsung</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="xiaomi" onchange="toggleBrandFilter('xiaomi')">
-                            <span class="text-sm text-gray-600">Xiaomi</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="oppo" onchange="toggleBrandFilter('oppo')">
-                            <span class="text-sm text-gray-600">OPPO</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="honor" onchange="toggleBrandFilter('honor')">
-                            <span class="text-sm text-gray-600">HONOR</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="tecno" onchange="toggleBrandFilter('tecno')">
-                            <span class="text-sm text-gray-600">Tecno</span>
-                        </label>
-                    </div>
-                    
-                    <button class="text-blue-600 text-sm mt-3 hover:underline font-medium">Xem thêm</button>
-                </div>
 
-                <!-- Loại phụ kiện -->
-                <div id="accessoryFilter" class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200" style="display:none;">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('accessorySection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
-                            Loại phụ kiện
-                        </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="accessoryIcon"></i>
-                    </button>
-                    
-                    <div id="accessorySection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="tainghe" onchange="toggleAccessoryFilter('tainghe')">
-                            <span class="text-sm text-gray-600">Tai nghe</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="sac" onchange="toggleAccessoryFilter('sac')">
-                            <span class="text-sm text-gray-600">Sạc & Pin dự phòng</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="cap" onchange="toggleAccessoryFilter('cap')">
-                            <span class="text-sm text-gray-600">Cáp sạc</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="oplung" onchange="toggleAccessoryFilter('oplung')">
-                            <span class="text-sm text-gray-600">Ốp lưng</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="cuongluc" onchange="toggleAccessoryFilter('cuongluc')">
-                            <span class="text-sm text-gray-600">Cường lực</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="giado" onchange="toggleAccessoryFilter('giado')">
-                            <span class="text-sm text-gray-600">Giá đỡ</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="gaychup" onchange="toggleAccessoryFilter('gaychup')">
-                            <span class="text-sm text-gray-600">Gậy chụp ảnh</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Mức giá -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('priceSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
-                            Mức giá
-                        </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="priceIcon"></i>
-                    </button>
-                    
-                    <div id="priceSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="0-2000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Dưới 2 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="2000000-4000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 2 - 4 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="4000000-7000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 4 - 7 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="7000000-13000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 7 - 13 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="13000000-20000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 13 - 20 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="20000000-999999999" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Trên 20 triệu</span>
-                        </label>
-                    </div>
-                    
-                    <!-- Price Range Slider -->
-                    <div class="mt-2.5 pt-2.5 border-t">
-                        <p class="text-xs text-gray-600 mb-2">Hoặc nhập khoảng giá phù hợp với bạn:</p>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="minPrice" placeholder="390.000" class="w-full px-2.5 py-1.5 border rounded text-xs" value="390000">
-                            <span class="text-gray-500 text-sm">~</span>
-                            <input type="number" id="maxPrice" placeholder="63.990.000" class="w-full px-2.5 py-1.5 border rounded text-xs" value="63990000">
-                        </div>
-                        <button onclick="applyCustomPriceRange()" class="w-full mt-2 bg-[var(--red-main)] text-white py-1.5 rounded text-xs font-semibold hover:bg-[var(--red-main-dark)] transition">
-                            Áp dụng
+                    <!-- Hãng sản xuất -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('brandSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">
+                                Hãng sản xuất
+                            </h3>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform"
+                                id="brandIcon"></i>
                         </button>
-                    </div>
-                </div>
 
-                <!-- Hệ điều hành -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('osSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Hệ điều hành
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="osIcon"></i>
-                    </button>
-                    
-                    <div id="osSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="os-filter w-4 h-4 accent-blue-600" value="ios" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">iOS</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="os-filter w-4 h-4 accent-blue-600" value="android" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Android</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Dung lượng ROM -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('romSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Dung lượng ROM
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="romIcon"></i>
-                    </button>
-                    
-                    <div id="romSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="128" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">≤128 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="256" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">256 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="512" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">512 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="1024" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">1 TB</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Kết nối -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('connectSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Kết nối
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="connectIcon"></i>
-                    </button>
-                    
-                    <div id="connectSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="nfc" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">NFC</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="bluetooth" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Bluetooth</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="infrared" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Hồng ngoại</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Hiệu năng và Pin -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('batterySection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
-                            Hiệu năng và Pin
-                        </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="batteryIcon"></i>
-                    </button>
-                    
-                    <div id="batterySection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="0-3000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Dưới 3000 mAh</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="3000-4000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Pin từ 3000 - 4000 mAh</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="4000-5500" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Pin từ 4000 - 5500 mAh</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="5500-99999" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Pin trâu: trên 5500 mAh</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Hỗ trợ mạng -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('networkSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
-                            Hỗ trợ mạng
-                        </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="networkIcon"></i>
-                    </button>
-                    
-                    <div id="networkSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="5g" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">5G</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="4g" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">4G</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- RAM -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('ramSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">RAM
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="ramIcon"></i>
-                    </button>
-                    
-                    <div id="ramSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="16" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">16 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="12" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">12 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="8" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">8 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="6" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">6 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="4" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">4 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="3" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">3 GB</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Thẻ nhớ -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('sdSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
-                            Thẻ nhớ
-                        </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="sdIcon"></i>
-                    </button>
-                    
-                    <div id="sdSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="microsd" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">MicroSD</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="none" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Không</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Màn hình -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('screenSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Màn hình
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="screenIcon"></i>
-                    </button>
-                    
-                    <div id="screenSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="small" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Màn hình nhỏ</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="5-6.5" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 5 - 6.5 inch</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="6.5-6.8" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 6.5 - 6.8 inch</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="6.8+" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Trên 6.8 inch</span>
-                        </label>
-                    </div>
-                    
-                    <!-- Chuẩn màn hình -->
-                    <div class="mt-2.5 pt-2.5 border-t">
-                        <p class="text-sm font-semibold mb-2">Chuẩn màn hình</p>
-                        <div class="space-y-1">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="retina" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">Retina (iPhone)</span>
+                        <div id="brandSection" class="space-y-1">
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="iphone"
+                                    onchange="toggleBrandFilter('iphone')">
+                                <span class="text-sm text-gray-600">Apple</span>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="2k" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">2K/2K+</span>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="samsung"
+                                    onchange="toggleBrandFilter('samsung')">
+                                <span class="text-sm text-gray-600">Samsung</span>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="1.5k" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">1.5K</span>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="xiaomi"
+                                    onchange="toggleBrandFilter('xiaomi')">
+                                <span class="text-sm text-gray-600">Xiaomi</span>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="fhd" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">FHD/FHD+</span>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="oppo"
+                                    onchange="toggleBrandFilter('oppo')">
+                                <span class="text-sm text-gray-600">OPPO</span>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="hd" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">HD/HD+</span>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="honor"
+                                    onchange="toggleBrandFilter('honor')">
+                                <span class="text-sm text-gray-600">HONOR</span>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="qxga" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">QXGA</span>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="tecno"
+                                    onchange="toggleBrandFilter('tecno')">
+                                <span class="text-sm text-gray-600">Tecno</span>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="qvga" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">QQVGA/QVGA</span>
+                        </div>
+
+                        <button class="text-blue-600 text-sm mt-3 hover:underline font-medium">Xem thêm</button>
+                    </div>
+
+                    <!-- Loại phụ kiện -->
+                    <div id="accessoryFilter" class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200"
+                        style="display:none;">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('accessorySection')">
+                            <h3 class="font-semibold text-sm text-gray-900">
+                                Loại phụ kiện
+                            </h3>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform"
+                                id="accessoryIcon"></i>
+                        </button>
+
+                        <div id="accessorySection" class="space-y-1">
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="tainghe"
+                                    onchange="toggleAccessoryFilter('tainghe')">
+                                <span class="text-sm text-gray-600">Tai nghe</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="sac"
+                                    onchange="toggleAccessoryFilter('sac')">
+                                <span class="text-sm text-gray-600">Sạc & Pin dự phòng</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="cap"
+                                    onchange="toggleAccessoryFilter('cap')">
+                                <span class="text-sm text-gray-600">Cáp sạc</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="oplung"
+                                    onchange="toggleAccessoryFilter('oplung')">
+                                <span class="text-sm text-gray-600">Ốp lưng</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="cuongluc"
+                                    onchange="toggleAccessoryFilter('cuongluc')">
+                                <span class="text-sm text-gray-600">Cường lực</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="giado"
+                                    onchange="toggleAccessoryFilter('giado')">
+                                <span class="text-sm text-gray-600">Giá đỡ</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="gaychup"
+                                    onchange="toggleAccessoryFilter('gaychup')">
+                                <span class="text-sm text-gray-600">Gậy chụp ảnh</span>
                             </label>
                         </div>
                     </div>
-                    
-                    <!-- Tần số quét -->
-                    <div class="mt-2.5 pt-2.5 border-t">
-                        <p class="text-sm font-semibold mb-2">Tần số quét</p>
-                        <div class="space-y-1">
+
+                    <!-- Mức giá -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('priceSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">
+                                Mức giá
+                            </h3>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform"
+                                id="priceIcon"></i>
+                        </button>
+
+                        <div id="priceSection" class="space-y-1">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="144+" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">Trên 144 Hz</span>
+                                <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="all"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Tất cả</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="120" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">120 Hz</span>
+                                <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="0-2000000"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Dưới 2 triệu</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="90" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">90 Hz</span>
+                                <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600"
+                                    value="2000000-4000000" onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Từ 2 - 4 triệu</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="60" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">60 Hz</span>
+                                <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600"
+                                    value="4000000-7000000" onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Từ 4 - 7 triệu</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600"
+                                    value="7000000-13000000" onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Từ 7 - 13 triệu</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600"
+                                    value="13000000-20000000" onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Từ 13 - 20 triệu</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600"
+                                    value="20000000-999999999" onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Trên 20 triệu</span>
+                            </label>
+                        </div>
+
+                        <!-- Price Range Slider -->
+                        <div class="mt-2.5 pt-2.5 border-t">
+                            <p class="text-xs text-gray-600 mb-2">Hoặc nhập khoảng giá phù hợp với bạn:</p>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="minPrice" placeholder="390.000"
+                                    class="w-full px-2.5 py-1.5 border rounded text-xs" value="390000">
+                                <span class="text-gray-500 text-sm">~</span>
+                                <input type="number" id="maxPrice" placeholder="63.990.000"
+                                    class="w-full px-2.5 py-1.5 border rounded text-xs" value="63990000">
+                            </div>
+                            <button onclick="applyCustomPriceRange()"
+                                class="w-full mt-2 bg-[var(--red-main)] text-white py-1.5 rounded text-xs font-semibold hover:bg-[var(--red-main-dark)] transition">
+                                Áp dụng
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hệ điều hành -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('osSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">Hệ điều hành
+                            </h3>
+                            <i class="fas fa-chevron-up text-gray-500 text-sm" id="osIcon"></i>
+                        </button>
+
+                        <div id="osSection" class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="os-filter w-4 h-4 accent-blue-600" value="ios"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">iOS</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="os-filter w-4 h-4 accent-blue-600" value="android"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Android</span>
                             </label>
                         </div>
                     </div>
-                </div>
 
-                <!-- Camera -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('cameraSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Camera
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="cameraIcon"></i>
-                    </button>
-                    
-                    <div id="cameraSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="slowmotion" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Quay phim Slow Motion</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="ai" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">AI Camera</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="beauty" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Hiệu ứng làm đẹp</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="zoom" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Zoom quang học</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="ois" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Chống rung OIS</span>
-                        </label>
-                    </div>
-                    
-                    <button class="text-blue-600 text-sm mt-3 hover:underline font-medium">Xem thêm</button>
-                </div>
+                    <!-- Dung lượng ROM -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('romSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">Dung lượng ROM
+                            </h3>
+                            <i class="fas fa-chevron-up text-gray-500 text-sm" id="romIcon"></i>
+                        </button>
 
-                <!-- Tính năng đặc biệt -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('featureSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Tính năng đặc biệt
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="featureIcon"></i>
-                    </button>
-                    
-                    <div id="featureSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="wireless-charging" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Sạc không dây</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="reverse-charging" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Sạc ngược cho thiết bị khác</span>
-                        </label>
+                        <div id="romSection" class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="128"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">≤128 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="256"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">256 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="512"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">512 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="1024"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">1 TB</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-                
+
+                    <!-- Kết nối -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('connectSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">Kết nối
+                            </h3>
+                            <i class="fas fa-chevron-up text-gray-500 text-sm" id="connectIcon"></i>
+                        </button>
+
+                        <div id="connectSection" class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="nfc"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">NFC</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="bluetooth"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Bluetooth</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="infrared"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Hồng ngoại</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Hiệu năng và Pin -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('batterySection')">
+                            <h3 class="font-semibold text-sm text-gray-900">
+                                Hiệu năng và Pin
+                            </h3>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform"
+                                id="batteryIcon"></i>
+                        </button>
+
+                        <div id="batterySection" class="space-y-1">
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="all"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Tất cả</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="0-3000"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Dưới 3000 mAh</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="3000-4000"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Pin từ 3000 - 4000 mAh</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="4000-5500"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Pin từ 4000 - 5500 mAh</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="5500-99999"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Pin trâu: trên 5500 mAh</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Hỗ trợ mạng -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('networkSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">
+                                Hỗ trợ mạng
+                            </h3>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform"
+                                id="networkIcon"></i>
+                        </button>
+
+                        <div id="networkSection" class="space-y-1">
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="5g"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">5G</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="4g"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">4G</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- RAM -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('ramSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">RAM
+                            </h3>
+                            <i class="fas fa-chevron-up text-gray-500 text-sm" id="ramIcon"></i>
+                        </button>
+
+                        <div id="ramSection" class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="16"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">16 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="12"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">12 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="8"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">8 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="6"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">6 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="4"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">4 GB</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="3"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">3 GB</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Thẻ nhớ -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('sdSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">
+                                Thẻ nhớ
+                            </h3>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="sdIcon"></i>
+                        </button>
+
+                        <div id="sdSection" class="space-y-1">
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="all"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Tất cả</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="microsd"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">MicroSD</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                                <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="none"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Không</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Màn hình -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('screenSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">Màn hình
+                            </h3>
+                            <i class="fas fa-chevron-up text-gray-500 text-sm" id="screenIcon"></i>
+                        </button>
+
+                        <div id="screenSection" class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="all"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Tất cả</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="small"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Màn hình nhỏ</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="5-6.5"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Từ 5 - 6.5 inch</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="6.5-6.8"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Từ 6.5 - 6.8 inch</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="6.8+"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Trên 6.8 inch</span>
+                            </label>
+                        </div>
+
+                        <!-- Chuẩn màn hình -->
+                        <div class="mt-2.5 pt-2.5 border-t">
+                            <p class="text-sm font-semibold mb-2">Chuẩn màn hình</p>
+                            <div class="space-y-1">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600"
+                                        value="retina" onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">Retina (iPhone)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="2k"
+                                        onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">2K/2K+</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600"
+                                        value="1.5k" onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">1.5K</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="fhd"
+                                        onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">FHD/FHD+</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="hd"
+                                        onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">HD/HD+</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600"
+                                        value="qxga" onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">QXGA</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600"
+                                        value="qvga" onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">QQVGA/QVGA</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Tần số quét -->
+                        <div class="mt-2.5 pt-2.5 border-t">
+                            <p class="text-sm font-semibold mb-2">Tần số quét</p>
+                            <div class="space-y-1">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="144+"
+                                        onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">Trên 144 Hz</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="120"
+                                        onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">120 Hz</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="90"
+                                        onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">90 Hz</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="60"
+                                        onchange="applyFilters()">
+                                    <span class="text-sm text-gray-600">60 Hz</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camera -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('cameraSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">Camera
+                            </h3>
+                            <i class="fas fa-chevron-up text-gray-500 text-sm" id="cameraIcon"></i>
+                        </button>
+
+                        <div id="cameraSection" class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="all"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Tất cả</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="slowmotion"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Quay phim Slow Motion</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="ai"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">AI Camera</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="beauty"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Hiệu ứng làm đẹp</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="zoom"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Zoom quang học</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="ois"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Chống rung OIS</span>
+                            </label>
+                        </div>
+
+                        <button class="text-blue-600 text-sm mt-3 hover:underline font-medium">Xem thêm</button>
+                    </div>
+
+                    <!-- Tính năng đặc biệt -->
+                    <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
+                        <button class="flex items-center justify-between w-full mb-2.5"
+                            onclick="toggleSection('featureSection')">
+                            <h3 class="font-semibold text-sm text-gray-900">Tính năng đặc biệt
+                            </h3>
+                            <i class="fas fa-chevron-up text-gray-500 text-sm" id="featureIcon"></i>
+                        </button>
+
+                        <div id="featureSection" class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="all"
+                                    onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Tất cả</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600"
+                                    value="wireless-charging" onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Sạc không dây</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600"
+                                    value="reverse-charging" onchange="applyFilters()">
+                                <span class="text-sm text-gray-600">Sạc ngược cho thiết bị khác</span>
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- End Filters Container -->
 
@@ -665,7 +853,7 @@
 
             <!-- Products Section - Tự động dãn theo grid -->
             <section class="flex-1 w-full min-w-0">
-                
+
                 <!-- Filter Tags - Xu hướng như FPTShop -->
                 <div class="w-full mb-3">
                     <div class="flex items-center gap-2 mb-2">
@@ -683,16 +871,24 @@
                             Tìm thấy <span id="productCount" class="font-bold text-red-600">142</span> kết quả
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <button class="sort-btn px-4 py-2 text-sm font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors" onclick="sortProducts('featured')">
+                            <button
+                                class="sort-btn px-4 py-2 text-sm font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
+                                onclick="sortProducts('featured')">
                                 Nổi bật
                             </button>
-                            <button class="sort-btn px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 hover:border-red-600 hover:text-red-600 transition-colors" onclick="sortProducts('price-asc')">
+                            <button
+                                class="sort-btn px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 hover:border-red-600 hover:text-red-600 transition-colors"
+                                onclick="sortProducts('price-asc')">
                                 Giá tăng dần
                             </button>
-                            <button class="sort-btn px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 hover:border-red-600 hover:text-red-600 transition-colors" onclick="sortProducts('price-desc')">
+                            <button
+                                class="sort-btn px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 hover:border-red-600 hover:text-red-600 transition-colors"
+                                onclick="sortProducts('price-desc')">
                                 Giá giảm dần
                             </button>
-                            <button class="sort-btn px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 hover:border-red-600 hover:text-red-600 transition-colors" onclick="sortProducts('tragop')">
+                            <button
+                                class="sort-btn px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 hover:border-red-600 hover:text-red-600 transition-colors"
+                                onclick="sortProducts('tragop')">
                                 Trả góp 0%
                             </button>
                         </div>
@@ -700,7 +896,9 @@
                 </div>
 
                 <!-- Products Grid - 4-5 cột responsive (ẨN) -->
-                <div id="productsGrid" class="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4" style="display: none;"></div>
+                <div id="productsGrid"
+                    class="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4">
+                </div>
 
             </section>
         </div>
@@ -708,60 +906,60 @@
 
     <script>
         const PRODUCTS = [
-            {id:1,name:'Samsung Galaxy A06 5G 4GB 128GB',brand:'samsung',category:'dienthoai',price:3420000,oldPrice:3920000,discount:13,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',features:['tragop','freeship'],colors:['#e8f5e9','#000000'],image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop',timeLeft:'01 ngày 16:12:29'},
-            {id:2,name:'Samsung Galaxy A07 4GB 128GB',brand:'samsung',category:'dienthoai',price:3190000,oldPrice:3390000,discount:6,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#4fc3f7','#006064'],image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop',timeLeft:'01 ngày 16:12:29'},
-            {id:3,name:'Samsung Galaxy A16 4GB 128GB',brand:'samsung',category:'dienthoai',price:3700000,oldPrice:5000000,discount:26,ram:4,storage:128,screen:'6.7" Super AMOLED FHD+',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#e0e0e0'],image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop'},
-            {id:4,name:'OPPO A5i 4GB 64GB',brand:'oppo',category:'dienthoai',price:3290000,ram:4,storage:64,screen:'6.7 inch',camera:'50MP góc siêu rộng',features:['tragop'],colors:['#9575cd','#b39ddb'],image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
-            {id:5,name:'iPhone 15 Pro Max 256GB',brand:'iphone',category:'dienthoai',price:28990000,oldPrice:34990000,discount:17,ram:8,storage:256,screen:'6.7"',camera:'48MP',features:['tragop','freeship'],colors:['#4a4a4a','#e8e8e8','#ffd700'],image:'https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=400&h=400&fit=crop'},
-            {id:6,name:'Xiaomi 14 5G 512GB',brand:'xiaomi',category:'dienthoai',price:18990000,oldPrice:24990000,discount:24,ram:12,storage:512,screen:'6.36"',camera:'50MP',features:['tragop','freeship'],colors:['#81c784','#000000'],image:'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=400&fit=crop'},
-            {id:7,name:'OPPO Reno12 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:8290000,oldPrice:9990000,discount:17,ram:8,storage:256,screen:'6.67"',camera:'50MP',features:['tragop'],colors:['#ff9800','#9c27b0'],image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop'},
-            {id:8,name:'HONOR X7c 8GB 256GB',brand:'honor',category:'dienthoai',price:4790000,oldPrice:5990000,discount:20,ram:8,storage:256,screen:'6.77"',camera:'108MP',features:['tragop'],colors:['#000000','#4fc3f7'],image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop'},
-            {id:9,name:'Samsung Galaxy S24 Ultra 12GB 256GB',brand:'samsung',category:'dienthoai',price:29990000,oldPrice:33990000,discount:12,ram:12,storage:256,screen:'6.8" Dynamic AMOLED 2X',camera:'200MP',features:['tragop','freeship'],colors:['#9e9e9e','#000000','#b39ddb'],image:'https://images.unsplash.com/photo-1610945264803-c22b62d2a7b4?w=400&h=400&fit=crop',timeLeft:'2 ngày 08:30:15'},
-            {id:10,name:'iPhone 14 Pro 128GB',brand:'iphone',category:'dienthoai',price:24990000,oldPrice:27990000,discount:11,ram:6,storage:128,screen:'6.1"',camera:'48MP',features:['tragop','freeship'],colors:['#4a148c','#000000','#ffd700'],image:'https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=400&h=400&fit=crop'},
-            {id:11,name:'Xiaomi Redmi Note 13 Pro 8GB 256GB',brand:'xiaomi',category:'dienthoai',price:6990000,oldPrice:8990000,discount:22,ram:8,storage:256,screen:'6.67" AMOLED',camera:'200MP',features:['tragop','freeship'],colors:['#9c27b0','#000000','#e3f2fd'],image:'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400&h=400&fit=crop'},
-            {id:12,name:'OPPO Find N3 Flip 12GB 256GB',brand:'oppo',category:'dienthoai',price:19990000,oldPrice:22990000,discount:13,ram:12,storage:256,screen:'6.8"',camera:'50MP',features:['tragop','freeship'],colors:['#ffc107','#f48fb1'],image:'https://images.unsplash.com/photo-1583573503122-a3c6ce6ec1e0?w=400&h=400&fit=crop'},
-            {id:13,name:'Samsung Galaxy Z Flip5 8GB 256GB',brand:'samsung',category:'dienthoai',price:16990000,oldPrice:20990000,discount:19,ram:8,storage:256,screen:'6.7" Foldable AMOLED',camera:'12MP',features:['tragop','freeship'],colors:['#b39ddb','#ffeb3b','#000000'],image:'https://images.unsplash.com/photo-1591122947157-26bad3a117d2?w=400&h=400&fit=crop'},
-            {id:14,name:'iPhone 13 128GB',brand:'iphone',category:'dienthoai',price:17990000,oldPrice:18990000,discount:5,ram:4,storage:128,screen:'6.1"',camera:'12MP',features:['tragop','freeship'],colors:['#f48fb1','#000000','#e3f2fd','#ffffff'],image:'https://images.unsplash.com/photo-1632661674318-1c8e2b54d4f7?w=400&h=400&fit=crop'},
-            {id:15,name:'Xiaomi 13T Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:12990000,oldPrice:14990000,discount:13,ram:12,storage:512,screen:'6.67" AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#90caf9'],image:'https://images.unsplash.com/photo-1567581935884-3349723552ca?w=400&h=400&fit=crop'},
-            {id:16,name:'OPPO Reno11 F 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:7990000,oldPrice:8990000,discount:11,ram:8,storage:256,screen:'6.7" AMOLED',camera:'64MP',features:['tragop'],colors:['#80deea','#f48fb1'],image:'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&h=400&fit=crop'},
-            {id:17,name:'HONOR Magic6 Pro 12GB 512GB',brand:'honor',category:'dienthoai',price:24990000,oldPrice:29990000,discount:17,ram:12,storage:512,screen:'6.8" AMOLED',camera:'180MP',features:['tragop','freeship'],colors:['#000000','#e8f5e9'],image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop&auto=format'},
-            {id:18,name:'Samsung Galaxy A55 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:9490000,oldPrice:10990000,discount:14,ram:8,storage:128,screen:'6.6" Super AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#90caf9','#b39ddb','#000000'],image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop&auto=format'},
-            {id:19,name:'Xiaomi Redmi 13C 6GB 128GB',brand:'xiaomi',category:'dienthoai',price:2990000,oldPrice:3490000,discount:14,ram:6,storage:128,screen:'6.74" IPS LCD',camera:'50MP',features:['tragop'],colors:['#000000','#90caf9','#e8f5e9'],image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop&auto=format'},
-            {id:20,name:'iPhone 15 128GB',brand:'iphone',category:'dienthoai',price:22990000,oldPrice:24990000,discount:8,ram:6,storage:128,screen:'6.1"',camera:'48MP',features:['tragop','freeship'],colors:['#f48fb1','#000000','#90caf9','#ffeb3b'],image:'https://images.unsplash.com/photo-1678685888221-cda269d3b1db?w=400&h=400&fit=crop'},
-            {id:21,name:'OPPO A79 5G 8GB 256GB',brand:'oppo',category:'dienthoai',price:6490000,oldPrice:6990000,discount:7,ram:8,storage:256,screen:'6.72" IPS LCD',camera:'50MP',features:['tragop'],colors:['#b39ddb','#000000'],image:'https://images.unsplash.com/photo-1571066811602-716837d681de?w=400&h=400&fit=crop'},
-            {id:22,name:'Samsung Galaxy M34 5G 8GB 128GB',brand:'samsung',category:'dienthoai',price:6290000,oldPrice:6990000,discount:10,ram:8,storage:128,screen:'6.5" Super AMOLED',camera:'50MP',features:['tragop','freeship'],colors:['#000000','#90caf9','#e8f5e9'],image:'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop&auto=format'},
-            {id:23,name:'Xiaomi POCO X6 Pro 12GB 512GB',brand:'xiaomi',category:'dienthoai',price:9990000,oldPrice:10990000,discount:9,ram:12,storage:512,screen:'6.67" AMOLED',camera:'64MP',features:['tragop','freeship'],colors:['#000000','#ffeb3b'],image:'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop&auto=format'},
-            {id:24,name:'HONOR X9b 5G 12GB 256GB',brand:'honor',category:'dienthoai',price:6990000,oldPrice:7990000,discount:13,ram:12,storage:256,screen:'6.78" AMOLED',camera:'108MP',features:['tragop'],colors:['#b39ddb','#000000','#fff8e1'],image:'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop&auto=format',category:'dienthoai'},
-            
+            { id: 1, name: 'Samsung Galaxy A06 5G 4GB 128GB', brand: 'samsung', category: 'dienthoai', price: 3420000, oldPrice: 3920000, discount: 13, ram: 4, storage: 128, screen: '6.7 inch', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#e8f5e9', '#000000'], image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop', timeLeft: '01 ngày 16:12:29' },
+            { id: 2, name: 'Samsung Galaxy A07 4GB 128GB', brand: 'samsung', category: 'dienthoai', price: 3190000, oldPrice: 3390000, discount: 6, ram: 4, storage: 128, screen: '6.7 inch', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#000000', '#4fc3f7', '#006064'], image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop', timeLeft: '01 ngày 16:12:29' },
+            { id: 3, name: 'Samsung Galaxy A16 4GB 128GB', brand: 'samsung', category: 'dienthoai', price: 3700000, oldPrice: 5000000, discount: 26, ram: 4, storage: 128, screen: '6.7" Super AMOLED FHD+', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#000000', '#e0e0e0'], image: 'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop' },
+            { id: 4, name: 'OPPO A5i 4GB 64GB', brand: 'oppo', category: 'dienthoai', price: 3290000, ram: 4, storage: 64, screen: '6.7 inch', camera: '50MP góc siêu rộng', features: ['tragop'], colors: ['#9575cd', '#b39ddb'], image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop' },
+            { id: 5, name: 'iPhone 15 Pro Max 256GB', brand: 'iphone', category: 'dienthoai', price: 28990000, oldPrice: 34990000, discount: 17, ram: 8, storage: 256, screen: '6.7"', camera: '48MP', features: ['tragop', 'freeship'], colors: ['#4a4a4a', '#e8e8e8', '#ffd700'], image: 'https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=400&h=400&fit=crop' },
+            { id: 6, name: 'Xiaomi 14 5G 512GB', brand: 'xiaomi', category: 'dienthoai', price: 18990000, oldPrice: 24990000, discount: 24, ram: 12, storage: 512, screen: '6.36"', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#81c784', '#000000'], image: 'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=400&fit=crop' },
+            { id: 7, name: 'OPPO Reno12 F 5G 8GB 256GB', brand: 'oppo', category: 'dienthoai', price: 8290000, oldPrice: 9990000, discount: 17, ram: 8, storage: 256, screen: '6.67"', camera: '50MP', features: ['tragop'], colors: ['#ff9800', '#9c27b0'], image: 'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop' },
+            { id: 8, name: 'HONOR X7c 8GB 256GB', brand: 'honor', category: 'dienthoai', price: 4790000, oldPrice: 5990000, discount: 20, ram: 8, storage: 256, screen: '6.77"', camera: '108MP', features: ['tragop'], colors: ['#000000', '#4fc3f7'], image: 'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop' },
+            { id: 9, name: 'Samsung Galaxy S24 Ultra 12GB 256GB', brand: 'samsung', category: 'dienthoai', price: 29990000, oldPrice: 33990000, discount: 12, ram: 12, storage: 256, screen: '6.8" Dynamic AMOLED 2X', camera: '200MP', features: ['tragop', 'freeship'], colors: ['#9e9e9e', '#000000', '#b39ddb'], image: 'https://images.unsplash.com/photo-1610945264803-c22b62d2a7b4?w=400&h=400&fit=crop', timeLeft: '2 ngày 08:30:15' },
+            { id: 10, name: 'iPhone 14 Pro 128GB', brand: 'iphone', category: 'dienthoai', price: 24990000, oldPrice: 27990000, discount: 11, ram: 6, storage: 128, screen: '6.1"', camera: '48MP', features: ['tragop', 'freeship'], colors: ['#4a148c', '#000000', '#ffd700'], image: 'https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=400&h=400&fit=crop' },
+            { id: 11, name: 'Xiaomi Redmi Note 13 Pro 8GB 256GB', brand: 'xiaomi', category: 'dienthoai', price: 6990000, oldPrice: 8990000, discount: 22, ram: 8, storage: 256, screen: '6.67" AMOLED', camera: '200MP', features: ['tragop', 'freeship'], colors: ['#9c27b0', '#000000', '#e3f2fd'], image: 'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400&h=400&fit=crop' },
+            { id: 12, name: 'OPPO Find N3 Flip 12GB 256GB', brand: 'oppo', category: 'dienthoai', price: 19990000, oldPrice: 22990000, discount: 13, ram: 12, storage: 256, screen: '6.8"', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#ffc107', '#f48fb1'], image: 'https://images.unsplash.com/photo-1583573503122-a3c6ce6ec1e0?w=400&h=400&fit=crop' },
+            { id: 13, name: 'Samsung Galaxy Z Flip5 8GB 256GB', brand: 'samsung', category: 'dienthoai', price: 16990000, oldPrice: 20990000, discount: 19, ram: 8, storage: 256, screen: '6.7" Foldable AMOLED', camera: '12MP', features: ['tragop', 'freeship'], colors: ['#b39ddb', '#ffeb3b', '#000000'], image: 'https://images.unsplash.com/photo-1591122947157-26bad3a117d2?w=400&h=400&fit=crop' },
+            { id: 14, name: 'iPhone 13 128GB', brand: 'iphone', category: 'dienthoai', price: 17990000, oldPrice: 18990000, discount: 5, ram: 4, storage: 128, screen: '6.1"', camera: '12MP', features: ['tragop', 'freeship'], colors: ['#f48fb1', '#000000', '#e3f2fd', '#ffffff'], image: 'https://images.unsplash.com/photo-1632661674318-1c8e2b54d4f7?w=400&h=400&fit=crop' },
+            { id: 15, name: 'Xiaomi 13T Pro 12GB 512GB', brand: 'xiaomi', category: 'dienthoai', price: 12990000, oldPrice: 14990000, discount: 13, ram: 12, storage: 512, screen: '6.67" AMOLED', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#000000', '#90caf9'], image: 'https://images.unsplash.com/photo-1567581935884-3349723552ca?w=400&h=400&fit=crop' },
+            { id: 16, name: 'OPPO Reno11 F 5G 8GB 256GB', brand: 'oppo', category: 'dienthoai', price: 7990000, oldPrice: 8990000, discount: 11, ram: 8, storage: 256, screen: '6.7" AMOLED', camera: '64MP', features: ['tragop'], colors: ['#80deea', '#f48fb1'], image: 'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&h=400&fit=crop' },
+            { id: 17, name: 'HONOR Magic6 Pro 12GB 512GB', brand: 'honor', category: 'dienthoai', price: 24990000, oldPrice: 29990000, discount: 17, ram: 12, storage: 512, screen: '6.8" AMOLED', camera: '180MP', features: ['tragop', 'freeship'], colors: ['#000000', '#e8f5e9'], image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop&auto=format' },
+            { id: 18, name: 'Samsung Galaxy A55 5G 8GB 128GB', brand: 'samsung', category: 'dienthoai', price: 9490000, oldPrice: 10990000, discount: 14, ram: 8, storage: 128, screen: '6.6" Super AMOLED', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#90caf9', '#b39ddb', '#000000'], image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop&auto=format' },
+            { id: 19, name: 'Xiaomi Redmi 13C 6GB 128GB', brand: 'xiaomi', category: 'dienthoai', price: 2990000, oldPrice: 3490000, discount: 14, ram: 6, storage: 128, screen: '6.74" IPS LCD', camera: '50MP', features: ['tragop'], colors: ['#000000', '#90caf9', '#e8f5e9'], image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop&auto=format' },
+            { id: 20, name: 'iPhone 15 128GB', brand: 'iphone', category: 'dienthoai', price: 22990000, oldPrice: 24990000, discount: 8, ram: 6, storage: 128, screen: '6.1"', camera: '48MP', features: ['tragop', 'freeship'], colors: ['#f48fb1', '#000000', '#90caf9', '#ffeb3b'], image: 'https://images.unsplash.com/photo-1678685888221-cda269d3b1db?w=400&h=400&fit=crop' },
+            { id: 21, name: 'OPPO A79 5G 8GB 256GB', brand: 'oppo', category: 'dienthoai', price: 6490000, oldPrice: 6990000, discount: 7, ram: 8, storage: 256, screen: '6.72" IPS LCD', camera: '50MP', features: ['tragop'], colors: ['#b39ddb', '#000000'], image: 'https://images.unsplash.com/photo-1571066811602-716837d681de?w=400&h=400&fit=crop' },
+            { id: 22, name: 'Samsung Galaxy M34 5G 8GB 128GB', brand: 'samsung', category: 'dienthoai', price: 6290000, oldPrice: 6990000, discount: 10, ram: 8, storage: 128, screen: '6.5" Super AMOLED', camera: '50MP', features: ['tragop', 'freeship'], colors: ['#000000', '#90caf9', '#e8f5e9'], image: 'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop&auto=format' },
+            { id: 23, name: 'Xiaomi POCO X6 Pro 12GB 512GB', brand: 'xiaomi', category: 'dienthoai', price: 9990000, oldPrice: 10990000, discount: 9, ram: 12, storage: 512, screen: '6.67" AMOLED', camera: '64MP', features: ['tragop', 'freeship'], colors: ['#000000', '#ffeb3b'], image: 'https://images.unsplash.com/photo-1592286927505-ed01dd7d2c8f?w=400&h=400&fit=crop&auto=format' },
+            { id: 24, name: 'HONOR X9b 5G 12GB 256GB', brand: 'honor', category: 'dienthoai', price: 6990000, oldPrice: 7990000, discount: 13, ram: 12, storage: 256, screen: '6.78" AMOLED', camera: '108MP', features: ['tragop'], colors: ['#b39ddb', '#000000', '#fff8e1'], image: 'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=400&h=400&fit=crop&auto=format', category: 'dienthoai' },
+
             // PHỤ KIỆN - TAI NGHE
-            {id:101,name:'Tai nghe Bluetooth Apple AirPods Pro 2',brand:'apple',category:'phukien',type:'tainghe',price:5990000,oldPrice:6990000,discount:14,features:['freeship'],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400&h=400&fit=crop',rating:4.5,reviews:152},
-            {id:102,name:'Tai nghe Bluetooth Samsung Galaxy Buds2 Pro',brand:'samsung',category:'phukien',type:'tainghe',price:3490000,oldPrice:4990000,discount:30,features:['tragop'],colors:['#b39ddb','#ffffff','#000000'],image:'https://images.unsplash.com/photo-1590658165737-15a047b7a0c1?w=400&h=400&fit=crop',rating:4.5,reviews:89},
-            {id:103,name:'Tai nghe Bluetooth AirPods 2 Apple',brand:'apple',category:'phukien',type:'tainghe',price:2690000,oldPrice:3190000,discount:16,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=400&h=400&fit=crop',rating:4,reviews:234},
-            {id:104,name:'Tai nghe Bluetooth Samsung Galaxy Buds FE',brand:'samsung',category:'phukien',type:'tainghe',price:1490000,oldPrice:1990000,discount:25,features:[],colors:['#000000','#e0e0e0'],image:'https://images.unsplash.com/photo-1649859394657-c2c90e82446f?w=400&h=400&fit=crop',rating:4,reviews:67},
-            {id:105,name:'Tai nghe Bluetooth Xiaomi Redmi Buds 5 Pro',brand:'xiaomi',category:'phukien',type:'tainghe',price:1390000,oldPrice:1790000,discount:22,features:[],colors:['#000000','#ffffff'],image:'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=400&h=400&fit=crop',rating:4,reviews:43},
-            
+            { id: 101, name: 'Tai nghe Bluetooth Apple AirPods Pro 2', brand: 'apple', category: 'phukien', type: 'tainghe', price: 5990000, oldPrice: 6990000, discount: 14, features: ['freeship'], colors: ['#ffffff'], image: 'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400&h=400&fit=crop', rating: 4.5, reviews: 152 },
+            { id: 102, name: 'Tai nghe Bluetooth Samsung Galaxy Buds2 Pro', brand: 'samsung', category: 'phukien', type: 'tainghe', price: 3490000, oldPrice: 4990000, discount: 30, features: ['tragop'], colors: ['#b39ddb', '#ffffff', '#000000'], image: 'https://images.unsplash.com/photo-1590658165737-15a047b7a0c1?w=400&h=400&fit=crop', rating: 4.5, reviews: 89 },
+            { id: 103, name: 'Tai nghe Bluetooth AirPods 2 Apple', brand: 'apple', category: 'phukien', type: 'tainghe', price: 2690000, oldPrice: 3190000, discount: 16, features: [], colors: ['#ffffff'], image: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=400&h=400&fit=crop', rating: 4, reviews: 234 },
+            { id: 104, name: 'Tai nghe Bluetooth Samsung Galaxy Buds FE', brand: 'samsung', category: 'phukien', type: 'tainghe', price: 1490000, oldPrice: 1990000, discount: 25, features: [], colors: ['#000000', '#e0e0e0'], image: 'https://images.unsplash.com/photo-1649859394657-c2c90e82446f?w=400&h=400&fit=crop', rating: 4, reviews: 67 },
+            { id: 105, name: 'Tai nghe Bluetooth Xiaomi Redmi Buds 5 Pro', brand: 'xiaomi', category: 'phukien', type: 'tainghe', price: 1390000, oldPrice: 1790000, discount: 22, features: [], colors: ['#000000', '#ffffff'], image: 'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=400&h=400&fit=crop', rating: 4, reviews: 43 },
+
             // PHỤ KIỆN - SẠC & CÁP
-            {id:201,name:'Cáp Type C 1m Apple MM0A3',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400&h=400&fit=crop',rating:4.5,reviews:128},
-            {id:202,name:'Sạc nhanh Type C PD 20W Apple',brand:'apple',category:'phukien',type:'sac',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1591290619762-c588ec6ade80?w=400&h=400&fit=crop',rating:4.5,reviews:156},
-            {id:203,name:'Cáp Lightning 1m Apple MXLY2',brand:'apple',category:'phukien',type:'cap',price:490000,oldPrice:590000,discount:17,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=400&h=400&fit=crop',rating:4,reviews:98},
-            {id:204,name:'Sạc nhanh Samsung 25W Type C',brand:'samsung',category:'phukien',type:'sac',price:390000,oldPrice:490000,discount:20,features:[],colors:['#ffffff'],image:'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop',rating:4,reviews:87},
-            {id:205,name:'Cáp Type C 1m Samsung',brand:'samsung',category:'phukien',type:'cap',price:190000,oldPrice:290000,discount:34,features:[],colors:['#ffffff','#000000'],image:'https://images.unsplash.com/photo-1625281586083-4e10e60e8219?w=400&h=400&fit=crop',rating:4,reviews:143},
-            {id:206,name:'Sạc dự phòng 10000mAh Xiaomi Redmi 18W',brand:'xiaomi',category:'phukien',type:'sac',price:390000,oldPrice:490000,discount:20,features:[],colors:['#000000','#ffffff'],image:'https://images.unsplash.com/photo-1609592398957-c6c5ffeb1c81?w=400&h=400&fit=crop',rating:4.5,reviews:76},
-            {id:207,name:'Sạc dự phòng 20000mAh Samsung',brand:'samsung',category:'phukien',type:'sac',price:890000,oldPrice:1190000,discount:25,features:['freeship'],colors:['#9e9e9e'],image:'https://images.unsplash.com/photo-1667573591415-dae49ef1d7f2?w=400&h=400&fit=crop',rating:5,reviews:92},
-            
+            { id: 201, name: 'Cáp Type C 1m Apple MM0A3', brand: 'apple', category: 'phukien', type: 'cap', price: 490000, oldPrice: 590000, discount: 17, features: [], colors: ['#ffffff'], image: 'https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400&h=400&fit=crop', rating: 4.5, reviews: 128 },
+            { id: 202, name: 'Sạc nhanh Type C PD 20W Apple', brand: 'apple', category: 'phukien', type: 'sac', price: 490000, oldPrice: 590000, discount: 17, features: [], colors: ['#ffffff'], image: 'https://images.unsplash.com/photo-1591290619762-c588ec6ade80?w=400&h=400&fit=crop', rating: 4.5, reviews: 156 },
+            { id: 203, name: 'Cáp Lightning 1m Apple MXLY2', brand: 'apple', category: 'phukien', type: 'cap', price: 490000, oldPrice: 590000, discount: 17, features: [], colors: ['#ffffff'], image: 'https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=400&h=400&fit=crop', rating: 4, reviews: 98 },
+            { id: 204, name: 'Sạc nhanh Samsung 25W Type C', brand: 'samsung', category: 'phukien', type: 'sac', price: 390000, oldPrice: 490000, discount: 20, features: [], colors: ['#ffffff'], image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop', rating: 4, reviews: 87 },
+            { id: 205, name: 'Cáp Type C 1m Samsung', brand: 'samsung', category: 'phukien', type: 'cap', price: 190000, oldPrice: 290000, discount: 34, features: [], colors: ['#ffffff', '#000000'], image: 'https://images.unsplash.com/photo-1625281586083-4e10e60e8219?w=400&h=400&fit=crop', rating: 4, reviews: 143 },
+            { id: 206, name: 'Sạc dự phòng 10000mAh Xiaomi Redmi 18W', brand: 'xiaomi', category: 'phukien', type: 'sac', price: 390000, oldPrice: 490000, discount: 20, features: [], colors: ['#000000', '#ffffff'], image: 'https://images.unsplash.com/photo-1609592398957-c6c5ffeb1c81?w=400&h=400&fit=crop', rating: 4.5, reviews: 76 },
+            { id: 207, name: 'Sạc dự phòng 20000mAh Samsung', brand: 'samsung', category: 'phukien', type: 'sac', price: 890000, oldPrice: 1190000, discount: 25, features: ['freeship'], colors: ['#9e9e9e'], image: 'https://images.unsplash.com/photo-1667573591415-dae49ef1d7f2?w=400&h=400&fit=crop', rating: 5, reviews: 92 },
+
             // PHỤ KIỆN - ỐP LƯNG
-            {id:301,name:'Ốp lưng iPhone 15 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:1190000,oldPrice:1490000,discount:20,features:[],colors:['#000000','#4a148c','#e3f2fd','#ffeb3b'],image:'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&h=400&fit=crop',rating:4.5,reviews:234},
-            {id:302,name:'Ốp lưng iPhone 14 Pro Max MagSafe Apple',brand:'apple',category:'phukien',type:'oplung',price:990000,oldPrice:1290000,discount:23,features:[],colors:['#000000','#e0e0e0','#f48fb1'],image:'https://images.unsplash.com/photo-1618088089075-44c3b5e2e283?w=400&h=400&fit=crop',rating:4,reviews:187},
-            {id:303,name:'Ốp lưng Samsung Galaxy S24 Ultra Clear',brand:'samsung',category:'phukien',type:'oplung',price:590000,oldPrice:790000,discount:25,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1585704768175-39ba0d82bda8?w=400&h=400&fit=crop',rating:4.5,reviews:145},
-            {id:304,name:'Ốp lưng Samsung Galaxy A55 5G Silicone',brand:'samsung',category:'phukien',type:'oplung',price:290000,oldPrice:390000,discount:26,features:[],colors:['#000000','#90caf9','#f48fb1'],image:'https://images.unsplash.com/photo-1601784551279-3c50e2c96d72?w=400&h=400&fit=crop',rating:4,reviews:98},
-            {id:305,name:'Ốp lưng Xiaomi 14 Clear Case',brand:'xiaomi',category:'phukien',type:'oplung',price:190000,oldPrice:290000,discount:34,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1602526212616-f65c9d95e3e1?w=400&h=400&fit=crop',rating:4,reviews:76},
-            {id:306,name:'Ốp lưng iPhone 15 Clear Case',brand:'other',category:'phukien',type:'oplung',price:149000,oldPrice:249000,discount:40,features:[],colors:['transparent','#000000','#f48fb1'],image:'https://images.unsplash.com/photo-1592503254549-d83d24a4dfab?w=400&h=400&fit=crop',rating:3.5,reviews:342},
-            
+            { id: 301, name: 'Ốp lưng iPhone 15 Pro Max MagSafe Apple', brand: 'apple', category: 'phukien', type: 'oplung', price: 1190000, oldPrice: 1490000, discount: 20, features: [], colors: ['#000000', '#4a148c', '#e3f2fd', '#ffeb3b'], image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&h=400&fit=crop', rating: 4.5, reviews: 234 },
+            { id: 302, name: 'Ốp lưng iPhone 14 Pro Max MagSafe Apple', brand: 'apple', category: 'phukien', type: 'oplung', price: 990000, oldPrice: 1290000, discount: 23, features: [], colors: ['#000000', '#e0e0e0', '#f48fb1'], image: 'https://images.unsplash.com/photo-1618088089075-44c3b5e2e283?w=400&h=400&fit=crop', rating: 4, reviews: 187 },
+            { id: 303, name: 'Ốp lưng Samsung Galaxy S24 Ultra Clear', brand: 'samsung', category: 'phukien', type: 'oplung', price: 590000, oldPrice: 790000, discount: 25, features: [], colors: ['transparent'], image: 'https://images.unsplash.com/photo-1585704768175-39ba0d82bda8?w=400&h=400&fit=crop', rating: 4.5, reviews: 145 },
+            { id: 304, name: 'Ốp lưng Samsung Galaxy A55 5G Silicone', brand: 'samsung', category: 'phukien', type: 'oplung', price: 290000, oldPrice: 390000, discount: 26, features: [], colors: ['#000000', '#90caf9', '#f48fb1'], image: 'https://images.unsplash.com/photo-1601784551279-3c50e2c96d72?w=400&h=400&fit=crop', rating: 4, reviews: 98 },
+            { id: 305, name: 'Ốp lưng Xiaomi 14 Clear Case', brand: 'xiaomi', category: 'phukien', type: 'oplung', price: 190000, oldPrice: 290000, discount: 34, features: [], colors: ['transparent'], image: 'https://images.unsplash.com/photo-1602526212616-f65c9d95e3e1?w=400&h=400&fit=crop', rating: 4, reviews: 76 },
+            { id: 306, name: 'Ốp lưng iPhone 15 Clear Case', brand: 'other', category: 'phukien', type: 'oplung', price: 149000, oldPrice: 249000, discount: 40, features: [], colors: ['transparent', '#000000', '#f48fb1'], image: 'https://images.unsplash.com/photo-1592503254549-d83d24a4dfab?w=400&h=400&fit=crop', rating: 3.5, reviews: 342 },
+
             // PHỤ KIỆN - KHÁC
-            {id:401,name:'Cường lực iPhone 15 Pro Max Zagg',brand:'other',category:'phukien',type:'cuongluc',price:790000,oldPrice:990000,discount:20,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1585282263861-f55e341878f8?w=400&h=400&fit=crop',rating:4.5,reviews:167},
-            {id:402,name:'Cường lực Samsung Galaxy S24 Ultra',brand:'other',category:'phukien',type:'cuongluc',price:490000,oldPrice:690000,discount:29,features:[],colors:['transparent'],image:'https://images.unsplash.com/photo-1598327106026-d9521da673d1?w=400&h=400&fit=crop',rating:4,reviews:123},
-            {id:403,name:'Giá đỡ điện thoại Baseus Magnetic',brand:'other',category:'phukien',type:'giado',price:290000,oldPrice:390000,discount:26,features:[],colors:['#000000','#e0e0e0'],image:'https://images.unsplash.com/photo-1583511655826-05700b77f572?w=400&h=400&fit=crop',rating:4.5,reviews:89},
-            {id:404,name:'Gậy chụp ảnh Bluetooth Tripod',brand:'other',category:'phukien',type:'gaychup',price:390000,oldPrice:590000,discount:34,features:[],colors:['#000000','#ffffff'],image:'https://images.unsplash.com/photo-1603481546703-aec318fc719a?w=400&h=400&fit=crop',rating:4,reviews:54}
+            { id: 401, name: 'Cường lực iPhone 15 Pro Max Zagg', brand: 'other', category: 'phukien', type: 'cuongluc', price: 790000, oldPrice: 990000, discount: 20, features: [], colors: ['transparent'], image: 'https://images.unsplash.com/photo-1585282263861-f55e341878f8?w=400&h=400&fit=crop', rating: 4.5, reviews: 167 },
+            { id: 402, name: 'Cường lực Samsung Galaxy S24 Ultra', brand: 'other', category: 'phukien', type: 'cuongluc', price: 490000, oldPrice: 690000, discount: 29, features: [], colors: ['transparent'], image: 'https://images.unsplash.com/photo-1598327106026-d9521da673d1?w=400&h=400&fit=crop', rating: 4, reviews: 123 },
+            { id: 403, name: 'Giá đỡ điện thoại Baseus Magnetic', brand: 'other', category: 'phukien', type: 'giado', price: 290000, oldPrice: 390000, discount: 26, features: [], colors: ['#000000', '#e0e0e0'], image: 'https://images.unsplash.com/photo-1583511655826-05700b77f572?w=400&h=400&fit=crop', rating: 4.5, reviews: 89 },
+            { id: 404, name: 'Gậy chụp ảnh Bluetooth Tripod', brand: 'other', category: 'phukien', type: 'gaychup', price: 390000, oldPrice: 590000, discount: 34, features: [], colors: ['#000000', '#ffffff'], image: 'https://images.unsplash.com/photo-1603481546703-aec318fc719a?w=400&h=400&fit=crop', rating: 4, reviews: 54 }
         ];
 
         let selectedBrands = [];
@@ -772,27 +970,27 @@
         let searchQuery = '';
 
         // Parse URL parameters on page load
-        document.addEventListener('DOMContentLoaded', () => { 
+        document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            
+
             // Check for category parameter
             const categoryParam = urlParams.get('category');
             if (categoryParam) {
                 selectedCategories = [categoryParam];
-                
+
                 // Update category tab active state
                 document.querySelectorAll('.category-tab').forEach(tab => {
                     tab.classList.remove('bg-[var(--red-main)]', 'text-white');
                     tab.classList.add('text-gray-700', 'hover:text-[var(--red-main)]');
                 });
-                
+
                 // Show accessory filter if phukien
                 const accessoryFilter = document.getElementById('accessoryFilter');
                 if (categoryParam === 'phukien') {
                     if (accessoryFilter) accessoryFilter.style.display = 'block';
                 }
             }
-            
+
             // Check for brand parameter
             const brandParam = urlParams.get('brand');
             if (brandParam) {
@@ -800,28 +998,28 @@
                 const checkbox = document.querySelector(`.brand-filter[value="${brandParam}"]`);
                 if (checkbox) checkbox.checked = true;
             }
-            
+
             // Setup search event listeners
             const searchInput = document.getElementById('searchInput');
             const searchInputMobile = document.getElementById('searchInputMobile');
-            
+
             if (searchInput) {
-                searchInput.addEventListener('input', (e) => { 
-                    searchQuery = e.target.value; 
-                    renderProducts(); 
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = e.target.value;
+                    renderProducts();
                 });
             }
-            
+
             if (searchInputMobile) {
-                searchInputMobile.addEventListener('input', (e) => { 
-                    searchQuery = e.target.value; 
-                    if (searchInput) searchInput.value = e.target.value; 
-                    renderProducts(); 
+                searchInputMobile.addEventListener('input', (e) => {
+                    searchQuery = e.target.value;
+                    if (searchInput) searchInput.value = e.target.value;
+                    renderProducts();
                 });
             }
-            
-            renderProducts(); 
-            updateFilterTags(); 
+
+            renderProducts();
+            updateFilterTags();
         });
 
         function toggleBrandFilter(brand) {
@@ -839,17 +1037,17 @@
         function toggleBrand(brand) {
             toggleBrandFilter(brand);
         }
-        
+
         // Category Filter Functions
         function filterByCategory(category) {
             selectedCategories = category === 'all' ? [] : [category];
-            
+
             // Update category tabs active state
             document.querySelectorAll('.category-tab').forEach(tab => {
                 tab.classList.remove('bg-[var(--red-main)]', 'text-white');
                 tab.classList.add('text-gray-700', 'hover:text-[var(--red-main)]', 'hover:bg-gray-100');
             });
-            
+
             // Find and activate the correct tab by checking onclick attribute
             const allTabs = document.querySelectorAll('.category-tab');
             allTabs.forEach(tab => {
@@ -859,7 +1057,7 @@
                     tab.classList.remove('text-gray-700', 'hover:text-[var(--red-main)]', 'hover:bg-gray-100');
                 }
             });
-            
+
             // Show/hide accessory filter based on category
             const accessoryFilter = document.getElementById('accessoryFilter');
             if (accessoryFilter) {
@@ -871,10 +1069,10 @@
                     document.querySelectorAll('.accessory-filter').forEach(cb => cb.checked = false);
                 }
             }
-            
+
             renderProducts();
         }
-        
+
         // Accessory Type Filter
         function toggleAccessoryFilter(type) {
             const idx = selectedAccessoryTypes.indexOf(type);
@@ -914,20 +1112,20 @@
             selectedBrands.forEach(brand => {
                 const tag = document.createElement('span');
                 tag.className = 'filter-tag';
-                tag.innerHTML = `${brand.charAt(0).toUpperCase()+brand.slice(1)} <span class="close" onclick="removeBrandFilter('${brand}')">✕</span>`;
+                tag.innerHTML = `${brand.charAt(0).toUpperCase() + brand.slice(1)} <span class="close" onclick="removeBrandFilter('${brand}')">✕</span>`;
                 container.appendChild(tag);
             });
 
             selectedPriceRanges.forEach(range => {
                 const tag = document.createElement('span');
                 tag.className = 'filter-tag';
-                const [min,max] = range.split('-');
-                const label = max==='999999999' ? `Trên ${(parseInt(min)/1000000)} triệu` : `${(parseInt(min)/1000000)} - ${(parseInt(max)/1000000)} triệu`;
+                const [min, max] = range.split('-');
+                const label = max === '999999999' ? `Trên ${(parseInt(min) / 1000000)} triệu` : `${(parseInt(min) / 1000000)} - ${(parseInt(max) / 1000000)} triệu`;
                 tag.innerHTML = `${label} <span class="close" onclick="removePriceFilter('${range}')">✕</span>`;
                 container.appendChild(tag);
             });
 
-            if (selectedBrands.length>0 || selectedPriceRanges.length>0) {
+            if (selectedBrands.length > 0 || selectedPriceRanges.length > 0) {
                 const clearBtn = document.createElement('button');
                 clearBtn.className = 'text-[var(--red-main)] text-sm font-semibold hover:underline';
                 clearBtn.textContent = 'Xóa tất cả';
@@ -950,10 +1148,10 @@
         function sortProducts(type) {
             currentSort = type;
             document.querySelectorAll('.sort-btn').forEach(btn => {
-                btn.classList.remove('bg-[var(--red-main)]','text-white');
+                btn.classList.remove('bg-[var(--red-main)]', 'text-white');
                 btn.classList.add('hover:bg-gray-100');
             });
-            event.target.classList.add('bg-[var(--red-main)]','text-white');
+            event.target.classList.add('bg-[var(--red-main)]', 'text-white');
             event.target.classList.remove('hover:bg-gray-100');
             renderProducts();
         }
@@ -962,17 +1160,17 @@
             let filtered = PRODUCTS.filter(p => {
                 // Filter by category
                 if (selectedCategories.length > 0 && !selectedCategories.includes(p.category)) return false;
-                
+
                 // Filter by accessory type (only for phukien)
                 if (p.category === 'phukien' && selectedAccessoryTypes.length > 0 && !selectedAccessoryTypes.includes(p.type)) return false;
-                
+
                 // Filter by brand
-                if (selectedBrands.length>0 && !selectedBrands.includes(p.brand)) return false;
-                
+                if (selectedBrands.length > 0 && !selectedBrands.includes(p.brand)) return false;
+
                 // Filter by price
-                if (selectedPriceRanges.length>0) {
+                if (selectedPriceRanges.length > 0) {
                     const matchesPrice = selectedPriceRanges.some(range => {
-                        const [min,max] = range.split('-').map(Number);
+                        const [min, max] = range.split('-').map(Number);
                         return p.price >= min && p.price <= max;
                     });
                     if (!matchesPrice) return false;
@@ -981,13 +1179,13 @@
                 return true;
             });
 
-            if (currentSort === 'price-asc') filtered.sort((a,b) => a.price - b.price);
-            else if (currentSort === 'price-desc') filtered.sort((a,b) => b.price - a.price);
+            if (currentSort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
             else if (currentSort === 'tragop') filtered = filtered.filter(p => p.features.includes('tragop'));
 
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
-            
+
             filtered.forEach(product => {
                 const card = createProductCard(product);
                 grid.appendChild(card);
@@ -998,33 +1196,33 @@
 
         function createProductCard(product) {
             const card = document.createElement('div');
-            
+
             // Discount badge - đơn giản không icon
             const discountBadge = product.discount ? `<span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-md z-10">-${product.discount}%</span>` : '';
-            
+
             // Không hiển thị freeship badge
-            
+
             // Không hiển thị trả góp badge
-            
+
             // Không hiển thị product labels
-            
+
             const colors = product.colors.map(color => `<div class="color-dot" style="background-color: ${color}"></div>`).join('');
-            
+
             // Generate rating stars
             const rating = product.rating || (4 + Math.random() * 1);
             const reviewCount = product.reviewCount || Math.floor(Math.random() * 500) + 50;
             const fullStars = Math.floor(rating);
             const halfStar = rating % 1 >= 0.5 ? 1 : 0;
             const emptyStars = 5 - fullStars - halfStar;
-            
+
             let starsHTML = '<div class="product-rating mb-2">';
             starsHTML += '<span class="stars">';
-            for(let i = 0; i < fullStars; i++) starsHTML += '★';
-            if(halfStar) starsHTML += '⯨';
-            for(let i = 0; i < emptyStars; i++) starsHTML += '☆';
+            for (let i = 0; i < fullStars; i++) starsHTML += '★';
+            if (halfStar) starsHTML += '⯨';
+            for (let i = 0; i < emptyStars; i++) starsHTML += '☆';
             starsHTML += '</span>';
             starsHTML += `<span class="reviews">(${reviewCount})</span></div>`;
-            
+
             if (currentView === 'list') {
                 // List View
                 card.className = 'product-card flex flex-row gap-4 items-center';
@@ -1048,7 +1246,7 @@
                                 <div class="text-2xl font-black text-[var(--red-main)]">${formatPrice(product.price)}</div>
                                 ${product.oldPrice ? `<div class="flex items-center gap-2 justify-end mt-1">
                                     <div class="text-sm text-gray-500 line-through">${formatPrice(product.oldPrice)}</div>
-                                    <div class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">-${formatPrice(product.oldPrice-product.price)}</div>
+                                    <div class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">-${formatPrice(product.oldPrice - product.price)}</div>
                                 </div>` : ''}
                             </div>
                             <div class="w-40">
@@ -1062,9 +1260,9 @@
             } else {
                 // Grid View - Bỏ icon
                 card.className = 'product-card';
-                
+
                 const isAccessory = product.category === 'phukien';
-                
+
                 let specBadgesHTML = '';
                 if (!isAccessory && product.screen && product.camera) {
                     specBadgesHTML = `
@@ -1074,7 +1272,7 @@
                         </div>
                     `;
                 }
-                
+
                 card.innerHTML = `
                     <a href="product-detail.html?id=${product.id}" class="block h-full flex flex-col">
                         <!-- Ảnh sản phẩm - Tỷ lệ chuẩn 50-55% -->
@@ -1098,7 +1296,7 @@
                                 <div class="font-extrabold text-[var(--red-main)] mb-1 leading-none" style="font-size: 1.15rem;">${formatPrice(product.price)}</div>
                                 ${product.oldPrice ? `<div class="flex items-center gap-2">
                                     <div class="text-gray-500 line-through font-normal text-sm">${formatPrice(product.oldPrice)}</div>
-                                    <div class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded">-${formatPrice(product.oldPrice-product.price)}</div>
+                                    <div class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded">-${formatPrice(product.oldPrice - product.price)}</div>
                                 </div>` : ''}
                             </div>
                             
@@ -1112,7 +1310,7 @@
                     </a>
                 `;
             }
-            
+
             return card;
         }
 
@@ -1161,10 +1359,10 @@
             currentView = view;
             const grid = document.getElementById('productsGrid');
             const toggleBtns = document.querySelectorAll('.view-toggle');
-            
+
             toggleBtns.forEach(btn => btn.classList.remove('active'));
             event.target.closest('.view-toggle').classList.add('active');
-            
+
             if (view === 'list') {
                 grid.className = 'flex flex-col gap-4';
                 // Re-render products with list view
@@ -1221,52 +1419,56 @@
     </script>
 
     <!-- Quality Guarantee Section -->
-<section class="bg-gradient-to-br from-red-50 to-orange-50 py-6 mt-6">
-  <div class="container mx-auto px-4">
-    <div class="flex flex-wrap justify-around items-center text-center gap-6">
+    <section class="bg-gradient-to-br from-red-50 to-orange-50 py-6 mt-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-around items-center text-center gap-6">
 
-      <!-- Thương hiệu đảm bảo -->
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mb-2 shadow-md">
-          <i class="fas fa-certificate text-white text-xl"></i>
+                <!-- Thương hiệu đảm bảo -->
+                <div class="flex flex-col items-center">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mb-2 shadow-md">
+                        <i class="fas fa-certificate text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-800">Thương hiệu đảm bảo</h3>
+                    <p class="text-sm text-gray-600">Nhập khẩu, bảo hành chính hãng</p>
+                </div>
+
+                <!-- Đổi trả dễ dàng -->
+                <div class="flex flex-col items-center">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-2 shadow-md">
+                        <i class="fas fa-sync-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-800">Đổi trả dễ dàng</h3>
+                    <p class="text-sm text-gray-600">Theo chính sách QuangHưng Mobile</p>
+                </div>
+
+                <!-- Giao hàng tận nơi -->
+                <div class="flex flex-col items-center">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mb-2 shadow-md">
+                        <i class="fas fa-shipping-fast text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-800">Giao hàng tận nơi</h3>
+                    <p class="text-sm text-gray-600">Trên toàn quốc</p>
+                </div>
+
+                <!-- Sản phẩm chất lượng -->
+                <div class="flex flex-col items-center">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-2 shadow-md">
+                        <i class="fas fa-shield-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-800">Sản phẩm chất lượng</h3>
+                    <p class="text-sm text-gray-600">Độ bền cao, tương thích tuyệt đối</p>
+                </div>
+
+            </div>
         </div>
-        <h3 class="text-base font-semibold text-gray-800">Thương hiệu đảm bảo</h3>
-        <p class="text-sm text-gray-600">Nhập khẩu, bảo hành chính hãng</p>
-      </div>
-
-      <!-- Đổi trả dễ dàng -->
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-2 shadow-md">
-          <i class="fas fa-sync-alt text-white text-xl"></i>
-        </div>
-        <h3 class="text-base font-semibold text-gray-800">Đổi trả dễ dàng</h3>
-        <p class="text-sm text-gray-600">Theo chính sách QuangHưng Mobile</p>
-      </div>
-
-      <!-- Giao hàng tận nơi -->
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mb-2 shadow-md">
-          <i class="fas fa-shipping-fast text-white text-xl"></i>
-        </div>
-        <h3 class="text-base font-semibold text-gray-800">Giao hàng tận nơi</h3>
-        <p class="text-sm text-gray-600">Trên toàn quốc</p>
-      </div>
-
-      <!-- Sản phẩm chất lượng -->
-      <div class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-2 shadow-md">
-          <i class="fas fa-shield-alt text-white text-xl"></i>
-        </div>
-        <h3 class="text-base font-semibold text-gray-800">Sản phẩm chất lượng</h3>
-        <p class="text-sm text-gray-600">Độ bền cao, tương thích tuyệt đối</p>
-      </div>
-
-    </div>
-  </div>
-</section>
+    </section>
 
 
-            
+
     </section>
 
     <!-- Footer Component -->
@@ -1274,15 +1476,10 @@
 
     <!-- Load Components Script -->
     <script src="components/load-components.js"></script>
-    
+
     <!-- Products Page Script -->
     <script src="products.js"></script>
 
 </body>
+
 </html>
-
-
-
-
-
-

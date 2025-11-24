@@ -5,6 +5,23 @@
 let PRODUCTS = [];
 let currentProduct = null;
 
+// Brand logos for fallback
+const BRAND_LOGOS = {
+  iphone: 'images/logo_iphone_ngang_eac93ff477.webp',
+  samsung: 'images/logo_samsung_ngang_1624d75bd8.webp',
+  oppo: 'images/logo_oppo_ngang_68d31fcd73.webp',
+  realme: 'images/logo_realme_ngang_0185815a13.webp',
+  vivo: 'images/logo_vivo_ngang_45494ff733.webp',
+  xiaomi: 'images/logo_xiaomi_ngang_0faf267234.webp',
+  tecno: 'images/logo_tecno_ngang_c587e5f1fa.webp'
+};
+
+function handleImgErrorGlobal(imgEl, brand) {
+  try { imgEl.onerror = null; } catch (e) {}
+  if (brand && BRAND_LOGOS[brand]) imgEl.src = BRAND_LOGOS[brand];
+  else imgEl.src = 'images/iphone.jpg';
+}
+
 // ===== LOAD PRODUCT DATA FROM JSON =====
 async function loadProductData() {
   try {
@@ -101,23 +118,23 @@ function renderProductDetail(productId) {
         <div class="swiper mainSwiper zoom-container">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
-                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-2 bg-white">
+                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
               </div>
             </div>
             <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
-                <img src="${product.image}" alt="${product.name} view 2" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-2 bg-white">
+                <img src="${product.image}" alt="${product.name} view 2" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
               </div>
             </div>
             <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
-                <img src="${product.image}" alt="${product.name} view 3" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-2 bg-white">
+                <img src="${product.image}" alt="${product.name} view 3" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
               </div>
             </div>
             <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
-                <img src="${product.image}" alt="${product.name} view 4" class="w-full h-full object-contain zoom-image" loading="lazy" />
+              <div class="aspect-square flex items-center justify-center p-2 bg-white">
+                <img src="${product.image}" alt="${product.name} view 4" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
               </div>
             </div>
           </div>
@@ -132,22 +149,22 @@ function renderProductDetail(productId) {
         <div class="swiper-wrapper">
           <div class="swiper-slide">
             <div class="thumbnail-item active bg-white">
-              <img src="${product.image}" alt="Thumb 1" class="w-full h-20 object-contain" loading="lazy" />
+              <img src="${product.image}" alt="Thumb 1" class="w-full h-20 object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
             </div>
           </div>
           <div class="swiper-slide">
             <div class="thumbnail-item bg-white">
-              <img src="${product.image}" alt="Thumb 2" class="w-full h-20 object-contain" loading="lazy" />
+              <img src="${product.image}" alt="Thumb 2" class="w-full h-20 object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
             </div>
           </div>
           <div class="swiper-slide">
             <div class="thumbnail-item bg-white">
-              <img src="${product.image}" alt="Thumb 3" class="w-full h-20 object-contain" loading="lazy" />
+              <img src="${product.image}" alt="Thumb 3" class="w-full h-20 object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
             </div>
           </div>
           <div class="swiper-slide">
             <div class="thumbnail-item bg-white">
-              <img src="${product.image}" alt="Thumb 4" class="w-full h-full object-contain" loading="lazy" />
+              <img src="${product.image}" alt="Thumb 4" class="w-full h-full object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
             </div>
           </div>
         </div>
