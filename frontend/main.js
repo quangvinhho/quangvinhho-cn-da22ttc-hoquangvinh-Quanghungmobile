@@ -1,24 +1,50 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+// Main JavaScript for QuangHưng Mobile
+// This file can be used for global utilities
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+// Format price to Vietnamese currency
+function formatPrice(price) {
+  return price.toLocaleString('vi-VN') + '₫';
+}
 
-setupCounter(document.querySelector('#counter'))
+// Parse price from string
+function parsePrice(priceStr) {
+  return parseInt(priceStr.replace(/[^\d]/g, '')) || 0;
+}
+
+// Show toast notification
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform translate-y-0 ${
+    type === 'success' ? 'bg-green-500 text-white' : 
+    type === 'error' ? 'bg-red-500 text-white' : 
+    'bg-gray-800 text-white'
+  }`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.classList.add('opacity-0', 'translate-y-2');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// Debounce function for search
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Export for use in other files (if using modules)
+if (typeof window !== 'undefined') {
+  window.formatPrice = formatPrice;
+  window.parsePrice = parsePrice;
+  window.showToast = showToast;
+  window.debounce = debounce;
+}

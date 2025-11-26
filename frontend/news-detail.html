@@ -32,19 +32,15 @@
     <div id="header-nav-placeholder"></div>
     
     <script>
-        // Load header component with cache busting
-        const headerVersion = '?v=' + new Date().getTime();
-        fetch('components/header.html' + headerVersion)
+        // Load header component
+        fetch('components/header.html')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('header-nav-placeholder').innerHTML = html;
-                
-                // Initialize mobile menu after header is loaded
-                setTimeout(() => {
-                    const script = document.createElement('script');
-                    script.src = 'components/header-menu.js';
-                    document.body.appendChild(script);
-                }, 100);
+                // Load header JavaScript after HTML is loaded
+                const script = document.createElement('script');
+                script.src = 'components/header.js';
+                document.body.appendChild(script);
             })
             .catch(error => console.error('Error loading header:', error));
     </script>
@@ -504,14 +500,14 @@
         document.querySelectorAll('.fa-reply').forEach(button => {
           button.parentElement.addEventListener('click', () => {
             const textarea = document.querySelector('textarea');
-            if (textarea) textarea.focus();
+            if (textarea) {
+              const userName = button.closest('.flex-1').querySelector('h4').textContent;
+              textarea.value = 'Trả lời @' + userName + ': ';
+              textarea.focus();
+            }
           });
         });
       }, 500);
-    </script>
-          textarea.value = 'Trả lời @' + button.closest('.flex-1').querySelector('h4').textContent + ': ';
-        });
-      });
     </script>
 
     <!-- Footer Component -->

@@ -10,7 +10,8 @@
   </head>
   <body class="bg-gray-50">
     <div class="flex h-screen overflow-hidden">
-      <aside class="w-64 bg-gray-800 text-white flex flex-col">
+      <!-- Sidebar - Hidden on mobile, shown on lg+ -->
+      <aside class="hidden lg:flex w-64 bg-gray-800 text-white flex-col flex-shrink-0">
         <div class="p-6 border-b border-gray-700">
           <h1 class="text-2xl font-bold">
             <i class="fas fa-mobile-alt mr-2"></i>QuangHưngShop
@@ -74,9 +75,13 @@
       </aside>
 
       <div class="flex-1 flex flex-col overflow-hidden">
-        <header class="bg-white shadow-md px-6 py-4">
+        <header class="bg-white shadow-md px-4 lg:px-6 py-4">
           <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-bold text-gray-800">Tổng quan</h2>
+            <!-- Mobile menu button -->
+            <button id="mobile-sidebar-btn" class="lg:hidden text-gray-600 hover:text-gray-800 mr-4">
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h2 class="text-xl lg:text-2xl font-bold text-gray-800">Tổng quan</h2>
             <div class="flex items-center space-x-4">
               <button class="relative text-gray-600 hover:text-gray-800">
                 <i class="fas fa-bell text-xl"></i>
@@ -94,7 +99,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             <div class="bg-white rounded-lg shadow-md p-6">
               <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                   <i class="fas fa-dollar-sign text-2xl text-red-600"></i>
                 </div>
                 <span class="text-green-600 text-sm font-semibold">+12.5%</span>
@@ -127,8 +132,8 @@
 
             <div class="bg-white rounded-lg shadow-md p-6">
               <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-box text-2xl text-red-600"></i>
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-box text-2xl text-purple-600"></i>
                 </div>
                 <span class="text-red-600 text-sm font-semibold">-3.1%</span>
               </div>
@@ -240,7 +245,7 @@
           <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between mb-6">
               <h3 class="text-xl font-bold">Đơn hàng mới nhất</h3>
-              <a href="#" class="text-red-600 hover:text-blue-700 font-semibold">Xem tất cả</a>
+              <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Xem tất cả</a>
             </div>
 
             <div class="overflow-x-auto">
@@ -267,7 +272,7 @@
                       <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-sm font-semibold">Chờ xác nhận</span>
                     </td>
                     <td class="py-3 px-4">
-                      <button class="text-red-600 hover:text-blue-700 mr-2">
+                      <button class="text-blue-600 hover:text-blue-700 mr-2">
                         <i class="fas fa-eye"></i>
                       </button>
                       <button class="text-green-600 hover:text-green-700">
@@ -283,10 +288,10 @@
                     <td class="py-3 px-4">02/10/2025</td>
                     <td class="py-3 px-4 font-semibold">32.990.000đ</td>
                     <td class="py-3 px-4">
-                      <span class="bg-blue-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">Đang giao</span>
+                      <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">Đang giao</span>
                     </td>
                     <td class="py-3 px-4">
-                      <button class="text-red-600 hover:text-blue-700 mr-2">
+                      <button class="text-blue-600 hover:text-blue-700 mr-2">
                         <i class="fas fa-eye"></i>
                       </button>
                       <button class="text-green-600 hover:text-green-700">
@@ -305,7 +310,7 @@
                       <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">Đã giao</span>
                     </td>
                     <td class="py-3 px-4">
-                      <button class="text-red-600 hover:text-blue-700 mr-2">
+                      <button class="text-blue-600 hover:text-blue-700 mr-2">
                         <i class="fas fa-eye"></i>
                       </button>
                       <button class="text-gray-400">
@@ -324,7 +329,7 @@
                       <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-sm font-semibold">Chờ xác nhận</span>
                     </td>
                     <td class="py-3 px-4">
-                      <button class="text-red-600 hover:text-blue-700 mr-2">
+                      <button class="text-blue-600 hover:text-blue-700 mr-2">
                         <i class="fas fa-eye"></i>
                       </button>
                       <button class="text-green-600 hover:text-green-700">
@@ -340,10 +345,10 @@
                     <td class="py-3 px-4">30/09/2025</td>
                     <td class="py-3 px-4 font-semibold">22.990.000đ</td>
               <td class="py-3 px-4">
-                <span class="bg-blue-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">Đã hủy</span>
+                <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">Đã hủy</span>
                     </td>
                     <td class="py-3 px-4">
-                      <button class="text-red-600 hover:text-blue-700 mr-2">
+                      <button class="text-blue-600 hover:text-blue-700 mr-2">
                         <i class="fas fa-eye"></i>
                       </button>
                       <button class="text-gray-400">
@@ -359,17 +364,74 @@
       </div>
     </div>
 
-    <!-- Footer Component -->
-    <div id="footer-placeholder"></div>
+    <!-- Mobile Sidebar Overlay -->
+    <div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden" onclick="closeMobileSidebar()"></div>
+    
+    <!-- Mobile Sidebar -->
+    <aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-64 bg-gray-800 text-white flex flex-col z-50 transform -translate-x-full transition-transform duration-300 lg:hidden">
+      <div class="p-6 border-b border-gray-700 flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-bold">
+            <i class="fas fa-mobile-alt mr-2"></i>QuangHưng
+          </h1>
+          <p class="text-xs text-gray-400 mt-1">Admin Dashboard</p>
+        </div>
+        <button onclick="closeMobileSidebar()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto p-4">
+        <div class="space-y-2">
+          <a href="#" class="flex items-center px-4 py-3 bg-red-600 rounded-lg font-semibold">
+            <i class="fas fa-chart-line mr-3"></i>
+            <span>Tổng quan</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
+            <i class="fas fa-shopping-bag mr-3"></i>
+            <span>Đơn hàng</span>
+            <span class="ml-auto bg-red-600 text-xs px-2 py-1 rounded-full">12</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
+            <i class="fas fa-box mr-3"></i>
+            <span>Sản phẩm</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
+            <i class="fas fa-users mr-3"></i>
+            <span>Khách hàng</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
+            <i class="fas fa-cog mr-3"></i>
+            <span>Cài đặt</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="p-4 border-t border-gray-700">
+        <a href="login.html" class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
+          <i class="fas fa-sign-out-alt mr-2"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
+    </aside>
 
     <script>
-      // Load footer component
-      fetch('components/footer.html')
-          .then(response => response.text())
-          .then(html => {
-              document.getElementById('footer-placeholder').innerHTML = html;
-          })
-          .catch(error => console.error('Error loading footer:', error));
+      // Mobile sidebar toggle
+      const mobileSidebarBtn = document.getElementById('mobile-sidebar-btn');
+      const mobileSidebar = document.getElementById('mobile-sidebar');
+      const mobileSidebarOverlay = document.getElementById('mobile-sidebar-overlay');
+
+      if (mobileSidebarBtn) {
+        mobileSidebarBtn.addEventListener('click', function() {
+          mobileSidebar.classList.remove('-translate-x-full');
+          mobileSidebarOverlay.classList.remove('hidden');
+        });
+      }
+
+      function closeMobileSidebar() {
+        mobileSidebar.classList.add('-translate-x-full');
+        mobileSidebarOverlay.classList.add('hidden');
+      }
     </script>
   </body>
 </html>

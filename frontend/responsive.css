@@ -62,9 +62,9 @@
     padding-right: 1rem;
   }
   
-  /* Product grid */
+  /* Product grid - 3 cột trên tablet */
   #productsGrid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 1rem !important;
   }
   
@@ -85,16 +85,16 @@
     display: none !important;
   }
   
-  /* Product grid */
+  /* Product grid - Luôn 4 cột trên desktop */
   #productsGrid {
     grid-template-columns: repeat(4, 1fr) !important;
   }
 }
 
-/* Large desktop (1536px and above) */
+/* Large desktop (1536px and above) - Vẫn giữ 4 cột */
 @media (min-width: 1536px) {
   #productsGrid {
-    grid-template-columns: repeat(5, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr) !important;
   }
 }
 

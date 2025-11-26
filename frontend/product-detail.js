@@ -1,751 +1,503 @@
-// ===== PRODUCT DETAIL PAGE LOGIC =====
-// QuangHưng Mobile - Modern E-commerce 2025
+// ===== PRODUCT DETAIL PAGE - QuangHưng Mobile 2025 =====
 
-// ===== GLOBAL VARIABLES =====
+// Global Variables
 let PRODUCTS = [];
 let currentProduct = null;
+let selectedRating = 0;
 
-// Brand logos for fallback
+// Brand logos fallback
 const BRAND_LOGOS = {
   iphone: 'images/logo_iphone_ngang_eac93ff477.webp',
   samsung: 'images/logo_samsung_ngang_1624d75bd8.webp',
   oppo: 'images/logo_oppo_ngang_68d31fcd73.webp',
-  realme: 'images/logo_realme_ngang_0185815a13.webp',
-  vivo: 'images/logo_vivo_ngang_45494ff733.webp',
   xiaomi: 'images/logo_xiaomi_ngang_0faf267234.webp',
-  tecno: 'images/logo_tecno_ngang_c587e5f1fa.webp'
+  sony: 'images/sony-xperia-1-vi.webp',
+  pixel: 'images/pixel-9-pro.avif'
 };
 
-function handleImgErrorGlobal(imgEl, brand) {
-  try { imgEl.onerror = null; } catch (e) {}
-  if (brand && BRAND_LOGOS[brand]) imgEl.src = BRAND_LOGOS[brand];
-  else imgEl.src = 'images/iphone.jpg';
-}
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadProductData();
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = parseInt(urlParams.get('id')) || 1;
+  
+  renderProductDetail(productId);
+  setupScrollListener();
+});
 
-// ===== LOAD PRODUCT DATA FROM JSON =====
+// Load product data from JSON
 async function loadProductData() {
   try {
     const response = await fetch('product-data.json');
     const data = await response.json();
     PRODUCTS = data.products;
-    return true;
   } catch (error) {
-    console.error('Error loading product data:', error);
-    // Fallback to inline data if JSON fails
+    console.error('Error loading products:', error);
     PRODUCTS = getFallbackData();
-    return false;
   }
 }
 
-// Fallback data in case JSON loading fails
+// Fallback data
 function getFallbackData() {
   return [
-    {id:1,name:'Samsung Galaxy A06 5G 4GB 128GB',brand:'samsung',category:'dienthoai',price:3420000,oldPrice:3920000,discount:13,ram:4,storage:128,screen:'6.7 inch',camera:'50MP',battery:'5000 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#e8f5e9','#000000'],image:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop',sku:'SSG-A06-5G-128',rating:4.5,reviews:152},
-    {id:5,name:'iPhone 15 Pro Max 256GB',brand:'iphone',category:'dienthoai',price:28990000,oldPrice:34990000,discount:17,ram:8,storage:256,screen:'6.7"',camera:'48MP',battery:'4422 mAh',os:'iOS 17',features:['tragop','freeship'],colors:['#4a4a4a','#e8e8e8','#ffd700'],image:'https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=400&h=400&fit=crop',sku:'APL-IP15PM-256',rating:4.9,reviews:512},
-    {id:9,name:'Samsung Galaxy S24 Ultra 12GB 256GB',brand:'samsung',category:'dienthoai',price:29990000,oldPrice:33990000,discount:12,ram:12,storage:256,screen:'6.8" Dynamic AMOLED 2X',camera:'200MP',battery:'5000 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#9e9e9e','#000000','#b39ddb'],image:'https://images.unsplash.com/photo-1610945264803-c22b62d2a7b4?w=400&h=400&fit=crop',sku:'SSG-S24U-256',rating:4.8,reviews:687}
+    {id:1,name:'Samsung Galaxy A36 5G',brand:'samsung',category:'dienthoai',price:8490000,oldPrice:9490000,discount:10,ram:8,storage:128,screen:'6.6" Super AMOLED',camera:'50MP',battery:'5000 mAh',os:'Android 14',features:['tragop','freeship'],colors:['#e8f5e9','#000000'],image:'images/samsung_galaxy_a36_5g.avif',rating:4.5,reviews:152},
+    {id:5,name:'iPhone 15 Pro Max 256GB',brand:'iphone',category:'dienthoai',price:28990000,oldPrice:34990000,discount:17,ram:8,storage:256,screen:'6.7" Super Retina XDR',camera:'48MP',battery:'4422 mAh',os:'iOS 17',features:['tragop','freeship'],colors:['#4a4a4a','#e8e8e8','#ffd700'],image:'images/15-256.avif',rating:4.9,reviews:512},
+    {id:9,name:'Samsung Galaxy S25 Ultra',brand:'samsung',category:'dienthoai',price:31990000,oldPrice:35990000,discount:11,ram:12,storage:256,screen:'6.8" Dynamic AMOLED 2X',camera:'200MP',battery:'5000 mAh',os:'Android 15',features:['tragop','freeship'],colors:['#9e9e9e','#000000'],image:'images/samsung.webp',rating:4.8,reviews:687}
   ];
 }
 
 // ===== UTILITY FUNCTIONS =====
-
-// Format price
 function formatPrice(price) {
-  return price.toLocaleString('vi-VN') + 'đ';
+  return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
 }
 
-// Show toast notification
+function generateStars(rating) {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  let html = '';
+  for (let i = 0; i < full; i++) html += '<i class="fas fa-star"></i>';
+  if (half) html += '<i class="fas fa-star-half-alt"></i>';
+  for (let i = full + (half ? 1 : 0); i < 5; i++) html += '<i class="far fa-star"></i>';
+  return html;
+}
+
 function showToast(message, type = 'success') {
   const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
+  toast.className = `toast-notification ${type}`;
   toast.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} text-xl text-${type === 'success' ? 'green' : 'red'}-600"></i>
-    <span class="font-medium">${message}</span>
+    <i class="fas fa-${type === 'success' ? 'check-circle text-green-500' : 'exclamation-circle text-red-500'} text-xl"></i>
+    <span class="font-medium text-gray-800">${message}</span>
   `;
   document.body.appendChild(toast);
-  
-  setTimeout(() => toast.classList.add('show'), 100);
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
+  setTimeout(() => toast.remove(), 3000);
 }
 
-// ===== RENDER PRODUCT DETAILS =====
+// ===== RENDER PRODUCT DETAIL =====
 function renderProductDetail(productId) {
   const product = PRODUCTS.find(p => p.id === productId);
   currentProduct = product;
   
   if (!product) {
-    document.getElementById('productContainer').innerHTML = `
-      <div class="col-span-2 text-center py-20 animate-slide-up">
-        <div class="mb-6">
-          <i class="fas fa-exclamation-triangle text-7xl text-red-600 mb-4 opacity-50"></i>
-        </div>
-        <h2 class="text-3xl font-bold mb-3 text-gray-900">Không tìm thấy sản phẩm</h2>
-        <p class="text-gray-600 mb-8 text-lg">Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã được gỡ bỏ.</p>
-        <a href="products.html" class="btn-primary inline-flex items-center gap-2">
-          <i class="fas fa-arrow-left"></i>
-          <span>Quay lại trang sản phẩm</span>
+    document.querySelector('main').innerHTML = `
+      <div class="text-center py-20">
+        <i class="fas fa-exclamation-triangle text-6xl text-gray-300 mb-4"></i>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Không tìm thấy sản phẩm</h2>
+        <p class="text-gray-600 mb-6">Sản phẩm bạn tìm kiếm không tồn tại.</p>
+        <a href="products.html" class="inline-flex items-center gap-2 bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+          <i class="fas fa-arrow-left"></i> Quay lại
         </a>
       </div>
     `;
     return;
   }
 
-  // Update breadcrumb dynamically
-  document.getElementById('breadcrumbProduct').textContent = product.name;
+  // Update page info
   document.title = `${product.name} - QuangHưng Mobile`;
-
-  // Calculate ratings
-  const rating = product.rating || (4 + Math.random() * 1);
+  document.getElementById('breadcrumbProduct').textContent = product.name;
+  
+  // Calculate stats
+  const rating = product.rating || 4.5;
   const reviews = product.reviews || Math.floor(Math.random() * 200) + 50;
   const sold = Math.floor(Math.random() * 500) + 100;
   const stock = Math.floor(Math.random() * 50) + 10;
+
+  // Update main image
+  document.getElementById('mainProductImage').src = product.image;
+  document.getElementById('mainProductImage').alt = product.name;
   
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  let starsHTML = '';
-  for(let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>';
-  if(halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>';
-  for(let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) starsHTML += '<i class="far fa-star"></i>';
-
-  // Render product HTML with lazy loading images
-  const productHTML = `
-    <!-- Left Column: Image Gallery với Swiper Slider -->
-    <div class="lg:sticky lg:top-4">
-      <!-- Main Swiper Gallery -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-4">
-        <div class="swiper mainSwiper zoom-container">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-2 bg-white">
-                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-2 bg-white">
-                <img src="${product.image}" alt="${product.name} view 2" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-2 bg-white">
-                <img src="${product.image}" alt="${product.name} view 3" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="aspect-square flex items-center justify-center p-2 bg-white">
-                <img src="${product.image}" alt="${product.name} view 4" class="w-full h-full object-contain zoom-image" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-              </div>
-            </div>
-          </div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-pagination"></div>
-        </div>
-      </div>
-
-      <!-- Thumbnail Swiper -->
-      <div thumbsSlider="" class="swiper thumbSwiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="thumbnail-item active bg-white">
-              <img src="${product.image}" alt="Thumb 1" class="w-full h-20 object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="thumbnail-item bg-white">
-              <img src="${product.image}" alt="Thumb 2" class="w-full h-20 object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="thumbnail-item bg-white">
-              <img src="${product.image}" alt="Thumb 3" class="w-full h-20 object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="thumbnail-item bg-white">
-              <img src="${product.image}" alt="Thumb 4" class="w-full h-full object-contain" loading="lazy" onerror="handleImgErrorGlobal(this, '${product.brand}')" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column: Product Info Card Modern -->
-    <div id="buySection">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 lg:p-6">
-        <!-- Badges Modern -->
-        <div class="mb-4 flex flex-wrap gap-2">
-          ${product.discount ? `<span class="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-tag"></i>Giảm ${product.discount}%</span>` : ''}
-          <span class="inline-flex items-center gap-1.5 bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-check-circle"></i>Còn hàng</span>
-          ${product.features && product.features.includes('freeship') ? '<span class="inline-flex items-center gap-1.5 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-shipping-fast"></i>Freeship</span>' : ''}
-          ${product.features && product.features.includes('tragop') ? '<span class="inline-flex items-center gap-1.5 bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"><i class="fas fa-credit-card"></i>Trả góp 0%</span>' : ''}
-        </div>
-        
-        <!-- Product Name -->
-        <h1 class="text-xl lg:text-2xl font-extrabold mb-4 text-gray-900 leading-tight">${product.name}</h1>
-        
-        <!-- Rating & Reviews -->
-        <div class="flex items-center flex-wrap mb-5 gap-2.5 pb-5 border-b border-gray-200">
-          <div class="text-yellow-400 flex gap-0.5 text-base">
-            ${starsHTML}
-          </div>
-          <span class="text-base font-extrabold text-gray-900">${rating.toFixed(1)}</span>
-          <span class="text-gray-300 font-bold">|</span>
-          <span class="text-sm text-gray-700 hover:text-red-600 cursor-pointer transition font-semibold">${reviews} đánh giá</span>
-          <span class="text-gray-300 font-bold">|</span>
-          <span class="text-sm font-bold text-gray-900">Đã bán ${sold}+</span>
-        </div>
-
-        <!-- Price -->
-        <div class="mb-5 pb-5 border-b border-gray-200">
-          <div class="flex items-baseline gap-3 mb-2">
-            <span class="text-3xl lg:text-4xl font-black text-red-600">${formatPrice(product.price)}</span>
-            ${product.oldPrice ? `<span class="text-lg text-gray-400 line-through font-semibold">${formatPrice(product.oldPrice)}</span>` : ''}
-          </div>
-          ${product.oldPrice ? `<div class="inline-flex items-center gap-2 bg-gradient-to-r from-red-50 to-orange-50 text-red-700 px-4 py-2 rounded-lg border border-red-200">
-            <i class="fas fa-piggy-bank text-red-600"></i>
-            <span class="font-bold text-sm">Tiết kiệm ${formatPrice(product.oldPrice - product.price)}</span>
-          </div>` : ''}
-        </div>
-
-        ${product.colors && product.colors.length > 0 ? `
-        <!-- Color Selection -->
-        <div class="mb-5 pb-5 border-b border-gray-200">
-          <h3 class="font-bold text-sm mb-3 text-gray-900">Chọn màu sắc</h3>
-          <div class="flex flex-wrap gap-2.5">
-            ${product.colors.map((color, index) => `
-              <button class="w-11 h-11 rounded-full border-4 transition-all hover:scale-110 ${index === 0 ? 'border-red-600 ring-2 ring-red-200' : 'border-gray-300 hover:border-red-400'}" 
-                      style="background-color: ${color};"
-                      onclick="selectColor(this)">
-                ${index === 0 ? '<i class="fas fa-check text-white text-xs drop-shadow-lg"></i>' : ''}
-              </button>
-            `).join('')}
-          </div>
-        </div>
-        ` : ''}
-
-        ${product.category === 'dienthoai' && product.storage ? `
-        <!-- Storage Selection -->
-        <div class="mb-5 pb-5 border-b border-gray-200">
-          <h3 class="font-bold text-sm mb-3 text-gray-900">Dung lượng</h3>
-          <div class="grid grid-cols-3 gap-2.5">
-            <button class="border-2 border-red-600 bg-red-50 text-red-700 rounded-lg px-3 py-2.5 font-bold text-sm hover:bg-red-100 transition" onclick="selectStorage(this)">
-              ${product.storage}GB
-            </button>
-            ${product.storage < 256 ? `<button class="border-2 border-gray-300 rounded-lg px-3 py-2.5 hover:border-red-600 hover:bg-red-50 transition" onclick="selectStorage(this)">
-              <div class="font-bold text-sm text-gray-900">256GB</div>
-              <div class="text-xs text-gray-600 mt-0.5">+2tr</div>
-            </button>` : ''}
-            ${product.storage < 512 ? `<button class="border-2 border-gray-300 rounded-lg px-3 py-2.5 hover:border-red-600 hover:bg-red-50 transition" onclick="selectStorage(this)">
-              <div class="font-bold text-sm text-gray-900">512GB</div>
-              <div class="text-xs text-gray-600 mt-0.5">+4tr</div>
-            </button>` : ''}
-          </div>
-        </div>
-        ` : ''}
-
-        <!-- Quantity Selection -->
-        <div class="mb-5 pb-5 border-b border-gray-200">
-          <h3 class="font-bold text-sm mb-3 text-gray-900">Số lượng</h3>
-          <div class="flex items-center gap-3">
-            <div class="flex items-center border-2 rounded-lg overflow-hidden border-gray-300 hover:border-red-600 transition">
-              <button class="px-4 py-2.5 hover:bg-gray-100 transition active:bg-gray-200" onclick="decreaseQuantity()">
-                <i class="fas fa-minus text-xs text-gray-700"></i>
-              </button>
-              <input type="number" id="quantity" value="1" min="1" max="${stock}" 
-                     class="w-16 text-center border-x-2 py-2.5 outline-none font-bold text-base border-gray-300" />
-              <button class="px-4 py-2.5 hover:bg-gray-100 transition active:bg-gray-200" onclick="increaseQuantity()">
-                <i class="fas fa-plus text-xs text-gray-700"></i>
-              </button>
-            </div>
-            <span class="text-xs text-gray-700">Còn <strong class="text-red-600 font-bold text-sm">${stock}</strong> sản phẩm</span>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="space-y-2.5 mb-5">
-          <button onclick="buyNow()" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-extrabold py-3.5 px-6 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2.5 text-base">
-            <i class="fas fa-bolt text-lg"></i>
-            <span>Mua ngay</span>
-          </button>
-          <div class="grid grid-cols-2 gap-2.5">
-            <button onclick="addToCart()" class="border-2 border-red-600 text-red-600 hover:bg-red-50 font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-2 text-sm">
-              <i class="fas fa-shopping-cart"></i>
-              <span>Thêm giỏ</span>
-            </button>
-            <button onclick="buyInstallment()" class="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-2 text-sm">
-              <i class="fas fa-credit-card"></i>
-              <span>Trả góp 0%</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Social Share -->
-        <div class="flex items-center gap-2.5 pt-5 border-t border-gray-200">
-          <span class="text-xs font-bold text-gray-700">Chia sẻ:</span>
-          <button onclick="shareProduct('facebook')" class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-50 hover:bg-blue-100 transition-all hover:scale-110" title="Facebook">
-            <i class="fab fa-facebook text-blue-600 text-lg"></i>
-          </button>
-          <button onclick="shareProduct('twitter')" class="w-9 h-9 flex items-center justify-center rounded-full bg-sky-50 hover:bg-sky-100 transition-all hover:scale-110" title="Twitter">
-            <i class="fab fa-twitter text-sky-500 text-lg"></i>
-          </button>
-          <button onclick="shareProduct('zalo')" class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-50 hover:bg-blue-100 transition-all hover:scale-110" title="Zalo">
-            <i class="fas fa-comment-dots text-blue-500 text-lg"></i>
-          </button>
-          <button onclick="copyLink()" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-all hover:scale-110" title="Copy link">
-            <i class="fas fa-link text-gray-600 text-lg"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('productContainer').innerHTML = productHTML;
-
-  // Update sticky buy button
+  // Update discount badge
+  if (product.discount) {
+    document.getElementById('discountBadge').classList.remove('hidden');
+    document.getElementById('discountPercent').textContent = product.discount;
+  }
+  document.getElementById('brandBadge').classList.remove('hidden');
+  
+  // Update thumbnails
+  renderThumbnails(product);
+  
+  // Update product info
+  document.getElementById('productTitle').textContent = product.name;
+  document.getElementById('ratingStars').innerHTML = generateStars(rating);
+  document.getElementById('ratingValue').textContent = rating.toFixed(1);
+  document.getElementById('reviewCount').textContent = reviews;
+  document.getElementById('soldCount').textContent = sold;
+  
+  // Update prices
+  document.getElementById('currentPrice').textContent = formatPrice(product.price);
+  if (product.oldPrice) {
+    document.getElementById('oldPrice').textContent = formatPrice(product.oldPrice);
+    document.getElementById('oldPrice').classList.remove('hidden');
+    document.getElementById('savingBadge').classList.remove('hidden');
+    document.getElementById('savingAmount').textContent = formatPrice(product.oldPrice - product.price);
+  }
+  
+  // Update stock
+  document.getElementById('stockCount').textContent = stock;
+  document.getElementById('quantity').max = stock;
+  
+  // Render color options
+  if (product.colors && product.colors.length > 0) {
+    document.getElementById('colorSection').classList.remove('hidden');
+    renderColorOptions(product.colors);
+  }
+  
+  // Render storage options
+  if (product.category === 'dienthoai' && product.storage) {
+    document.getElementById('storageSection').classList.remove('hidden');
+    renderStorageOptions(product.storage);
+  }
+  
+  // Update sticky bar
   document.getElementById('stickyImage').src = product.image;
   document.getElementById('stickyName').textContent = product.name;
   document.getElementById('stickyPrice').textContent = formatPrice(product.price);
-
-  // Update SEO meta tags
-  updateSEO(product);
-
-  // Initialize Swiper after rendering
-  setTimeout(() => {
-    initSwiper();
-  }, 100);
+  
+  // Update tabs
+  document.getElementById('tabReviewCount').textContent = reviews;
+  
+  // Load initial tab content
+  loadDescription();
+  
+  // Load related products
+  renderRelatedProducts(product);
+  
+  // Update review section
+  document.getElementById('avgRating').textContent = rating.toFixed(1);
+  document.getElementById('avgStars').innerHTML = generateStars(rating);
+  document.getElementById('totalReviewsDisplay').textContent = reviews;
+  
+  // Load reviews
+  loadReviews();
 }
 
-// ===== SEO FUNCTIONS =====
-function updateSEO(product) {
-  const currentUrl = window.location.href;
-  const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+// Render thumbnails with multiple images
+function renderThumbnails(product) {
+  const container = document.getElementById('thumbnailsContainer');
+  container.innerHTML = '';
   
-  const productName = product.name;
-  const productPrice = product.price;
-  const productImage = product.image;
-  const rating = product.rating || 4.5;
-  const reviews = product.reviews || 152;
-  const sku = product.sku || `PROD-${product.id}`;
+  // Sử dụng mảng images nếu có, nếu không thì dùng image chính
+  const images = product.images && product.images.length > 0 
+    ? product.images 
+    : [product.image, product.image, product.image, product.image];
   
-  // Dynamic title and description
-  const title = `Mua ${productName} chính hãng - Giá rẻ ${formatPrice(productPrice)} tại QuangHưng Mobile`;
-  const description = `${productName} chính hãng, giá ${formatPrice(productPrice)}${product.oldPrice ? ` (tiết kiệm ${formatPrice(product.oldPrice - product.price)})` : ''}, trả góp 0%, freeship toàn quốc. Bảo hành 12 tháng chính hãng. ☎ Hotline: 1900.xxxx`;
+  images.forEach((img, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'swiper-slide';
+    slide.innerHTML = `
+      <div class="thumbnail-item ${i === 0 ? 'active' : ''}" onclick="selectThumbnail(${i}, '${img}')">
+        <img src="${img}" alt="Ảnh ${i + 1}" class="w-full h-16 object-contain" onerror="this.src='images/iphone.jpg'" />
+      </div>
+    `;
+    container.appendChild(slide);
+  });
   
-  // Update page title and meta description (guarded)
-  const elPageTitle = document.getElementById('pageTitle');
-  if (elPageTitle) elPageTitle.textContent = title;
-  document.title = title;
-  const elPageDesc = document.getElementById('pageDescription');
-  if (elPageDesc) elPageDesc.setAttribute('content', description);
-  const elPageKeywords = document.getElementById('pageKeywords');
-  if (elPageKeywords) elPageKeywords.setAttribute('content', `${productName}, mua ${productName}, ${productName} giá rẻ, ${productName} chính hãng, ${product.brand}`);
-
-  // Update Open Graph (guarded)
-  const elOgTitle = document.getElementById('ogTitle'); if (elOgTitle) elOgTitle.setAttribute('content', title);
-  const elOgDesc = document.getElementById('ogDescription'); if (elOgDesc) elOgDesc.setAttribute('content', description);
-  const elOgImage = document.getElementById('ogImage'); if (elOgImage) elOgImage.setAttribute('content', productImage);
-  const elOgUrl = document.getElementById('ogUrl'); if (elOgUrl) elOgUrl.setAttribute('content', currentUrl);
-
-  // Update Twitter Card (guarded)
-  const elTwTitle = document.getElementById('twitterTitle'); if (elTwTitle) elTwTitle.setAttribute('content', title);
-  const elTwDesc = document.getElementById('twitterDescription'); if (elTwDesc) elTwDesc.setAttribute('content', description);
-  const elTwImage = document.getElementById('twitterImage'); if (elTwImage) elTwImage.setAttribute('content', productImage);
-
-  // Update canonical URL (guarded)
-  const elCanonical = document.getElementById('canonical'); if (elCanonical) elCanonical.setAttribute('href', currentUrl);
-
-  // Update Product JSON-LD Structured Data (guarded)
-  const productSchema = {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": productName,
-    "image": [productImage],
-    "description": description,
-    "sku": sku,
-    "brand": {
-      "@type": "Brand",
-      "name": product.brand ? product.brand.toUpperCase() : "QuangHưng Mobile"
-    },
-    "offers": {
-      "@type": "Offer",
-      "url": currentUrl,
-      "priceCurrency": "VND",
-      "price": productPrice,
-      "availability": "https://schema.org/InStock",
-      "priceValidUntil": new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
-      "itemCondition": "https://schema.org/NewCondition",
-      "seller": {
-        "@type": "Organization",
-        "name": "QuangHưng Mobile"
-      }
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": rating.toFixed(1),
-      "reviewCount": reviews.toString(),
-      "bestRating": "5",
-      "worstRating": "1"
-    }
-  };
-  
-  const elProductSchema = document.getElementById('productSchema');
-  if (elProductSchema) elProductSchema.textContent = JSON.stringify(productSchema, null, 2);
-
-  // Update Breadcrumb Schema
-  const breadcrumbSchema = {
-    "@context": "https://schema.org/",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Trang chủ",
-        "item": baseUrl + "/index.html"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Sản phẩm",
-        "item": baseUrl + "/products.html"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": productName,
-        "item": currentUrl
-      }
-    ]
-  };
-  
-  const elBreadcrumbSchema = document.getElementById('breadcrumbSchema');
-  if (elBreadcrumbSchema) elBreadcrumbSchema.textContent = JSON.stringify(breadcrumbSchema, null, 2);
+  // Khởi tạo Swiper cho thumbnails
+  initThumbnailSwiper();
 }
 
-// Initialize Swiper Slider
-function initSwiper() {
-  // Thumbnail Swiper
-  const thumbSwiper = new Swiper('.thumbSwiper', {
+// Initialize thumbnail swiper
+function initThumbnailSwiper() {
+  new Swiper('.thumbSwiper', {
     spaceBetween: 10,
     slidesPerView: 4,
     freeMode: true,
     watchSlidesProgress: true,
   });
+}
 
-  // Main Swiper
-  const mainSwiper = new Swiper('.mainSwiper', {
-    spaceBetween: 10,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    thumbs: {
-      swiper: thumbSwiper,
-    },
+// Select thumbnail - cập nhật ảnh chính
+function selectThumbnail(index, imageSrc) {
+  // Cập nhật active state cho thumbnails
+  document.querySelectorAll('.thumbnail-item').forEach((item, i) => {
+    item.classList.toggle('active', i === index);
   });
+  
+  // Cập nhật ảnh chính với hiệu ứng fade
+  const mainImage = document.getElementById('mainProductImage');
+  mainImage.style.opacity = '0';
+  
+  setTimeout(() => {
+    mainImage.src = imageSrc;
+    mainImage.style.opacity = '1';
+  }, 150);
+}
+
+// Render color options
+function renderColorOptions(colors) {
+  const container = document.getElementById('colorOptions');
+  container.innerHTML = colors.map((color, i) => `
+    <button class="color-option ${i === 0 ? 'active' : ''}" style="background-color: ${color};" onclick="selectColor(this)" title="Màu ${i + 1}"></button>
+  `).join('');
+}
+
+// Select color
+function selectColor(btn) {
+  document.querySelectorAll('.color-option').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Render storage options
+function renderStorageOptions(currentStorage) {
+  const container = document.getElementById('storageOptions');
+  const storages = [currentStorage];
+  if (currentStorage < 256) storages.push(256);
+  if (currentStorage < 512) storages.push(512);
+  
+  container.innerHTML = storages.map((size, i) => `
+    <button class="storage-option ${i === 0 ? 'active' : ''}" onclick="selectStorage(this)">
+      <div class="storage-size">${size}GB</div>
+      ${i > 0 ? `<div class="storage-price">+${i * 2}tr</div>` : ''}
+    </button>
+  `).join('');
+}
+
+// Select storage
+function selectStorage(btn) {
+  document.querySelectorAll('.storage-option').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+
+// ===== QUANTITY FUNCTIONS =====
+function changeQuantity(delta) {
+  const input = document.getElementById('quantity');
+  const max = parseInt(input.max) || 99;
+  let value = parseInt(input.value) || 1;
+  value = Math.max(1, Math.min(max, value + delta));
+  input.value = value;
+}
+
+// ===== CART FUNCTIONS =====
+function addToCart() {
+  if (!currentProduct) return;
+  
+  const quantity = parseInt(document.getElementById('quantity').value) || 1;
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  
+  const existingItem = cart.find(item => item.id === currentProduct.id);
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    cart.push({ ...currentProduct, quantity });
+  }
+  
+  localStorage.setItem('cart', JSON.stringify(cart));
+  window.dispatchEvent(new Event('storage'));
+  
+  showToast(`Đã thêm "${currentProduct.name}" vào giỏ hàng!`, 'success');
+}
+
+function buyNow() {
+  addToCart();
+  window.location.href = 'checkout.html';
+}
+
+function buyInstallment() {
+  addToCart();
+  showToast('Chuyển đến trang trả góp...', 'success');
+  setTimeout(() => window.location.href = 'checkout.html?installment=true', 1000);
+}
+
+function addToWishlist() {
+  if (!currentProduct) return;
+  showToast(`Đã thêm "${currentProduct.name}" vào danh sách yêu thích!`, 'success');
 }
 
 // ===== TAB FUNCTIONS =====
-function switchTab(tabName, ev) {
+function switchTab(tabName) {
   // Update tab buttons
-  document.querySelectorAll('.tab-button').forEach(btn => {
-    btn.classList.remove('active', 'text-red-600', 'border-red-600');
-    btn.classList.add('text-gray-600');
-  });
-  const target = ev ? (ev.currentTarget || ev.target) : (window.event ? window.event.target : null);
-  if (target) {
-    target.classList.add('active', 'text-red-600', 'border-red-600');
-    target.classList.remove('text-gray-600');
-  }
-
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
   // Update tab content
-  document.querySelectorAll('.tab-content').forEach(content => {
-    content.classList.add('hidden');
-  });
-  const tab = document.getElementById('tab-' + tabName);
-  if (tab) tab.classList.remove('hidden');
-
-  // Load content based on tab
-  if (tabName === 'reviews') {
-    loadReviews();
-  } else if (tabName === 'specs') {
-    loadSpecs();
-  } else if (tabName === 'description') {
-    loadDescription();
-  }
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+  document.getElementById('tab-' + tabName).classList.remove('hidden');
+  
+  // Load content
+  if (tabName === 'description') loadDescription();
+  else if (tabName === 'specs') loadSpecs();
+  else if (tabName === 'reviews') loadReviews();
 }
 
-// Load Product Description
+// Load description
 function loadDescription() {
   if (!currentProduct) return;
   
-  const descContainer = document.getElementById('productDescription');
-  descContainer.innerHTML = `
-    <div class="space-y-5">
+  document.getElementById('productDescription').innerHTML = `
+    <div class="space-y-6">
       <p class="text-gray-700 leading-relaxed text-base">
-        <strong class="text-gray-900">${currentProduct.name}</strong> là sản phẩm cao cấp đến từ thương hiệu <strong class="text-red-600">${currentProduct.brand.toUpperCase()}</strong>, 
-        mang đến cho bạn trải nghiệm tuyệt vời với thiết kế hiện đại và cấu hình mạnh mẽ.
+        <strong class="text-gray-900">${currentProduct.name}</strong> là sản phẩm cao cấp đến từ thương hiệu 
+        <strong class="text-red-600">${currentProduct.brand.toUpperCase()}</strong>, mang đến trải nghiệm tuyệt vời 
+        với thiết kế hiện đại và cấu hình mạnh mẽ.
       </p>
       
-      <h4 class="text-xl font-bold text-gray-900 mt-6 mb-4"><i class="fas fa-star text-yellow-400 mr-2"></i>Điểm nổi bật</h4>
-      <ul class="space-y-3">
-        ${currentProduct.screen ? `<li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-600 mt-1 text-lg"></i><span class="text-gray-700 text-base">Màn hình ${currentProduct.screen} sắc nét, màu sắc sống động</span></li>` : ''}
-        ${currentProduct.camera ? `<li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-600 mt-1 text-lg"></i><span class="text-gray-700 text-base">Camera ${currentProduct.camera} cho ảnh chụp chuyên nghiệp</span></li>` : ''}
-        ${currentProduct.ram ? `<li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-600 mt-1 text-lg"></i><span class="text-gray-700 text-base">RAM ${currentProduct.ram}GB đa nhiệm mượt mà</span></li>` : ''}
-        ${currentProduct.battery ? `<li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-600 mt-1 text-lg"></i><span class="text-gray-700 text-base">Pin ${currentProduct.battery} sử dụng cả ngày</span></li>` : ''}
-        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-600 mt-1 text-lg"></i><span class="text-gray-700 text-base">Thiết kế sang trọng, chất liệu cao cấp</span></li>
-        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-600 mt-1 text-lg"></i><span class="text-gray-700 text-base">Hiệu năng mạnh mẽ, xử lý mọi tác vụ</span></li>
-      </ul>
-
-      <h4 class="text-xl font-bold text-gray-900 mt-8 mb-4"><i class="fas fa-shield-alt text-blue-600 mr-2"></i>Cam kết từ QuangHưng Mobile</h4>
-      <ul class="space-y-3 bg-blue-50 p-5 rounded-lg border border-blue-100">
-        <li class="flex items-start gap-3"><i class="fas fa-badge-check text-blue-600 mt-1 text-lg"></i><span class="text-gray-700 text-base font-medium">100% sản phẩm chính hãng, nguyên seal</span></li>
-        <li class="flex items-start gap-3"><i class="fas fa-box text-blue-600 mt-1 text-lg"></i><span class="text-gray-700 text-base font-medium">Bảo hành chính hãng 12 tháng</span></li>
-        <li class="flex items-start gap-3"><i class="fas fa-exchange-alt text-blue-600 mt-1 text-lg"></i><span class="text-gray-700 text-base font-medium">Đổi trả miễn phí trong 7 ngày</span></li>
-        <li class="flex items-start gap-3"><i class="fas fa-shipping-fast text-blue-600 mt-1 text-lg"></i><span class="text-gray-700 text-base font-medium">Giao hàng nhanh chóng toàn quốc</span></li>
-      </ul>
+      <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-5 border border-red-100">
+        <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <i class="fas fa-star text-yellow-400"></i> Điểm nổi bật
+        </h4>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          ${currentProduct.screen ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Màn hình ${currentProduct.screen} sắc nét</span></li>` : ''}
+          ${currentProduct.camera ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Camera ${currentProduct.camera} chuyên nghiệp</span></li>` : ''}
+          ${currentProduct.ram ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>RAM ${currentProduct.ram}GB đa nhiệm mượt mà</span></li>` : ''}
+          ${currentProduct.battery ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Pin ${currentProduct.battery} dùng cả ngày</span></li>` : ''}
+          <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Thiết kế sang trọng, cao cấp</span></li>
+          <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Hiệu năng mạnh mẽ</span></li>
+        </ul>
+      </div>
+      
+      <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+        <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <i class="fas fa-shield-alt text-blue-600"></i> Cam kết từ QuangHưng Mobile
+        </h4>
+        <ul class="space-y-2">
+          <li class="flex items-center gap-3"><i class="fas fa-badge-check text-blue-600"></i><span>100% sản phẩm chính hãng, nguyên seal</span></li>
+          <li class="flex items-center gap-3"><i class="fas fa-box text-blue-600"></i><span>Bảo hành chính hãng 12 tháng</span></li>
+          <li class="flex items-center gap-3"><i class="fas fa-exchange-alt text-blue-600"></i><span>Đổi trả miễn phí trong 7 ngày</span></li>
+          <li class="flex items-center gap-3"><i class="fas fa-shipping-fast text-blue-600"></i><span>Giao hàng nhanh chóng toàn quốc</span></li>
+        </ul>
+      </div>
     </div>
   `;
 }
 
-// Load Specifications Table
+// Load specifications
 function loadSpecs() {
   if (!currentProduct) return;
   
-  const specsContainer = document.getElementById('productSpecs');
-
-  if (currentProduct.category === 'dienthoai') {
-    specsContainer.innerHTML = `
-      <table class="specs-table">
-        <tbody>
-          ${currentProduct.screen ? `
-            <tr>
-              <td><i class="fas fa-mobile-alt mr-2 text-red-600"></i>Màn hình</td>
-              <td>${currentProduct.screen}</td>
-            </tr>
-          ` : ''}
-          ${currentProduct.os ? `
-            <tr>
-              <td><i class="fas fa-cog mr-2 text-red-600"></i>Hệ điều hành</td>
-              <td>${currentProduct.os}</td>
-            </tr>
-          ` : ''}
-          ${currentProduct.camera ? `
-            <tr>
-              <td><i class="fas fa-camera mr-2 text-red-600"></i>Camera</td>
-              <td>${currentProduct.camera}</td>
-            </tr>
-          ` : ''}
-          ${currentProduct.ram ? `
-            <tr>
-              <td><i class="fas fa-memory mr-2 text-red-600"></i>RAM</td>
-              <td>${currentProduct.ram}GB</td>
-            </tr>
-          ` : ''}
-          ${currentProduct.storage ? `
-            <tr>
-              <td><i class="fas fa-hdd mr-2 text-red-600"></i>Bộ nhớ trong</td>
-              <td>${currentProduct.storage}GB</td>
-            </tr>
-          ` : ''}
-          ${currentProduct.battery ? `
-            <tr>
-              <td><i class="fas fa-battery-full mr-2 text-red-600"></i>Pin</td>
-              <td>${currentProduct.battery}</td>
-            </tr>
-          ` : ''}
+  const specs = [];
+  if (currentProduct.screen) specs.push(['<i class="fas fa-mobile-alt text-red-500 mr-2"></i>Màn hình', currentProduct.screen]);
+  if (currentProduct.os) specs.push(['<i class="fas fa-cog text-red-500 mr-2"></i>Hệ điều hành', currentProduct.os]);
+  if (currentProduct.camera) specs.push(['<i class="fas fa-camera text-red-500 mr-2"></i>Camera', currentProduct.camera]);
+  if (currentProduct.ram) specs.push(['<i class="fas fa-memory text-red-500 mr-2"></i>RAM', currentProduct.ram + 'GB']);
+  if (currentProduct.storage) specs.push(['<i class="fas fa-hdd text-red-500 mr-2"></i>Bộ nhớ trong', currentProduct.storage + 'GB']);
+  if (currentProduct.battery) specs.push(['<i class="fas fa-battery-full text-red-500 mr-2"></i>Pin', currentProduct.battery]);
+  specs.push(['<i class="fas fa-wifi text-red-500 mr-2"></i>Kết nối', '5G, Wi-Fi 6, Bluetooth 5.3, NFC']);
+  specs.push(['<i class="fas fa-fingerprint text-red-500 mr-2"></i>Bảo mật', 'Vân tay, Face ID']);
+  
+  document.getElementById('productSpecs').innerHTML = `
+    <table class="specs-table w-full">
+      <tbody>
+        ${specs.map(([label, value]) => `
           <tr>
-            <td><i class="fas fa-wifi mr-2 text-red-600"></i>Kết nối</td>
-            <td>5G, Wi-Fi 6, Bluetooth 5.3, NFC</td>
+            <td>${label}</td>
+            <td class="text-gray-800">${value}</td>
           </tr>
-          <tr>
-            <td><i class="fas fa-fingerprint mr-2 text-red-600"></i>Bảo mật</td>
-            <td>Vân tay, Face ID</td>
-          </tr>
-        </tbody>
-      </table>
-    `;
-  } else {
-    specsContainer.innerHTML = `
-      <div class="text-center py-8">
-        <i class="fas fa-info-circle text-4xl text-gray-300 mb-3"></i>
-        <p class="text-gray-600 text-base">Thông số kỹ thuật chi tiết đang được cập nhật...</p>
-      </div>
-    `;
-  }
+        `).join('')}
+      </tbody>
+    </table>
+  `;
 }
 
-// Load Reviews
+// Load reviews
 function loadReviews() {
-  if (!currentProduct) return;
-  
   const reviewsList = document.getElementById('reviewsList');
-  const rating = currentProduct.rating || 4.5;
-  const reviews = currentProduct.reviews || 152;
-
-  // Update review count
-  document.getElementById('totalReviews').textContent = reviews;
-  const totalReviews2 = document.getElementById('totalReviews2');
-  if (totalReviews2) totalReviews2.textContent = reviews;
-  document.getElementById('avgRating').textContent = rating.toFixed(1);
-
-  // Generate stars for average rating
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  let starsHTML = '';
-  for(let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>';
-  if(halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>';
-  for(let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) starsHTML += '<i class="far fa-star"></i>';
-  document.getElementById('avgStars').innerHTML = starsHTML;
-
-  // Sample reviews
   const sampleReviews = [
-    {
-      name: 'Nguyễn Văn A',
-      rating: 5,
-      date: '3 ngày trước',
-      comment: 'Sản phẩm rất tốt, giao hàng nhanh. Màn hình đẹp, pin trâu. Rất hài lòng!',
-      verified: true
-    },
-    {
-      name: 'Trần Thị B',
-      rating: 5,
-      date: '5 ngày trước',
-      comment: 'Mình rất thích thiết kế và hiệu năng. Camera chụp ảnh đẹp lắm. Đóng gói cẩn thận, shop tư vấn nhiệt tình.',
-      verified: true
-    },
-    {
-      name: 'Lê Văn C',
-      rating: 4,
-      date: '1 tuần trước',
-      comment: 'Sản phẩm ok, chỉ có điều hơi nặng một chút. Nhưng nhìn chung rất đáng đồng tiền.',
-      verified: false
-    },
-    {
-      name: 'Phạm Minh D',
-      rating: 5,
-      date: '2 tuần trước',
-      comment: 'Chất lượng tuyệt vời, đúng như mô tả. Sẽ ủng hộ shop dài dài!',
-      verified: true
-    }
+    { name: 'Nguyễn Văn A', rating: 5, date: '15/11/2025', comment: 'Sản phẩm rất tốt, đóng gói cẩn thận. Giao hàng nhanh, nhân viên tư vấn nhiệt tình. Sẽ ủng hộ shop dài dài!', verified: true },
+    { name: 'Trần Thị B', rating: 5, date: '12/11/2025', comment: 'Máy đẹp, chạy mượt. Giá cả hợp lý so với thị trường. Rất hài lòng với dịch vụ của QuangHưng Mobile.', verified: true },
+    { name: 'Lê Văn C', rating: 4, date: '10/11/2025', comment: 'Sản phẩm chính hãng, còn nguyên seal. Camera chụp đẹp, pin trâu. Chỉ tiếc là không có sạc nhanh kèm theo.', verified: true },
+    { name: 'Phạm Thị D', rating: 5, date: '08/11/2025', comment: 'Mua làm quà tặng người thân, rất ưng ý. Shop tư vấn kỹ, hỗ trợ cài đặt tận tình. 10 điểm!', verified: false }
   ];
-
-  reviewsList.innerHTML = sampleReviews.map(review => {
-    let reviewStars = '';
-    for(let i = 0; i < review.rating; i++) reviewStars += '<i class="fas fa-star"></i>';
-    for(let i = review.rating; i < 5; i++) reviewStars += '<i class="far fa-star"></i>';
-
-    return `
-      <div class="border-b border-gray-200 pb-6 last:border-0">
-        <div class="flex items-start gap-4">
-          <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-md">
-            ${review.name.charAt(0)}
+  
+  reviewsList.innerHTML = sampleReviews.map(review => `
+    <div class="review-item">
+      <div class="flex items-start gap-4">
+        <div class="review-avatar">${review.name.charAt(0)}</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="font-semibold text-gray-900">${review.name}</span>
+            ${review.verified ? '<span class="review-verified"><i class="fas fa-check mr-1"></i>Đã mua hàng</span>' : ''}
           </div>
-          <div class="flex-1">
-            <div class="flex items-center gap-2.5 mb-2">
-              <p class="font-bold text-gray-900 text-base">${review.name}</p>
-              ${review.verified ? '<span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-semibold flex items-center gap-1"><i class="fas fa-check-circle"></i>Đã mua hàng</span>' : ''}
-            </div>
-            <div class="text-yellow-400 text-sm mb-2">${reviewStars}</div>
-            <p class="text-xs text-gray-500 mb-2.5"><i class="far fa-clock mr-1"></i>${review.date}</p>
-            <p class="text-gray-700 leading-relaxed text-base">${review.comment}</p>
+          <div class="flex items-center gap-2 mb-2">
+            <div class="review-stars">${generateStars(review.rating)}</div>
+            <span class="text-xs text-gray-500">${review.date}</span>
           </div>
+          <p class="text-gray-700 text-sm leading-relaxed">${review.comment}</p>
         </div>
       </div>
-    `;
-  }).join('');
+    </div>
+  `).join('');
 }
 
-// ===== INTERACTION FUNCTIONS =====
-
-// Quantity controls
-function increaseQuantity() {
-  const input = document.getElementById('quantity');
-  if (input && parseInt(input.value) < parseInt(input.max)) {
-    input.value = parseInt(input.value) + 1;
-  }
-}
-
-function decreaseQuantity() {
-  const input = document.getElementById('quantity');
-  if (input && parseInt(input.value) > 1) {
-    input.value = parseInt(input.value) - 1;
-  }
-}
-
-// Select Color
-function selectColor(element) {
-  document.querySelectorAll('[onclick*="selectColor"]').forEach(btn => {
-    btn.className = 'w-12 h-12 rounded-full border-4 transition-all hover:scale-110 border-gray-300 hover:border-red-400';
-    btn.innerHTML = '';
-  });
-  element.className = 'w-12 h-12 rounded-full border-4 transition-all hover:scale-110 border-red-600 ring-2 ring-red-200';
-  element.innerHTML = '<i class="fas fa-check text-white text-sm drop-shadow-lg"></i>';
-}
-
-// Select Storage
-function selectStorage(element) {
-  document.querySelectorAll('[onclick*="selectStorage"]').forEach(btn => {
-    btn.className = 'border-2 border-gray-300 rounded-lg px-4 py-3 hover:border-red-600 hover:bg-red-50 transition';
-  });
-  element.className = 'border-2 border-red-600 bg-red-50 text-red-700 rounded-lg px-4 py-3 font-bold hover:bg-red-100 transition text-white text-sm drop-shadow"></i>';
-}
-
-// Select Storage
-function selectStorage(element) {
-  document.querySelectorAll('.option-selector').forEach(btn => {
-    btn.classList.remove('selected');
-  });
-  element.classList.add('selected');
-}
-
-// Buy Now
-function buyNow() {
-  showToast('Đang chuyển đến trang thanh toán...', 'success');
-  setTimeout(() => {
-    // Redirect to checkout page
-    // window.location.href = 'checkout.html';
-  }, 1000);
-}
-
-// Buy Installment
-function buyInstallment() {
-  showToast('Trả góp 0% - Duyệt hồ sơ nhanh chóng!', 'success');
-}
-
-// Add to Cart
-function addToCart() {
-  const quantity = document.getElementById('quantity').value;
-  showToast(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`, 'success');
+// ===== REVIEW FORM =====
+function toggleReviewForm() {
+  const form = document.getElementById('reviewForm');
+  form.classList.toggle('hidden');
   
-  // Add animation to cart icon if exists
-  const cartIcon = document.querySelector('.cart-icon');
-  if (cartIcon) {
-    cartIcon.classList.add('bounce');
-    setTimeout(() => cartIcon.classList.remove('bounce'), 500);
+  // Initialize rating input
+  if (!form.classList.contains('hidden')) {
+    const ratingInput = document.getElementById('ratingInput');
+    ratingInput.innerHTML = [1,2,3,4,5].map(i => `
+      <button type="button" onclick="setRating(${i})" class="text-2xl text-gray-300 hover:text-yellow-400 transition">
+        <i class="far fa-star" data-rating="${i}"></i>
+      </button>
+    `).join('');
   }
 }
 
-// Social Share Functions
+function setRating(rating) {
+  selectedRating = rating;
+  document.querySelectorAll('#ratingInput i').forEach((star, i) => {
+    star.className = i < rating ? 'fas fa-star text-yellow-400' : 'far fa-star text-gray-300';
+  });
+}
+
+function submitReview() {
+  const name = document.getElementById('reviewName').value.trim();
+  const comment = document.getElementById('reviewComment').value.trim();
+  
+  if (!name || !comment || selectedRating === 0) {
+    showToast('Vui lòng điền đầy đủ thông tin!', 'error');
+    return;
+  }
+  
+  showToast('Cảm ơn bạn đã đánh giá! Đánh giá đang chờ duyệt.', 'success');
+  document.getElementById('reviewForm').classList.add('hidden');
+  document.getElementById('reviewName').value = '';
+  document.getElementById('reviewComment').value = '';
+  selectedRating = 0;
+}
+
+// ===== RELATED PRODUCTS =====
+function renderRelatedProducts(product) {
+  const related = PRODUCTS.filter(p => p.id !== product.id && p.brand === product.brand).slice(0, 5);
+  const container = document.getElementById('relatedProducts');
+  
+  if (related.length === 0) {
+    container.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">Không có sản phẩm liên quan</p>';
+    return;
+  }
+  
+  container.innerHTML = related.map(p => `
+    <a href="product-detail.html?id=${p.id}" class="related-product-card group">
+      <div class="aspect-square p-4 bg-gray-50 flex items-center justify-center overflow-hidden">
+        <img src="${p.image}" alt="${p.name}" class="max-w-full max-h-full object-contain" loading="lazy" />
+      </div>
+      <div class="p-3">
+        <h3 class="font-semibold text-gray-900 text-sm mb-2 line-clamp-2 group-hover:text-red-600 transition">${p.name}</h3>
+        <div class="flex items-baseline gap-2">
+          <span class="font-bold text-red-600">${formatPrice(p.price)}</span>
+          ${p.oldPrice ? `<span class="text-xs text-gray-400 line-through">${formatPrice(p.oldPrice)}</span>` : ''}
+        </div>
+        ${p.discount ? `<span class="inline-block mt-2 bg-red-100 text-red-600 text-xs font-semibold px-2 py-0.5 rounded">-${p.discount}%</span>` : ''}
+      </div>
+    </a>
+  `).join('');
+}
+
+// ===== SHARE FUNCTIONS =====
 function shareProduct(platform) {
   const url = encodeURIComponent(window.location.href);
-  const title = encodeURIComponent(document.querySelector('h1').textContent);
+  const title = encodeURIComponent(currentProduct?.name || 'Sản phẩm');
   
-  switch(platform) {
-    case 'facebook':
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
-      break;
-    case 'twitter':
-      window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank', 'width=600,height=400');
-      break;
-    case 'zalo':
-      window.open(`https://zalo.me/share?url=${url}`, '_blank', 'width=600,height=400');
-      break;
+  const urls = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+    messenger: `https://www.facebook.com/dialog/send?link=${url}&app_id=YOUR_APP_ID`,
+    twitter: `https://twitter.com/intent/tweet?url=${url}&text=${title}`
+  };
+  
+  if (urls[platform]) {
+    window.open(urls[platform], '_blank', 'width=600,height=400');
   }
 }
 
@@ -755,189 +507,17 @@ function copyLink() {
   });
 }
 
-// ===== REVIEW FUNCTIONS =====
-let selectedRating = 0;
-
-function toggleReviewForm() {
-  const form = document.getElementById('reviewForm');
-  form.classList.toggle('hidden');
-}
-
-function setRating(stars) {
-  selectedRating = stars;
-  const starButtons = document.querySelectorAll('.rating-star');
-  starButtons.forEach((btn, index) => {
-    const icon = btn.querySelector('i');
-    if (index < stars) {
-      icon.className = 'fas fa-star';
-      btn.classList.remove('text-gray-300');
-      btn.classList.add('text-yellow-400');
+// ===== SCROLL LISTENER =====
+function setupScrollListener() {
+  const stickyBar = document.getElementById('stickyBuyBar');
+  const buySection = document.querySelector('main');
+  
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    if (scrollY > 600) {
+      stickyBar.classList.add('active');
     } else {
-      icon.className = 'far fa-star';
-      btn.classList.remove('text-yellow-400');
-      btn.classList.add('text-gray-300');
+      stickyBar.classList.remove('active');
     }
   });
 }
-
-function submitReview() {
-  const name = document.getElementById('reviewName').value;
-  const comment = document.getElementById('reviewComment').value;
-
-  if (!selectedRating) {
-    showToast('Vui lòng chọn số sao đánh giá!', 'error');
-    return;
-  }
-  if (!name || !comment) {
-    showToast('Vui lòng điền đầy đủ thông tin!', 'error');
-    return;
-  }
-
-  showToast('Cảm ơn bạn đã đánh giá! Đánh giá sẽ được duyệt sau ít phút.', 'success');
-  document.getElementById('reviewForm').classList.add('hidden');
-  document.getElementById('reviewName').value = '';
-  document.getElementById('reviewComment').value = '';
-  selectedRating = 0;
-  setRating(0);
-}
-
-function filterReviews(stars, ev) {
-  // Update active button
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.classList.remove('active', 'bg-red-600', 'text-white', 'border-red-600');
-    btn.classList.add('border-gray-300', 'text-gray-700');
-  });
-  const target = ev ? (ev.currentTarget || ev.target) : (window.event ? window.event.target : null);
-  if (target) {
-    target.classList.add('active', 'bg-red-600', 'text-white', 'border-red-600');
-    target.classList.remove('border-gray-300', 'text-gray-700');
-  }
-
-  // Filter logic (demo)
-  console.log('Filter by:', stars);
-  showToast(`Đang lọc đánh giá ${stars === 'all' ? 'tất cả' : stars + ' sao'}...`, 'success');
-}
-
-// ===== RELATED PRODUCTS =====
-function renderRelatedProducts(currentProductId) {
-  const currentProduct = PRODUCTS.find(p => p.id === currentProductId);
-  if (!currentProduct) return;
-
-  // Find related products
-  let relatedProducts = PRODUCTS.filter(p => 
-    p.id !== currentProductId && 
-    (p.brand === currentProduct.brand || p.category === currentProduct.category)
-  );
-
-  // Prioritize same brand, then shuffle
-  relatedProducts.sort((a, b) => {
-    if (a.brand === currentProduct.brand && b.brand !== currentProduct.brand) return -1;
-    if (a.brand !== currentProduct.brand && b.brand === currentProduct.brand) return 1;
-    return Math.random() - 0.5;
-  });
-
-  relatedProducts = relatedProducts.slice(0, 4);
-
-  const container = document.getElementById('relatedProducts');
-  if (!container) return;
-
-  container.innerHTML = relatedProducts.map(product => {
-    const rating = product.rating || (4 + Math.random() * 1);
-    const reviews = product.reviews || Math.floor(Math.random() * 200) + 50;
-    const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 >= 0.5;
-
-    let starsHTML = '';
-    for(let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>';
-    if(halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>';
-    for(let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) starsHTML += '<i class="far fa-star"></i>';
-
-    return `
-      <a href="product-detail.html?id=${product.id}" class="product-item bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 group hover:shadow-lg">
-        <div class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white">
-          ${product.discount ? `
-            <div class="absolute top-3 left-0 z-10">
-              <div class="bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-r-full shadow-lg flex items-center gap-1">
-                <i class="fas fa-tag"></i>
-                <span>-${product.discount}%</span>
-              </div>
-            </div>
-          ` : ''}
-          <div class="p-4">
-            <img src="${product.image}" 
-                 alt="${product.name}" 
-                 class="w-full h-40 sm:h-52 object-contain group-hover:scale-110 transition-transform duration-500" 
-                 loading="lazy" />
-          </div>
-        </div>
-        <div class="p-4 sm:p-5">
-          <h3 class="font-bold mb-3 text-sm sm:text-base line-clamp-2 min-h-[42px] text-gray-800 group-hover:text-red-600 transition-colors">${product.name}</h3>
-          
-          <div class="flex items-center mb-3 gap-2">
-            <div class="text-yellow-400 text-xs sm:text-sm flex">
-              ${starsHTML}
-            </div>
-            <span class="text-gray-500 text-xs sm:text-sm">(${reviews})</span>
-          </div>
-          
-          <div class="space-y-1">
-            <div class="flex items-baseline gap-2">
-              <span class="text-xl sm:text-2xl font-bold text-red-600">${formatPrice(product.price)}</span>
-              ${product.oldPrice ? `<span class="text-xs sm:text-sm text-gray-400 line-through">${formatPrice(product.oldPrice)}</span>` : ''}
-            </div>
-            ${product.discount ? `
-              <div class="inline-block">
-                <span class="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-md font-semibold">
-                  Tiết kiệm ${formatPrice(product.oldPrice - product.price)}
-                </span>
-              </div>
-            ` : ''}
-          </div>
-          
-          <div class="mt-4 pt-3 border-t border-gray-100">
-            <button class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-300 transform group-hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm">
-              <i class="fas fa-eye"></i>
-              Xem chi tiết
-            </button>
-          </div>
-        </div>
-      </a>
-    `;
-  }).join('');
-}
-
-// ===== STICKY BUY BUTTON =====
-window.addEventListener('scroll', () => {
-  const buySection = document.getElementById('buySection');
-  const stickyBuy = document.getElementById('stickyBuy');
-  
-  if (buySection && stickyBuy) {
-    const buySectionRect = buySection.getBoundingClientRect();
-    if (buySectionRect.top < -100) {
-      stickyBuy.classList.add('active');
-    } else {
-      stickyBuy.classList.remove('active');
-    }
-  }
-});
-
-// ===== PAGE INITIALIZATION =====
-document.addEventListener('DOMContentLoaded', async () => {
-  // Load product data
-  await loadProductData();
-  
-  // Get product ID from URL parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = parseInt(urlParams.get('id')) || 5;
-  
-  // Render product details
-  renderProductDetail(productId);
-  
-  // Render related products
-  renderRelatedProducts(productId);
-
-  // Load default tab (Description)
-  setTimeout(() => {
-    loadDescription();
-  }, 200);
-});
