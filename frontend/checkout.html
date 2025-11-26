@@ -86,7 +86,31 @@
       border-color: #d91e23;
       background: #fff5f5;
     }
+    
+    /* QR Modal Animation */
+    @keyframes scale-in {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .animate-scale-in {
+      animation: scale-in 0.3s ease-out;
+    }
+    
+    /* QR Code expired state */
+    .qr-expired {
+      filter: grayscale(100%) opacity(0.5);
+    }
   </style>
+  
+  <!-- QR Code Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 
 <body class="bg-gray-100 font-roboto text-gray-900">
@@ -318,6 +342,111 @@
                   <p class="font-bold text-gray-900">Trả góp 0%</p>
                   <p class="text-sm text-gray-600">Trả góp qua thẻ tín dụng hoặc công ty tài chính</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR Code Payment Modal (Hidden by default) -->
+        <div id="qrPaymentModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-scale-in">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-red-600 to-red-500 p-5 text-white">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-qrcode text-2xl"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-lg">Quét mã QR để thanh toán</h3>
+                    <p class="text-red-100 text-sm">Mã có hiệu lực trong 30 phút</p>
+                  </div>
+                </div>
+                <button onclick="closeQRModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="p-6">
+              <!-- Countdown Timer -->
+              <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-5">
+                <div class="flex items-center justify-center gap-3">
+                  <i class="fas fa-clock text-red-600 text-xl animate-pulse"></i>
+                  <div class="text-center">
+                    <p class="text-sm text-gray-600">Thời gian còn lại</p>
+                    <p id="qrCountdown" class="text-3xl font-bold text-red-600 font-mono">30:00</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- QR Code -->
+              <div class="flex justify-center mb-5">
+                <div class="bg-white p-4 rounded-xl border-2 border-gray-200 shadow-inner">
+                  <div id="qrCodeContainer" class="w-48 h-48 flex items-center justify-center">
+                    <!-- QR Code will be generated here -->
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Payment Info -->
+              <div class="bg-gray-50 rounded-xl p-4 space-y-3 mb-5">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600 text-sm">Mã đơn hàng:</span>
+                  <span id="qrOrderId" class="font-bold text-gray-900">---</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600 text-sm">Số tiền:</span>
+                  <span id="qrAmount" class="font-bold text-red-600 text-lg">0đ</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600 text-sm">Phương thức:</span>
+                  <span id="qrPaymentMethod" class="font-semibold text-gray-900">---</span>
+                </div>
+              </div>
+              
+              <!-- Bank Info (for bank transfer) -->
+              <div id="bankInfoSection" class="hidden bg-blue-50 border border-blue-200 rounded-xl p-4 mb-5">
+                <h4 class="font-bold text-blue-800 mb-3 flex items-center gap-2">
+                  <i class="fas fa-university"></i>
+                  Thông tin chuyển khoản
+                </h4>
+                <div class="space-y-2 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Ngân hàng:</span>
+                    <span class="font-semibold">Vietcombank</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Số tài khoản:</span>
+                    <span class="font-semibold font-mono">1234567890123</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Chủ tài khoản:</span>
+                    <span class="font-semibold">QUANG HUNG MOBILE</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Nội dung CK:</span>
+                    <span id="bankTransferContent" class="font-semibold text-red-600">---</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Instructions -->
+              <div class="text-center text-sm text-gray-500 mb-5">
+                <p>Mở ứng dụng ngân hàng hoặc ví điện tử</p>
+                <p>Quét mã QR để thanh toán</p>
+              </div>
+              
+              <!-- Actions -->
+              <div class="flex gap-3">
+                <button onclick="closeQRModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl transition">
+                  Hủy bỏ
+                </button>
+                <button onclick="confirmPayment()" class="flex-1 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                  <i class="fas fa-check"></i>
+                  Đã thanh toán
+                </button>
               </div>
             </div>
           </div>

@@ -68,7 +68,11 @@
 }
 
 @media (min-width: 1024px) {
-  .product-grid-responsive { grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .product-grid-responsive { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+}
+
+@media (min-width: 1280px) {
+  .product-grid-responsive { grid-template-columns: repeat(5, 1fr); gap: 24px; }
 }
 
 /* Price block + meta box (small info under price) */

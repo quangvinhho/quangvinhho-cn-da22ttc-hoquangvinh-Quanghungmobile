@@ -24,73 +24,55 @@
     <!-- Spacer for fixed header - Responsive -->
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-    <!-- Banner Slider -->
-    <section class="bg-gray-100 py-3">
+    <!-- Banner Slider - Premium Design -->
+    <section class="bg-gray-50 py-3">
         <div class="container mx-auto px-4">
-            <div class="relative rounded-2xl overflow-hidden shadow-lg group">
-                <div id="bannerSlider" class="relative h-48 md:h-64 bg-white">
-                    <!-- Slide 1 - iPhone 17 Pro Max -->
-                    <div class="banner-slide absolute inset-0 transition-all duration-700 ease-in-out">
-                        <div class="relative w-full h-full">
-                            <img src="images/17.jpg" alt="iPhone 17" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center">
-                                <div class="container mx-auto px-6 md:px-12">
-                                    <div class="text-white max-w-lg">
-                                        <h2 class="text-2xl md:text-4xl font-bold mb-2">iPhone 17 Pro Max</h2>
-                                        <p class="text-lg mb-4 text-gray-200">Thiết kế đẳng cấp - Hiệu năng vượt trội</p>
-                                        <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full font-bold transition">Mua ngay</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer">
+                <div id="bannerSlider" class="relative h-[150px] sm:h-[180px] md:h-[220px] lg:h-[240px] bg-white">
                     
-                    <!-- Slide 2 - Samsung Galaxy -->
-                    <div class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out">
+                    <!-- Slide 1 - iPhone Banner -->
+                    <a href="products.html?brand=iphone" class="banner-slide absolute inset-0 transition-all duration-700 ease-in-out block">
                         <div class="relative w-full h-full">
-                            <img src="images/samsung.webp" alt="Samsung" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center">
-                                <div class="container mx-auto px-6 md:px-12">
-                                    <div class="text-white max-w-lg">
-                                        <h2 class="text-2xl md:text-4xl font-bold mb-2">Samsung Galaxy S25</h2>
-                                        <p class="text-lg mb-4 text-gray-200">Kỷ nguyên AI mới</p>
-                                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-bold transition">Khám phá</button>
-                                    </div>
-                                </div>
-                            </div>
+                            <img src="images/H1_1440x242_761cc4aabd.webp" alt="iPhone Collection" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
-                    </div>
+                    </a>
                     
-                    <!-- Slide 3 - Sale -->
-                    <div class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out">
+                    <!-- Slide 2 - Samsung Banner -->
+                    <a href="products.html?brand=samsung" class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out block">
                         <div class="relative w-full h-full">
-                            <img src="images/sale.jpg" alt="Sale" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center">
-                                <div class="container mx-auto px-6 md:px-12">
-                                    <div class="text-white max-w-lg">
-                                        <h2 class="text-2xl md:text-4xl font-bold mb-2">Siêu Sale Tháng 10</h2>
-                                        <p class="text-lg mb-4 text-yellow-300 font-bold">Giảm đến 50%</p>
-                                        <button class="bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-full font-bold transition">Săn deal ngay</button>
-                                    </div>
-                                </div>
-                            </div>
+                            <img src="images/H1_1440x242_ff204ca315.webp" alt="Samsung Collection" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
-                    </div>
+                    </a>
+                    
+                    <!-- Slide 3 - Promotions Banner -->
+                    <a href="promotions.html" class="banner-slide absolute inset-0 opacity-0 transition-all duration-700 ease-in-out block">
+                        <div class="relative w-full h-full">
+                            <img src="images/H1_1440x242_1_95840a416f.webp" alt="Khuyến mãi hot" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                    </a>
                 </div>
                 
-                <!-- Slider Controls -->
-                <button onclick="prevSlide()" class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white rounded-full p-2 md:p-3 shadow-lg transition transform hover:scale-110 opacity-0 group-hover:opacity-100">
-                    <i class="fas fa-chevron-left text-gray-800"></i>
+                <!-- Slider Controls - Always visible on hover -->
+                <button onclick="event.preventDefault(); prevSlide();" class="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full w-9 h-9 md:w-11 md:h-11 shadow-xl transition-all transform hover:scale-110 opacity-0 group-hover:opacity-100 flex items-center justify-center z-10 backdrop-blur-sm">
+                    <i class="fas fa-chevron-left text-gray-800 text-base"></i>
                 </button>
-                <button onclick="nextSlide()" class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white rounded-full p-2 md:p-3 shadow-lg transition transform hover:scale-110 opacity-0 group-hover:opacity-100">
-                    <i class="fas fa-chevron-right text-gray-800"></i>
+                <button onclick="event.preventDefault(); nextSlide();" class="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full w-9 h-9 md:w-11 md:h-11 shadow-xl transition-all transform hover:scale-110 opacity-0 group-hover:opacity-100 flex items-center justify-center z-10 backdrop-blur-sm">
+                    <i class="fas fa-chevron-right text-gray-800 text-base"></i>
                 </button>
                 
-                <!-- Dots -->
-                <div class="absolute bottom-2 md:bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-                    <button class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition" onclick="goToSlide(0)"></button>
-                    <button class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition" onclick="goToSlide(1)"></button>
-                    <button class="slider-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/50 hover:bg-white transition" onclick="goToSlide(2)"></button>
+                <!-- Dots Indicator - Enhanced -->
+                <div class="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                    <button class="slider-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/60 hover:bg-white transition-all shadow-md" onclick="event.preventDefault(); goToSlide(0)"></button>
+                    <button class="slider-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/60 hover:bg-white transition-all shadow-md" onclick="event.preventDefault(); goToSlide(1)"></button>
+                    <button class="slider-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/60 hover:bg-white transition-all shadow-md" onclick="event.preventDefault(); goToSlide(2)"></button>
+                </div>
+                
+                <!-- Slide Counter -->
+                <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-full z-10">
+                    <span id="currentSlideNum">1</span> / 3
                 </div>
             </div>
         </div>
@@ -168,275 +150,360 @@
     <main class="container mx-auto px-3 md:px-4 lg:px-6 py-4 md:py-5">
         <div class="flex flex-col lg:flex-row gap-4 lg:gap-5 lg:items-start">
             
-            <!-- Sidebar Filter - Kéo dài theo products -->
+            <!-- Sidebar Filter - FPT Shop Style -->
             <aside id="filterSidebar" class="hidden lg:block flex-shrink-0 lg:sticky lg:top-4 lg:self-start">
                 
-                <!-- Bộ lọc tìm kiếm Header -->
-                <div class="bg-gradient-to-r from-red-600 to-red-500 rounded-xl p-4 mb-4 shadow-lg">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <!-- Bộ lọc Header - Premium -->
+                <div class="filter-header">
+                    <div class="flex items-center gap-3 relative z-10">
+                        <div class="icon-box">
                             <i class="fas fa-sliders-h text-white text-lg"></i>
                         </div>
                         <div>
-                            <h2 class="font-bold text-white text-lg">Bộ lọc</h2>
-                            <p class="text-red-100 text-xs">Tìm sản phẩm phù hợp</p>
+                            <h2 class="font-bold text-white text-lg">Bộ lọc tìm kiếm</h2>
+                            <p class="text-red-100 text-xs">Tìm sản phẩm phù hợp với bạn</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Filters Container - Kéo dài full height -->
-                <div class="space-y-2.5 overflow-y-auto" style="max-height: calc(100vh - 120px);">
+                <!-- Active Filters Summary -->
+                <div id="activeFiltersBox" class="bg-white rounded-xl p-3 mb-3 border border-gray-100 hidden">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-gray-600">Đang lọc:</span>
+                        <button onclick="clearAllFilters()" class="text-xs text-red-500 hover:text-red-600 font-medium">Xóa tất cả</button>
+                    </div>
+                    <div id="activeFilterTags" class="flex flex-wrap gap-1.5">
+                        <!-- Active filter tags will be added here -->
+                    </div>
+                </div>
+
+                <!-- Filters Container -->
+                <div class="space-y-2.5 overflow-y-auto filter-scroll" style="max-height: calc(100vh - 200px);">
                 
                 <!-- Hãng sản xuất -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('brandSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
+                <div class="filter-section expanded" data-section="brand">
+                    <div class="filter-section-header" onclick="toggleFilterSection('brand')">
+                        <h3>
+                            <i class="fab fa-apple"></i>
                             Hãng sản xuất
                         </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="brandIcon"></i>
-                    </button>
-                    
-                    <div id="brandSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="iphone" onchange="toggleBrandFilter('iphone')">
-                            <span class="text-sm text-gray-600">Apple</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="samsung" onchange="toggleBrandFilter('samsung')">
-                            <span class="text-sm text-gray-600">Samsung</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="xiaomi" onchange="toggleBrandFilter('xiaomi')">
-                            <span class="text-sm text-gray-600">Xiaomi</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="oppo" onchange="toggleBrandFilter('oppo')">
-                            <span class="text-sm text-gray-600">OPPO</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="honor" onchange="toggleBrandFilter('honor')">
-                            <span class="text-sm text-gray-600">HONOR</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="brand-filter w-4 h-4 accent-blue-600" value="tecno" onchange="toggleBrandFilter('tecno')">
-                            <span class="text-sm text-gray-600">Tecno</span>
-                        </label>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     </div>
                     
-                    <button class="text-blue-600 text-sm mt-3 hover:underline font-medium">Xem thêm</button>
+                    <div class="filter-section-content" id="brandSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="iphone" onchange="toggleBrandFilter('iphone')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Apple</span>
+                            <span class="count-badge">24</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="samsung" onchange="toggleBrandFilter('samsung')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Samsung</span>
+                            <span class="count-badge">32</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="xiaomi" onchange="toggleBrandFilter('xiaomi')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Xiaomi</span>
+                            <span class="count-badge">28</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="oppo" onchange="toggleBrandFilter('oppo')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">OPPO</span>
+                            <span class="count-badge">18</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="honor" onchange="toggleBrandFilter('honor')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">HONOR</span>
+                            <span class="count-badge">12</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="tecno" onchange="toggleBrandFilter('tecno')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Tecno</span>
+                            <span class="count-badge">8</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="vivo" onchange="toggleBrandFilter('vivo')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Vivo</span>
+                            <span class="count-badge">15</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="brand-filter" value="realme" onchange="toggleBrandFilter('realme')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Realme</span>
+                            <span class="count-badge">10</span>
+                        </label>
+                        <div class="see-more-btn" onclick="toggleMoreBrands()">
+                            <span>Xem thêm 5 hãng</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Loại phụ kiện -->
-                <div id="accessoryFilter" class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200" style="display:none;">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('accessorySection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
+                <div id="accessoryFilter" class="filter-section" data-section="accessory" style="display:none;">
+                    <div class="filter-section-header" onclick="toggleFilterSection('accessory')">
+                        <h3>
+                            <i class="fas fa-headphones"></i>
                             Loại phụ kiện
                         </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="accessoryIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="accessorySection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="tainghe" onchange="toggleAccessoryFilter('tainghe')">
-                            <span class="text-sm text-gray-600">Tai nghe</span>
+                    <div class="filter-section-content" id="accessorySection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="accessory-filter" value="tainghe" onchange="toggleAccessoryFilter('tainghe')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Tai nghe</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="sac" onchange="toggleAccessoryFilter('sac')">
-                            <span class="text-sm text-gray-600">Sạc & Pin dự phòng</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="accessory-filter" value="sac" onchange="toggleAccessoryFilter('sac')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Sạc & Pin dự phòng</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="cap" onchange="toggleAccessoryFilter('cap')">
-                            <span class="text-sm text-gray-600">Cáp sạc</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="accessory-filter" value="cap" onchange="toggleAccessoryFilter('cap')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Cáp sạc</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="oplung" onchange="toggleAccessoryFilter('oplung')">
-                            <span class="text-sm text-gray-600">Ốp lưng</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="accessory-filter" value="oplung" onchange="toggleAccessoryFilter('oplung')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Ốp lưng</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="cuongluc" onchange="toggleAccessoryFilter('cuongluc')">
-                            <span class="text-sm text-gray-600">Cường lực</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="accessory-filter" value="cuongluc" onchange="toggleAccessoryFilter('cuongluc')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Cường lực</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="giado" onchange="toggleAccessoryFilter('giado')">
-                            <span class="text-sm text-gray-600">Giá đỡ</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="accessory-filter" value="giado" onchange="toggleAccessoryFilter('giado')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Giá đỡ</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="accessory-filter w-4 h-4 accent-blue-600" value="gaychup" onchange="toggleAccessoryFilter('gaychup')">
-                            <span class="text-sm text-gray-600">Gậy chụp ảnh</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="accessory-filter" value="gaychup" onchange="toggleAccessoryFilter('gaychup')">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Gậy chụp ảnh</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Mức giá -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('priceSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
+                <div class="filter-section expanded" data-section="price">
+                    <div class="filter-section-header" onclick="toggleFilterSection('price')">
+                        <h3>
+                            <i class="fas fa-tag"></i>
                             Mức giá
                         </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="priceIcon"></i>
-                    </button>
-                    
-                    <div id="priceSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="0-2000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Dưới 2 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="2000000-4000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 2 - 4 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="4000000-7000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 4 - 7 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="7000000-13000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 7 - 13 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="13000000-20000000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 13 - 20 triệu</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="price-filter w-4 h-4 accent-blue-600" value="20000000-999999999" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Trên 20 triệu</span>
-                        </label>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     </div>
                     
-                    <!-- Price Range Slider -->
-                    <div class="mt-2.5 pt-2.5 border-t">
-                        <p class="text-xs text-gray-600 mb-2">Hoặc nhập khoảng giá phù hợp với bạn:</p>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="minPrice" placeholder="390.000" class="w-full px-2.5 py-1.5 border rounded text-xs" value="390000">
-                            <span class="text-gray-500 text-sm">~</span>
-                            <input type="number" id="maxPrice" placeholder="63.990.000" class="w-full px-2.5 py-1.5 border rounded text-xs" value="63990000">
+                    <div class="filter-section-content" id="priceSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="price-filter" value="0-2000000" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Dưới 2 triệu</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="price-filter" value="2000000-4000000" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Từ 2 - 4 triệu</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="price-filter" value="4000000-7000000" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Từ 4 - 7 triệu</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="price-filter" value="7000000-13000000" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Từ 7 - 13 triệu</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="price-filter" value="13000000-20000000" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Từ 13 - 20 triệu</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="price-filter" value="20000000-999999999" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Trên 20 triệu</span>
+                        </label>
+                        
+                        <!-- Price Range Input - Modern -->
+                        <div class="price-range-box">
+                            <p><i class="fas fa-edit mr-1"></i>Hoặc nhập khoảng giá:</p>
+                            <div class="price-inputs">
+                                <input type="text" id="minPrice" placeholder="Từ" value="">
+                                <span class="separator">~</span>
+                                <input type="text" id="maxPrice" placeholder="Đến" value="">
+                            </div>
+                            <button onclick="applyCustomPriceRange()" class="price-apply-btn">
+                                <i class="fas fa-check"></i>
+                                Áp dụng
+                            </button>
                         </div>
-                        <button onclick="applyCustomPriceRange()" class="w-full mt-2 bg-[var(--red-main)] text-white py-1.5 rounded text-xs font-semibold hover:bg-[var(--red-main-dark)] transition">
-                            Áp dụng
-                        </button>
                     </div>
                 </div>
 
                 <!-- Hệ điều hành -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('osSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Hệ điều hành
+                <div class="filter-section" data-section="os">
+                    <div class="filter-section-header" onclick="toggleFilterSection('os')">
+                        <h3>
+                            <i class="fas fa-cog"></i>
+                            Hệ điều hành
                         </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="osIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="osSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="os-filter w-4 h-4 accent-blue-600" value="ios" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">iOS</span>
+                    <div class="filter-section-content" id="osSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="os-filter" value="ios" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">iOS</span>
+                            <span class="count-badge">24</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="os-filter w-4 h-4 accent-blue-600" value="android" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Android</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="os-filter" value="android" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Android</span>
+                            <span class="count-badge">118</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Dung lượng ROM -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('romSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Dung lượng ROM
+                <div class="filter-section" data-section="rom">
+                    <div class="filter-section-header" onclick="toggleFilterSection('rom')">
+                        <h3>
+                            <i class="fas fa-hdd"></i>
+                            Dung lượng ROM
                         </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="romIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="romSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="128" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">≤128 GB</span>
+                    <div class="filter-section-content" id="romSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="rom-filter" value="128" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">≤128 GB</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="256" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">256 GB</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="rom-filter" value="256" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">256 GB</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="512" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">512 GB</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="rom-filter" value="512" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">512 GB</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="rom-filter w-4 h-4 accent-blue-600" value="1024" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">1 TB</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="rom-filter" value="1024" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">1 TB</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Kết nối -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('connectSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Kết nối
+                <div class="filter-section" data-section="connect">
+                    <div class="filter-section-header" onclick="toggleFilterSection('connect')">
+                        <h3>
+                            <i class="fas fa-wifi"></i>
+                            Kết nối
                         </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="connectIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="connectSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="nfc" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">NFC</span>
+                    <div class="filter-section-content" id="connectSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="connect-filter" value="nfc" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">NFC</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="bluetooth" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Bluetooth</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="connect-filter" value="bluetooth" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Bluetooth</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="connect-filter w-4 h-4 accent-blue-600" value="infrared" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Hồng ngoại</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="connect-filter" value="infrared" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Hồng ngoại</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Hiệu năng và Pin -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('batterySection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
+                <div class="filter-section" data-section="battery">
+                    <div class="filter-section-header" onclick="toggleFilterSection('battery')">
+                        <h3>
+                            <i class="fas fa-battery-full"></i>
                             Hiệu năng và Pin
                         </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="batteryIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="batterySection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
+                    <div class="filter-section-content" id="batterySection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="battery-filter" value="0-3000" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Dưới 3000 mAh</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="0-3000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Dưới 3000 mAh</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="battery-filter" value="3000-4000" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">3000 - 4000 mAh</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="3000-4000" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Pin từ 3000 - 4000 mAh</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="battery-filter" value="4000-5500" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">4000 - 5500 mAh</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="4000-5500" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Pin từ 4000 - 5500 mAh</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="battery-filter w-4 h-4 accent-blue-600" value="5500-99999" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Pin trâu: trên 5500 mAh</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="battery-filter" value="5500-99999" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Pin trâu: trên 5500 mAh</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Hỗ trợ mạng -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('networkSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
+                <div class="filter-section" data-section="network">
+                    <div class="filter-section-header" onclick="toggleFilterSection('network')">
+                        <h3>
+                            <i class="fas fa-signal"></i>
                             Hỗ trợ mạng
                         </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="networkIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="networkSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                    <div class="filter-section-content" id="networkSection">
+                        <label class="filter-option">
                             <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="5g" onchange="applyFilters()">
                             <span class="text-sm text-gray-600">5G</span>
                         </label>
@@ -693,16 +760,16 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="text-sm text-gray-500 mr-2 hidden sm:inline">Sắp xếp:</span>
-                            <button class="sort-btn active" onclick="sortProducts('featured')">
+                            <button class="sort-btn active" onclick="sortProducts('featured', event)">
                                 <i class="fas fa-fire mr-1.5"></i>Nổi bật
                             </button>
-                            <button class="sort-btn" onclick="sortProducts('price-asc')">
+                            <button class="sort-btn" onclick="sortProducts('price-asc', event)">
                                 <i class="fas fa-arrow-up mr-1.5"></i>Giá thấp
                             </button>
-                            <button class="sort-btn" onclick="sortProducts('price-desc')">
+                            <button class="sort-btn" onclick="sortProducts('price-desc', event)">
                                 <i class="fas fa-arrow-down mr-1.5"></i>Giá cao
                             </button>
-                            <button class="sort-btn" onclick="sortProducts('tragop')">
+                            <button class="sort-btn" onclick="sortProducts('tragop', event)">
                                 <i class="fas fa-credit-card mr-1.5"></i>Trả góp 0%
                             </button>
                         </div>
@@ -1241,16 +1308,25 @@
         function showSlide(index) {
             slides.forEach((slide, i) => {
                 slide.style.opacity = i === index ? '1' : '0';
+                slide.style.zIndex = i === index ? '1' : '0';
             });
             dots.forEach((dot, i) => {
                 if (i === index) {
-                    dot.classList.add('bg-white');
-                    dot.classList.remove('bg-white/50');
+                    dot.style.backgroundColor = '#d91e23';
+                    dot.style.transform = 'scale(1.3)';
+                    dot.style.opacity = '1';
                 } else {
-                    dot.classList.remove('bg-white');
-                    dot.classList.add('bg-white/50');
+                    dot.style.backgroundColor = 'rgba(255,255,255,0.6)';
+                    dot.style.transform = 'scale(1)';
+                    dot.style.opacity = '0.7';
                 }
             });
+            
+            // Update slide counter
+            const slideCounter = document.getElementById('currentSlideNum');
+            if (slideCounter) {
+                slideCounter.textContent = index + 1;
+            }
         }
 
         function nextSlide() {
@@ -1271,6 +1347,25 @@
         // Auto slide every 5 seconds
         setInterval(nextSlide, 5000);
         showSlide(0);
+        
+        // Toggle Filter Section (expand/collapse)
+        function toggleFilterSection(sectionName) {
+            const section = document.querySelector(`[data-section="${sectionName}"]`);
+            if (!section) return;
+            
+            section.classList.toggle('expanded');
+            
+            const content = section.querySelector('.filter-section-content');
+            const icon = section.querySelector('.toggle-icon i');
+            
+            if (section.classList.contains('expanded')) {
+                if (content) content.style.maxHeight = content.scrollHeight + 'px';
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                if (content) content.style.maxHeight = '0';
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        }
 
         // Brand Logo Filter
         function filterByBrand(brand) {
@@ -1292,8 +1387,17 @@
         function toggleMobileFilter() {
             const overlay = document.getElementById('mobileFilterOverlay');
             const sidebar = document.getElementById('mobileFilterSidebar');
+            const mobileContent = document.getElementById('mobileFilterContent');
+            const desktopSidebar = document.getElementById('filterSidebar');
             
             if (sidebar.classList.contains('-translate-x-full')) {
+                // Clone filter content to mobile sidebar if empty
+                if (mobileContent && desktopSidebar && mobileContent.innerHTML.trim() === '') {
+                    const filterSections = desktopSidebar.querySelectorAll('.filter-section, .bg-white.rounded-lg');
+                    filterSections.forEach(section => {
+                        mobileContent.appendChild(section.cloneNode(true));
+                    });
+                }
                 sidebar.classList.remove('-translate-x-full');
                 overlay.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
@@ -1346,12 +1450,17 @@
         }
         
         // Update sort button active state
-        function sortProducts(type) {
+        function sortProducts(type, e) {
             currentSort = type;
+            currentPage = 1; // Reset về trang 1 khi thay đổi sắp xếp
             document.querySelectorAll('.sort-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-red-600', 'text-white');
+                btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            if (e && e.target) {
+                e.target.classList.add('active');
+            } else if (event && event.target) {
+                event.target.classList.add('active');
+            }
             renderProducts();
         }
     </script>
@@ -1401,9 +1510,6 @@
   </div>
 </section>
 
-
-            
-    </section>
 
     <!-- Footer Component -->
     <div id="footer-placeholder"></div>

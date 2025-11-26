@@ -1,131 +1,177 @@
 <!doctype html>
 <html lang="vi">
-  <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>QuangHưng Mobile - Điện thoại chính hãng giá tốt</title>
-  <meta name="description" content="Mua điện thoại chính hãng, giá tốt nhất thị trường. iPhone, Samsung, Sony Xperia.">
+  <title>Giỏ hàng - QuangHưng Mobile</title>
+  <meta name="description" content="Giỏ hàng của bạn tại QuangHưng Mobile - Điện thoại chính hãng giá tốt">
 
-  <!-- Google Fonts - Roboto & Montserrat (Tối ưu Typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'red-main': '#d91e23',
+            'red-dark': '#b01117',
+          }
+        }
+      }
+    }
+  </script>
 
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- Site CSS -->
   <link rel="stylesheet" href="style.css">
+  
+  <style>
+    .cart-item {
+      transition: all 0.3s ease;
+    }
+    .cart-item:hover {
+      background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
+      transform: translateX(4px);
+    }
+    .quantity-btn {
+      transition: all 0.2s ease;
+    }
+    .quantity-btn:hover {
+      background: #d91e23;
+      color: white;
+      transform: scale(1.1);
+    }
+    .checkout-btn {
+      background: linear-gradient(135deg, #d91e23 0%, #b01117 100%);
+      transition: all 0.3s ease;
+    }
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(217, 30, 35, 0.4);
+    }
+    .empty-cart-icon {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .product-suggest:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    .delete-btn:hover {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .promo-input:focus {
+      border-color: #d91e23;
+      box-shadow: 0 0 0 3px rgba(217, 30, 35, 0.1);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen">
 
   <!-- Header Component -->
   <div id="header-placeholder"></div>
   
-  <!-- Spacer for fixed header - Responsive -->
+  <!-- Spacer for fixed header -->
   <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-  <div class="bg-gradient-to-r from-red-600 to-red-700 text-white py-8">
-      <div class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold">Giỏ hàng của bạn</h1>
-        <p class="text-red-100 mt-2">Có 3 sản phẩm trong giỏ hàng</p>
+  <!-- Breadcrumb -->
+  <div class="bg-white border-b">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <nav class="flex items-center gap-2 text-sm">
+        <a href="index.html" class="text-gray-500 hover:text-red-600 transition"><i class="fas fa-home"></i></a>
+        <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
+        <span class="text-gray-800 font-medium">Giỏ hàng</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-6 md:py-10">
+    
+    <!-- Page Title -->
+    <div class="flex items-center justify-between mb-6 md:mb-8">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Giỏ hàng của bạn</h1>
+        <p class="text-gray-500 mt-1" id="cart-count-text">Có <span class="text-red-600 font-semibold">3 sản phẩm</span> trong giỏ hàng</p>
       </div>
+      <a href="products.html" class="hidden md:flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition">
+        <i class="fas fa-arrow-left"></i>
+        Tiếp tục mua sắm
+      </a>
     </div>
 
-    <div class="container mx-auto px-4 py-8">
-      <div class="flex flex-col lg:flex-row gap-6">
-        <div class="lg:w-2/3">
-          <div class="bg-white rounded-lg shadow-md mb-4">
-            <div class="p-4 border-b">
-              <label class="flex items-center cursor-pointer">
-                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500" checked />
-                <span class="ml-3 font-semibold">Chọn tất cả (3 sản phẩm)</span>
-              </label>
-            </div>
+    <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+      
+      <!-- Cart Items Section -->
+      <div class="lg:w-2/3">
+        
+        <!-- Select All Header -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4 overflow-hidden">
+          <div class="px-5 py-4 bg-gradient-to-r from-gray-50 to-white border-b flex items-center justify-between">
+            <label class="flex items-center gap-3 cursor-pointer group">
+              <input type="checkbox" id="select-all" class="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer" checked>
+              <span class="font-semibold text-gray-700 group-hover:text-red-600 transition">Chọn tất cả</span>
+              <span class="text-gray-400 text-sm">(3 sản phẩm)</span>
+            </label>
+            <button class="text-gray-400 hover:text-red-500 text-sm font-medium transition flex items-center gap-1">
+              <i class="fas fa-trash-alt"></i>
+              <span class="hidden sm:inline">Xóa đã chọn</span>
+            </button>
+          </div>
 
-            <div class="p-4 border-b">
-              <div class="flex items-start space-x-4">
-                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 mt-4" checked />
-                <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=200" alt="iPhone 15 Pro Max" class="w-24 h-24 object-cover rounded-lg" />
-                <div class="flex-1">
-                  <h3 class="font-semibold text-lg mb-1">iPhone 15 Pro Max</h3>
-                  <p class="text-sm text-gray-600 mb-2">256GB - Titan Tự Nhiên</p>
-                  <div class="flex items-center space-x-4">
-                    <span class="text-red-600 font-bold text-xl">29.990.000đ</span>
-                    <span class="text-gray-600 line-through text-sm">34.990.000đ</span>
-                  </div>
-                </div>
-                <div class="flex flex-col items-end space-y-4">
-                  <button class="text-gray-600 hover:text-red-500 transition">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                  <div class="flex items-center border-2 rounded-lg">
-                    <button class="px-3 py-1 hover:bg-white/20 transition">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <input type="text" value="1" class="w-12 text-center outline-none" />
-                    <button class="px-3 py-1 hover:bg-white/20 transition">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                  </div>
-                </div>
+          <!-- Cart Item 1 -->
+          <div class="cart-item p-5 border-b border-gray-100">
+            <div class="flex gap-4">
+              <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500 mt-8 cursor-pointer" checked>
+              
+              <div class="relative">
+                <img src="images/15-256.avif" alt="iPhone 15 Pro Max" class="w-24 h-24 md:w-28 md:h-28 object-contain rounded-xl bg-gray-50 p-2">
+                <span class="absolute -top-1 -left-1 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">-14%</span>
               </div>
-            </div>
-
-            <div class="p-4 border-b">
-              <div class="flex items-start space-x-4">
-                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 mt-4" checked />
-                <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Samsung Galaxy S24 Ultra" class="w-24 h-24 object-cover rounded-lg" />
-                <div class="flex-1">
-                  <h3 class="font-semibold text-lg mb-1">Samsung Galaxy S24 Ultra</h3>
-                  <p class="text-sm text-gray-600 mb-2">512GB - Titan Gray</p>
-                  <div class="flex items-center space-x-4">
-                    <span class="text-red-600 font-bold text-xl">32.990.000đ</span>
+              
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start gap-2">
+                  <div>
+                    <h3 class="font-bold text-gray-900 text-base md:text-lg line-clamp-2 hover:text-red-600 transition cursor-pointer">
+                      iPhone 15 Pro Max 256GB
+                    </h3>
+                    <div class="flex items-center gap-2 mt-1.5">
+                      <span class="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                        <span class="w-3 h-3 rounded-full bg-gray-800"></span> Titan Đen
+                      </span>
+                      <span class="text-xs text-gray-400">|</span>
+                      <span class="text-xs text-gray-500">256GB</span>
+                    </div>
                   </div>
-                </div>
-                <div class="flex flex-col items-end space-y-4">
-                  <button class="text-gray-600 hover:text-red-500 transition">
-                    <i class="fas fa-trash"></i>
+                  <button class="delete-btn p-2 rounded-lg text-gray-400 transition">
+                    <i class="fas fa-times"></i>
                   </button>
-                  <div class="flex items-center border-2 rounded-lg">
-                    <button class="px-3 py-1 hover:bg-white/20 transition">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <input type="text" value="1" class="w-12 text-center outline-none" />
-                    <button class="px-3 py-1 hover:bg-white/20 transition">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="p-4">
-              <div class="flex items-start space-x-4">
-                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 mt-4" checked />
-                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Xiaomi 14 Pro" class="w-24 h-24 object-cover rounded-lg" />
-                <div class="flex-1">
-                  <h3 class="font-semibold text-lg mb-1">Xiaomi 14 Pro</h3>
-                  <p class="text-sm text-gray-600 mb-2">256GB - Đen Titan</p>
-                  <div class="flex items-center space-x-4">
-                    <span class="text-red-600 font-bold text-xl">19.990.000đ</span>
-                    <span class="text-gray-600 line-through text-sm">24.990.000đ</span>
+                
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mt-4 gap-3">
+                  <div>
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-xl md:text-2xl font-black text-red-600">29.990.000₫</span>
+                      <span class="text-sm text-gray-400 line-through">34.990.000₫</span>
+                    </div>
+                    <p class="text-xs text-green-600 mt-1 flex items-center gap-1">
+                      <i class="fas fa-check-circle"></i> Còn hàng - Giao ngay
+                    </p>
                   </div>
-                </div>
-                <div class="flex flex-col items-end space-y-4">
-                  <button class="text-gray-600 hover:text-red-500 transition">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                  <div class="flex items-center border-2 rounded-lg">
-                    <button class="px-3 py-1 hover:bg-white/20 transition">
-                      <i class="fas fa-minus"></i>
+                  
+                  <div class="flex items-center gap-1 bg-gray-100 rounded-xl p-1">
+                    <button class="quantity-btn w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 bg-white shadow-sm">
+                      <i class="fas fa-minus text-xs"></i>
                     </button>
-                    <input type="text" value="1" class="w-12 text-center outline-none" />
-                    <button class="px-3 py-1 hover:bg-white/20 transition">
-                      <i class="fas fa-plus"></i>
+                    <input type="text" value="1" class="w-12 h-9 text-center font-bold text-gray-800 bg-transparent outline-none">
+                    <button class="quantity-btn w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 bg-white shadow-sm">
+                      <i class="fas fa-plus text-xs"></i>
                     </button>
                   </div>
                 </div>
@@ -133,260 +179,476 @@
             </div>
           </div>
 
-          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div class="flex items-center">
-              <i class="fas fa-info-circle text-red-600 text-xl mr-3"></i>
-              <p class="text-blue-800">
-                <span class="font-semibold">Miễn phí giao hàng</span> cho đơn hàng từ 5.000.000đ. Đơn hàng của bạn đủ điều kiện!
-              </p>
+          <!-- Cart Item 2 -->
+          <div class="cart-item p-5 border-b border-gray-100">
+            <div class="flex gap-4">
+              <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500 mt-8 cursor-pointer" checked>
+              
+              <div class="relative">
+                <img src="images/samsung_galaxy_s24_fe_5g.avif" alt="Samsung Galaxy S24 Ultra" class="w-24 h-24 md:w-28 md:h-28 object-contain rounded-xl bg-gray-50 p-2">
+                <span class="absolute -top-1 -left-1 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">HOT</span>
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start gap-2">
+                  <div>
+                    <h3 class="font-bold text-gray-900 text-base md:text-lg line-clamp-2 hover:text-red-600 transition cursor-pointer">
+                      Samsung Galaxy S24 FE 5G 256GB
+                    </h3>
+                    <div class="flex items-center gap-2 mt-1.5">
+                      <span class="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                        <span class="w-3 h-3 rounded-full bg-gray-500"></span> Xám Titan
+                      </span>
+                      <span class="text-xs text-gray-400">|</span>
+                      <span class="text-xs text-gray-500">256GB</span>
+                    </div>
+                  </div>
+                  <button class="delete-btn p-2 rounded-lg text-gray-400 transition">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mt-4 gap-3">
+                  <div>
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-xl md:text-2xl font-black text-red-600">14.990.000₫</span>
+                    </div>
+                    <p class="text-xs text-green-600 mt-1 flex items-center gap-1">
+                      <i class="fas fa-check-circle"></i> Còn hàng - Giao ngay
+                    </p>
+                  </div>
+                  
+                  <div class="flex items-center gap-1 bg-gray-100 rounded-xl p-1">
+                    <button class="quantity-btn w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 bg-white shadow-sm">
+                      <i class="fas fa-minus text-xs"></i>
+                    </button>
+                    <input type="text" value="1" class="w-12 h-9 text-center font-bold text-gray-800 bg-transparent outline-none">
+                    <button class="quantity-btn w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 bg-white shadow-sm">
+                      <i class="fas fa-plus text-xs"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cart Item 3 -->
+          <div class="cart-item p-5">
+            <div class="flex gap-4">
+              <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500 mt-8 cursor-pointer" checked>
+              
+              <div class="relative">
+                <img src="images/Xiaomi.avif" alt="Xiaomi 14 Pro" class="w-24 h-24 md:w-28 md:h-28 object-contain rounded-xl bg-gray-50 p-2">
+                <span class="absolute -top-1 -left-1 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">-20%</span>
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start gap-2">
+                  <div>
+                    <h3 class="font-bold text-gray-900 text-base md:text-lg line-clamp-2 hover:text-red-600 transition cursor-pointer">
+                      Xiaomi 14 Pro 256GB
+                    </h3>
+                    <div class="flex items-center gap-2 mt-1.5">
+                      <span class="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                        <span class="w-3 h-3 rounded-full bg-black"></span> Đen Titan
+                      </span>
+                      <span class="text-xs text-gray-400">|</span>
+                      <span class="text-xs text-gray-500">256GB</span>
+                    </div>
+                  </div>
+                  <button class="delete-btn p-2 rounded-lg text-gray-400 transition">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mt-4 gap-3">
+                  <div>
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-xl md:text-2xl font-black text-red-600">19.990.000₫</span>
+                      <span class="text-sm text-gray-400 line-through">24.990.000₫</span>
+                    </div>
+                    <p class="text-xs text-orange-500 mt-1 flex items-center gap-1">
+                      <i class="fas fa-clock"></i> Chỉ còn 3 sản phẩm
+                    </p>
+                  </div>
+                  
+                  <div class="flex items-center gap-1 bg-gray-100 rounded-xl p-1">
+                    <button class="quantity-btn w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 bg-white shadow-sm">
+                      <i class="fas fa-minus text-xs"></i>
+                    </button>
+                    <input type="text" value="1" class="w-12 h-9 text-center font-bold text-gray-800 bg-transparent outline-none">
+                    <button class="quantity-btn w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 bg-white shadow-sm">
+                      <i class="fas fa-plus text-xs"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="lg:w-1/3">
-          <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
-            <h2 class="text-xl font-bold mb-4">Tóm tắt đơn hàng</h2>
+        <!-- Free Shipping Notice -->
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-truck text-green-600 text-xl"></i>
+          </div>
+          <div>
+            <p class="font-semibold text-green-800">Miễn phí giao hàng!</p>
+            <p class="text-sm text-green-600">Đơn hàng của bạn đủ điều kiện miễn phí vận chuyển toàn quốc</p>
+          </div>
+        </div>
+      </div>
 
-            <div class="mb-4">
-              <div class="flex items-center mb-3">
-                <input type="text" placeholder="Nhập mã giảm giá..." class="flex-1 border rounded-l-lg px-4 py-2 outline-none focus:border-blue-600" />
-                <button class="bg-red-600 text-white px-6 py-2 rounded-r-lg hover:bg-red-700 transition">
+      <!-- Order Summary Section -->
+      <div class="lg:w-1/3">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-28">
+          
+          <!-- Summary Header -->
+          <div class="bg-gradient-to-r from-red-600 to-red-500 px-6 py-4">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i class="fas fa-receipt"></i>
+              Thông tin đơn hàng
+            </h2>
+          </div>
+
+          <div class="p-6">
+            <!-- Promo Code -->
+            <div class="mb-6">
+              <label class="text-sm font-medium text-gray-700 mb-2 block">Mã giảm giá</label>
+              <div class="flex gap-2">
+                <input type="text" placeholder="Nhập mã khuyến mãi..." class="promo-input flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 outline-none text-sm transition">
+                <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-3 rounded-xl font-semibold text-sm transition whitespace-nowrap">
                   Áp dụng
                 </button>
               </div>
-            </div>
-
-            <div class="border-t pt-4 mb-4">
-              <div class="flex justify-between mb-3">
-                <span class="text-gray-600">Tạm tính:</span>
-                <span class="font-semibold">82.970.000đ</span>
-              </div>
-              <div class="flex justify-between mb-3">
-                <span class="text-gray-600">Giảm giá:</span>
-                <span class="text-red-500 font-semibold">-10.000.000đ</span>
-              </div>
-              <div class="flex justify-between mb-3">
-                <span class="text-gray-600">Phí vận chuyển:</span>
-                <span class="text-green-600 font-semibold">Miễn phí</span>
+              <div class="flex gap-2 mt-3">
+                <span class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full cursor-pointer hover:bg-red-100 transition border border-red-200">GIAM10</span>
+                <span class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full cursor-pointer hover:bg-blue-100 transition border border-blue-200">FREESHIP</span>
               </div>
             </div>
 
-            <div class="border-t pt-4 mb-6">
+            <!-- Price Breakdown -->
+            <div class="space-y-3 pb-4 border-b border-dashed border-gray-200">
+              <div class="flex justify-between text-gray-600">
+                <span>Tạm tính (3 sản phẩm)</span>
+                <span class="font-medium text-gray-800">64.970.000₫</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Giảm giá</span>
+                <span class="font-medium text-green-600">-10.000.000₫</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Phí vận chuyển</span>
+                <span class="font-medium text-green-600">Miễn phí</span>
+              </div>
+            </div>
+
+            <!-- Total -->
+            <div class="py-4 border-b border-gray-200">
               <div class="flex justify-between items-center">
-                <span class="text-lg font-semibold">Tổng cộng:</span>
-                <span class="text-2xl font-bold text-red-600">72.970.000đ</span>
+                <span class="text-lg font-semibold text-gray-800">Tổng cộng</span>
+                <div class="text-right">
+                  <span class="text-2xl md:text-3xl font-black text-red-600">54.970.000₫</span>
+                  <p class="text-xs text-gray-500 mt-0.5">(Đã bao gồm VAT)</p>
+                </div>
               </div>
-              <p class="text-sm text-gray-600 mt-1">Đã bao gồm VAT nếu có</p>
             </div>
 
-            <a href="checkout.html" class="block w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-4 rounded-lg font-bold text-center hover:from-red-700 hover:to-red-600 transition-all shadow-lg hover:shadow-xl mb-3">
-              <i class="fas fa-credit-card mr-2"></i>Thanh toán ngay
+            <!-- Savings Badge -->
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-3 my-4 flex items-center gap-3">
+              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-piggy-bank text-green-600"></i>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-green-800">Bạn tiết kiệm được</p>
+                <p class="text-lg font-black text-green-600">10.000.000₫</p>
+              </div>
+            </div>
+
+            <!-- Checkout Button -->
+            <a href="checkout.html" class="checkout-btn block w-full text-white py-4 rounded-xl font-bold text-center text-lg mb-3">
+              <i class="fas fa-lock mr-2"></i>Thanh toán an toàn
             </a>
 
-            <a href="products.html" class="block w-full text-center border-2 border-red-600 text-red-600 py-3 rounded-lg font-semibold hover:bg-red-50 transition">
-              <i class="fas fa-arrow-left mr-2"></i>Tiếp tục mua hàng
+            <a href="products.html" class="block w-full text-center border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-semibold hover:border-red-500 hover:text-red-600 transition">
+              <i class="fas fa-shopping-bag mr-2"></i>Tiếp tục mua sắm
             </a>
 
-            <div class="mt-6 pt-6 border-t">
-              <h3 class="font-semibold mb-3">Chính sách mua hàng</h3>
-              <div class="space-y-2 text-sm text-gray-600">
-                <div class="flex items-center">
-                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                  <span>Bảo hành chính hãng 12 tháng</span>
+            <!-- Trust Badges -->
+            <div class="mt-6 pt-5 border-t border-gray-100">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                  <i class="fas fa-shield-alt text-green-500"></i>
+                  <span>Bảo hành 12 tháng</span>
                 </div>
-                <div class="flex items-center">
-                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                  <span>Đổi trả trong vòng 7 ngày</span>
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                  <i class="fas fa-sync-alt text-blue-500"></i>
+                  <span>Đổi trả 7 ngày</span>
                 </div>
-                <div class="flex items-center">
-                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                  <span>Giao hàng toàn quốc</span>
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                  <i class="fas fa-truck text-orange-500"></i>
+                  <span>Giao toàn quốc</span>
                 </div>
-                <div class="flex items-center">
-                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                  <span>Thanh toán an toàn</span>
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                  <i class="fas fa-headset text-purple-500"></i>
+                  <span>Hỗ trợ 24/7</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="mt-5 pt-5 border-t border-gray-100">
+              <p class="text-xs text-gray-500 mb-3 text-center">Phương thức thanh toán</p>
+              <div class="flex justify-center gap-3">
+                <div class="w-12 h-8 bg-gray-100 rounded flex items-center justify-center">
+                  <i class="fab fa-cc-visa text-xl text-blue-600"></i>
+                </div>
+                <div class="w-12 h-8 bg-gray-100 rounded flex items-center justify-center">
+                  <i class="fab fa-cc-mastercard text-xl text-red-500"></i>
+                </div>
+                <div class="w-12 h-8 bg-gray-100 rounded flex items-center justify-center">
+                  <i class="fas fa-mobile-alt text-xl text-green-600"></i>
+                </div>
+                <div class="w-12 h-8 bg-gray-100 rounded flex items-center justify-center">
+                  <i class="fas fa-money-bill-wave text-xl text-green-700"></i>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h3 class="font-semibold mb-4 flex items-center">
-              <i class="fas fa-shield-alt text-red-600 mr-2"></i>
-              Thanh toán an toàn
-            </h3>
-            <div class="grid grid-cols-4 gap-3">
-              <div class="border rounded p-2 flex items-center justify-center">
-                <i class="fab fa-cc-visa text-3xl text-red-600"></i>
-              </div>
-              <div class="border rounded p-2 flex items-center justify-center">
-                <i class="fab fa-cc-mastercard text-3xl text-red-500"></i>
-              </div>
-              <div class="border rounded p-2 flex items-center justify-center">
-                <i class="fas fa-mobile-alt text-3xl text-green-600"></i>
-              </div>
-              <div class="border rounded p-2 flex items-center justify-center">
-                <i class="fas fa-money-bill-wave text-3xl text-gray-600"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Sản phẩm bạn có thể quan tâm</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=400" alt="OPPO Find X7 Ultra" class="w-full h-64 object-cover" />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-lg mb-2">OPPO Find X7 Ultra</h3>
-              <p class="text-sm text-gray-600 mb-3">512GB - Xanh Hải Dương</p>
-              <div class="flex items-center mb-3">
-                <div class="text-yellow-400">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                </div>
-                <span class="text-sm text-gray-600 ml-2">(43)</span>
-              </div>
-              <span class="text-2xl font-bold text-red-600">25.990.000đ</span>
-            </div>
-          </a>
-
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Vivo X100 Pro" class="w-full h-64 object-cover" />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-lg mb-2">Vivo X100 Pro</h3>
-              <p class="text-sm text-gray-600 mb-3">256GB - Xám Titan</p>
-              <div class="flex items-center mb-3">
-                <div class="text-yellow-400">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="far fa-star"></i>
-                </div>
-                <span class="text-sm text-gray-600 ml-2">(38)</span>
-              </div>
-              <span class="text-2xl font-bold text-red-600">22.990.000đ</span>
-            </div>
-          </a>
-
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=400" alt="iPhone 14 Pro" class="w-full h-64 object-cover" />
-              <span class="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">-10%</span>
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-lg mb-2">iPhone 14 Pro</h3>
-              <p class="text-sm text-gray-600 mb-3">128GB - Tím Deep Purple</p>
-              <div class="flex items-center mb-3">
-                <div class="text-yellow-400">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                </div>
-                <span class="text-sm text-gray-600 ml-2">(210)</span>
-              </div>
-              <div class="flex items-baseline space-x-2">
-                <span class="text-2xl font-bold text-red-600">24.990.000đ</span>
-                <span class="text-sm text-gray-600 line-through">27.990.000đ</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="product-detail.html" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Realme GT 5" class="w-full h-64 object-cover" />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-lg mb-2">Realme GT 5</h3>
-              <p class="text-sm text-gray-600 mb-3">256GB - Xanh Dương</p>
-              <div class="flex items-center mb-3">
-                <div class="text-yellow-400">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="far fa-star"></i>
-                </div>
-                <span class="text-sm text-gray-600 ml-2">(52)</span>
-              </div>
-              <span class="text-2xl font-bold text-red-600">12.990.000đ</span>
-            </div>
-          </a>
         </div>
       </div>
     </div>
 
 
+    <!-- Suggested Products Section -->
+    <div class="mt-12 md:mt-16">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Có thể bạn quan tâm</h2>
+          <p class="text-gray-500 mt-1">Những sản phẩm phù hợp với bạn</p>
+        </div>
+        <a href="products.html" class="hidden md:flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition">
+          Xem tất cả <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <!-- Product 1 -->
+        <a href="product-detail.html" class="product-suggest bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition duration-300">
+          <div class="relative p-4 bg-gradient-to-br from-gray-50 to-white">
+            <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">-15%</span>
+            <img src="images/oppx9.avif" alt="OPPO Find X7" class="w-full h-40 md:h-48 object-contain">
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 mb-2 min-h-[40px]">OPPO Find X9 Pro 512GB</h3>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-yellow-400 text-xs">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-xs text-gray-400">(128)</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-lg md:text-xl font-black text-red-600">25.990.000₫</span>
+              <span class="text-xs text-gray-400 line-through">29.990.000₫</span>
+            </div>
+          </div>
+        </a>
 
-    <!-- Footer Component -->
-    <div id="footer-placeholder"></div>
+        <!-- Product 2 -->
+        <a href="product-detail.html" class="product-suggest bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition duration-300">
+          <div class="relative p-4 bg-gradient-to-br from-gray-50 to-white">
+            <span class="absolute top-3 left-3 bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">HOT</span>
+            <img src="images/pixel-9-pro.avif" alt="Pixel 9 Pro" class="w-full h-40 md:h-48 object-contain">
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 mb-2 min-h-[40px]">Google Pixel 9 Pro 256GB</h3>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-yellow-400 text-xs">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+              <span class="text-xs text-gray-400">(89)</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-lg md:text-xl font-black text-red-600">28.990.000₫</span>
+            </div>
+          </div>
+        </a>
 
-    <!-- Load Header Component -->
-    <script>
-      (function () {
-        function loadHeader() {
-          const headerPlaceholder = document.getElementById('header-placeholder');
-          if (!headerPlaceholder) {
-            console.warn('Header placeholder not found');
-            return;
+        <!-- Product 3 -->
+        <a href="product-detail.html" class="product-suggest bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition duration-300">
+          <div class="relative p-4 bg-gradient-to-br from-gray-50 to-white">
+            <span class="absolute top-3 left-3 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">NEW</span>
+            <img src="images/oppo_reno_13_f_4g_256gb.avif" alt="OPPO Reno 13" class="w-full h-40 md:h-48 object-contain">
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 mb-2 min-h-[40px]">OPPO Reno 13F 4G 256GB</h3>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-yellow-400 text-xs">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+              </div>
+              <span class="text-xs text-gray-400">(45)</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-lg md:text-xl font-black text-red-600">8.990.000₫</span>
+              <span class="text-xs text-gray-400 line-through">10.990.000₫</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 4 -->
+        <a href="product-detail.html" class="product-suggest bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition duration-300">
+          <div class="relative p-4 bg-gradient-to-br from-gray-50 to-white">
+            <span class="absolute top-3 left-3 bg-purple-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">-10%</span>
+            <img src="images/samsung_galaxy_a36_5g.avif" alt="Samsung A36" class="w-full h-40 md:h-48 object-contain">
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 mb-2 min-h-[40px]">Samsung Galaxy A36 5G 128GB</h3>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-yellow-400 text-xs">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-xs text-gray-400">(156)</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-lg md:text-xl font-black text-red-600">7.490.000₫</span>
+              <span class="text-xs text-gray-400 line-through">8.290.000₫</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Why Choose Us Section -->
+    <div class="mt-12 md:mt-16 mb-8">
+      <div class="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 rounded-2xl p-6 md:p-8">
+        <h3 class="text-xl md:text-2xl font-bold text-white text-center mb-6">Tại sao chọn QuangHưng Mobile?</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+            <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fas fa-certificate text-white text-2xl"></i>
+            </div>
+            <h4 class="font-bold text-white text-sm md:text-base">100% Chính hãng</h4>
+            <p class="text-white/70 text-xs mt-1">Cam kết hàng chính hãng</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+            <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fas fa-shipping-fast text-white text-2xl"></i>
+            </div>
+            <h4 class="font-bold text-white text-sm md:text-base">Giao hàng nhanh</h4>
+            <p class="text-white/70 text-xs mt-1">Nhận hàng trong 2-4h</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+            <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fas fa-hand-holding-usd text-white text-2xl"></i>
+            </div>
+            <h4 class="font-bold text-white text-sm md:text-base">Giá tốt nhất</h4>
+            <p class="text-white/70 text-xs mt-1">Hoàn tiền nếu có giá rẻ hơn</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+            <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fas fa-headset text-white text-2xl"></i>
+            </div>
+            <h4 class="font-bold text-white text-sm md:text-base">Hỗ trợ 24/7</h4>
+            <p class="text-white/70 text-xs mt-1">Tư vấn nhiệt tình</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Component -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Load Header Component -->
+  <script>
+    (function () {
+      function loadHeader() {
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        if (!headerPlaceholder) return;
+
+        fetch('components/header.html')
+          .then(response => response.text())
+          .then(html => {
+            headerPlaceholder.innerHTML = html;
+            const script = document.createElement('script');
+            script.src = 'components/header.js';
+            document.body.appendChild(script);
+          })
+          .catch(error => console.error('Error loading header:', error));
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadHeader);
+      } else {
+        loadHeader();
+      }
+    })();
+  </script>
+
+  <!-- Load Footer Component -->
+  <script>
+    (function () {
+      function loadFooter() {
+        const footerPlaceholder = document.getElementById('footer-placeholder');
+        if (!footerPlaceholder) return;
+
+        fetch('components/footer.html')
+          .then(response => response.text())
+          .then(html => {
+            footerPlaceholder.innerHTML = html;
+          })
+          .catch(error => console.error('Error loading footer:', error));
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadFooter);
+      } else {
+        loadFooter();
+      }
+    })();
+  </script>
+
+  <!-- Cart Interactions -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Select All functionality
+      const selectAll = document.getElementById('select-all');
+      const itemCheckboxes = document.querySelectorAll('.cart-item input[type="checkbox"]');
+      
+      if (selectAll) {
+        selectAll.addEventListener('change', function() {
+          itemCheckboxes.forEach(cb => cb.checked = this.checked);
+        });
+      }
+
+      // Quantity buttons
+      document.querySelectorAll('.quantity-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const input = this.parentElement.querySelector('input');
+          let value = parseInt(input.value) || 1;
+          
+          if (this.querySelector('.fa-plus')) {
+            value++;
+          } else if (this.querySelector('.fa-minus') && value > 1) {
+            value--;
           }
+          
+          input.value = value;
+        });
+      });
 
-          fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-              headerPlaceholder.innerHTML = html;
-              const script = document.createElement('script');
-              script.src = 'components/header.js';
-              document.body.appendChild(script);
-            })
-            .catch(error => console.error('Error loading header:', error));
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', loadHeader);
-        } else {
-          loadHeader();
-        }
-      })();
-    </script>
-
-    <!-- Load Footer Component -->
-    <script>
-      (function () {
-        function loadFooter() {
-          const footerPlaceholder = document.getElementById('footer-placeholder');
-          if (!footerPlaceholder) {
-            console.warn('Footer placeholder not found');
-            return;
+      // Delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const cartItem = this.closest('.cart-item');
+          if (cartItem) {
+            cartItem.style.opacity = '0';
+            cartItem.style.transform = 'translateX(100px)';
+            setTimeout(() => cartItem.remove(), 300);
           }
-
-          fetch('components/footer.html')
-            .then(response => response.text())
-            .then(html => {
-              footerPlaceholder.innerHTML = html;
-            })
-            .catch(error => console.error('Error loading footer:', error));
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', loadFooter);
-        } else {
-          loadFooter();
-        }
-      })();
-    </script>
-  </body>
+        });
+      });
+    });
+  </script>
+</body>
 </html>
-
-

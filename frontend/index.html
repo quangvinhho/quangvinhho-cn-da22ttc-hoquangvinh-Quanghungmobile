@@ -86,20 +86,20 @@
   <!-- Header Component -->
   <div id="header-placeholder"></div>
 
-  <!-- Spacer for fixed header -->
-  <div class="h-[120px] md:h-[130px]"></div>
+  <!-- Spacer for fixed header - Responsive -->
+  <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-  <!-- ===== BANNER QUẢNG CÁO (Đã sửa đổi logic trượt) ===== -->
-  <section class="py-2 md:py-3">
-    <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
-      <div class="flex flex-col lg:flex-row gap-4">
+  <!-- ===== BANNER QUẢNG CÁO ===== -->
+  <section class="py-3 md:py-5">
+    <div class="max-w-[1920px] mx-auto px-3 sm:px-4 md:px-6">
+      <div class="flex flex-col gap-4">
 
-        <!-- PHẦN TRÁI: Banner Slider Mới -->
-        <div class="lg:w-[70%] w-full flex flex-col gap-4">
+        <!-- Banner Slider Full Width -->
+        <div class="w-full flex flex-col gap-4">
 
           <!-- Banner Slider Container -->
           <div
-            class="rounded-xl md:rounded-2xl overflow-hidden shadow-lg relative group h-[200px] sm:h-[280px] md:h-[360px]">
+            class="rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl relative group h-[240px] sm:h-[320px] md:h-[420px] lg:h-[480px]">
 
             <!-- Track chứa tất cả các slide (Dùng JS để dịch chuyển div này) -->
             <div id="banner-track" class="flex h-full transition-transform duration-500 ease-out">
@@ -179,59 +179,62 @@
             </div>
           </div>
 
-          <!-- 5 Banner nhỏ nằm ngang (Giữ nguyên) -->
+          <!-- 5 Banner nhỏ nằm ngang -->
           <div
-            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1 md:gap-2 bg-gray-50 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-200">
-            <div class="text-center py-2 md:py-3 border-r border-gray-200 hover:bg-red-50 transition cursor-pointer"
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 md:gap-3">
+            <div class="bg-white rounded-xl p-3 md:p-4 shadow-md hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-red-500 group"
               onclick="goToBanner(0)">
-              <h4 class="text-[var(--red-main)] font-bold text-[10px] sm:text-xs md:text-sm">iPhone 16 Series</h4>
-              <p class="text-gray-500 text-[9px] sm:text-[10px] md:text-xs mt-0.5 md:mt-1">Siêu phẩm mới nhất</p>
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center group-hover:bg-red-500 transition">
+                  <i class="fas fa-mobile-alt text-red-600 group-hover:text-white transition"></i>
+                </div>
+                <h4 class="text-red-600 font-bold text-xs md:text-sm">iPhone 16</h4>
+              </div>
+              <p class="text-gray-600 text-[10px] md:text-xs">Siêu phẩm mới nhất</p>
             </div>
-            <div class="text-center py-2 md:py-3 border-r border-gray-200 hover:bg-red-50 transition cursor-pointer"
+            <div class="bg-white rounded-xl p-3 md:p-4 shadow-md hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-red-500 group"
               onclick="goToBanner(1)">
-              <h4 class="text-[var(--red-main)] font-bold text-[10px] sm:text-xs md:text-sm">Samsung S25 Ultra</h4>
-              <p class="text-gray-500 text-[9px] sm:text-[10px] md:text-xs mt-0.5 md:mt-1">Cấu hình mạnh mẽ</p>
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition">
+                  <i class="fas fa-mobile-alt text-blue-600 group-hover:text-white transition"></i>
+                </div>
+                <h4 class="text-blue-600 font-bold text-xs md:text-sm">Samsung S25</h4>
+              </div>
+              <p class="text-gray-600 text-[10px] md:text-xs">Cấu hình mạnh mẽ</p>
             </div>
-            <div class="text-center py-2 md:py-3 border-r border-gray-200 hover:bg-red-50 transition cursor-pointer"
+            <div class="bg-white rounded-xl p-3 md:p-4 shadow-md hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-red-500 group"
               onclick="goToBanner(2)">
-              <h4 class="text-[var(--red-main)] font-bold text-[10px] sm:text-xs md:text-sm">Sony Xperia 1 VI</h4>
-              <p class="text-gray-500 text-[9px] sm:text-[10px] md:text-xs mt-0.5 md:mt-1">Ảnh cực nét</p>
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-500 transition">
+                  <i class="fas fa-mobile-alt text-purple-600 group-hover:text-white transition"></i>
+                </div>
+                <h4 class="text-purple-600 font-bold text-xs md:text-sm">Sony Xperia</h4>
+              </div>
+              <p class="text-gray-600 text-[10px] md:text-xs">Ảnh cực nét</p>
             </div>
-            <div class="text-center py-2 md:py-3 border-r border-gray-200 hover:bg-red-50 transition cursor-pointer"
+            <div class="bg-white rounded-xl p-3 md:p-4 shadow-md hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-red-500 group"
               onclick="goToBanner(3)">
-              <h4 class="text-[var(--red-main)] font-bold text-[10px] sm:text-xs md:text-sm">Pixel 9 Pro</h4>
-              <p class="text-gray-500 text-[9px] sm:text-[10px] md:text-xs mt-0.5 md:mt-1">Trải nghiệm AI</p>
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-500 transition">
+                  <i class="fas fa-mobile-alt text-green-600 group-hover:text-white transition"></i>
+                </div>
+                <h4 class="text-green-600 font-bold text-xs md:text-sm">Pixel 9 Pro</h4>
+              </div>
+              <p class="text-gray-600 text-[10px] md:text-xs">Trải nghiệm AI</p>
             </div>
-            <div class="text-center py-2 md:py-3 hover:bg-red-50 transition cursor-pointer" onclick="goToBanner(4)">
-              <h4 class="text-[var(--red-main)] font-bold text-[10px] sm:text-xs md:text-sm">Deal Hot 🔥</h4>
-              <p class="text-gray-500 text-[9px] sm:text-[10px] md:text-xs mt-0.5 md:mt-1">Giảm đến 50%</p>
+            <div class="bg-gradient-to-br from-red-500 to-orange-500 rounded-xl p-3 md:p-4 shadow-md hover:shadow-xl transition-all cursor-pointer group"
+              onclick="goToBanner(4)">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-fire text-white"></i>
+                </div>
+                <h4 class="text-white font-bold text-xs md:text-sm">Deal Hot</h4>
+              </div>
+              <p class="text-white/80 text-[10px] md:text-xs">Giảm đến 50%</p>
             </div>
           </div>
-        </div>
 
-        <!-- PHẦN PHẢI: 3 Banner phụ (Giữ nguyên) -->
-        <div class="lg:w-[30%] w-full flex flex-row lg:flex-col gap-4 h-auto lg:h-[460px]">
-          <div
-            class="rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1"
-            onclick="goToBanner(1)">
-            <img src="images/samsung.webp" alt="Banner phụ 1"
-              class="w-full h-[140px] lg:h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          </div>
-          <div
-            class="rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1"
-            onclick="goToBanner(2)">
-            <img src="images/sony-xperia-1-vi.webp" alt="Banner phụ 2"
-              class="w-full h-[140px] lg:h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              onerror="this.src='images/iphone.jpg'">
-          </div>
-          <div
-            class="rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group cursor-pointer flex-1"
-            onclick="goToBanner(3)">
-            <img src="images/ww.webp" alt="Banner phụ 3"
-              class="w-full h-[140px] lg:h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -803,7 +806,7 @@
         <div class="flex items-center justify-between mb-6">
           <h2
             class="text-4xl md:text-5xl font-black bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
-           Review sản phẩm
+            REVIEW
           </h2>
           <div class="flex items-center gap-3">
             <a href="https://youtube.com" target="_blank"
