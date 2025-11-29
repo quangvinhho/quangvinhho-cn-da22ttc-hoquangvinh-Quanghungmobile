@@ -325,11 +325,16 @@
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('isLoggedIn', 'true');
             
-            // Merge giỏ hàng
-            mergeGuestCart(user.ma_kh);
-            
-            // Chuyển về trang chủ
-            window.location.href = 'index.html';
+            // Kiểm tra nếu là admin
+            if (user.isAdmin || user.role === 'admin') {
+              localStorage.setItem('isAdmin', 'true');
+              alert(`Xin chào Admin ${user.ho_ten}!`);
+              window.location.href = 'admin.html';
+            } else {
+              // Merge giỏ hàng cho customer
+              mergeGuestCart(user.ma_kh);
+              window.location.href = 'index.html';
+            }
           } catch (e) {
             console.error('Error parsing user data:', e);
             window.history.replaceState({}, document.title, 'login.html');

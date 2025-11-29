@@ -56,14 +56,26 @@ module.exports = function(passport) {
                 };
             }
 
+            // Kiểm tra xem user có phải admin không
+            const [adminCheck] = await pool.query(
+                'SELECT * FROM admin WHERE tai_khoan = ?',
+                [email]
+            );
+
+            const isAdmin = adminCheck.length > 0;
+            const adminData = isAdmin ? adminCheck[0] : null;
+
             return done(null, {
                 ma_kh: user.ma_kh,
+                ma_admin: adminData?.ma_admin || null,
                 ho_ten: user.ho_ten || ho_ten,
                 email: user.email || email,
                 avt: user.avt || avt,
                 so_dt: user.so_dt,
                 dia_chi: user.dia_chi,
-                role: 'customer'
+                quyen: adminData?.quyen || null,
+                role: isAdmin ? 'admin' : 'customer',
+                isAdmin: isAdmin
             });
 
         } catch (error) {
