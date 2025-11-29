@@ -48,36 +48,55 @@
           <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-2xl font-bold mb-6">Thông tin cá nhân</h2>
 
-            <form class="space-y-6">
+            <form id="profile-form" class="space-y-6" onsubmit="handleUpdateProfile(event)" enctype="multipart/form-data">
+              <!-- Avatar Upload -->
+              <div class="flex items-center gap-6 pb-6 border-b">
+                <div class="relative">
+                  <div id="profile-avatar-preview" class="w-24 h-24 rounded-full bg-red-600 flex items-center justify-center overflow-hidden border-4 border-gray-200">
+                    <span id="profile-avatar-text" class="text-white text-2xl font-bold">U</span>
+                    <img id="profile-avatar-img" src="" alt="Avatar" class="w-full h-full object-cover hidden">
+                  </div>
+                  <label for="profile-avatar" class="absolute bottom-0 right-0 bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-700 transition shadow-lg">
+                    <i class="fas fa-camera text-sm"></i>
+                  </label>
+                  <input type="file" id="profile-avatar" accept="image/*" class="hidden" onchange="previewProfileAvatar(this)">
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-800">Ảnh đại diện</h3>
+                  <p class="text-sm text-gray-500">Nhấn vào biểu tượng camera để thay đổi</p>
+                  <p class="text-xs text-gray-400 mt-1">Hỗ trợ: JPG, PNG, GIF (Tối đa 5MB)</p>
+                </div>
+              </div>
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label class="block text-gray-700 font-semibold mb-2">Họ và tên</label>
-                  <input type="text" value="Nguyễn Đức" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" />
+                  <input type="text" id="profile-name" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" placeholder="Nhập họ và tên" />
                 </div>
                 <div>
                   <label class="block text-gray-700 font-semibold mb-2">Số điện thoại</label>
-                  <input type="tel" value="0912345678" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" />
+                  <input type="tel" id="profile-phone" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" placeholder="Nhập số điện thoại" />
                 </div>
               </div>
 
               <div>
                 <label class="block text-gray-700 font-semibold mb-2">Email</label>
-                <input type="email" value="nguyenduc@email.com" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" />
+                <input type="email" id="profile-email" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition bg-gray-100" readonly />
               </div>
 
               <div>
                 <label class="block text-gray-700 font-semibold mb-2">Giới tính</label>
                 <div class="flex space-x-4">
                   <label class="flex items-center cursor-pointer">
-                    <input type="radio" name="gender" class="w-4 h-4 text-red-600 focus:ring-red-500" checked />
+                    <input type="radio" name="gender" value="nam" class="w-4 h-4 text-red-600 focus:ring-red-500" />
                     <span class="ml-2 text-gray-700">Nam</span>
                   </label>
                   <label class="flex items-center cursor-pointer">
-                    <input type="radio" name="gender" class="w-4 h-4 text-red-600 focus:ring-red-500" />
+                    <input type="radio" name="gender" value="nu" class="w-4 h-4 text-red-600 focus:ring-red-500" />
                     <span class="ml-2 text-gray-700">Nữ</span>
                   </label>
                   <label class="flex items-center cursor-pointer">
-                    <input type="radio" name="gender" class="w-4 h-4 text-red-600 focus:ring-red-500" />
+                    <input type="radio" name="gender" value="khac" class="w-4 h-4 text-red-600 focus:ring-red-500" />
                     <span class="ml-2 text-gray-700">Khác</span>
                   </label>
                 </div>
@@ -85,20 +104,20 @@
 
               <div>
                 <label class="block text-gray-700 font-semibold mb-2">Ngày sinh</label>
-                <input type="date" value="1995-05-15" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" />
+                <input type="date" id="profile-birthday" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" />
               </div>
 
               <div>
                 <label class="block text-gray-700 font-semibold mb-2">Địa chỉ</label>
-                <textarea rows="3" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" placeholder="Nhập địa chỉ...">123 Đường ABC, Phường XYZ, Quận 1, TP.HCM</textarea>
+                <textarea id="profile-address" rows="3" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition" placeholder="Nhập địa chỉ..."></textarea>
               </div>
 
               <div class="flex space-x-4">
                 <button type="submit" class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition">
-                  Cập nhật thông tin
+                  <i class="fas fa-save mr-2"></i>Cập nhật thông tin
                 </button>
-                <button type="button" class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition">
-                  Hủy
+                <button type="button" onclick="loadUserProfile()" class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition">
+                  <i class="fas fa-undo mr-2"></i>Hủy
                 </button>
               </div>
             </form>
@@ -241,6 +260,8 @@
         .then(response => response.text())
         .then(html => {
           document.getElementById('profile-sidebar').innerHTML = html;
+          // Load user info vào sidebar sau khi HTML đã được thêm
+          loadSidebarUser();
         })
         .catch(error => console.error('Error loading sidebar:', error));
 
@@ -251,6 +272,191 @@
           document.getElementById('footer-placeholder').innerHTML = html;
         })
         .catch(error => console.error('Error loading footer:', error));
+
+      // ===== USER PROFILE FUNCTIONS =====
+      const API_URL = 'http://localhost:3000/api';
+
+      // Load thông tin user vào sidebar
+      function loadSidebarUser() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        
+        if (!user) {
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        // Cập nhật tên và email
+        const nameEl = document.getElementById('sidebar-user-name');
+        const emailEl = document.getElementById('sidebar-user-email');
+        if (nameEl) nameEl.textContent = user.ho_ten || 'Người dùng';
+        if (emailEl) emailEl.textContent = user.email || '';
+        
+        // Cập nhật avatar
+        const avatarText = document.getElementById('sidebar-avatar-text');
+        const avatarImg = document.getElementById('sidebar-avatar-img');
+        
+        if (user.avt) {
+          if (avatarImg) {
+            avatarImg.src = user.avt;
+            avatarImg.classList.remove('hidden');
+            avatarImg.onerror = function() {
+              this.classList.add('hidden');
+              if (avatarText) avatarText.classList.remove('hidden');
+            };
+          }
+          if (avatarText) avatarText.classList.add('hidden');
+        } else {
+          // Hiển thị chữ cái đầu
+          const initials = (user.ho_ten || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          if (avatarText) {
+            avatarText.textContent = initials;
+            avatarText.classList.remove('hidden');
+          }
+          if (avatarImg) avatarImg.classList.add('hidden');
+        }
+      }
+
+      // Hàm đăng xuất
+      function handleLogout() {
+        localStorage.removeItem('user');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('isAdmin');
+        alert('Đăng xuất thành công!');
+        window.location.href = 'index.html';
+      }
+
+      // Preview avatar khi chọn file mới
+      function previewProfileAvatar(input) {
+        if (input.files && input.files[0]) {
+          const file = input.files[0];
+          
+          if (file.size > 5 * 1024 * 1024) {
+            alert('Ảnh không được vượt quá 5MB!');
+            input.value = '';
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const avatarImg = document.getElementById('profile-avatar-img');
+            const avatarText = document.getElementById('profile-avatar-text');
+            
+            if (avatarImg) {
+              avatarImg.src = e.target.result;
+              avatarImg.classList.remove('hidden');
+            }
+            if (avatarText) avatarText.classList.add('hidden');
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Load thông tin user vào form
+      function loadUserProfile() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        
+        if (!user) {
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        // Điền thông tin vào form
+        document.getElementById('profile-name').value = user.ho_ten || '';
+        document.getElementById('profile-phone').value = user.so_dt || '';
+        document.getElementById('profile-email').value = user.email || '';
+        document.getElementById('profile-address').value = user.dia_chi || '';
+        
+        // Avatar trong form
+        const avatarImg = document.getElementById('profile-avatar-img');
+        const avatarText = document.getElementById('profile-avatar-text');
+        
+        if (user.avt) {
+          if (avatarImg) {
+            avatarImg.src = user.avt;
+            avatarImg.classList.remove('hidden');
+          }
+          if (avatarText) avatarText.classList.add('hidden');
+        } else {
+          const initials = (user.ho_ten || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          if (avatarText) {
+            avatarText.textContent = initials;
+            avatarText.classList.remove('hidden');
+          }
+          if (avatarImg) avatarImg.classList.add('hidden');
+        }
+        
+        // Giới tính
+        if (user.gioi_tinh) {
+          const genderRadio = document.querySelector(`input[name="gender"][value="${user.gioi_tinh}"]`);
+          if (genderRadio) genderRadio.checked = true;
+        }
+        
+        // Ngày sinh
+        if (user.ngay_sinh) {
+          document.getElementById('profile-birthday').value = user.ngay_sinh;
+        }
+      }
+
+      // Cập nhật thông tin user
+      async function handleUpdateProfile(event) {
+        event.preventDefault();
+        
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user) return;
+
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang cập nhật...';
+        
+        try {
+          // Tạo FormData để gửi cả file avatar nếu có
+          const formData = new FormData();
+          formData.append('ho_ten', document.getElementById('profile-name').value.trim());
+          formData.append('so_dt', document.getElementById('profile-phone').value.trim());
+          formData.append('dia_chi', document.getElementById('profile-address').value.trim());
+          
+          // Nếu có chọn avatar mới
+          const avatarInput = document.getElementById('profile-avatar');
+          if (avatarInput && avatarInput.files[0]) {
+            formData.append('avt', avatarInput.files[0]);
+          }
+
+          const response = await fetch(`${API_URL}/auth/profile/${user.ma_kh}`, {
+            method: 'PUT',
+            body: formData
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            // Cập nhật localStorage với dữ liệu mới từ server
+            localStorage.setItem('user', JSON.stringify(data.data));
+            
+            alert('Cập nhật thông tin thành công!');
+            
+            // Reload sidebar và form
+            loadSidebarUser();
+            loadUserProfile();
+          } else {
+            alert(data.message || 'Cập nhật thất bại!');
+          }
+        } catch (error) {
+          console.error('Lỗi:', error);
+          alert('Có lỗi xảy ra: ' + error.message);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      }
+
+      // Load profile khi trang load xong
+      document.addEventListener('DOMContentLoaded', function() {
+        // Đợi sidebar load xong rồi mới load user profile
+        setTimeout(function() {
+          loadUserProfile();
+        }, 300);
+      });
     </script>
   </body>
 </html>

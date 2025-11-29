@@ -51,13 +51,50 @@
           >
         </a>
 
+        <!-- User Account - Hiển thị khi chưa đăng nhập -->
         <a
           href="login.html"
+          id="login-btn"
           class="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors group no-underline"
         >
           <i class="fas fa-user-circle text-2xl group-hover:scale-110 transition-transform"></i>
           <span class="text-base font-bold">Tài khoản</span>
         </a>
+
+        <!-- User Info - Hiển thị khi đã đăng nhập -->
+        <div id="user-info" class="hidden relative group">
+          <button class="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors">
+            <img id="user-avatar" src="" alt="Avatar" class="w-9 h-9 rounded-full object-cover border-2 border-white/50 group-hover:border-yellow-300 transition-colors">
+            <span id="user-name" class="text-base font-bold max-w-[120px] truncate">Tên user</span>
+            <i class="fas fa-chevron-down text-xs"></i>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          <div class="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl w-56 py-2 hidden group-hover:block z-50 border border-gray-100">
+            <div class="px-4 py-3 border-b border-gray-100">
+              <p class="text-sm text-gray-500">Xin chào,</p>
+              <p id="dropdown-user-name" class="font-bold text-gray-800 truncate">Tên user</p>
+            </div>
+            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
+              <i class="fas fa-user w-5 text-center"></i>
+              <span>Tài khoản của tôi</span>
+            </a>
+            <a href="profile.html#orders" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
+              <i class="fas fa-box w-5 text-center"></i>
+              <span>Đơn hàng</span>
+            </a>
+            <a href="profile.html#wishlist" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
+              <i class="fas fa-heart w-5 text-center"></i>
+              <span>Yêu thích</span>
+            </a>
+            <div class="border-t border-gray-100 mt-2 pt-2">
+              <button onclick="handleLogout()" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors w-full text-left">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span class="font-medium">Đăng xuất</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Mobile Actions -->

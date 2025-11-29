@@ -1,315 +1,26 @@
 // Products Page JavaScript
-// QuangHưng Mobile - Final Fix
+// QuangHưng Mobile - Kết nối MySQL
 
-// 1. Dữ liệu sản phẩm
-const PRODUCTS = [
-  // --- IPHONE ---
-  {
-    id: 5,
-    name: 'iPhone 15 Pro Max 256GB Titan',
-    brand: 'iphone',
-    category: 'dienthoai',
-    price: 28990000,
-    oldPrice: 34990000,
-    discount: 17,
-    ram: 8,
-    storage: 256,
-    screen: '6.7"',
-    camera: '48MP',
-    features: ['tragop', 'freeship'],
-    colors: ['#4a4a4a', '#e8e8e8', '#ffd700'],
-    image: 'images/15-256.avif'
-  },
-  {
-    id: 10,
-    name: 'iPhone 14 Pro Max 128GB - 99%',
-    brand: 'iphone',
-    category: 'dienthoai',
-    price: 16390000,
-    oldPrice: 27990000,
-    discount: 41,
-    ram: 6,
-    storage: 128,
-    screen: '6.7"',
-    camera: '48MP',
-    features: ['tragop'],
-    colors: ['#4a148c', '#000000', '#ffd700'],
-    // Sử dụng tên file chuẩn hóa
-    image: 'images/iphone-14-pro-max-128-99.webp'
-  },
-  {
-    id: 20,
-    name: 'iPhone 17 Pro Max (Sắp ra mắt)',
-    brand: 'iphone',
-    category: 'dienthoai',
-    price: 33990000,
-    oldPrice: null,
-    discount: 0,
-    ram: 12,
-    storage: 256,
-    screen: '6.9"',
-    camera: '48MP',
-    features: ['tragop', 'freeship'],
-    colors: ['#5e6e76', '#f2f1eb'],
-    image: 'images/iphone17.avif'
-  },
-  {
-    id: 14,
-    name: 'iPhone 15 Plus 128GB VN/A',
-    brand: 'iphone',
-    category: 'dienthoai',
-    price: 22990000,
-    oldPrice: 25990000,
-    discount: 11,
-    ram: 6,
-    storage: 128,
-    screen: '6.7"',
-    camera: '48MP',
-    features: ['tragop'],
-    colors: ['#f48fb1', '#000000', '#e3f2fd'],
-    image: 'images/15IP.avif'
-  },
+// API URL
+const API_URL = 'http://localhost:3000/api';
 
-  // --- SAMSUNG ---
-  {
-    id: 9,
-    name: 'Samsung Galaxy S25 Ultra 5G',
-    brand: 'samsung',
-    category: 'dienthoai',
-    price: 31990000,
-    oldPrice: 35990000,
-    discount: 11,
-    ram: 12,
-    storage: 256,
-    screen: '6.8" Dynamic AMOLED',
-    camera: '200MP',
-    features: ['tragop', 'freeship'],
-    colors: ['#9e9e9e', '#000000'],
-    image: 'images/samsung.webp'
-  },
-  {
-    id: 3,
-    name: 'Samsung Galaxy S24 FE 5G',
-    brand: 'samsung',
-    category: 'dienthoai',
-    price: 14990000,
-    oldPrice: 16990000,
-    discount: 12,
-    ram: 8,
-    storage: 128,
-    screen: '6.4" AMOLED',
-    camera: '50MP',
-    features: ['tragop'],
-    colors: ['#000000', '#e0e0e0'],
-    image: 'images/samsung_galaxy_s24_fe_5g.avif'
-  },
-  {
-    id: 1,
-    name: 'Samsung Galaxy A36 5G',
-    brand: 'samsung',
-    category: 'dienthoai',
-    price: 8490000,
-    oldPrice: 9490000,
-    discount: 10,
-    ram: 8,
-    storage: 128,
-    screen: '6.6"',
-    camera: '50MP',
-    features: ['tragop'],
-    colors: ['#e8f5e9', '#000000'],
-    image: 'images/samsung_galaxy_a36_5g.avif'
-  },
-  {
-    id: 2,
-    name: 'Samsung Galaxy A56 5G',
-    brand: 'samsung',
-    category: 'dienthoai',
-    price: 9690000,
-    oldPrice: 10690000,
-    discount: 9,
-    ram: 8,
-    storage: 128,
-    screen: '6.6"',
-    camera: '50MP',
-    features: ['freeship'],
-    colors: ['#4fc3f7', '#000000'],
-    image: 'images/A56.avif'
-  },
+// Biến lưu dữ liệu sản phẩm từ API
+let PRODUCTS = [];
 
-  // --- XIAOMI / OPPO / SONY / PIXEL ---
-  {
-    id: 6,
-    name: 'Xiaomi 14 5G (12GB | 512GB)',
-    brand: 'xiaomi',
-    category: 'dienthoai',
-    price: 19990000,
-    oldPrice: 24990000,
-    discount: 20,
-    ram: 12,
-    storage: 512,
-    screen: '6.36" AMOLED',
-    camera: 'Leica 50MP',
-    features: ['tragop', 'freeship'],
-    colors: ['#81c784', '#000000'],
-    image: 'images/Xiaomi.avif'
-  },
-  {
-    id: 7,
-    name: 'OPPO Reno12 F 5G',
-    brand: 'oppo',
-    category: 'dienthoai',
-    price: 8990000,
-    oldPrice: 9990000,
-    discount: 10,
-    ram: 8,
-    storage: 256,
-    screen: '6.67"',
-    camera: '64MP',
-    features: ['tragop'],
-    colors: ['#ff9800', '#9c27b0'],
-    image: 'images/oppo-reno.avif'
-  },
-  {
-    id: 12,
-    name: 'OPPO Find X9 Pro',
-    brand: 'oppo',
-    category: 'dienthoai',
-    price: 21990000,
-    oldPrice: 24990000,
-    discount: 12,
-    ram: 12,
-    storage: 256,
-    screen: '6.82"',
-    camera: 'Hasselblad',
-    features: ['tragop', 'freeship'],
-    colors: ['#000000', '#ffeb3b'],
-    image: 'images/oppx9.avif'
-  },
-  {
-    id: 28,
-    name: 'OPPO Reno 13 F 4G',
-    brand: 'oppo',
-    category: 'dienthoai',
-    price: 7990000,
-    oldPrice: 8990000,
-    discount: 11,
-    ram: 8,
-    storage: 256,
-    screen: '6.67"',
-    camera: '64MP',
-    features: ['tragop'],
-    colors: ['#000000', '#4caf50'],
-    image: 'images/oppo_reno_13_f_4g_256gb.avif'
-  },
-  {
-    id: 25,
-    name: 'Google Pixel 9 Pro',
-    brand: 'pixel',
-    category: 'dienthoai',
-    price: 23990000,
-    oldPrice: null,
-    discount: 0,
-    ram: 12,
-    storage: 128,
-    screen: '6.7" OLED',
-    camera: '50MP AI',
-    features: ['tragop'],
-    colors: ['#f5f5f5', '#000000'],
-    image: 'images/pixel-9-pro.avif'
-  },
-  {
-    id: 26,
-    name: 'Sony Xperia 1 VI',
-    brand: 'sony',
-    category: 'dienthoai',
-    price: 29990000,
-    oldPrice: 32990000,
-    discount: 9,
-    ram: 12,
-    storage: 256,
-    screen: '6.5" 4K OLED',
-    camera: 'Zeiss T*',
-    features: ['freeship'],
-    colors: ['#000000', '#333333'],
-    image: 'images/sony-xperia-1-vi.webp'
-  },
-  {
-    id: 27,
-    name: 'Sony Xperia 10 VII',
-    brand: 'sony',
-    category: 'dienthoai',
-    price: 10990000,
-    oldPrice: 11990000,
-    discount: 8,
-    ram: 8,
-    storage: 128,
-    screen: '6.1" OLED',
-    camera: '48MP',
-    features: ['tragop'],
-    colors: ['#ffffff', '#000000'],
-    image: 'images/cate_XPERIA_10VII_1125.webp'
-  },
-
-  // --- CÁC HÃNG KHÁC ---
-  {
-    id: 31,
-    name: 'Tecno Pova 6',
-    brand: 'tecno',
-    category: 'dienthoai',
-    price: 5490000,
-    oldPrice: 6490000,
-    discount: 15,
-    ram: 8,
-    storage: 256,
-    screen: '6.78"',
-    camera: '50MP',
-    features: ['tragop'],
-    colors: ['#4caf50'],
-    image: 'images/TECNO.avif'
-  },
-  {
-    id: 32,
-    name: 'Vivo Y100',
-    brand: 'vivo',
-    category: 'dienthoai',
-    price: 6290000,
-    oldPrice: 7290000,
-    discount: 14,
-    ram: 8,
-    storage: 256,
-    screen: '6.67"',
-    camera: '50MP',
-    features: ['freeship'],
-    colors: ['#9c27b0'],
-    image: 'images/w.webp'
-  },
-
-  // --- PHỤ KIỆN ---
-  {
-    id: 101,
-    name: 'Củ sạc nhanh 20W chính hãng',
-    brand: 'apple',
-    category: 'phukien',
-    type: 'sac',
-    price: 490000,
-    oldPrice: 590000,
-    discount: 17,
-    features: ['freeship'],
-    image: 'images/2.0.jpg'
-  },
-  {
-    id: 102,
-    name: 'Ốp lưng iPhone 15 Pro Max',
-    brand: 'apple',
-    category: 'phukien',
-    type: 'oplung',
-    price: 150000,
-    oldPrice: 250000,
-    discount: 40,
-    features: [],
-    image: 'images/sale.jpg'
-  }
-];
+// Hàm fetch sản phẩm từ API
+async function fetchProducts() {
+    try {
+        const response = await fetch(`${API_URL}/products`);
+        if (!response.ok) throw new Error('Lỗi kết nối API');
+        const data = await response.json();
+        PRODUCTS = data;
+        return data;
+    } catch (error) {
+        console.error('Lỗi lấy sản phẩm:', error);
+        PRODUCTS = [];
+        return [];
+    }
+}
 
 // --- LOGIC XỬ LÝ ---
 
@@ -387,47 +98,18 @@ let currentSort = 'featured';
 let searchQuery = '';
 
 // Parse URL Params
-document.addEventListener('DOMContentLoaded', () => { 
-  const urlParams = new URLSearchParams(window.location.search);
-  const categoryParam = urlParams.get('category');
-  const brandParam = urlParams.get('brand');
-
-  // Logic xử lý tham số URL
-  if (categoryParam) {
-    const lowerCat = categoryParam.toLowerCase();
-    if (lowerCat === 'phukien') {
-      selectedCategories = ['phukien'];
-      const accessoryFilter = document.getElementById('accessoryFilter');
-      if (accessoryFilter) accessoryFilter.style.display = 'block';
-    } else if (lowerCat === 'dienthoai') {
-      selectedCategories = ['dienthoai'];
-    } else {
-      // Nếu category là brand (vd: iphone)
-      selectedBrands = [lowerCat];
-      const checkbox = document.querySelector(`.brand-filter[value="${lowerCat}"]`);
-      if (checkbox) checkbox.checked = true;
-    }
+document.addEventListener('DOMContentLoaded', async () => { 
+  // Fetch sản phẩm từ API trước
+  await fetchProducts();
+  
+  // Initialize filters and render products
+  if (document.getElementById('quickBrandContainer')) {
+    initQuickBrands();
+    initBrandDropdown();
   }
-
-  if (brandParam) {
-    if (!selectedBrands.includes(brandParam.toLowerCase())) {
-      selectedBrands.push(brandParam.toLowerCase());
-    }
-    const checkbox = document.querySelector(`.brand-filter[value="${brandParam.toLowerCase()}"]`);
-    if (checkbox) checkbox.checked = true;
-  }
-    
-  // Search input
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => { 
-      searchQuery = e.target.value; 
-      renderProducts(); 
-    });
-  }
-    
-  renderProducts(); 
-  updateFilterTags(); 
+  
+  renderProducts();
+  updateFilterTags();
 });
 
 function toggleSection(sectionId) {
@@ -600,7 +282,7 @@ function createProductCard(product) {
              class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" 
              style="mix-blend-mode: multiply; max-height: 100%; max-width: 100%;"
              loading="lazy"
-             onerror="this.onerror=null; this.src='images/iphone.jpg'; console.error('Failed to load image:', '${product.image}');">
+             onerror="this.onerror=null; this.src='images/iphone17.avif'; console.error('Failed to load image:', '${product.image}');">
       </div>
             
       <div class="p-4 flex flex-col flex-1">
@@ -636,10 +318,20 @@ function formatPrice(price) {
   return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
 }
 
+// Lấy cart key theo user
+function getCartKey() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (user && user.ma_kh) {
+    return `cart_user_${user.ma_kh}`;
+  }
+  return 'cart_guest';
+}
+
 function addToCart(productId) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (product) {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cartKey = getCartKey();
+    let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
     const existingItem = cart.find(item => item.id === product.id);
         
     if (existingItem) {
@@ -648,10 +340,79 @@ function addToCart(productId) {
       cart.push({ ...product, quantity: 1 });
     }
         
-    localStorage.setItem('cart', JSON.stringify(cart));
-    window.dispatchEvent(new Event('storage'));
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    window.dispatchEvent(new Event('cartUpdated'));
     alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
   }
+}
+
+// Hàm renderProducts chính
+function renderProducts() {
+  if (typeof filterState !== 'undefined' && document.getElementById('quickBrandContainer')) {
+    renderProductsFPT();
+  } else {
+    // Use original render logic
+    originalRenderProducts();
+  }
+}
+
+// Hàm renderProducts gốc (original)
+function originalRenderProducts() {
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return;
+
+  // Filter products
+  let filtered = PRODUCTS.filter(product => {
+    // Brand filter
+    if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand)) return false;
+    
+    // Price filter
+    if (selectedPriceRanges.length > 0) {
+      const match = selectedPriceRanges.some(range => {
+        const [min, max] = range.split('-').map(Number);
+        return product.price >= min && product.price <= max;
+      });
+      if (!match) return false;
+    }
+    
+    // Category filter
+    if (selectedCategories.length > 0 && !selectedCategories.includes(product.category)) return false;
+    
+    // Search filter
+    if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    
+    return true;
+  });
+
+  // Sort products
+  switch(currentSort) {
+    case 'price-asc':
+      filtered.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-desc':
+      filtered.sort((a, b) => b.price - a.price);
+      break;
+    case 'featured':
+    default:
+      // Keep original order
+      break;
+  }
+
+  // Update product count
+  const countElement = document.getElementById('productCount');
+  if (countElement) countElement.innerText = filtered.length;
+
+  // Render products
+  grid.innerHTML = '';
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">Không tìm thấy sản phẩm phù hợp</div>';
+    return;
+  }
+
+  filtered.forEach(product => {
+    const card = createProductCard(product);
+    grid.appendChild(card);
+  });
 }
 
 /* ------------------------------------------------------------------
@@ -813,6 +574,77 @@ function updateQuickBrandUI() {
   }
 }
 
+// Hàm loadMoreProducts
+function loadMoreProducts() {
+  // For now, just re-render with current filters
+  // In the future, this could load more products from API with pagination
+  renderProducts();
+}
+
+// Hàm updateFilterTags
+function updateFilterTags() {
+  const container = document.getElementById('filterTags');
+  if (!container) return;
+  
+  let tags = [];
+  
+  // Brand tags
+  selectedBrands.forEach(brand => {
+    tags.push(`<span class="filter-tag">${brand.toUpperCase()} <span onclick="removeFilter('brand', '${brand}')">×</span></span>`);
+  });
+  
+  // Price tags
+  selectedPriceRanges.forEach(range => {
+    const [min, max] = range.split('-');
+    const label = max > 100000000 ? `> ${min/1000000}tr` : `${min/1000000}-${max/1000000}tr`;
+    tags.push(`<span class="filter-tag">${label} <span onclick="removeFilter('price', '${range}')">×</span></span>`);
+  });
+  
+  // Category tags
+  selectedCategories.forEach(cat => {
+    tags.push(`<span class="filter-tag">${cat} <span onclick="removeFilter('category', '${cat}')">×</span></span>`);
+  });
+  
+  if (tags.length > 0) {
+    tags.push(`<button onclick="clearAllFilters()" class="text-red-600 text-xs font-bold ml-2 hover:underline">Xóa tất cả</button>`);
+  }
+  
+  container.innerHTML = tags.join(' ');
+}
+
+// Hàm removeFilter
+function removeFilter(type, value) {
+  if (type === 'brand') {
+    selectedBrands = selectedBrands.filter(b => b !== value);
+    const checkbox = document.querySelector(`.brand-filter[value="${value}"]`);
+    if (checkbox) checkbox.checked = false;
+  } else if (type === 'price') {
+    selectedPriceRanges = selectedPriceRanges.filter(r => r !== value);
+    const checkbox = document.querySelector(`.price-filter[value="${value}"]`);
+    if (checkbox) checkbox.checked = false;
+  } else if (type === 'category') {
+    selectedCategories = selectedCategories.filter(c => c !== value);
+  }
+  
+  renderProducts();
+  updateFilterTags();
+}
+
+// Hàm clearAllFilters
+function clearAllFilters() {
+  selectedBrands = [];
+  selectedPriceRanges = [];
+  selectedCategories = [];
+  searchQuery = '';
+  
+  document.querySelectorAll('.brand-filter, .price-filter, .category-filter').forEach(cb => cb.checked = false);
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  
+  renderProducts();
+  updateFilterTags();
+}
+
 // Hàm sortProducts cho FPT style (nếu có filterState)
 if (typeof filterState !== 'undefined') {
   window.sortProductsFPT = function(val) { 
@@ -871,7 +703,7 @@ function renderProductsFPT() {
                  class="img-scale w-[85%] h-auto object-contain" 
                  style="mix-blend-mode: multiply; max-height: 100%; max-width: 100%;"
                  loading="lazy"
-                 onerror="this.onerror=null; this.src='images/iphone.jpg'; console.error('Failed to load:', '${imgUrl}');" />
+                 onerror="this.onerror=null; this.src='images/iphone17.avif'; console.error('Failed to load:', '${imgUrl}');" />
           </div>
           <h3 class="text-[14px] font-semibold text-gray-800 mb-1 line-clamp-2 min-h-[42px] group-hover:text-red-600 transition-colors leading-snug">${p.name}</h3>
           <div class="flex flex-wrap gap-1 mb-2">

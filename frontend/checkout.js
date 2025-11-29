@@ -26,10 +26,20 @@ function showToast(message, type = 'success') {
   }, 3000);
 }
 
+// Lấy cart key theo user (mỗi user có giỏ hàng riêng)
+function getCartKey() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (user && user.ma_kh) {
+    return `cart_user_${user.ma_kh}`;
+  }
+  return 'cart_guest';
+}
+
 // ===== LOAD CART DATA =====
 function loadCart() {
-  // Get cart from localStorage
-  const savedCart = localStorage.getItem('cart');
+  // Get cart from localStorage theo user
+  const cartKey = getCartKey();
+  const savedCart = localStorage.getItem(cartKey);
   if (savedCart) {
     cart = JSON.parse(savedCart);
   } else {

@@ -1,0 +1,170 @@
+/* ============================================
+   HEADER CSS - QuangHưng Mobile
+   Header, navigation, mobile menu styles
+   ============================================ */
+
+/* Fixed header wrapper */
+.header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #dc2626;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.header-wrapper.scrolled {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Navigation */
+.nav-link {
+  position: relative;
+  padding: 8px 12px;
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #fef3c7;
+}
+
+.nav-link.active {
+  color: #fef3c7 !important;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.nav-item:hover .dropdown-menu,
+.group:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 16px;
+  color: #374151;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.dropdown-menu a:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* Ensure dropdown stays visible */
+.group {
+  position: relative;
+}
+
+.group ul {
+  margin-top: 0;
+}
+
+.group:hover .group-hover\:block {
+  display: block;
+}
+
+/* Mobile menu */
+#mobile-menu {
+  animation: slideDown 0.3s ease-out;
+}
+
+#mobile-search-bar {
+  animation: slideDown 0.2s ease-out;
+}
+
+/* Mobile submenu */
+#mobile-submenu {
+  transition: max-height 0.3s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+}
+
+#mobile-submenu.show {
+  max-height: 500px;
+}
+
+/* Mobile menu sidebar */
+#mobile-menu-sidebar {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Cart badge */
+.cart-badge,
+.mobile-cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: #fbbf24;
+  color: #1f2937;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Search input */
+.header-search {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.header-search::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.header-search:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  outline: none;
+}
+
+/* Header spacer - responsive */
+.header-spacer {
+  height: 80px;
+}
+
+@media (min-width: 768px) {
+  .header-spacer {
+    height: 100px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-spacer {
+    height: 140px;
+  }
+}

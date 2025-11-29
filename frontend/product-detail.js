@@ -269,11 +269,21 @@ function changeQuantity(delta) {
 }
 
 // ===== CART FUNCTIONS =====
+// Lấy cart key theo user (mỗi user có giỏ hàng riêng)
+function getCartKey() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (user && user.ma_kh) {
+    return `cart_user_${user.ma_kh}`;
+  }
+  return 'cart_guest';
+}
+
 function addToCart() {
   if (!currentProduct) return;
   
   const quantity = parseInt(document.getElementById('quantity').value) || 1;
-  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const cartKey = getCartKey();
+  let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
   
   const existingItem = cart.find(item => item.id === currentProduct.id);
   if (existingItem) {
@@ -282,8 +292,8 @@ function addToCart() {
     cart.push({ ...currentProduct, quantity });
   }
   
-  localStorage.setItem('cart', JSON.stringify(cart));
-  window.dispatchEvent(new Event('storage'));
+  localStorage.setItem(cartKey, JSON.stringify(cart));
+  window.dispatchEvent(new Event('cartUpdated'));
   
   showToast(`Đã thêm "${currentProduct.name}" vào giỏ hàng!`, 'success');
 }

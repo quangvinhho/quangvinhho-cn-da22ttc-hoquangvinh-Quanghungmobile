@@ -96,6 +96,36 @@
           transform: translateY(0);
         }
       }
+
+      @keyframes slide-down {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -100%);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+      
+      @keyframes slide-up {
+        from {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -100%);
+        }
+      }
+      
+      .animate-slide-down {
+        animation: slide-down 0.3s ease-out forwards;
+      }
+      
+      .animate-slide-up {
+        animation: slide-up 0.3s ease-out forwards;
+      }
     </style>
   </head>
   <body class="flex items-center justify-center min-h-screen px-4 py-8">
@@ -108,7 +138,7 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Đăng nhập</h2>
 
         <!-- Traditional Login Form -->
-        <form class="space-y-4" onsubmit="handleLogin(event)">
+        <form class="space-y-4" onsubmit="handleLogin(event)" autocomplete="off">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Email hoặc số điện thoại</label>
             <div class="relative">
@@ -118,8 +148,10 @@
               <input 
                 type="text" 
                 id="username" 
+                name="login_email_field"
                 placeholder="Nhập email hoặc số điện thoại" 
                 class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200 transition" 
+                autocomplete="off"
                 required 
               />
             </div>
@@ -134,8 +166,10 @@
               <input 
                 type="password" 
                 id="password" 
+                name="login_password_field"
                 placeholder="Nhập mật khẩu" 
                 class="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200 transition" 
+                autocomplete="new-password"
                 required 
               />
               <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-4 flex items-center">
@@ -149,7 +183,7 @@
               <input type="checkbox" class="w-4 h-4 text-red-600 rounded focus:ring-red-500 border-gray-300" />
               <span class="ml-2 text-gray-600">Ghi nhớ đăng nhập</span>
             </label>
-            <a href="#" class="text-red-600 hover:text-red-700 font-medium">Quên mật khẩu?</a>
+            <a href="forgot-password.html" class="text-red-600 hover:text-red-700 font-medium">Quên mật khẩu?</a>
           </div>
 
           <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 rounded-xl font-semibold hover:from-red-700 hover:to-red-800 transition shadow-lg">
@@ -197,6 +231,59 @@
     </div>
 
     <script>
+      const API_URL = 'http://localhost:3000/api';
+
+      // Kiểm tra nếu vừa đăng ký xong
+      document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const justRegistered = urlParams.get('registered');
+        
+        // Clear form trước
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        
+        if (justRegistered === 'true') {
+          // Hiển thị thông báo chào mừng
+          showWelcomeMessage();
+          
+          // Tự động điền email đã đăng ký
+          const registeredEmail = localStorage.getItem('registeredEmail');
+          if (registeredEmail) {
+            document.getElementById('username').value = registeredEmail;
+            document.getElementById('password').focus();
+            localStorage.removeItem('registeredEmail');
+          }
+          
+          // Xóa param khỏi URL
+          window.history.replaceState({}, document.title, 'login.html');
+        }
+      });
+      
+      // Clear form sau 100ms để chắc chắn browser không điền lại
+      setTimeout(function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('registered') !== 'true') {
+          document.getElementById('username').value = '';
+          document.getElementById('password').value = '';
+        }
+      }, 100);
+
+      function showWelcomeMessage() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 z-50 animate-slide-down';
+        messageDiv.innerHTML = `
+          <i class="fas fa-check-circle text-xl"></i>
+          <span class="font-medium">Đăng ký thành công! Vui lòng đăng nhập.</span>
+        `;
+        document.body.appendChild(messageDiv);
+        
+        // Tự động ẩn sau 5 giây
+        setTimeout(() => {
+          messageDiv.classList.add('animate-slide-up');
+          setTimeout(() => messageDiv.remove(), 300);
+        }, 5000);
+      }
+
       function togglePassword() {
         const passwordInput = document.getElementById('password');
         const toggleIcon = document.getElementById('toggleIcon');
@@ -213,30 +300,125 @@
       }
 
       function handleGoogleLogin() {
-        // Tích hợp Google OAuth ở đây
-        alert('Chức năng đăng nhập Google đang được phát triển!');
-        // Sau khi đăng nhập thành công:
-        // window.location.href = 'profile.html';
+        // Redirect đến Google OAuth
+        window.location.href = `${API_URL}/auth/google`;
+      }
+      
+      // Xử lý callback từ Google OAuth
+      function handleGoogleCallback() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const googleSuccess = urlParams.get('google_success');
+        const userData = urlParams.get('user');
+        const error = urlParams.get('error');
+        
+        if (error === 'google_failed') {
+          alert('Đăng nhập Google thất bại! Vui lòng thử lại.');
+          window.history.replaceState({}, document.title, 'login.html');
+          return;
+        }
+        
+        if (googleSuccess === 'true' && userData) {
+          try {
+            const user = JSON.parse(decodeURIComponent(userData));
+            
+            // Lưu thông tin user
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            // Merge giỏ hàng
+            mergeGuestCart(user.ma_kh);
+            
+            // Chuyển về trang chủ
+            window.location.href = 'index.html';
+          } catch (e) {
+            console.error('Error parsing user data:', e);
+            window.history.replaceState({}, document.title, 'login.html');
+          }
+        }
+      }
+      
+      // Gọi khi trang load
+      handleGoogleCallback();
+
+      // Merge giỏ hàng guest vào giỏ hàng user khi đăng nhập
+      function mergeGuestCart(userId) {
+        const guestCart = JSON.parse(localStorage.getItem('cart_guest') || '[]');
+        const userCartKey = `cart_user_${userId}`;
+        let userCart = JSON.parse(localStorage.getItem(userCartKey) || '[]');
+        
+        // Merge: thêm sản phẩm từ guest cart vào user cart
+        guestCart.forEach(guestItem => {
+          const existingItem = userCart.find(item => item.id === guestItem.id);
+          if (existingItem) {
+            existingItem.quantity += guestItem.quantity;
+          } else {
+            userCart.push(guestItem);
+          }
+        });
+        
+        // Lưu user cart và xóa guest cart
+        localStorage.setItem(userCartKey, JSON.stringify(userCart));
+        localStorage.removeItem('cart_guest');
       }
 
-      function handleLogin(event) {
+      async function handleLogin(event) {
         event.preventDefault();
         
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const email = document.getElementById('username').value.trim();
+        const mat_khau = document.getElementById('password').value;
         
-        // Tài khoản admin mặc định
-        if (username === 'admin@quanghungshop.vn' && password === 'admin123') {
-          alert('Đăng nhập thành công với quyền Admin!');
-          window.location.href = 'admin.html';
-        } 
-        // Tài khoản user thường
-        else if (username && password) {
-          alert('Đăng nhập thành công!');
-          window.location.href = 'profile.html';
-        } 
-        else {
-          alert('Email hoặc mật khẩu không đúng!');
+        if (!email || !mat_khau) {
+          alert('Vui lòng nhập email và mật khẩu!');
+          return;
+        }
+
+        try {
+          // Thử đăng nhập như khách hàng trước
+          let response = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, mat_khau })
+          });
+
+          let data = await response.json();
+
+          if (data.success) {
+            // Lưu thông tin user vào localStorage
+            localStorage.setItem('user', JSON.stringify(data.data));
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            // Merge giỏ hàng guest vào giỏ hàng user
+            mergeGuestCart(data.data.ma_kh);
+            
+            // Chuyển về trang chủ để thấy header đã đăng nhập
+            window.location.href = 'index.html';
+            return;
+          }
+
+          // Nếu không phải khách hàng, thử đăng nhập như admin
+          response = await fetch(`${API_URL}/auth/admin/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tai_khoan: email, mat_khau })
+          });
+
+          data = await response.json();
+
+          if (data.success) {
+            localStorage.setItem('user', JSON.stringify(data.data));
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('isAdmin', 'true');
+            
+            alert(`Xin chào Admin ${data.data.ho_ten}!`);
+            window.location.href = 'admin.html';
+            return;
+          }
+
+          alert(data.message || 'Email hoặc mật khẩu không đúng!');
+
+        } catch (error) {
+          console.error('Lỗi:', error);
+          alert('Không thể kết nối đến server!');
         }
       }
     </script>

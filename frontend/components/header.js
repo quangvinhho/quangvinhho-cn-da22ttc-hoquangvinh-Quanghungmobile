@@ -1,6 +1,54 @@
 // Header JavaScript - Mobile Menu & Search Functionality
 
 (function initHeader() {
+  // ===== USER AUTHENTICATION =====
+  function checkUserLogin() {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    const loginBtn = document.getElementById('login-btn');
+    const userInfo = document.getElementById('user-info');
+    const userAvatar = document.getElementById('user-avatar');
+    const userName = document.getElementById('user-name');
+    const dropdownUserName = document.getElementById('dropdown-user-name');
+    
+    if (isLoggedIn && user) {
+      // Ẩn nút đăng nhập, hiện thông tin user
+      if (loginBtn) loginBtn.classList.add('hidden');
+      if (userInfo) userInfo.classList.remove('hidden');
+      
+      // Cập nhật tên user
+      if (userName) userName.textContent = user.ho_ten || 'Người dùng';
+      if (dropdownUserName) dropdownUserName.textContent = user.ho_ten || 'Người dùng';
+      
+      // Cập nhật avatar
+      if (userAvatar) {
+        if (user.avt) {
+          userAvatar.src = user.avt;
+        } else {
+          // Avatar mặc định với chữ cái đầu
+          userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.ho_ten || 'U')}&background=dc2626&color=fff&size=128`;
+        }
+        userAvatar.onerror = function() {
+          this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.ho_ten || 'U')}&background=dc2626&color=fff&size=128`;
+        };
+      }
+    } else {
+      // Hiện nút đăng nhập, ẩn thông tin user
+      if (loginBtn) loginBtn.classList.remove('hidden');
+      if (userInfo) userInfo.classList.add('hidden');
+    }
+  }
+  
+  // Kiểm tra đăng nhập khi load trang
+  checkUserLogin();
+  
+  // Lắng nghe thay đổi localStorage (đăng nhập/đăng xuất từ tab khác)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'user' || e.key === 'isLoggedIn') {
+      checkUserLogin();
+    }
+  });
   // Mobile Menu Toggle
   const mobileMenuBtn = document.getElementById("mobile-menu-btn");
   const mobileMenu = document.getElementById("mobile-menu");
@@ -72,6 +120,15 @@
     });
   }
 
+  // Lấy cart key theo user (mỗi user có giỏ hàng riêng)
+  function getCartKey() {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (user && user.ma_kh) {
+      return `cart_user_${user.ma_kh}`;
+    }
+    return 'cart_guest';
+  }
+
   // Update cart badge from localStorage
   function updateCartBadge() {
     const cartBadges = document.querySelectorAll(
@@ -79,7 +136,9 @@
     );
     const cartCount = document.querySelector(".cart-count");
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    // Lấy giỏ hàng theo user
+    const cartKey = getCartKey();
+    const cart = JSON.parse(localStorage.getItem(cartKey) || "[]");
     const totalItems = cart.reduce(
       (sum, item) => sum + (item.quantity || 1),
       0
@@ -165,4 +224,18 @@ function toggleMobileSubmenu() {
       icon.classList.add("fa-times");
     }
   }
+}
+
+// Hàm đăng xuất
+function handleLogout() {
+  // Xóa thông tin user khỏi localStorage
+  localStorage.removeItem('user');
+  localStorage.removeItem('isLoggedIn');
+  localStorage.removeItem('isAdmin');
+  
+  // Thông báo
+  alert('Đăng xuất thành công!');
+  
+  // Chuyển về trang chủ
+  window.location.href = 'index.html';
 }

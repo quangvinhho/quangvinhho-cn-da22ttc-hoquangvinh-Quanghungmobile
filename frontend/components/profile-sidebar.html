@@ -1,38 +1,40 @@
 <aside class="lg:col-span-1">
   <div class="bg-white rounded-lg shadow-md p-6">
     <div class="text-center mb-6">
-      <div class="w-24 h-24 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold mb-3">
-        ND
+      <!-- Avatar -->
+      <div id="sidebar-avatar-container" class="w-24 h-24 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold mb-3 overflow-hidden bg-red-600">
+        <span id="sidebar-avatar-text">U</span>
+        <img id="sidebar-avatar-img" src="" alt="Avatar" class="w-full h-full object-cover hidden">
       </div>
-      <h3 class="font-semibold text-lg">Nguyễn Đức</h3>
-      <p class="text-gray-600 text-sm">nguyenduc@email.com</p>
+      <h3 id="sidebar-user-name" class="font-semibold text-lg">Người dùng</h3>
+      <p id="sidebar-user-email" class="text-gray-600 text-sm">email@example.com</p>
     </div>
 
     <nav class="space-y-2">
-      <a href="#" class="flex items-center px-4 py-3 bg-blue-50 text-blue-600 rounded-lg font-semibold">
-        <i class="fas fa-user mr-3"></i>
+      <a href="profile.html" class="sidebar-link flex items-center px-4 py-3 bg-red-50 text-red-600 font-semibold rounded-lg transition" data-page="profile">
+        <i class="fas fa-user mr-3 w-5 text-center"></i>
         <span>Thông tin cá nhân</span>
       </a>
-      <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
-        <i class="fas fa-shopping-bag mr-3"></i>
+      <a href="profile.html#orders" class="sidebar-link flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition" data-page="orders">
+        <i class="fas fa-shopping-bag mr-3 w-5 text-center"></i>
         <span>Đơn hàng của tôi</span>
       </a>
-      <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
-        <i class="fas fa-map-marker-alt mr-3"></i>
+      <a href="profile.html#address" class="sidebar-link flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition" data-page="address">
+        <i class="fas fa-map-marker-alt mr-3 w-5 text-center"></i>
         <span>Địa chỉ nhận hàng</span>
       </a>
-      <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
-        <i class="fas fa-heart mr-3"></i>
+      <a href="profile.html#wishlist" class="sidebar-link flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition" data-page="wishlist">
+        <i class="fas fa-heart mr-3 w-5 text-center"></i>
         <span>Sản phẩm yêu thích</span>
       </a>
-      <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
-        <i class="fas fa-key mr-3"></i>
+      <a href="profile.html#password" class="sidebar-link flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition" data-page="password">
+        <i class="fas fa-key mr-3 w-5 text-center"></i>
         <span>Đổi mật khẩu</span>
       </a>
-  <a href="login.html" class="flex items-center px-4 py-3 text-blue-600 hover:bg-blue-50 rounded-lg transition">
-        <i class="fas fa-sign-out-alt mr-3"></i>
+      <button onclick="handleLogout()" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition w-full text-left">
+        <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
         <span>Đăng xuất</span>
-      </a>
+      </button>
     </nav>
   </div>
 </aside>
