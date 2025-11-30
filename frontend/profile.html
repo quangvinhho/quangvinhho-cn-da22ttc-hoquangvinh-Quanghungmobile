@@ -123,120 +123,129 @@
             </form>
           </div>
 
-          <div class="bg-white rounded-lg shadow-md p-6">
+          <div id="orders" class="bg-white rounded-lg shadow-md p-6 scroll-mt-32">
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-2xl font-bold">Đơn hàng gần đây</h2>
-              <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Xem tất cả</a>
+              <h2 class="text-2xl font-bold">Đơn hàng của tôi</h2>
+              <span id="orders-count" class="text-gray-500 text-sm">0 đơn hàng</span>
             </div>
 
-            <div class="space-y-4">
-              <div class="border rounded-lg p-4 hover:shadow-md transition">
-                <div class="flex items-center justify-between mb-3">
-                  <div>
-                    <span class="text-gray-600 text-sm">Mã đơn hàng: #DH001234</span>
-                    <p class="text-sm text-gray-500">Ngày đặt: 20/01/2025</p>
-                  </div>
-                  <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">Đã giao</span>
-                </div>
-
-                <div class="flex items-center space-x-4 mb-3">
-                  <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-16 h-16 object-cover rounded" />
-                  <div class="flex-1">
-                    <h3 class="font-semibold">iPhone 15 Pro Max</h3>
-                    <p class="text-sm text-gray-600">256GB - Titan Tự Nhiên</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="font-bold text-red-600">29.990.000đ</p>
-                    <p class="text-sm text-gray-600">x1</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-3 border-t">
-                  <div class="text-sm text-gray-600">
-                    Tổng cộng: <span class="font-bold text-lg text-gray-800">29.990.000đ</span>
-                  </div>
-                  <div class="space-x-2">
-                    <button class="border-2 border-red-600 text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-red-50 transition text-sm">
-                      Đánh giá
-                    </button>
-                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition text-sm">
-                      Mua lại
-                    </button>
-                  </div>
-                </div>
+            <!-- Orders List -->
+            <div id="orders-list" class="space-y-4">
+              <!-- Loading -->
+              <div id="orders-loading" class="text-center py-8">
+                <i class="fas fa-spinner fa-spin text-3xl text-gray-400 mb-3"></i>
+                <p class="text-gray-500">Đang tải đơn hàng...</p>
               </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="orders-empty" class="hidden text-center py-12">
+              <i class="fas fa-shopping-bag text-6xl text-gray-300 mb-4"></i>
+              <h3 class="text-xl font-semibold text-gray-700 mb-2">Chưa có đơn hàng nào</h3>
+              <p class="text-gray-500 mb-4">Hãy mua sắm để có đơn hàng đầu tiên!</p>
+              <a href="products.html" class="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+                <i class="fas fa-shopping-cart mr-2"></i>Mua sắm ngay
+              </a>
+            </div>
+          </div>
 
-              <div class="border rounded-lg p-4 hover:shadow-md transition">
-                <div class="flex items-center justify-between mb-3">
-                  <div>
-                    <span class="text-gray-600 text-sm">Mã đơn hàng: #DH001233</span>
-                    <p class="text-sm text-gray-500">Ngày đặt: 18/01/2025</p>
-                  </div>
-                  <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">Đang giao</span>
-                </div>
+          <!-- Địa chỉ nhận hàng -->
+          <div id="address" class="bg-white rounded-lg shadow-md p-6 mb-6 scroll-mt-32">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">Địa chỉ nhận hàng</h2>
+              <a href="#" onclick="scrollToProfileForm(); return false;" class="text-red-600 hover:text-red-700 text-sm font-semibold">
+                <i class="fas fa-edit mr-1"></i>Chỉnh sửa
+              </a>
+            </div>
 
-                <div class="flex items-center space-x-4 mb-3">
-                  <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-16 h-16 object-cover rounded" />
-                  <div class="flex-1">
-                    <h3 class="font-semibold">Samsung Galaxy S24 Ultra</h3>
-                    <p class="text-sm text-gray-600">512GB - Titan Gray</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="font-bold text-red-600">32.990.000đ</p>
-                    <p class="text-sm text-gray-600">x1</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-3 border-t">
-                  <div class="text-sm text-gray-600">
-                    Tổng cộng: <span class="font-bold text-lg text-gray-800">32.990.000đ</span>
-                  </div>
-                  <div class="space-x-2">
-                    <button class="border-2 border-red-600 text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-red-50 transition text-sm">
-                      Theo dõi
-                    </button>
-                    <button class="border-2 border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-50 transition text-sm">
-                      Hủy đơn
-                    </button>
-                  </div>
-                </div>
+            <!-- Address Display -->
+            <div id="address-display" class="border rounded-lg p-4 bg-gray-50">
+              <div id="address-content">
+                <!-- Sẽ được load từ thông tin user -->
               </div>
-
-              <div class="border rounded-lg p-4 hover:shadow-md transition">
-                <div class="flex items-center justify-between mb-3">
-                  <div>
-                    <span class="text-gray-600 text-sm">Mã đơn hàng: #DH001232</span>
-                    <p class="text-sm text-gray-500">Ngày đặt: 10/01/2025</p>
-                  </div>
-                  <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold">Đã hủy</span>
-                </div>
-
-                <div class="flex items-center space-x-4 mb-3">
-                  <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-16 h-16 object-cover rounded" />
-                  <div class="flex-1">
-                    <h3 class="font-semibold">Xiaomi 14 Pro</h3>
-                    <p class="text-sm text-gray-600">256GB - Đen Titan</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="font-bold text-red-600">19.990.000đ</p>
-                    <p class="text-sm text-gray-600">x1</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-3 border-t">
-                  <div class="text-sm text-gray-600">
-                    Tổng cộng: <span class="font-bold text-lg text-gray-800">19.990.000đ</span>
-                  </div>
-                  <div class="space-x-2">
-                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition text-sm">
-                      Mua lại
-                    </button>
-                  </div>
-                </div>
+              <div id="address-empty" class="hidden text-center py-8">
+                <i class="fas fa-map-marker-alt text-4xl text-gray-300 mb-3"></i>
+                <p class="text-gray-500 mb-3">Chưa có địa chỉ nhận hàng</p>
+                <a href="#" onclick="scrollToProfileForm(); return false;" class="text-red-600 hover:text-red-700 font-semibold">
+                  <i class="fas fa-plus mr-1"></i>Thêm địa chỉ ngay
+                </a>
               </div>
             </div>
           </div>
         </main>
+      </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div id="orderDetailModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-red-600 to-red-700 p-4 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-lg">Chi tiết đơn hàng</h3>
+              <p id="modalOrderId" class="text-red-100 text-sm">---</p>
+            </div>
+            <button onclick="closeOrderModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-4 max-h-[60vh] overflow-y-auto">
+          <!-- Status -->
+          <div class="flex items-center justify-between mb-4 pb-4 border-b">
+            <span class="text-gray-600">Trạng thái:</span>
+            <span id="modalStatus" class="px-3 py-1 rounded-full text-sm font-semibold">---</span>
+          </div>
+          
+          <!-- Products -->
+          <div class="mb-4">
+            <h4 class="font-semibold text-gray-800 mb-3">Sản phẩm đã đặt</h4>
+            <div id="modalProducts" class="space-y-3">
+              <!-- Products will be rendered here -->
+            </div>
+          </div>
+          
+          <!-- Customer Info -->
+          <div class="bg-gray-50 rounded-lg p-3 mb-4">
+            <h4 class="font-semibold text-gray-800 mb-2 text-sm">Thông tin giao hàng</h4>
+            <p id="modalCustomer" class="text-sm text-gray-600">---</p>
+            <p id="modalPhone" class="text-sm text-gray-600">---</p>
+            <p id="modalAddress" class="text-sm text-gray-600">---</p>
+          </div>
+          
+          <!-- Payment Info -->
+          <div class="bg-red-50 rounded-lg p-3">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-600 text-sm">Phương thức:</span>
+              <span id="modalPayment" class="font-semibold text-gray-800 text-sm">---</span>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-600 text-sm">Phí vận chuyển:</span>
+              <span id="modalShipping" class="font-semibold text-gray-800 text-sm">---</span>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-600 text-sm">Giảm giá:</span>
+              <span id="modalDiscount" class="font-semibold text-green-600 text-sm">---</span>
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-red-200">
+              <span class="font-bold text-gray-800">Tổng thanh toán:</span>
+              <span id="modalTotal" class="font-bold text-red-600 text-xl">---</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="p-4 border-t bg-gray-50 flex gap-2">
+          <button onclick="closeOrderModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2.5 rounded-lg font-semibold transition">
+            Đóng
+          </button>
+          <button id="modalReorderBtn" onclick="reorderFromModal()" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg font-semibold transition">
+            <i class="fas fa-redo mr-1"></i>Mua lại
+          </button>
+        </div>
       </div>
     </div>
 
@@ -455,8 +464,401 @@
         // Đợi sidebar load xong rồi mới load user profile
         setTimeout(function() {
           loadUserProfile();
+          loadMyOrders();
+          loadMyAddresses();
+          
+          // Xử lý scroll đến section khi có hash
+          handleHashNavigation();
         }, 300);
       });
+      
+      // Xử lý navigation theo hash
+      function handleHashNavigation() {
+        const hash = window.location.hash;
+        if (hash) {
+          const targetElement = document.querySelector(hash);
+          if (targetElement) {
+            // Scroll đến element
+            setTimeout(() => {
+              targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+            
+            // Highlight sidebar link tương ứng
+            updateSidebarActive(hash.replace('#', ''));
+          }
+        }
+      }
+      
+      // Cập nhật sidebar active state
+      function updateSidebarActive(page) {
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+          link.classList.remove('bg-red-50', 'text-red-600', 'font-semibold');
+          link.classList.add('text-gray-700');
+          
+          if (link.dataset.page === page) {
+            link.classList.add('bg-red-50', 'text-red-600', 'font-semibold');
+            link.classList.remove('text-gray-700');
+          }
+        });
+      }
+      
+      // Lắng nghe thay đổi hash
+      window.addEventListener('hashchange', handleHashNavigation);
+
+      // ===== ORDERS FUNCTIONS =====
+      
+      // Format giá tiền
+      function formatPrice(price) {
+        return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+      }
+      
+      // Format ngày
+      function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('vi-VN', {
+          day: '2-digit',
+          month: '2-digit', 
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+      
+      // Lấy class và text cho trạng thái
+      function getStatusInfo(status) {
+        const statusMap = {
+          'pending': { class: 'bg-yellow-100 text-yellow-600', text: 'Chờ xác nhận' },
+          'pending_payment': { class: 'bg-orange-100 text-orange-600', text: 'Chờ thanh toán' },
+          'confirmed': { class: 'bg-blue-100 text-blue-600', text: 'Đã xác nhận' },
+          'paid': { class: 'bg-green-100 text-green-600', text: 'Đã thanh toán' },
+          'shipping': { class: 'bg-purple-100 text-purple-600', text: 'Đang giao' },
+          'completed': { class: 'bg-green-100 text-green-600', text: 'Hoàn thành' },
+          'cancelled': { class: 'bg-gray-100 text-gray-600', text: 'Đã hủy' }
+        };
+        return statusMap[status] || { class: 'bg-gray-100 text-gray-600', text: status };
+      }
+      
+      // Lấy key đơn hàng theo user
+      function getOrdersKey() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user && user.ma_kh) {
+          return `orders_user_${user.ma_kh}`;
+        }
+        return 'orders_guest';
+      }
+      
+      // Load đơn hàng
+      async function loadMyOrders() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        const ordersList = document.getElementById('orders-list');
+        const ordersLoading = document.getElementById('orders-loading');
+        const ordersEmpty = document.getElementById('orders-empty');
+        const ordersCount = document.getElementById('orders-count');
+        
+        if (!user) return;
+        
+        let allOrders = [];
+        
+        // 1. Lấy đơn hàng từ localStorage theo user
+        const ordersKey = getOrdersKey();
+        const localOrders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
+        allOrders = [...localOrders];
+        
+        // 2. Thử lấy từ database (có kèm chi tiết sản phẩm)
+        try {
+          const response = await fetch(`${API_URL}/orders/user/${user.ma_kh}`);
+          const data = await response.json();
+          if (data.success && data.data.length > 0) {
+            // Merge với local orders, tránh trùng lặp
+            data.data.forEach(dbOrder => {
+              const exists = allOrders.find(o => o.dbOrderId === dbOrder.ma_don);
+              if (!exists) {
+                allOrders.push({
+                  orderId: `#${dbOrder.ma_don}`,
+                  dbOrderId: dbOrder.ma_don,
+                  orderDate: dbOrder.thoi_gian,
+                  status: dbOrder.trang_thai,
+                  customer: { fullName: dbOrder.ten_nguoi_nhan, phone: dbOrder.so_dt },
+                  address: { detail: dbOrder.dia_chi_nhan },
+                  pricing: { 
+                    total: parseFloat(dbOrder.tong_tien),
+                    shippingFee: 0,
+                    discount: 0
+                  },
+                  payment: { method: dbOrder.phuong_thuc || 'cod' },
+                  items: dbOrder.items || [] // Chi tiết sản phẩm từ API
+                });
+              }
+            });
+          }
+        } catch (error) {
+          console.log('Không thể load từ DB:', error);
+        }
+        
+        // Sắp xếp theo ngày mới nhất
+        allOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+        
+        // Lưu vào biến global để viewOrderDetail có thể truy cập
+        allLoadedOrders = allOrders;
+        
+        // Ẩn loading
+        if (ordersLoading) ordersLoading.classList.add('hidden');
+        
+        // Hiển thị
+        if (allOrders.length === 0) {
+          ordersEmpty.classList.remove('hidden');
+          ordersCount.textContent = '0 đơn hàng';
+          return;
+        }
+        
+        ordersCount.textContent = `${allOrders.length} đơn hàng`;
+        ordersEmpty.classList.add('hidden');
+        
+        // Render đơn hàng
+        ordersList.innerHTML = allOrders.map(order => {
+          const statusInfo = getStatusInfo(order.status);
+          const items = order.items || [];
+          const firstItem = items[0];
+          const moreItems = items.length > 1 ? items.length - 1 : 0;
+          
+          return `
+            <div class="border rounded-lg p-4 hover:shadow-md transition">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <span class="text-gray-600 text-sm font-medium">Mã đơn: ${order.orderId}</span>
+                  <p class="text-sm text-gray-500">${formatDate(order.orderDate)}</p>
+                </div>
+                <span class="${statusInfo.class} px-3 py-1 rounded-full text-sm font-semibold">${statusInfo.text}</span>
+              </div>
+
+              ${firstItem ? `
+              <div class="flex items-center space-x-4 mb-3">
+                <img src="${firstItem.image || 'images/iphone.jpg'}" alt="${firstItem.name}" class="w-16 h-16 object-contain rounded border" onerror="this.src='images/iphone.jpg'">
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-gray-800 truncate">${firstItem.name}</h3>
+                  <p class="text-sm text-gray-600">${firstItem.color || ''} ${firstItem.storage || ''}</p>
+                  <p class="text-sm text-gray-500">x${firstItem.quantity}</p>
+                </div>
+                <div class="text-right">
+                  <p class="font-bold text-red-600">${formatPrice(firstItem.price * firstItem.quantity)}</p>
+                </div>
+              </div>
+              ${moreItems > 0 ? `<p class="text-sm text-gray-500 mb-3">+ ${moreItems} sản phẩm khác</p>` : ''}
+              ` : `
+              <div class="text-center py-4 text-gray-500 text-sm">
+                <i class="fas fa-box mr-2"></i>Đơn hàng từ hệ thống
+              </div>
+              `}
+
+              <div class="flex items-center justify-between pt-3 border-t">
+                <div class="text-sm text-gray-600">
+                  Tổng: <span class="font-bold text-lg text-red-600">${formatPrice(order.pricing?.total || 0)}</span>
+                </div>
+                <div class="flex gap-2">
+                  ${order.status === 'completed' || order.status === 'paid' ? `
+                    <button onclick="reorder('${order.orderId}')" class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition text-sm">
+                      <i class="fas fa-redo mr-1"></i>Mua lại
+                    </button>
+                  ` : ''}
+                  ${order.status === 'pending' || order.status === 'pending_payment' ? `
+                    <button onclick="cancelOrder('${order.orderId}')" class="border border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-50 transition text-sm">
+                      Hủy đơn
+                    </button>
+                  ` : ''}
+                  <button onclick="viewOrderDetail('${order.orderId}')" class="border border-red-600 text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-red-50 transition text-sm">
+                    Chi tiết
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      // Biến lưu order đang xem và danh sách tất cả orders
+      let currentViewOrder = null;
+      let allLoadedOrders = [];
+      
+      // Xem chi tiết đơn hàng
+      function viewOrderDetail(orderId) {
+        // Tìm trong danh sách đã load (bao gồm cả từ DB)
+        const order = allLoadedOrders.find(o => o.orderId === orderId);
+        
+        if (!order) {
+          console.log('Không tìm thấy đơn hàng:', orderId);
+          return;
+        }
+        
+        currentViewOrder = order;
+        const statusInfo = getStatusInfo(order.status);
+        const paymentLabels = {
+          'cod': 'Thanh toán khi nhận hàng',
+          'momo_qr': 'MoMo - QR Code',
+          'momo_wallet': 'MoMo - Ví điện tử',
+          'momo_atm': 'MoMo - Thẻ ATM',
+          'momo_credit': 'MoMo - Thẻ quốc tế'
+        };
+        
+        // Cập nhật modal
+        document.getElementById('modalOrderId').textContent = order.orderId;
+        document.getElementById('modalStatus').textContent = statusInfo.text;
+        document.getElementById('modalStatus').className = `${statusInfo.class} px-3 py-1 rounded-full text-sm font-semibold`;
+        
+        // Customer info
+        document.getElementById('modalCustomer').textContent = order.customer?.fullName || '---';
+        document.getElementById('modalPhone').textContent = order.customer?.phone || '---';
+        document.getElementById('modalAddress').textContent = order.address?.detail || '---';
+        
+        // Payment info
+        document.getElementById('modalPayment').textContent = paymentLabels[order.payment?.method] || order.payment?.method || 'COD';
+        document.getElementById('modalShipping').textContent = order.pricing?.shippingFee ? formatPrice(order.pricing.shippingFee) : 'Miễn phí';
+        document.getElementById('modalDiscount').textContent = order.pricing?.discount ? '-' + formatPrice(order.pricing.discount) : '0đ';
+        document.getElementById('modalTotal').textContent = formatPrice(order.pricing?.total || 0);
+        
+        // Products
+        const productsContainer = document.getElementById('modalProducts');
+        const items = order.items || [];
+        
+        if (items.length > 0) {
+          productsContainer.innerHTML = items.map(item => `
+            <div class="flex items-center gap-3 p-3 bg-white rounded-lg border">
+              <img src="${item.image || 'images/iphone.jpg'}" alt="${item.name}" 
+                class="w-16 h-16 object-contain rounded border" onerror="this.src='images/iphone.jpg'">
+              <div class="flex-1 min-w-0">
+                <h5 class="font-semibold text-gray-800 text-sm truncate">${item.name}</h5>
+                <p class="text-xs text-gray-500">${item.color || ''} ${item.storage || ''}</p>
+                <p class="text-xs text-gray-500">Số lượng: ${item.quantity}</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-red-600 text-sm">${formatPrice(item.price)}</p>
+                <p class="text-xs text-gray-500">x${item.quantity}</p>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          productsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Không có thông tin sản phẩm</p>';
+        }
+        
+        // Show/hide reorder button
+        const reorderBtn = document.getElementById('modalReorderBtn');
+        if (order.status === 'completed' || order.status === 'paid' || order.status === 'confirmed') {
+          reorderBtn.classList.remove('hidden');
+        } else {
+          reorderBtn.classList.add('hidden');
+        }
+        
+        // Show modal
+        document.getElementById('orderDetailModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      // Đóng modal
+      function closeOrderModal() {
+        document.getElementById('orderDetailModal').classList.add('hidden');
+        document.body.style.overflow = '';
+        currentViewOrder = null;
+      }
+      
+      // Mua lại từ modal
+      function reorderFromModal() {
+        if (currentViewOrder) {
+          reorder(currentViewOrder.orderId);
+          closeOrderModal();
+        }
+      }
+      
+      // Mua lại
+      function reorder(orderId) {
+        const order = allLoadedOrders.find(o => o.orderId === orderId);
+        
+        if (order && order.items) {
+          const user = JSON.parse(localStorage.getItem('user') || 'null');
+          const cartKey = user?.ma_kh ? `cart_user_${user.ma_kh}` : 'cart_guest';
+          
+          // Thêm items vào giỏ hàng
+          let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+          order.items.forEach(item => {
+            const existing = cart.find(c => c.id === item.id);
+            if (existing) {
+              existing.quantity += item.quantity;
+            } else {
+              cart.push({...item});
+            }
+          });
+          localStorage.setItem(cartKey, JSON.stringify(cart));
+          
+          alert('Đã thêm sản phẩm vào giỏ hàng!');
+          window.location.href = 'cart.html';
+        }
+      }
+      
+      // Hủy đơn
+      function cancelOrder(orderId) {
+        if (!confirm('Bạn có chắc muốn hủy đơn hàng này?')) return;
+        
+        const ordersKey = getOrdersKey();
+        const orders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
+        const orderIndex = orders.findIndex(o => o.orderId === orderId);
+        
+        if (orderIndex >= 0) {
+          orders[orderIndex].status = 'cancelled';
+          localStorage.setItem(ordersKey, JSON.stringify(orders));
+          loadMyOrders();
+          alert('Đã hủy đơn hàng!');
+        }
+      }
+      
+      // ===== ADDRESS FUNCTIONS =====
+      
+      // Load địa chỉ từ thông tin user
+      function loadMyAddresses() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        const addressContent = document.getElementById('address-content');
+        const addressEmpty = document.getElementById('address-empty');
+        
+        if (!user || !user.dia_chi) {
+          if (addressContent) addressContent.classList.add('hidden');
+          if (addressEmpty) addressEmpty.classList.remove('hidden');
+          return;
+        }
+        
+        if (addressEmpty) addressEmpty.classList.add('hidden');
+        if (addressContent) addressContent.classList.remove('hidden');
+        
+        // Hiển thị địa chỉ từ profile user
+        addressContent.innerHTML = `
+          <div class="flex items-start gap-3">
+            <i class="fas fa-map-marker-alt text-red-600 mt-1"></i>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-semibold text-gray-800">${user.ho_ten || 'Chưa có tên'}</span>
+                ${user.so_dt ? `<span class="text-gray-400">|</span><span class="text-gray-600">${user.so_dt}</span>` : ''}
+              </div>
+              <p class="text-gray-600">${user.dia_chi}</p>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Scroll đến form thông tin cá nhân để chỉnh sửa địa chỉ
+      function scrollToProfileForm() {
+        const profileForm = document.getElementById('profile-form');
+        const addressInput = document.getElementById('profile-address');
+        
+        if (profileForm) {
+          profileForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          // Focus vào ô địa chỉ sau khi scroll
+          setTimeout(() => {
+            if (addressInput) {
+              addressInput.focus();
+              addressInput.classList.add('ring-2', 'ring-red-500');
+              setTimeout(() => addressInput.classList.remove('ring-2', 'ring-red-500'), 2000);
+            }
+          }, 500);
+        }
+      }
     </script>
   </body>
 </html>

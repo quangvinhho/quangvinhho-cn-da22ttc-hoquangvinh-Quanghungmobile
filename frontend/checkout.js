@@ -1113,10 +1113,12 @@ async function completeOrder(orderData) {
     // Vẫn tiếp tục xử lý dù lỗi DB
   }
   
-  // Save order to localStorage (backup)
-  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  // Save order to localStorage theo user
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const ordersKey = user?.ma_kh ? `orders_user_${user.ma_kh}` : 'orders_guest';
+  const orders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
   orders.push(orderData);
-  localStorage.setItem('orders', JSON.stringify(orders));
+  localStorage.setItem(ordersKey, JSON.stringify(orders));
   
   // Lưu địa chỉ giao hàng để dùng cho lần sau
   saveShippingAddress();

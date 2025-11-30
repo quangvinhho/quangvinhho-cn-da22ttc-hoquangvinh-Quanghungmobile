@@ -164,11 +164,12 @@ router.get('/:orderId', async (req, res) => {
   }
 });
 
-// GET /api/orders/user/:userId - Lấy danh sách đơn hàng của user
+// GET /api/orders/user/:userId - Lấy danh sách đơn hàng của user (kèm chi tiết sản phẩm)
 router.get('/user/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
 
+    // Lấy danh sách đơn hàng
     const [orders] = await pool.query(
       `SELECT dh.*, tt.phuong_thuc, tt.trang_thai as trang_thai_thanh_toan
        FROM don_hang dh
@@ -178,7 +179,31 @@ router.get('/user/:userId', async (req, res) => {
       [userId]
     );
 
-    res.json({ success: true, data: orders });
+    // Lấy chi tiết sản phẩm cho mỗi đơn hàng
+    const ordersWithItems = await Promise.all(orders.map(async (order) => {
+      const [items] = await pool.query(
+        `SELECT ct.ma_sp as id, ct.so_luong as quantity, ct.gia as price,
+                sp.ten_sp as name, sp.anh_dai_dien as image, sp.mau_sac as color, sp.bo_nho as storage
+         FROM chi_tiet_don_hang ct
+         JOIN san_pham sp ON ct.ma_sp = sp.ma_sp
+         WHERE ct.ma_don = ?`,
+        [order.ma_don]
+      );
+      
+      // Format items với đường dẫn ảnh đúng
+      const formattedItems = items.map(item => ({
+        ...item,
+        image: item.image ? `images/${item.image}` : 'images/iphone.jpg',
+        price: parseFloat(item.price)
+      }));
+      
+      return {
+        ...order,
+        items: formattedItems
+      };
+    }));
+
+    res.json({ success: true, data: ordersWithItems });
 
   } catch (error) {
     console.error('Get user orders error:', error);
