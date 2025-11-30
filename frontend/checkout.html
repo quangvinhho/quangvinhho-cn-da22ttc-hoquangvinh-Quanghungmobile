@@ -39,6 +39,11 @@
   <link rel="stylesheet" href="components/header.css">
 
   <style>
+    /* Ngăn scroll khi auto-fill */
+    html {
+      scroll-behavior: auto !important;
+    }
+    
     .step-item {
       position: relative;
     }
@@ -107,6 +112,49 @@
     .qr-expired {
       filter: grayscale(100%) opacity(0.5);
     }
+    
+    /* Custom Dropdown Styles */
+    .custom-select-wrapper {
+      position: relative;
+    }
+    
+    .custom-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: white;
+    }
+    
+    .custom-dropdown-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    
+    .custom-dropdown-item:hover {
+      background-color: #fee2e2;
+      color: #dc2626;
+    }
+    
+    .custom-dropdown-item.selected {
+      background-color: #dc2626;
+      color: white;
+    }
+    
+    .custom-select-btn:focus {
+      border-color: #dc2626;
+    }
+    
+    .custom-select-btn.open i {
+      transform: rotate(180deg);
+    }
+    
+    /* Đảm bảo dropdown không bị che */
+    .relative {
+      position: relative;
+    }
   </style>
   
   <!-- QR Code Library -->
@@ -118,7 +166,7 @@
   <div id="header-placeholder"></div>
   
   <!-- Spacer for fixed header - Responsive -->
-  <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+  <div class="h-[100px] md:h-[120px] lg:h-[160px]"></div>
 
   <!-- Checkout Steps -->
   <section class="bg-white border-b border-gray-200 py-6">
@@ -195,36 +243,55 @@
           
           <div class="space-y-4">
             <div class="grid md:grid-cols-3 gap-4">
-              <div>
+              <!-- Custom Dropdown - Tỉnh/TP -->
+              <div class="relative">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Tỉnh/Thành phố <span class="text-red-600">*</span>
                 </label>
-                <select id="province" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
-                  <option value="">Chọn Tỉnh/TP</option>
-                  <option value="hanoi">Hà Nội</option>
-                  <option value="hcm">TP. Hồ Chí Minh</option>
-                  <option value="danang">Đà Nẵng</option>
-                  <option value="haiphong">Hải Phòng</option>
-                  <option value="cantho">Cần Thơ</option>
-                </select>
+                <div class="custom-select-wrapper" id="province-wrapper">
+                  <input type="hidden" id="province" value="">
+                  <button type="button" class="custom-select-btn w-full border border-gray-300 rounded-lg px-4 py-3 text-left bg-white flex items-center justify-between focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition" onclick="toggleDropdown('province')">
+                    <span id="province-text" class="text-gray-500">Chọn Tỉnh/TP</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" id="province-arrow"></i>
+                  </button>
+                  <div id="province-dropdown" class="custom-dropdown hidden absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto z-[9999]">
+                    <!-- Options will be loaded here -->
+                  </div>
+                </div>
               </div>
               
-              <div>
+              <!-- Custom Dropdown - Quận/Huyện -->
+              <div class="relative">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Quận/Huyện <span class="text-red-600">*</span>
                 </label>
-                <select id="district" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
-                  <option value="">Chọn Quận/Huyện</option>
-                </select>
+                <div class="custom-select-wrapper" id="district-wrapper">
+                  <input type="hidden" id="district" value="">
+                  <button type="button" class="custom-select-btn w-full border border-gray-300 rounded-lg px-4 py-3 text-left bg-white flex items-center justify-between focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition" onclick="toggleDropdown('district')">
+                    <span id="district-text" class="text-gray-500">Chọn Quận/Huyện</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" id="district-arrow"></i>
+                  </button>
+                  <div id="district-dropdown" class="custom-dropdown hidden absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto z-[9999]">
+                    <!-- Options will be loaded here -->
+                  </div>
+                </div>
               </div>
               
-              <div>
+              <!-- Custom Dropdown - Phường/Xã -->
+              <div class="relative">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Phường/Xã <span class="text-red-600">*</span>
                 </label>
-                <select id="ward" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition">
-                  <option value="">Chọn Phường/Xã</option>
-                </select>
+                <div class="custom-select-wrapper" id="ward-wrapper">
+                  <input type="hidden" id="ward" value="">
+                  <button type="button" class="custom-select-btn w-full border border-gray-300 rounded-lg px-4 py-3 text-left bg-white flex items-center justify-between focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition" onclick="toggleDropdown('ward')">
+                    <span id="ward-text" class="text-gray-500">Chọn Phường/Xã</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" id="ward-arrow"></i>
+                  </button>
+                  <div id="ward-dropdown" class="custom-dropdown hidden absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto z-[9999]">
+                    <!-- Options will be loaded here -->
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -290,6 +357,7 @@
           </h2>
           
           <div class="space-y-3">
+            <!-- COD -->
             <div class="payment-method selected border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'cod')">
               <div class="flex items-center gap-3">
                 <input type="radio" name="payment" value="cod" checked class="w-5 h-5 text-red-600">
@@ -301,151 +369,125 @@
               </div>
             </div>
             
-            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'bank')">
-              <div class="flex items-center gap-3">
-                <input type="radio" name="payment" value="bank" class="w-5 h-5 text-red-600">
-                <i class="fas fa-university text-2xl text-blue-600"></i>
-                <div>
-                  <p class="font-bold text-gray-900">Chuyển khoản ngân hàng</p>
-                  <p class="text-sm text-gray-600">Chuyển khoản qua Internet Banking</p>
+            <!-- MoMo - Đa phương thức -->
+            <div class="border-2 border-gray-300 rounded-lg overflow-hidden">
+              <div class="payment-method p-4 border-b border-gray-200" onclick="toggleMoMoOptions()">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo" class="w-8 h-8 object-contain">
+                    <div>
+                      <p class="font-bold text-gray-900">Thanh toán qua MoMo</p>
+                      <p class="text-sm text-gray-600">Ví MoMo, QR Code, ATM, Thẻ tín dụng</p>
+                    </div>
+                  </div>
+                  <i id="momoArrow" class="fas fa-chevron-down text-gray-400 transition-transform"></i>
                 </div>
               </div>
-            </div>
-            
-            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'momo')">
-              <div class="flex items-center gap-3">
-                <input type="radio" name="payment" value="momo" class="w-5 h-5 text-red-600">
-                <i class="fas fa-wallet text-2xl text-pink-600"></i>
-                <div>
-                  <p class="font-bold text-gray-900">Ví MoMo</p>
-                  <p class="text-sm text-gray-600">Thanh toán qua ví điện tử MoMo</p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'vnpay')">
-              <div class="flex items-center gap-3">
-                <input type="radio" name="payment" value="vnpay" class="w-5 h-5 text-red-600">
-                <i class="fas fa-credit-card text-2xl text-blue-700"></i>
-                <div>
-                  <p class="font-bold text-gray-900">VNPay</p>
-                  <p class="text-sm text-gray-600">Thanh toán qua cổng VNPay</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="payment-method border-2 border-gray-300 rounded-lg p-4" onclick="selectPayment(this, 'installment')">
-              <div class="flex items-center gap-3">
-                <input type="radio" name="payment" value="installment" class="w-5 h-5 text-red-600">
-                <i class="fas fa-percentage text-2xl text-purple-600"></i>
-                <div>
-                  <p class="font-bold text-gray-900">Trả góp 0%</p>
-                  <p class="text-sm text-gray-600">Trả góp qua thẻ tín dụng hoặc công ty tài chính</p>
-                </div>
+              
+              <!-- MoMo Sub-options -->
+              <div id="momoOptions" class="hidden bg-gray-50 p-3 space-y-2">
+                <label class="flex items-center gap-3 p-3 bg-white rounded-lg cursor-pointer hover:bg-pink-50 border border-gray-200 transition" onclick="event.stopPropagation()">
+                  <input type="radio" name="payment" value="momo_qr" class="w-4 h-4 text-pink-600">
+                  <i class="fas fa-qrcode text-pink-600"></i>
+                  <div>
+                    <p class="font-semibold text-gray-800 text-sm">Quét mã QR</p>
+                    <p class="text-xs text-gray-500">Quét mã bằng app MoMo</p>
+                  </div>
+                </label>
+                
+                <label class="flex items-center gap-3 p-3 bg-white rounded-lg cursor-pointer hover:bg-pink-50 border border-gray-200 transition" onclick="event.stopPropagation()">
+                  <input type="radio" name="payment" value="momo_wallet" class="w-4 h-4 text-pink-600">
+                  <i class="fas fa-wallet text-pink-600"></i>
+                  <div>
+                    <p class="font-semibold text-gray-800 text-sm">Ví MoMo</p>
+                    <p class="text-xs text-gray-500">Thanh toán trực tiếp từ ví</p>
+                  </div>
+                </label>
+                
+                <label class="flex items-center gap-3 p-3 bg-white rounded-lg cursor-pointer hover:bg-pink-50 border border-gray-200 transition" onclick="event.stopPropagation()">
+                  <input type="radio" name="payment" value="momo_atm" class="w-4 h-4 text-pink-600">
+                  <i class="fas fa-credit-card text-blue-600"></i>
+                  <div>
+                    <p class="font-semibold text-gray-800 text-sm">Thẻ ATM nội địa</p>
+                    <p class="text-xs text-gray-500">Vietcombank, BIDV, Techcombank...</p>
+                  </div>
+                </label>
+                
+                <label class="flex items-center gap-3 p-3 bg-white rounded-lg cursor-pointer hover:bg-pink-50 border border-gray-200 transition" onclick="event.stopPropagation()">
+                  <input type="radio" name="payment" value="momo_credit" class="w-4 h-4 text-pink-600">
+                  <div class="flex gap-1">
+                    <i class="fab fa-cc-visa text-blue-700"></i>
+                    <i class="fab fa-cc-mastercard text-red-500"></i>
+                    <i class="fab fa-cc-jcb text-green-600"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-800 text-sm">Thẻ quốc tế</p>
+                    <p class="text-xs text-gray-500">Visa, Mastercard, JCB</p>
+                  </div>
+                </label>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- QR Code Payment Modal (Hidden by default) -->
-        <div id="qrPaymentModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-scale-in">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-red-600 to-red-500 p-5 text-white">
+        <!-- MoMo Payment Modal -->
+        <div id="qrPaymentModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+          <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full my-4 animate-scale-in">
+            <!-- Header - MoMo Pink -->
+            <div class="bg-gradient-to-r from-pink-500 to-pink-600 p-4 text-white rounded-t-2xl">
               <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-qrcode text-2xl"></i>
-                  </div>
+                <div class="flex items-center gap-2">
+                  <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo" class="w-10 h-10 object-contain bg-white rounded-lg p-1">
                   <div>
-                    <h3 class="font-bold text-lg">Quét mã QR để thanh toán</h3>
-                    <p class="text-red-100 text-sm">Mã có hiệu lực trong 30 phút</p>
+                    <h3 class="font-bold text-base">Thanh toán MoMo</h3>
+                    <p class="text-pink-100 text-xs">Hiệu lực 5 phút</p>
                   </div>
                 </div>
                 <button onclick="closeQRModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
-                  <i class="fas fa-times"></i>
+                  <i class="fas fa-times text-sm"></i>
                 </button>
               </div>
             </div>
             
             <!-- Content -->
-            <div class="p-6">
-              <!-- Countdown Timer -->
-              <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-5">
-                <div class="flex items-center justify-center gap-3">
-                  <i class="fas fa-clock text-red-600 text-xl animate-pulse"></i>
-                  <div class="text-center">
-                    <p class="text-sm text-gray-600">Thời gian còn lại</p>
-                    <p id="qrCountdown" class="text-3xl font-bold text-red-600 font-mono">30:00</p>
-                  </div>
+            <div class="p-4 max-h-[70vh] overflow-y-auto">
+              <!-- Payment Content Container -->
+              <div id="qrCodeWrapper" class="flex justify-center mb-4">
+                <div id="qrCodeContainer" class="flex items-center justify-center">
+                  <!-- QR Code or Card Form will be generated here -->
                 </div>
               </div>
               
-              <!-- QR Code -->
-              <div class="flex justify-center mb-5">
-                <div class="bg-white p-4 rounded-xl border-2 border-gray-200 shadow-inner">
-                  <div id="qrCodeContainer" class="w-48 h-48 flex items-center justify-center">
-                    <!-- QR Code will be generated here -->
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Payment Info -->
-              <div class="bg-gray-50 rounded-xl p-4 space-y-3 mb-5">
+              <!-- Payment Info - Compact -->
+              <div class="bg-pink-50 rounded-lg p-3 space-y-2 mb-4 text-sm">
                 <div class="flex justify-between items-center">
-                  <span class="text-gray-600 text-sm">Mã đơn hàng:</span>
-                  <span id="qrOrderId" class="font-bold text-gray-900">---</span>
+                  <span class="text-gray-600">Mã đơn:</span>
+                  <span id="qrOrderId" class="font-bold text-gray-900 text-xs">---</span>
                 </div>
                 <div class="flex justify-between items-center">
-                  <span class="text-gray-600 text-sm">Số tiền:</span>
-                  <span id="qrAmount" class="font-bold text-red-600 text-lg">0đ</span>
+                  <span class="text-gray-600">Số tiền:</span>
+                  <span id="qrAmount" class="font-bold text-pink-600 text-lg">0đ</span>
                 </div>
                 <div class="flex justify-between items-center">
-                  <span class="text-gray-600 text-sm">Phương thức:</span>
-                  <span id="qrPaymentMethod" class="font-semibold text-gray-900">---</span>
+                  <span class="text-gray-600">Người nhận:</span>
+                  <span id="qrPaymentMethod" class="font-semibold text-gray-900 text-xs">QUANG HUNG MOBILE</span>
                 </div>
               </div>
               
-              <!-- Bank Info (for bank transfer) -->
-              <div id="bankInfoSection" class="hidden bg-blue-50 border border-blue-200 rounded-xl p-4 mb-5">
-                <h4 class="font-bold text-blue-800 mb-3 flex items-center gap-2">
-                  <i class="fas fa-university"></i>
-                  Thông tin chuyển khoản
-                </h4>
-                <div class="space-y-2 text-sm">
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Ngân hàng:</span>
-                    <span class="font-semibold">Vietcombank</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Số tài khoản:</span>
-                    <span class="font-semibold font-mono">1234567890123</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Chủ tài khoản:</span>
-                    <span class="font-semibold">QUANG HUNG MOBILE</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Nội dung CK:</span>
-                    <span id="bankTransferContent" class="font-semibold text-red-600">---</span>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Instructions -->
-              <div class="text-center text-sm text-gray-500 mb-5">
-                <p>Mở ứng dụng ngân hàng hoặc ví điện tử</p>
-                <p>Quét mã QR để thanh toán</p>
+              <!-- Countdown - Compact -->
+              <div class="flex items-center justify-center gap-2 mb-4 text-sm">
+                <i class="fas fa-clock text-pink-600 animate-pulse"></i>
+                <span class="text-gray-600">Còn lại:</span>
+                <span id="qrCountdown" class="font-bold text-pink-600 font-mono">05:00</span>
               </div>
               
               <!-- Actions -->
-              <div class="flex gap-3">
-                <button onclick="closeQRModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl transition">
-                  Hủy bỏ
+              <div class="flex gap-2">
+                <button onclick="closeQRModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-lg transition text-sm">
+                  Hủy
                 </button>
-                <button onclick="confirmPayment()" class="flex-1 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2">
-                  <i class="fas fa-check"></i>
-                  Đã thanh toán
+                <button onclick="confirmPayment()" class="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-2.5 rounded-lg transition text-sm">
+                  <i class="fas fa-check mr-1"></i> Đã thanh toán
                 </button>
               </div>
             </div>
@@ -570,6 +612,9 @@
     })();
   </script>
 
+  <!-- Vietnam Address Data -->
+  <script src="js/vietnam-address.js"></script>
+  
   <!-- Checkout Logic -->
   <script src="checkout.js"></script>
 

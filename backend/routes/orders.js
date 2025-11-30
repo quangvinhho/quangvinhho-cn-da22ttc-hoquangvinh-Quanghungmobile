@@ -1,0 +1,189 @@
+const express = require('express');
+const router = express.Router();
+const { pool } = require('../config/database');
+
+// POST /api/orders - Tạo đơn hàng mới
+router.post('/', async (req, res) => {
+  const connection = await pool.getConnection();
+  
+  try {
+    await connection.beginTransaction();
+    
+    const {
+      customerId,
+      customerName,
+      phone,
+      address,
+      items,
+      subtotal,
+      shippingFee,
+      discount,
+      total,
+      paymentMethod,
+      voucherCode
+    } = req.body;
+
+    // Tìm mã khuyến mãi nếu có
+    let maKm = null;
+    if (voucherCode) {
+      const [vouchers] = await connection.query(
+        'SELECT ma_km FROM khuyen_mai WHERE code = ? AND ngay_ket_thuc >= NOW() AND so_luong > 0',
+        [voucherCode]
+      );
+      if (vouchers.length > 0) {
+        maKm = vouchers[0].ma_km;
+        // Giảm số lượng voucher
+        await connection.query('UPDATE khuyen_mai SET so_luong = so_luong - 1 WHERE ma_km = ?', [maKm]);
+      }
+    }
+
+    // Tạo đơn hàng
+    const [orderResult] = await connection.query(
+      `INSERT INTO don_hang (ma_kh, ten_nguoi_nhan, so_dt, dia_chi_nhan, tong_tien, trang_thai, ma_km)
+       VALUES (?, ?, ?, ?, ?, 'pending', ?)`,
+      [customerId || null, customerName, phone, address, total, maKm]
+    );
+    
+    const orderId = orderResult.insertId;
+
+    // Thêm chi tiết đơn hàng
+    for (const item of items) {
+      await connection.query(
+        `INSERT INTO chi_tiet_don_hang (ma_don, ma_sp, so_luong, gia)
+         VALUES (?, ?, ?, ?)`,
+        [orderId, item.id, item.quantity, item.price]
+      );
+      
+      // Giảm số lượng tồn kho
+      await connection.query(
+        'UPDATE san_pham SET so_luong_ton = so_luong_ton - ? WHERE ma_sp = ?',
+        [item.quantity, item.id]
+      );
+    }
+
+    // Tạo bản ghi thanh toán
+    const paymentStatus = paymentMethod === 'cod' ? 'pending' : 'pending';
+    await connection.query(
+      `INSERT INTO thanh_toan (ma_don, so_tien, phuong_thuc, trang_thai)
+       VALUES (?, ?, ?, ?)`,
+      [orderId, total, paymentMethod.toUpperCase(), paymentStatus]
+    );
+
+    await connection.commit();
+
+    res.json({
+      success: true,
+      data: {
+        orderId: orderId,
+        message: 'Đặt hàng thành công'
+      }
+    });
+
+  } catch (error) {
+    await connection.rollback();
+    console.error('Create order error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi tạo đơn hàng: ' + error.message
+    });
+  } finally {
+    connection.release();
+  }
+});
+
+// PUT /api/orders/:orderId/payment - Cập nhật trạng thái thanh toán
+router.put('/:orderId/payment', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status, transactionId } = req.body;
+
+    // Cập nhật thanh toán
+    await pool.query(
+      `UPDATE thanh_toan SET trang_thai = ?, thoi_gian = NOW() WHERE ma_don = ?`,
+      [status, orderId]
+    );
+
+    // Nếu thanh toán thành công, cập nhật trạng thái đơn hàng
+    if (status === 'success') {
+      await pool.query(
+        `UPDATE don_hang SET trang_thai = 'confirmed' WHERE ma_don = ?`,
+        [orderId]
+      );
+    }
+
+    res.json({
+      success: true,
+      message: 'Cập nhật thanh toán thành công'
+    });
+
+  } catch (error) {
+    console.error('Update payment error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi cập nhật thanh toán'
+    });
+  }
+});
+
+// GET /api/orders/:orderId - Lấy thông tin đơn hàng
+router.get('/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const [orders] = await pool.query(
+      `SELECT dh.*, tt.phuong_thuc, tt.trang_thai as trang_thai_thanh_toan
+       FROM don_hang dh
+       LEFT JOIN thanh_toan tt ON dh.ma_don = tt.ma_don
+       WHERE dh.ma_don = ?`,
+      [orderId]
+    );
+
+    if (orders.length === 0) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    }
+
+    const [items] = await pool.query(
+      `SELECT ct.*, sp.ten_sp, sp.anh_dai_dien
+       FROM chi_tiet_don_hang ct
+       JOIN san_pham sp ON ct.ma_sp = sp.ma_sp
+       WHERE ct.ma_don = ?`,
+      [orderId]
+    );
+
+    res.json({
+      success: true,
+      data: {
+        ...orders[0],
+        items: items
+      }
+    });
+
+  } catch (error) {
+    console.error('Get order error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi lấy thông tin đơn hàng' });
+  }
+});
+
+// GET /api/orders/user/:userId - Lấy danh sách đơn hàng của user
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const [orders] = await pool.query(
+      `SELECT dh.*, tt.phuong_thuc, tt.trang_thai as trang_thai_thanh_toan
+       FROM don_hang dh
+       LEFT JOIN thanh_toan tt ON dh.ma_don = tt.ma_don
+       WHERE dh.ma_kh = ?
+       ORDER BY dh.thoi_gian DESC`,
+      [userId]
+    );
+
+    res.json({ success: true, data: orders });
+
+  } catch (error) {
+    console.error('Get user orders error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi lấy danh sách đơn hàng' });
+  }
+});
+
+module.exports = router;

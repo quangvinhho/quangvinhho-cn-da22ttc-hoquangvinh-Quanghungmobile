@@ -7,18 +7,31 @@ const API_URL = 'http://localhost:3000/api';
 // Biến lưu dữ liệu sản phẩm từ API
 let PRODUCTS = [];
 
-// Hàm fetch sản phẩm từ API
+// Hàm fetch sản phẩm từ API hoặc JSON file
 async function fetchProducts() {
     try {
+        // Thử lấy từ API trước
         const response = await fetch(`${API_URL}/products`);
-        if (!response.ok) throw new Error('Lỗi kết nối API');
+        if (!response.ok) throw new Error('API không khả dụng');
         const data = await response.json();
-        PRODUCTS = data;
-        return data;
+        if (data && data.length > 0) {
+            PRODUCTS = data;
+            return data;
+        }
+        throw new Error('Không có dữ liệu từ API');
     } catch (error) {
-        console.error('Lỗi lấy sản phẩm:', error);
-        PRODUCTS = [];
-        return [];
+        console.log('Fallback to product-data.json:', error.message);
+        // Fallback: Lấy từ file JSON
+        try {
+            const jsonResponse = await fetch('product-data.json');
+            const jsonData = await jsonResponse.json();
+            PRODUCTS = jsonData.products || [];
+            return PRODUCTS;
+        } catch (jsonError) {
+            console.error('Lỗi lấy sản phẩm:', jsonError);
+            PRODUCTS = [];
+            return [];
+        }
     }
 }
 
@@ -337,13 +350,43 @@ function addToCart(productId) {
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
-      cart.push({ ...product, quantity: 1 });
+      // Chuẩn hóa dữ liệu giỏ hàng để tương thích với cart.js và checkout.js
+      cart.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.oldPrice || product.price,
+        image: product.image,
+        quantity: 1,
+        color: product.color || 'Mặc định',
+        colorCode: product.colorCode || '#000000',
+        storage: product.storage ? `${product.storage}GB` : '128GB',
+        ram: product.ram ? `${product.ram}GB` : null,
+        inStock: true,
+        badge: product.discount ? `-${product.discount}%` : null
+      });
     }
         
     localStorage.setItem(cartKey, JSON.stringify(cart));
     window.dispatchEvent(new Event('cartUpdated'));
-    alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
+    showToastProducts(`Đã thêm "${product.name}" vào giỏ hàng!`);
   }
+}
+
+// Toast notification cho products page
+function showToastProducts(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform ${
+    type === 'success' ? 'bg-green-500 text-white' : 
+    type === 'error' ? 'bg-red-500 text-white' : 
+    'bg-gray-800 text-white'
+  }`;
+  toast.innerHTML = `<div class="flex items-center gap-2"><i class="fas fa-check-circle"></i>${message}</div>`;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
 }
 
 // Hàm renderProducts chính

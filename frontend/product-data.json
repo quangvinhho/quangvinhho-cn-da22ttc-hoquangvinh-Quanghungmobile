@@ -19,9 +19,9 @@
       "image": "images/samsung_galaxy_a36_5g.avif",
       "images": [
         "images/samsung_galaxy_a36_5g.avif",
-        "images/A56.avif",
-        "images/samsung.webp",
-        "images/samsung_galaxy_s24_fe_5g.avif"
+        "images/samsung_galaxy_a36_5g.avif",
+        "images/samsung_galaxy_a36_5g.avif",
+        "images/samsung_galaxy_a36_5g.avif"
       ],
       "sku": "SSG-A36-5G-128",
       "rating": 4.5,
@@ -46,9 +46,9 @@
       "image": "images/A56.avif",
       "images": [
         "images/A56.avif",
-        "images/samsung_galaxy_a36_5g.avif",
-        "images/samsung.webp",
-        "images/A16.avif"
+        "images/A56.avif",
+        "images/A56.avif",
+        "images/A56.avif"
       ],
       "sku": "SSG-A56-5G-256",
       "rating": 4.6,
@@ -73,9 +73,9 @@
       "image": "images/A16.avif",
       "images": [
         "images/A16.avif",
-        "images/A17.avif",
-        "images/samsung_galaxy_a36_5g.avif",
-        "images/A56.avif"
+        "images/A16.avif",
+        "images/A16.avif",
+        "images/A16.avif"
       ],
       "sku": "SSG-A16-5G-128",
       "rating": 4.4,
@@ -100,9 +100,9 @@
       "image": "images/A17.avif",
       "images": [
         "images/A17.avif",
-        "images/A16.avif",
-        "images/samsung_galaxy_a36_5g.avif",
-        "images/samsung.webp"
+        "images/A17.avif",
+        "images/A17.avif",
+        "images/A17.avif"
       ],
       "sku": "SSG-A17-5G-128",
       "rating": 4.3,
@@ -127,9 +127,9 @@
       "image": "images/15-256.avif",
       "images": [
         "images/15-256.avif",
-        "images/15IP.avif",
-        "images/iphone17.avif",
-        "images/iphone-14-pro-max-128-99.webp"
+        "images/iphone-15-pro-max-256-99.png",
+        "images/15-256.avif",
+        "images/15-256.avif"
       ],
       "sku": "APL-IP15PM-256",
       "rating": 4.9,
@@ -154,9 +154,9 @@
       "image": "images/15IP.avif",
       "images": [
         "images/15IP.avif",
-        "images/15-256.avif",
-        "images/iphone17.avif",
-        "images/iphone-14-pro-max-128-99.webp"
+        "images/15IP.avif",
+        "images/15IP.avif",
+        "images/15IP.avif"
       ],
       "sku": "APL-IP15P-128",
       "rating": 4.7,
@@ -181,9 +181,9 @@
       "image": "images/iphone17.avif",
       "images": [
         "images/iphone17.avif",
-        "images/iphone17.jpg",
-        "images/iphone-17-pro-max-256.jpg",
-        "images/15-256.avif"
+        "images/iphone-17-pro_1.webp",
+        "images/iphone-17-pro-1_1.webp",
+        "images/iphone-17-pro-2_1_1.webp"
       ],
       "sku": "APL-IP17PM-256",
       "rating": 4.9,
@@ -208,9 +208,9 @@
       "image": "images/iphone-14-pro-max-128-99.webp",
       "images": [
         "images/iphone-14-pro-max-128-99.webp",
-        "images/15-256.avif",
-        "images/15IP.avif",
-        "images/iphone17.avif"
+        "images/iphone-14-pro-max-128-99.webp",
+        "images/iphone-14-pro-max-128-99.webp",
+        "images/iphone-14-pro-max-128-99.webp"
       ],
       "sku": "APL-IP14PM-128-LN",
       "rating": 4.6,
@@ -235,9 +235,9 @@
       "image": "images/samsung.webp",
       "images": [
         "images/samsung.webp",
-        "images/samsung_galaxy_s24_fe_5g.avif",
-        "images/A56.avif",
-        "images/samsung_galaxy_a36_5g.avif"
+        "images/samsung.webp",
+        "images/samsung.webp",
+        "images/samsung.webp"
       ],
       "sku": "SSG-S25U-256",
       "rating": 4.8,
@@ -262,9 +262,9 @@
       "image": "images/samsung_galaxy_s24_fe_5g.avif",
       "images": [
         "images/samsung_galaxy_s24_fe_5g.avif",
-        "images/samsung.webp",
-        "images/A56.avif",
-        "images/samsung_galaxy_a36_5g.avif"
+        "images/25fe.png",
+        "images/samsung_galaxy_s24_fe_5g.avif",
+        "images/samsung_galaxy_s24_fe_5g.avif"
       ],
       "sku": "SSG-S24FE-128",
       "rating": 4.7,
@@ -272,6 +272,33 @@
     },
     {
       "id": 11,
+      "name": "Samsung Galaxy S24 Plus 12GB 256GB",
+      "brand": "samsung",
+      "category": "dienthoai",
+      "price": 22990000,
+      "oldPrice": 25990000,
+      "discount": 12,
+      "ram": 12,
+      "storage": 256,
+      "screen": "6.7\" Dynamic AMOLED 2X QHD+",
+      "camera": "50MP OIS",
+      "battery": "4900 mAh",
+      "os": "Android 14",
+      "features": ["tragop", "freeship"],
+      "colors": ["#000000", "#ffd700"],
+      "image": "images/galaxy-s24-plus-den.webp",
+      "images": [
+        "images/galaxy-s24-plus-den.webp",
+        "images/galaxy-s24-plus-vang.webp",
+        "images/samsung-galaxy-s24_15__2.webp",
+        "images/samsung-galaxy-s24_17__2.webp"
+      ],
+      "sku": "SSG-S24P-256",
+      "rating": 4.8,
+      "reviews": 356
+    },
+    {
+      "id": 12,
       "name": "OPPO Reno 12 F 5G 8GB 256GB",
       "brand": "oppo",
       "category": "dienthoai",
@@ -290,15 +317,15 @@
       "images": [
         "images/oppo-reno.avif",
         "images/reno-xanh.avif",
-        "images/oppo_reno_13_f_4g_256gb.avif",
-        "images/oppx9.avif"
+        "images/reno10_5g_-_combo_product_-_blue_-_copy.webp",
+        "images/reno10-5g-860_720.webp"
       ],
       "sku": "OPO-R12F-256",
       "rating": 4.4,
       "reviews": 178
     },
     {
-      "id": 12,
+      "id": 13,
       "name": "OPPO Find X9 Pro 12GB 256GB",
       "brand": "oppo",
       "category": "dienthoai",
@@ -317,15 +344,15 @@
       "images": [
         "images/oppx9.avif",
         "images/oppo-find-x9-cate-open-sale.webp",
-        "images/oppo-reno.avif",
-        "images/oppo_reno_13_f_4g_256gb.avif"
+        "images/oppx9.avif",
+        "images/oppx9.avif"
       ],
       "sku": "OPO-FX9P-256",
       "rating": 4.8,
       "reviews": 156
     },
     {
-      "id": 13,
+      "id": 14,
       "name": "OPPO Reno 13 F 4G 8GB 256GB",
       "brand": "oppo",
       "category": "dienthoai",
@@ -343,16 +370,16 @@
       "image": "images/oppo_reno_13_f_4g_256gb.avif",
       "images": [
         "images/oppo_reno_13_f_4g_256gb.avif",
-        "images/oppo-reno.avif",
-        "images/reno-xanh.avif",
-        "images/oppx9.avif"
+        "images/oppo_reno_13_f_4g_256gb.avif",
+        "images/oppo_reno_13_f_4g_256gb.avif",
+        "images/oppo_reno_13_f_4g_256gb.avif"
       ],
       "sku": "OPO-R13F-256",
       "rating": 4.3,
       "reviews": 98
     },
     {
-      "id": 14,
+      "id": 15,
       "name": "Xiaomi 14 5G 12GB 512GB",
       "brand": "xiaomi",
       "category": "dienthoai",
@@ -370,16 +397,43 @@
       "image": "images/Xiaomi.avif",
       "images": [
         "images/Xiaomi.avif",
-        "images/pixel-9-pro.avif",
-        "images/samsung.webp",
-        "images/oppx9.avif"
+        "images/Xiaomi.avif",
+        "images/Xiaomi.avif",
+        "images/Xiaomi.avif"
       ],
       "sku": "XIA-14-512",
       "rating": 4.7,
       "reviews": 345
     },
     {
-      "id": 15,
+      "id": 16,
+      "name": "Xiaomi POCO F8 Pro 12GB 256GB",
+      "brand": "xiaomi",
+      "category": "dienthoai",
+      "price": 12990000,
+      "oldPrice": 14990000,
+      "discount": 13,
+      "ram": 12,
+      "storage": 256,
+      "screen": "6.67\" AMOLED 2K",
+      "camera": "50MP OIS",
+      "battery": "5000 mAh",
+      "os": "Android 14 HyperOS",
+      "features": ["tragop", "freeship"],
+      "colors": ["#000000", "#ffffff"],
+      "image": "images/home-poco-f8-pro-1125.webp",
+      "images": [
+        "images/home-poco-f8-pro-1125.webp",
+        "images/home-poco-f8-pro-1125.webp",
+        "images/home-poco-f8-pro-1125.webp",
+        "images/home-poco-f8-pro-1125.webp"
+      ],
+      "sku": "XIA-POCO-F8P-256",
+      "rating": 4.6,
+      "reviews": 234
+    },
+    {
+      "id": 17,
       "name": "Google Pixel 9 Pro 12GB 128GB",
       "brand": "pixel",
       "category": "dienthoai",
@@ -397,16 +451,16 @@
       "image": "images/pixel-9-pro.avif",
       "images": [
         "images/pixel-9-pro.avif",
-        "images/Xiaomi.avif",
-        "images/samsung.webp",
-        "images/iphone17.avif"
+        "images/pixel-9-pro.avif",
+        "images/pixel-9-pro.avif",
+        "images/pixel-9-pro.avif"
       ],
       "sku": "GOO-P9P-128",
       "rating": 4.8,
       "reviews": 234
     },
     {
-      "id": 16,
+      "id": 18,
       "name": "Sony Xperia 1 VI 12GB 256GB",
       "brand": "sony",
       "category": "dienthoai",
@@ -424,16 +478,16 @@
       "image": "images/sony-xperia-1-vi.webp",
       "images": [
         "images/sony-xperia-1-vi.webp",
-        "images/cate_XPERIA_10VII_1125.webp",
-        "images/pixel-9-pro.avif",
-        "images/samsung.webp"
+        "images/sony-xperia-1-vi.webp",
+        "images/sony-xperia-1-vi.webp",
+        "images/sony-xperia-1-vi.webp"
       ],
       "sku": "SNY-X1VI-256",
       "rating": 4.6,
       "reviews": 89
     },
     {
-      "id": 17,
+      "id": 19,
       "name": "Sony Xperia 10 VII 8GB 128GB",
       "brand": "sony",
       "category": "dienthoai",
@@ -451,16 +505,16 @@
       "image": "images/cate_XPERIA_10VII_1125.webp",
       "images": [
         "images/cate_XPERIA_10VII_1125.webp",
-        "images/sony-xperia-1-vi.webp",
-        "images/pixel-9-pro.avif",
-        "images/Xiaomi.avif"
+        "images/cate_XPERIA_10VII_1125.webp",
+        "images/cate_XPERIA_10VII_1125.webp",
+        "images/cate_XPERIA_10VII_1125.webp"
       ],
       "sku": "SNY-X10VII-128",
       "rating": 4.4,
       "reviews": 67
     },
     {
-      "id": 18,
+      "id": 20,
       "name": "Tecno Pova 6 8GB 256GB",
       "brand": "tecno",
       "category": "dienthoai",
@@ -478,9 +532,9 @@
       "image": "images/TECNO.avif",
       "images": [
         "images/TECNO.avif",
-        "images/w.webp",
-        "images/ww.webp",
-        "images/A16.avif"
+        "images/TECNO.avif",
+        "images/TECNO.avif",
+        "images/TECNO.avif"
       ],
       "sku": "TEC-P6-256",
       "rating": 4.2,
