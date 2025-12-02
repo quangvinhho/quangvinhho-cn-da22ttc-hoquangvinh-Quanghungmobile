@@ -1,143 +1,345 @@
-/* Responsive Design - Mobile First Approach */
+/* ===== RESPONSIVE DESIGN - QUANGHUNG MOBILE 2025 ===== */
+/* Mobile First Approach - Hỗ trợ: Mobile, Tablet, iPad, Laptop, Desktop */
 
-/* Base styles for all devices */
+/* Base styles */
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Mobile devices (default) */
-@media (max-width: 640px) {
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* ===== MOBILE (< 640px) ===== */
+@media (max-width: 639px) {
   /* Typography */
   h1 { font-size: 1.5rem !important; }
   h2 { font-size: 1.25rem !important; }
-  h3 { font-size: 1.125rem !important; }
+  h3 { font-size: 1rem !important; }
   
-  /* Container padding */
+  /* Container */
   .container {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
   }
   
-  /* Product cards */
+  /* Product cards - 2 cột */
+  #productsGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+  
   .product-card {
-    padding: 0.75rem;
+    padding: 0.625rem;
+    border-radius: 12px;
   }
   
   .product-card img {
-    height: 150px;
+    height: 120px;
+  }
+  
+  .product-card h3 {
+    font-size: 0.8rem !important;
+    line-height: 1.3;
+  }
+  
+  .product-card .text-lg {
+    font-size: 0.9rem !important;
   }
   
   /* Buttons */
-  .cta-button,
-  .cta-secondary {
-    font-size: 0.875rem;
-    padding: 0.5rem 0.75rem;
+  .cta-button {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    height: 36px;
   }
   
-  /* Banner adjustments */
-  .banner-slide h2 {
-    font-size: 1.25rem !important;
-  }
+  /* Banner */
+  .banner-slide h2 { font-size: 1.125rem !important; }
+  .banner-slide p { font-size: 0.75rem !important; }
   
-  .banner-slide p {
-    font-size: 0.875rem !important;
-  }
-  
-  /* Hide desktop elements */
-  .desktop-only {
+  /* Filter sidebar - ẩn trên mobile */
+  #filterSidebar {
     display: none !important;
   }
   
-  /* Grid adjustments */
-  .grid {
-    gap: 0.75rem;
+  /* Mobile filter button - hiện */
+  .mobile-filter-btn {
+    display: flex !important;
+  }
+  
+  /* Hide desktop elements */
+  .desktop-only, .lg\:block, .lg\:flex {
+    display: none !important;
+  }
+  
+  /* Profile page */
+  .lg\:col-span-3 {
+    grid-column: span 1 !important;
+  }
+  
+  /* Checkout form */
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Price display */
+  .price-block .text-lg {
+    font-size: 0.95rem !important;
+  }
+  
+  /* Spec badges */
+  .spec-badge {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+  }
+  
+  /* Modal adjustments */
+  .modal-content, [class*="max-w-"] {
+    max-width: 95vw !important;
+    margin: 0.5rem;
   }
 }
 
-/* Tablets (641px - 1024px) */
-@media (min-width: 641px) and (max-width: 1024px) {
-  /* Container */
+/* ===== TABLET PORTRAIT (640px - 767px) ===== */
+@media (min-width: 640px) and (max-width: 767px) {
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
   
-  /* Product grid - 3 cột trên tablet */
+  #productsGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  
+  .product-card img {
+    height: 160px;
+  }
+  
+  #filterSidebar {
+    display: none !important;
+  }
+  
+  .mobile-filter-btn {
+    display: flex !important;
+  }
+}
+
+/* ===== TABLET LANDSCAPE / iPad (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  /* Product grid - 3 cột */
   #productsGrid {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 1rem !important;
   }
   
+  .product-card {
+    padding: 0.875rem;
+  }
+  
+  .product-card img {
+    height: 180px;
+  }
+  
+  /* Filter sidebar - có thể hiện hoặc ẩn */
+  #filterSidebar {
+    width: 240px;
+  }
+  
   /* Typography */
-  h1 { font-size: 1.875rem !important; }
+  h1 { font-size: 1.75rem !important; }
   h2 { font-size: 1.5rem !important; }
   
-  /* Hide mobile-only elements */
-  .mobile-only {
-    display: none !important;
+  /* Banner */
+  .banner-slide h2 { font-size: 1.5rem !important; }
+  
+  /* Profile grid */
+  .lg\:grid-cols-4 {
+    grid-template-columns: 1fr 2fr !important;
   }
 }
 
-/* Desktop (1025px and above) */
-@media (min-width: 1025px) {
-  /* Hide mobile elements */
-  .mobile-only {
+/* ===== LAPTOP (1024px - 1279px) ===== */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .container {
+    max-width: 1024px;
+  }
+  
+  /* Product grid - 4 cột */
+  #productsGrid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1rem !important;
+  }
+  
+  #filterSidebar {
+    width: 260px;
+    display: block !important;
+  }
+  
+  .mobile-filter-btn {
     display: none !important;
   }
   
-  /* Product grid - Luôn 4 cột trên desktop */
-  #productsGrid {
-    grid-template-columns: repeat(4, 1fr) !important;
+  .product-card img {
+    height: 180px;
   }
 }
 
-/* Large desktop (1536px and above) - Vẫn giữ 4 cột */
+/* ===== DESKTOP (1280px - 1535px) ===== */
+@media (min-width: 1280px) and (max-width: 1535px) {
+  .container {
+    max-width: 1280px;
+  }
+  
+  #productsGrid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+  
+  #filterSidebar {
+    width: 280px;
+  }
+  
+  .product-card img {
+    height: 200px;
+  }
+}
+
+/* ===== LARGE DESKTOP (>= 1536px) ===== */
 @media (min-width: 1536px) {
+  .container {
+    max-width: 1440px;
+  }
+  
+  /* Vẫn giữ 4 cột, không tăng lên 5 */
   #productsGrid {
     grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+  
+  #filterSidebar {
+    width: 300px;
+  }
+  
+  .product-card {
+    padding: 1.25rem;
+  }
+  
+  .product-card img {
+    height: 220px;
   }
 }
 
-/* Touch device optimizations */
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
 @media (hover: none) and (pointer: coarse) {
   /* Larger touch targets */
-  button,
-  a {
+  button, a, input, select {
     min-height: 44px;
-    min-width: 44px;
   }
   
-  /* Remove hover effects on touch devices */
-  .hover\:scale-105:hover {
+  /* Disable hover effects */
+  .product-card:hover {
     transform: none;
-  }
-}
-
-/* Landscape orientation on mobile */
-@media (max-width: 896px) and (orientation: landscape) {
-  /* Reduce header height */
-  .header-wrapper {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
   
-  /* Adjust banner height */
-  .banner-slide {
-    height: 200px !important;
+  .product-card:active {
+    transform: scale(0.98);
+  }
+  
+  /* Better scrolling */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
   }
 }
 
-/* Print styles */
+/* ===== LANDSCAPE MOBILE ===== */
+@media (max-width: 896px) and (orientation: landscape) {
+  .h-\[80px\] { height: 60px !important; }
+  
+  .banner-slide {
+    max-height: 180px;
+  }
+}
+
+/* ===== IPAD PRO (1024x1366) ===== */
+@media (min-width: 1024px) and (max-width: 1366px) and (min-height: 1024px) {
+  #productsGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safe area for notched devices (iPhone X+) */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+  
+  .fixed.bottom-0 {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* ===== PRINT STYLES ===== */
 @media print {
-  header,
-  nav,
-  .mobile-menu,
-  .cta-button,
-  .cta-secondary {
+  header, nav, footer, .mobile-menu, .cta-button, #filterSidebar {
     display: none !important;
   }
   
   body {
     background: white !important;
+    font-size: 12pt;
+  }
+  
+  .product-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }

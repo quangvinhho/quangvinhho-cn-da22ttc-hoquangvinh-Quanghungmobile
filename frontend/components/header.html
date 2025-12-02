@@ -10,7 +10,7 @@
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-3 no-underline">
         <img
-          src="images/Screenshot.png"
+          src="images/logo.png"
           alt="Logo"
           class="w-12 h-12 md:w-14 md:h-14 rounded-lg object-contain bg-white"
         />
@@ -291,15 +291,14 @@
 
         <!-- 3. Sản phẩm (Dropdown Mobile) -->
         <li>
-          <button
-            onclick="toggleMobileSubmenu()"
-            class="flex items-center justify-between w-full px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium border-b border-red-800"
-          >
-            <div class="flex items-center gap-3">
+          <div class="flex items-center justify-between w-full px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium border-b border-red-800">
+            <a href="products.html" class="flex items-center gap-3 flex-1 no-underline text-white">
                 <i class="fas fa-mobile-alt w-6 text-center"></i> Sản phẩm
-            </div>
-            <i class="fas fa-chevron-down text-sm" id="submenu-icon"></i>
-          </button>
+            </a>
+            <button onclick="toggleMobileSubmenu()" class="px-3 py-1 hover:bg-red-500 rounded">
+              <i class="fas fa-chevron-down text-sm" id="submenu-icon"></i>
+            </button>
+          </div>
           <ul id="mobile-submenu" class="hidden bg-red-800">
             <li>
               <a href="products.html?category=iphone" class="block px-10 py-3 hover:bg-red-600 text-base border-b border-red-700 flex items-center gap-3 no-underline">

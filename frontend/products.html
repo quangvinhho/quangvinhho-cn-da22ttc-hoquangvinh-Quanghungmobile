@@ -515,214 +515,140 @@
                 </div>
 
                 <!-- RAM -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('ramSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">RAM
+                <div class="filter-section" data-section="ram">
+                    <div class="filter-section-header" onclick="toggleFilterSection('ram')">
+                        <h3>
+                            <i class="fas fa-memory"></i>
+                            RAM
                         </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="ramIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="ramSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="16" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">16 GB</span>
+                    <div class="filter-section-content" id="ramSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="ram-filter" value="16" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">16 GB</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="12" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">12 GB</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="ram-filter" value="12" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">12 GB</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="8" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">8 GB</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="ram-filter" value="8" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">8 GB</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="6" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">6 GB</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="ram-filter" value="6" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">6 GB</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="4" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">4 GB</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="ram-filter w-4 h-4 accent-blue-600" value="3" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">3 GB</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="ram-filter" value="4" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">4 GB</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Thẻ nhớ -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('sdSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">
+                <div class="filter-section" data-section="sd">
+                    <div class="filter-section-header" onclick="toggleFilterSection('sd')">
+                        <h3>
+                            <i class="fas fa-sd-card"></i>
                             Thẻ nhớ
                         </h3>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform" id="sdIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="sdSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
+                    <div class="filter-section-content" id="sdSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="sd-filter" value="microsd" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Hỗ trợ MicroSD</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="microsd" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">MicroSD</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="sd-filter w-4 h-4 accent-blue-600" value="none" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Không</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="sd-filter" value="none" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Không hỗ trợ</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Màn hình -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('screenSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Màn hình
+                <div class="filter-section" data-section="screen">
+                    <div class="filter-section-header" onclick="toggleFilterSection('screen')">
+                        <h3>
+                            <i class="fas fa-mobile-screen"></i>
+                            Màn hình
                         </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="screenIcon"></i>
-                    </button>
-                    
-                    <div id="screenSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="small" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Màn hình nhỏ</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="5-6.5" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 5 - 6.5 inch</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="6.5-6.8" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Từ 6.5 - 6.8 inch</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="screen-filter w-4 h-4 accent-blue-600" value="6.8+" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Trên 6.8 inch</span>
-                        </label>
-                    </div>
-                    
-                    <!-- Chuẩn màn hình -->
-                    <div class="mt-2.5 pt-2.5 border-t">
-                        <p class="text-sm font-semibold mb-2">Chuẩn màn hình</p>
-                        <div class="space-y-1">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="retina" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">Retina (iPhone)</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="2k" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">2K/2K+</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="1.5k" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">1.5K</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="fhd" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">FHD/FHD+</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="hd" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">HD/HD+</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="qxga" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">QXGA</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="resolution-filter w-4 h-4 accent-blue-600" value="qvga" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">QQVGA/QVGA</span>
-                            </label>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
                         </div>
                     </div>
                     
-                    <!-- Tần số quét -->
-                    <div class="mt-2.5 pt-2.5 border-t">
-                        <p class="text-sm font-semibold mb-2">Tần số quét</p>
-                        <div class="space-y-1">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="144+" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">Trên 144 Hz</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="120" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">120 Hz</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="90" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">90 Hz</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="refresh-filter w-4 h-4 accent-blue-600" value="60" onchange="applyFilters()">
-                                <span class="text-sm text-gray-600">60 Hz</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Camera -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('cameraSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Camera
-                        </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="cameraIcon"></i>
-                    </button>
-                    
-                    <div id="cameraSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
+                    <div class="filter-section-content" id="screenSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="screen-filter" value="small" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Dưới 6 inch</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="slowmotion" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Quay phim Slow Motion</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="screen-filter" value="6-6.5" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">6 - 6.5 inch</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="ai" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">AI Camera</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="screen-filter" value="6.5+" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Trên 6.5 inch</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="beauty" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Hiệu ứng làm đẹp</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="zoom" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Zoom quang học</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="camera-filter w-4 h-4 accent-blue-600" value="ois" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Chống rung OIS</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="refresh-filter" value="120" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">120Hz trở lên</span>
                         </label>
                     </div>
-                    
-                    <button class="text-blue-600 text-sm mt-3 hover:underline font-medium">Xem thêm</button>
                 </div>
 
                 <!-- Tính năng đặc biệt -->
-                <div class="bg-white rounded-lg p-3.5 shadow-sm border border-gray-200">
-                    <button class="flex items-center justify-between w-full mb-2.5" onclick="toggleSection('featureSection')">
-                        <h3 class="font-semibold text-sm text-gray-900">Tính năng đặc biệt
+                <div class="filter-section" data-section="feature">
+                    <div class="filter-section-header" onclick="toggleFilterSection('feature')">
+                        <h3>
+                            <i class="fas fa-star"></i>
+                            Tính năng đặc biệt
                         </h3>
-                        <i class="fas fa-chevron-up text-gray-500 text-sm" id="featureIcon"></i>
-                    </button>
+                        <div class="toggle-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                     
-                    <div id="featureSection" class="space-y-1">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="all" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Tất cả</span>
+                    <div class="filter-section-content" id="featureSection">
+                        <label class="filter-option">
+                            <input type="checkbox" class="feature-filter" value="wireless-charging" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Sạc không dây</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="wireless-charging" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Sạc không dây</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="feature-filter" value="waterproof" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Kháng nước/bụi</span>
                         </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" class="feature-filter w-4 h-4 accent-blue-600" value="reverse-charging" onchange="applyFilters()">
-                            <span class="text-sm text-gray-600">Sạc ngược cho thiết bị khác</span>
+                        <label class="filter-option">
+                            <input type="checkbox" class="feature-filter" value="face-id" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Nhận diện khuôn mặt</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="feature-filter" value="fingerprint" onchange="applyFilters()">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">Vân tay dưới màn hình</span>
                         </label>
                     </div>
                 </div>

@@ -316,8 +316,58 @@ function getCartKey() {
   return 'cart_guest';
 }
 
+// Kiểm tra đăng nhập
+function isLoggedIn() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  return user && user.ma_kh;
+}
+
+// Hiển thị modal yêu cầu đăng nhập
+function showLoginRequiredModal() {
+  const modal = document.createElement('div');
+  modal.id = 'login-required-modal';
+  modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+  modal.innerHTML = `
+    <div class="bg-white rounded-2xl p-6 max-w-md mx-4 shadow-2xl">
+      <div class="text-center">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-user-lock text-red-500 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Yêu cầu đăng nhập</h3>
+        <p class="text-gray-600 mb-6">Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng và mua hàng.</p>
+        <div class="flex gap-3">
+          <button onclick="closeLoginModal()" class="flex-1 px-4 py-3 border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition">
+            Để sau
+          </button>
+          <a href="login.html" class="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition text-center">
+            Đăng nhập
+          </a>
+        </div>
+        <p class="text-sm text-gray-500 mt-4">
+          Chưa có tài khoản? <a href="register.html" class="text-red-600 font-semibold hover:underline">Đăng ký ngay</a>
+        </p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeLoginModal();
+  });
+}
+
+function closeLoginModal() {
+  const modal = document.getElementById('login-required-modal');
+  if (modal) modal.remove();
+}
+
 function addToCart() {
   if (!currentProduct) return;
+  
+  // Kiểm tra đăng nhập trước
+  if (!isLoggedIn()) {
+    showLoginRequiredModal();
+    return;
+  }
   
   const quantity = parseInt(document.getElementById('quantity').value) || 1;
   const cartKey = getCartKey();
@@ -354,11 +404,21 @@ function addToCart() {
 }
 
 function buyNow() {
+  // Kiểm tra đăng nhập trước
+  if (!isLoggedIn()) {
+    showLoginRequiredModal();
+    return;
+  }
   addToCart();
   window.location.href = 'checkout.html';
 }
 
 function buyInstallment() {
+  // Kiểm tra đăng nhập trước
+  if (!isLoggedIn()) {
+    showLoginRequiredModal();
+    return;
+  }
   addToCart();
   showToast('Chuyển đến trang trả góp...', 'success');
   setTimeout(() => window.location.href = 'checkout.html?installment=true', 1000);

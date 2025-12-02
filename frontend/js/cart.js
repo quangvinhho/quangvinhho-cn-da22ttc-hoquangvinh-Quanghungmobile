@@ -544,38 +544,87 @@ function renderStars(rating) {
   return stars;
 }
 
-// Thêm sản phẩm vào giỏ hàng (global function)
+// Kiểm tra đăng nhập và hiển thị modal yêu cầu đăng nhập
+function showLoginRequiredModal() {
+  // Tạo modal
+  const modal = document.createElement('div');
+  modal.id = 'login-required-modal';
+  modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+  modal.innerHTML = `
+    <div class="bg-white rounded-2xl p-6 max-w-md mx-4 shadow-2xl transform animate-pulse">
+      <div class="text-center">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-user-lock text-red-500 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Yêu cầu đăng nhập</h3>
+        <p class="text-gray-600 mb-6">Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng và mua hàng.</p>
+        <div class="flex gap-3">
+          <button onclick="closeLoginModal()" class="flex-1 px-4 py-3 border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition">
+            Để sau
+          </button>
+          <a href="login.html" class="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition text-center">
+            Đăng nhập
+          </a>
+        </div>
+        <p class="text-sm text-gray-500 mt-4">
+          Chưa có tài khoản? <a href="register.html" class="text-red-600 font-semibold hover:underline">Đăng ký ngay</a>
+        </p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  
+  // Click outside to close
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeLoginModal();
+  });
+}
+
+function closeLoginModal() {
+  const modal = document.getElementById('login-required-modal');
+  if (modal) modal.remove();
+}
+
+// Kiểm tra user đã đăng nhập chưa
+function isLoggedIn() {
+  const user = getUser();
+  return user && user.ma_kh;
+}
+
+// Thêm sản phẩm vào giỏ hàng (global function) - YÊU CẦU ĐĂNG NHẬP
 window.addToCart = async function(product, quantity = 1) {
   const user = getUser();
   
-  if (user && user.ma_kh) {
-    // Đã đăng nhập - thêm vào database
-    try {
-      const response = await fetch(`${API_URL}/cart/add`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: user.ma_kh,
-          productId: product.id,
-          quantity: quantity
-        })
-      });
-      const data = await response.json();
-      
-      if (data.success) {
-        // Reload giỏ hàng từ DB
-        await loadCartFromDB(user.ma_kh);
-        showToast('Đã thêm vào giỏ hàng!', 'success');
-      } else {
-        showToast(data.message || 'Lỗi thêm giỏ hàng', 'error');
-      }
-    } catch (error) {
-      console.error('Lỗi:', error);
-      showToast('Lỗi kết nối', 'error');
+  // Kiểm tra đăng nhập
+  if (!user || !user.ma_kh) {
+    showLoginRequiredModal();
+    return;
+  }
+  
+  // Đã đăng nhập - thêm vào database
+  try {
+    const response = await fetch(`${API_URL}/cart/add`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: user.ma_kh,
+        productId: product.id,
+        quantity: quantity
+      })
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      // Reload giỏ hàng từ DB
+      await loadCartFromDB(user.ma_kh);
+      showToast('Đã thêm vào giỏ hàng!', 'success');
+    } else {
+      showToast(data.message || 'Lỗi thêm giỏ hàng', 'error');
     }
-  } else {
-    // Chưa đăng nhập - lưu localStorage
-    const cartKey = 'cart_guest';
+  } catch (error) {
+    console.error('Lỗi:', error);
+    // Fallback: lưu vào localStorage nếu API lỗi
+    const cartKey = getCartKey();
     let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
     
     const existingIndex = cart.findIndex(item => item.id === product.id);

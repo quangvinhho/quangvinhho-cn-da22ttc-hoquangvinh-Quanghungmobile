@@ -428,10 +428,7 @@ router.put('/profile/:id', handleUpload, async (req, res) => {
     }
 });
 
-// Lưu trữ OTP reset password riêng
-const resetOtpStore = new Map();
-
-// POST /api/auth/forgot-password - Gửi OTP reset password
+// POST /api/auth/forgot-password - Gửi OTP reset password (lưu vào bảng reset_password)
 router.post('/forgot-password', async (req, res) => {
     try {
         const { email } = req.body;
@@ -448,12 +445,18 @@ router.post('/forgot-password', async (req, res) => {
 
         const user = users[0];
 
-        // Tạo OTP
+        // Tạo OTP (token)
         const otp = generateOTP();
-        const expiresAt = Date.now() + 5 * 60 * 1000; // 5 phút
+        const expiredAt = new Date(Date.now() + 5 * 60 * 1000); // 5 phút
 
-        // Lưu OTP reset
-        resetOtpStore.set(email, { otp, expiresAt, ma_kh: user.ma_kh });
+        // Xóa các token cũ chưa sử dụng của user này
+        await pool.query('DELETE FROM reset_password WHERE ma_kh = ? AND used = 0', [user.ma_kh]);
+
+        // Lưu OTP vào bảng reset_password
+        await pool.query(
+            'INSERT INTO reset_password (ma_kh, token, expired_at, used) VALUES (?, ?, ?, 0)',
+            [user.ma_kh, otp, expiredAt]
+        );
 
         // Gửi email reset password
         const mailOptions = {
@@ -499,7 +502,7 @@ router.post('/forgot-password', async (req, res) => {
     }
 });
 
-// POST /api/auth/verify-reset-otp - Xác thực OTP reset password
+// POST /api/auth/verify-reset-otp - Xác thực OTP reset password (từ bảng reset_password)
 router.post('/verify-reset-otp', async (req, res) => {
     try {
         const { email, otp } = req.body;
@@ -508,24 +511,32 @@ router.post('/verify-reset-otp', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Vui lòng nhập email và mã OTP' });
         }
 
-        const storedData = resetOtpStore.get(email);
-
-        if (!storedData) {
-            return res.status(400).json({ success: false, message: 'Mã OTP không tồn tại hoặc đã hết hạn' });
+        // Lấy ma_kh từ email
+        const [users] = await pool.query('SELECT ma_kh FROM khach_hang WHERE email = ?', [email]);
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: 'Email không tồn tại' });
         }
 
-        if (Date.now() > storedData.expiresAt) {
-            resetOtpStore.delete(email);
+        const ma_kh = users[0].ma_kh;
+
+        // Kiểm tra OTP trong bảng reset_password
+        const [tokens] = await pool.query(
+            'SELECT * FROM reset_password WHERE ma_kh = ? AND token = ? AND used = 0 ORDER BY id DESC LIMIT 1',
+            [ma_kh, otp]
+        );
+
+        if (tokens.length === 0) {
+            return res.status(400).json({ success: false, message: 'Mã OTP không đúng hoặc đã được sử dụng' });
+        }
+
+        const tokenData = tokens[0];
+
+        // Kiểm tra hết hạn
+        if (new Date() > new Date(tokenData.expired_at)) {
             return res.status(400).json({ success: false, message: 'Mã OTP đã hết hạn' });
         }
 
-        if (storedData.otp !== otp) {
-            return res.status(400).json({ success: false, message: 'Mã OTP không đúng' });
-        }
-
-        // OTP đúng - đánh dấu đã xác thực
-        resetOtpStore.set(email, { ...storedData, verified: true });
-
+        // OTP đúng - không đánh dấu used ngay, chờ đến khi reset password thành công
         res.json({ success: true, message: 'Xác thực OTP thành công' });
 
     } catch (error) {
@@ -534,7 +545,7 @@ router.post('/verify-reset-otp', async (req, res) => {
     }
 });
 
-// POST /api/auth/reset-password - Đặt lại mật khẩu mới
+// POST /api/auth/reset-password - Đặt lại mật khẩu mới (sử dụng bảng reset_password)
 router.post('/reset-password', async (req, res) => {
     try {
         const { email, mat_khau_moi } = req.body;
@@ -547,20 +558,32 @@ router.post('/reset-password', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Mật khẩu mới phải có ít nhất 8 ký tự' });
         }
 
-        // Kiểm tra OTP đã xác thực chưa
-        const storedData = resetOtpStore.get(email);
-        if (!storedData || !storedData.verified) {
-            return res.status(400).json({ success: false, message: 'Vui lòng xác thực OTP trước' });
+        // Lấy ma_kh từ email
+        const [users] = await pool.query('SELECT ma_kh FROM khach_hang WHERE email = ?', [email]);
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: 'Email không tồn tại' });
+        }
+
+        const ma_kh = users[0].ma_kh;
+
+        // Kiểm tra có token hợp lệ (chưa used và chưa hết hạn)
+        const [tokens] = await pool.query(
+            'SELECT * FROM reset_password WHERE ma_kh = ? AND used = 0 AND expired_at > NOW() ORDER BY id DESC LIMIT 1',
+            [ma_kh]
+        );
+
+        if (tokens.length === 0) {
+            return res.status(400).json({ success: false, message: 'Vui lòng xác thực OTP trước hoặc OTP đã hết hạn' });
         }
 
         // Hash mật khẩu mới
         const hashedPassword = await bcrypt.hash(mat_khau_moi, 10);
 
         // Cập nhật mật khẩu
-        await pool.query('UPDATE khach_hang SET mat_khau = ? WHERE email = ?', [hashedPassword, email]);
+        await pool.query('UPDATE khach_hang SET mat_khau = ? WHERE ma_kh = ?', [hashedPassword, ma_kh]);
 
-        // Xóa OTP sau khi reset thành công
-        resetOtpStore.delete(email);
+        // Đánh dấu token đã sử dụng
+        await pool.query('UPDATE reset_password SET used = 1 WHERE id = ?', [tokens[0].id]);
 
         res.json({ success: true, message: 'Đặt lại mật khẩu thành công' });
 

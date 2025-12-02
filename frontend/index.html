@@ -93,150 +93,54 @@
   <section class="py-2 md:py-3 bg-gray-100">
     <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
       
-      <!-- Layout 2 cột: Banner chính + Sidebar -->
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-3">
-        
-        <!-- Banner Slider Chính (4 cột) -->
-        <div class="lg:col-span-4">
-          <div class="rounded-xl md:rounded-2xl overflow-hidden shadow-xl relative group h-[180px] sm:h-[220px] md:h-[280px] lg:h-[340px]">
-            
-            <!-- Track chứa tất cả các slide -->
-            <div id="banner-track" class="flex h-full transition-transform duration-700 ease-out">
-              <!-- Slide 1 - iPhone -->
-              <div class="min-w-full h-full relative">
-                <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=1400&h=400&fit=crop" class="w-full h-full object-cover" alt="iPhone 16">
-                <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 w-full p-4 md:p-6">
-                  <span class="inline-block bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full mb-2">HOT 2025</span>
-                  <h2 class="text-white text-lg md:text-2xl lg:text-3xl font-bold mb-1">iPhone 16 Series</h2>
-                  <p class="text-gray-200 text-xs md:text-sm mb-2 max-w-sm hidden sm:block">Đặt trước ưu đãi đến 5 triệu</p>
-                  <a href="products.html" class="inline-flex items-center gap-1 bg-white text-gray-900 font-semibold text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-red-600 hover:text-white transition-all">
-                    Khám phá <i class="fas fa-arrow-right text-[10px]"></i>
-                  </a>
-                </div>
-              </div>
-              <!-- Slide 2 - Samsung -->
-              <div class="min-w-full h-full relative">
-                <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=1400&h=400&fit=crop" class="w-full h-full object-cover" alt="Samsung S25">
-                <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 w-full p-4 md:p-6">
-                  <span class="inline-block bg-blue-600 text-white text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full mb-2">MỚI</span>
-                  <h2 class="text-white text-lg md:text-2xl lg:text-3xl font-bold mb-1">Samsung S25 Ultra</h2>
-                  <p class="text-gray-200 text-xs md:text-sm mb-2 max-w-sm hidden sm:block">Camera AI thế hệ mới</p>
-                  <a href="products.html" class="inline-flex items-center gap-1 bg-white text-gray-900 font-semibold text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all">
-                    Xem chi tiết <i class="fas fa-arrow-right text-[10px]"></i>
-                  </a>
-                </div>
-              </div>
-              <!-- Slide 3 - OPPO -->
-              <div class="min-w-full h-full relative">
-                <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=1400&h=400&fit=crop" class="w-full h-full object-cover" alt="OPPO Find X9">
-                <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 w-full p-4 md:p-6">
-                  <span class="inline-block bg-green-600 text-white text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full mb-2">MỚI VỀ</span>
-                  <h2 class="text-white text-lg md:text-2xl lg:text-3xl font-bold mb-1">OPPO Find X9</h2>
-                  <p class="text-gray-200 text-xs md:text-sm mb-2 max-w-sm hidden sm:block">Thiết kế đột phá - Camera Hasselblad</p>
-                  <a href="products.html" class="inline-flex items-center gap-1 bg-white text-gray-900 font-semibold text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-green-600 hover:text-white transition-all">
-                    Tìm hiểu <i class="fas fa-arrow-right text-[10px]"></i>
-                  </a>
-                </div>
-              </div>
-              <!-- Slide 4 - Xiaomi -->
-              <div class="min-w-full h-full relative">
-                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1400&h=400&fit=crop" class="w-full h-full object-cover" alt="Xiaomi">
-                <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 w-full p-4 md:p-6">
-                  <span class="inline-block bg-orange-600 text-white text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full mb-2">GAMING</span>
-                  <h2 class="text-white text-lg md:text-2xl lg:text-3xl font-bold mb-1">Xiaomi 14 Ultra</h2>
-                  <p class="text-gray-200 text-xs md:text-sm mb-2 max-w-sm hidden sm:block">Hiệu năng khủng - Giá hời</p>
-                  <a href="products.html" class="inline-flex items-center gap-1 bg-white text-gray-900 font-semibold text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-orange-600 hover:text-white transition-all">
-                    Khám phá <i class="fas fa-arrow-right text-[10px]"></i>
-                  </a>
-                </div>
-              </div>
-              <!-- Slide 5 - Sale -->
-              <div class="min-w-full h-full relative">
-                <img src="https://images.unsplash.com/photo-1556656793-08538906a9f8?w=1400&h=400&fit=crop" class="w-full h-full object-cover" alt="Sale">
-                <div class="absolute inset-0 bg-gradient-to-r from-red-900/70 via-red-800/30 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 w-full p-4 md:p-6">
-                  <span class="inline-block bg-yellow-500 text-gray-900 text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full mb-2">🔥 SALE</span>
-                  <h2 class="text-white text-lg md:text-2xl lg:text-3xl font-bold mb-1">Deal Hot Cuối Tuần</h2>
-                  <p class="text-gray-200 text-xs md:text-sm mb-2 max-w-sm hidden sm:block">Giảm đến 50%</p>
-                  <a href="promotions.html" class="inline-flex items-center gap-1 bg-yellow-500 text-gray-900 font-semibold text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-yellow-400 transition-all">
-                    Săn deal <i class="fas fa-bolt text-[10px]"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+      <!-- Khung chứa tất cả banner -->
+      <div class="bg-white rounded-xl md:rounded-2xl shadow-xl overflow-hidden">
+        <!-- Trên: Banner Slider Chính -->
+        <div class="relative group">
+          <!-- Track chứa tất cả các slide -->
+          <div id="banner-track" class="flex transition-transform duration-700 ease-out">
+            <!-- Slide 1 - OPPO -->
+            <a href="products.html" class="min-w-full block cursor-pointer">
+              <img src="images/desk_header_d7212039d2.webp" class="w-full h-auto" alt="OPPO Banner">
+            </a>
+            <!-- Slide 2 - Samsung -->
+            <a href="products.html" class="min-w-full block cursor-pointer">
+              <img src="images/desk_header_21220f992b.webp" class="w-full h-auto" alt="Samsung Banner">
+            </a>
+            <!-- Slide 3 - Khuyến mãi -->
+            <a href="promotions.html" class="min-w-full block cursor-pointer">
+              <img src="images/desk_theme_content_f5f704c2f2.webp" class="w-full h-auto" alt="Khuyến mãi">
+            </a>
+          </div>
 
-            <!-- Nút điều khiển -->
-            <button onclick="prevBanner()" class="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-8 h-8 md:w-10 md:h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center z-10">
-              <i class="fas fa-chevron-left text-sm"></i>
-            </button>
-            <button onclick="nextBanner()" class="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-8 h-8 md:w-10 md:h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center z-10">
-              <i class="fas fa-chevron-right text-sm"></i>
-            </button>
+          <!-- Nút điều khiển -->
+          <button onclick="prevBanner()" class="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 w-8 h-8 md:w-10 md:h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center z-10">
+            <i class="fas fa-chevron-left text-sm"></i>
+          </button>
+          <button onclick="nextBanner()" class="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 w-8 h-8 md:w-10 md:h-10 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center z-10">
+            <i class="fas fa-chevron-right text-sm"></i>
+          </button>
 
-            <!-- Indicator Dots -->
-            <div class="absolute bottom-3 md:bottom-4 right-3 md:right-4 flex gap-1.5 z-10">
-              <div class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(0)"></div>
-              <div class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(1)"></div>
-              <div class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(2)"></div>
-              <div class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(3)"></div>
-              <div class="banner-indicator w-2 h-2 rounded-full bg-white/50 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(4)"></div>
-            </div>
+          <!-- Indicator Dots -->
+          <div class="absolute bottom-2 md:bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            <div class="banner-indicator w-2 h-2 rounded-full bg-white/60 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(0)"></div>
+            <div class="banner-indicator w-2 h-2 rounded-full bg-white/60 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(1)"></div>
+            <div class="banner-indicator w-2 h-2 rounded-full bg-white/60 cursor-pointer transition-all hover:bg-white" onclick="goToBanner(2)"></div>
           </div>
         </div>
 
-        <!-- Sidebar Banner nhỏ (1 cột) - Chỉ hiện trên desktop -->
-        <div class="hidden lg:flex flex-col gap-2">
-          <!-- Banner nhỏ 1 -->
-          <div class="relative rounded-xl overflow-hidden shadow-md cursor-pointer group h-[108px] hover:shadow-lg transition-all" onclick="goToBanner(0)">
-            <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=200&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="iPhone">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div class="absolute bottom-2 left-2 right-2">
-              <span class="text-red-400 text-[10px] font-bold">HOT</span>
-              <h4 class="text-white font-semibold text-xs">iPhone 16</h4>
-            </div>
-          </div>
-          <!-- Banner nhỏ 2 -->
-          <div class="relative rounded-xl overflow-hidden shadow-md cursor-pointer group h-[108px] hover:shadow-lg transition-all" onclick="goToBanner(1)">
-            <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=200&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Samsung">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div class="absolute bottom-2 left-2 right-2">
-              <span class="text-blue-400 text-[10px] font-bold">MỚI</span>
-              <h4 class="text-white font-semibold text-xs">Samsung S25</h4>
-            </div>
-          </div>
-          <!-- Banner nhỏ 3 - Flash Sale -->
-          <div class="relative rounded-xl overflow-hidden shadow-md cursor-pointer group h-[108px] hover:shadow-lg transition-all" onclick="goToBanner(4)">
-            <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-orange-500"></div>
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
-              <span class="font-bold text-2xl">-50%</span>
-              <span class="text-xs font-medium">Flash Sale</span>
-            </div>
-          </div>
+        <!-- Dưới: 2 Banner nhỏ nằm cạnh nhau -->
+        <div class="grid grid-cols-2 gap-2 bg-gray-50 p-2">
+          <a href="products.html" class="block group overflow-hidden rounded-lg h-[70px] md:h-[90px] lg:h-[110px]">
+            <img src="images/oppo-find-x9-cate-open-sale.webp" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" alt="OPPO Find X9">
+          </a>
+          <a href="products.html" class="block group overflow-hidden rounded-lg h-[70px] md:h-[90px] lg:h-[110px]">
+            <img src="images/cate_XPERIA_10VII_1125.webp" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" alt="Sony Xperia">
+          </a>
         </div>
       </div>
 
-      <!-- Quick Category - Mobile & Tablet -->
-      <div class="grid grid-cols-5 gap-1.5 mt-2 lg:hidden">
-        <div class="bg-white rounded-lg py-2 px-1 shadow-sm hover:shadow transition-all cursor-pointer text-center" onclick="goToBanner(0)">
-          <span class="text-[10px] font-medium text-gray-700">iPhone</span>
-        </div>
-        <div class="bg-white rounded-lg py-2 px-1 shadow-sm hover:shadow transition-all cursor-pointer text-center" onclick="goToBanner(1)">
-          <span class="text-[10px] font-medium text-gray-700">Samsung</span>
-        </div>
-        <div class="bg-white rounded-lg py-2 px-1 shadow-sm hover:shadow transition-all cursor-pointer text-center" onclick="goToBanner(2)">
-          <span class="text-[10px] font-medium text-gray-700">Sony</span>
-        </div>
-        <div class="bg-white rounded-lg py-2 px-1 shadow-sm hover:shadow transition-all cursor-pointer text-center" onclick="goToBanner(3)">
-          <span class="text-[10px] font-medium text-gray-700">Pixel</span>
-        </div>
-        <div class="bg-red-600 rounded-lg py-2 px-1 shadow-sm hover:bg-red-700 transition-all cursor-pointer text-center" onclick="goToBanner(4)">
-          <span class="text-[10px] font-medium text-white">Sale</span>
-        </div>
-      </div>
+
 
     </div>
   </section>
@@ -245,7 +149,7 @@
     // Logic Banner Slider mới (Carousel style)
     const bannerTrack = document.getElementById('banner-track');
     const indicators = document.querySelectorAll('.banner-indicator');
-    const totalSlides = 5; // Số lượng slide cứng trong HTML
+    const totalSlides = 3; // Số lượng slide (3 banner chính)
     let currentBannerIndex = 0;
     let autoPlayInterval = null;
     const AUTO_PLAY_DELAY = 4000; // Tốc độ tự động chuyển (4 giây)
@@ -831,7 +735,7 @@
             <div class="flex items-center justify-between bg-white p-3 md:p-4 rounded-b-xl">
               <div class="flex items-center gap-3">
                 <div class="w-14 h-14 bg-gray-100 rounded-lg p-1 shadow-sm">
-                  <img src="images/Điện%20thoại%20Apple%20iPhone%2017%20Pro%20Max%20256GB.jpg" alt="iPhone 17 icon"
+                  <img src="images/iphone-17-pro-max-256.jpg" alt="iPhone 17 icon"
                     class="w-full h-full object-contain" onerror="this.src='images/iphone.jpg'">
                 </div>
                 <div>
@@ -858,9 +762,9 @@
               <div class="flex items-center justify-between bg-white p-3 rounded-b-xl">
                 <div class="flex items-center gap-2">
                   <div class="w-14 h-14 md:w-12 md:h-12 bg-gray-100 rounded-lg p-1 shadow-sm">
-                    <img src="images/Điện%20thoại%20Apple%20iPhone%2015%20Pro%20Max%20256GB%20-%2099%25.png"
+                    <img src="images/iphone-15-pro-max-256-99.png"
                       alt="iPhone 15 icon" class="w-full h-full object-contain"
-                      onerror="this.src='images/iphone17.jpg'">
+                      onerror="this.src='images/15-256.avif'">
                   </div>
                   <div>
                     <h4 class="text-sm md:text-base font-semibold text-gray-900 mb-0.5">Điện thoại Apple iPhone 15 Pro
@@ -879,8 +783,8 @@
               <div class="flex items-center justify-between bg-white p-3 rounded-b-xl">
                 <div class="flex items-center gap-2">
                   <div class="w-14 h-14 md:w-12 md:h-12 bg-gray-100 rounded-lg p-1 shadow-sm">
-                    <img src="images/Điện%20thoại%20Apple%20iPhone%2014%20Pro%20Max%20128GB%20-%2099%25.webp"
-                      alt="iPhone 14 icon" class="w-full h-full object-contain" onerror="this.src='images/iphone.jpg'">
+                    <img src="images/iphone-14-pro-max-128-99.webp"
+                      alt="iPhone 14 icon" class="w-full h-full object-contain" onerror="this.src='images/iphone-14-pro-max-128-99.webp'">
                   </div>
                   <div>
                     <h4 class="text-sm md:text-base font-semibold text-gray-900 mb-0.5">Điện thoại Apple iPhone 14 Pro
@@ -2036,13 +1940,6 @@
       }
     });
   </script>
-
-  <!-- Import Shared Product Data & Utils -->
-  <script src="products-data.js"></script>
-  <script src="products-utils.js"></script>
-
-  <!-- Modern Interactions - Hiệu ứng tương tác chuyên nghiệp -->
-  <script src="modern-interactions.js"></script>
 
   <!-- Load Header Component -->
   <script>

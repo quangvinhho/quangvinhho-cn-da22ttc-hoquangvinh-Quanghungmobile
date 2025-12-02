@@ -533,9 +533,10 @@
 #filterSidebar .price-range-box {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 12px;
-  padding: 14px;
+  padding: 12px;
   margin-top: 12px;
   border: 1px solid #e2e8f0;
+  overflow: hidden;
 }
 
 #filterSidebar .price-range-box p {
@@ -548,12 +549,15 @@
 #filterSidebar .price-inputs {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  width: 100%;
 }
 
 #filterSidebar .price-inputs input {
   flex: 1;
-  padding: 10px 12px;
+  min-width: 0;
+  max-width: 100px;
+  padding: 10px 8px;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   font-size: 13px;
@@ -575,6 +579,7 @@
 #filterSidebar .price-inputs .separator {
   color: #94a3b8;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 #filterSidebar .price-apply-btn {

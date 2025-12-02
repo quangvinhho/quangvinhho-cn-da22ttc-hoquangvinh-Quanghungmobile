@@ -174,115 +174,40 @@
       <div class="lg:col-span-2">
         <h2 class="text-2xl font-black text-gray-900 mb-4 border-b-4 border-red-600 inline-block pb-2">NỔI BẬT NHẤT</h2>
         
-        <!-- Featured Article -->
-        <article class="bg-white rounded-xl shadow-lg overflow-hidden mb-6 hover:shadow-xl transition">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1593642532400-2682810df593?w=800&h=400&fit=crop" 
-                 alt="MacBook" class="w-full h-64 object-cover">
-            <span class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">Trên tay</span>
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-red-600 transition cursor-pointer">
-              Dùng MacBook mà vẫn xài hub rẻ? Một lần dùng Belkin mới hiểu 1 triệu bỏ ra đúng là "đầu tư có lãi"
-            </h3>
-            <p class="text-gray-600 mb-4">
-              Trên tay Hub Belkin Connect USB-C 7 in 1, chiếc hub cao cấp với hoàn thiện kim loại chắc chắn, kết nối ổn định và đủ bền vượt xa các hub giá rẻ, phù hợp cho...
-            </p>
-            <div class="flex items-center text-sm text-gray-500">
-              <i class="fas fa-user-circle mr-2"></i>
-              <span class="mr-4">Hải Trần</span>
-              <i class="far fa-clock mr-2"></i>
-              <span>15/11/2025 11:22</span>
+        <!-- Featured Article - Dynamic -->
+        <div id="featured-news">
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6 animate-pulse">
+            <div class="w-full h-64 bg-gray-300"></div>
+            <div class="p-6">
+              <div class="h-6 bg-gray-300 rounded mb-3"></div>
+              <div class="h-4 bg-gray-200 rounded mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-3/4"></div>
             </div>
           </div>
-        </article>
+        </div>
 
-        <!-- News List -->
-        <div class="space-y-4">
-          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-            <img src="https://images.unsplash.com/photo-1593642532400-2682810df593?w=200&h=150&fit=crop" 
-                 alt="MSI Cyborg" class="w-32 h-32 object-cover">
+        <!-- News List - Dynamic -->
+        <div id="news-list" class="space-y-4">
+          <!-- Loading skeleton -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden flex animate-pulse">
+            <div class="w-32 h-32 bg-gray-300"></div>
             <div class="p-4 flex-1">
-              <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                Đánh giá hiệu năng MSI Cyborg 15: RTX 5050 + Intel Core i5 mới, game AAA khủng cũng "chạy mượt" 200 FPS!
-              </h4>
-              <div class="flex items-center text-xs text-gray-500">
-                <i class="fas fa-user-circle mr-1"></i>
-                <span class="mr-3">Hải Trần</span>
-                <i class="far fa-clock mr-1"></i>
-                <span>14/11/2025 11:35</span>
-              </div>
+              <div class="h-4 bg-gray-300 rounded mb-2"></div>
+              <div class="h-3 bg-gray-200 rounded w-1/2"></div>
             </div>
-          </article>
-
-          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop" 
-                 alt="ASUS Vivobook" class="w-32 h-32 object-cover">
+          </div>
+          <div class="bg-white rounded-xl shadow-md overflow-hidden flex animate-pulse">
+            <div class="w-32 h-32 bg-gray-300"></div>
             <div class="p-4 flex-1">
-              <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                Trên tay ASUS Vivobook S14 2025: Laptop AI 20 triệu mà OLED đẹp, pin trâu, build kim loại khiến mình bất ngờ
-              </h4>
-              <div class="flex items-center text-xs text-gray-500">
-                <i class="fas fa-user-circle mr-1"></i>
-                <span class="mr-3">Hải Trần</span>
-                <i class="far fa-clock mr-1"></i>
-                <span>13/11/2025 11:39</span>
-              </div>
+              <div class="h-4 bg-gray-300 rounded mb-2"></div>
+              <div class="h-3 bg-gray-200 rounded w-1/2"></div>
             </div>
-          </article>
-
-          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-            <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=200&h=150&fit=crop" 
-                 alt="OPPO Find X9" class="w-32 h-32 object-cover">
-            <div class="p-4 flex-1">
-              <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                Đánh giá chi tiết OPPO Find X9: Khi OPPO mang cả "kho tính năng" ra quốc tế!
-              </h4>
-              <div class="flex items-center text-xs text-gray-500">
-                <i class="fas fa-user-circle mr-1"></i>
-                <span class="mr-3">Jay Nguyen</span>
-                <i class="far fa-clock mr-1"></i>
-                <span>13/11/2025 11:26</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-            <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=200&h=150&fit=crop" 
-                 alt="Samsung Galaxy" class="w-32 h-32 object-cover">
-            <div class="p-4 flex-1">
-              <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                Samsung Galaxy S25 Ultra: Flagship mạnh mẽ nhất 2025 với Snapdragon 8 Gen 4
-              </h4>
-              <div class="flex items-center text-xs text-gray-500">
-                <i class="fas fa-user-circle mr-1"></i>
-                <span class="mr-3">Minh Anh</span>
-                <i class="far fa-clock mr-1"></i>
-                <span>12/11/2025 10:15</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-            <img src="https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=200&h=150&fit=crop" 
-                 alt="iPhone 17" class="w-32 h-32 object-cover">
-            <div class="p-4 flex-1">
-              <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                Rò rỉ thông tin iPhone 17 Pro: Camera 48MP mới, chip A19 Pro và nhiều nâng cấp
-              </h4>
-              <div class="flex items-center text-xs text-gray-500">
-                <i class="fas fa-user-circle mr-1"></i>
-                <span class="mr-3">Quang Vinh</span>
-                <i class="far fa-clock mr-1"></i>
-                <span>11/11/2025 14:20</span>
-              </div>
-            </div>
-          </article>
+          </div>
         </div>
 
         <!-- Load More -->
         <div class="text-center mt-8">
-          <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition">
+          <button id="load-more-news" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition">
             <i class="fas fa-sync-alt mr-2"></i>
             Xem thêm tin tức
           </button>
@@ -360,6 +285,9 @@
 
   <div id="footer-placeholder"></div>
 
+  <!-- News JS -->
+  <script src="js/news.js"></script>
+  
   <script>
     (function () {
       function loadHeader() {
