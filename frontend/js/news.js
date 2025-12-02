@@ -7,242 +7,201 @@ function formatDate(dateString) {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
+    return `${day}/${month}/${year}`;
 }
 
 // Rút gọn nội dung
-function truncateText(text, maxLength = 150) {
+function truncateText(text, maxLength = 100) {
     if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
 }
 
-// Lấy ảnh mặc định nếu không có
+// Lấy ảnh
 function getNewsImage(imagePath) {
     if (!imagePath || imagePath === 'null') {
-        return 'https://images.unsplash.com/photo-1593642532400-2682810df593?w=800&h=400&fit=crop';
+        return 'images/inta.webp';
     }
-    // Nếu là URL đầy đủ
-    if (imagePath.startsWith('http')) {
-        return imagePath;
-    }
-    // Nếu là đường dẫn local
-    return `images/news/${imagePath}`;
+    if (imagePath.startsWith('http')) return imagePath;
+    return imagePath;
 }
 
-// Load tin tức nổi bật cho trang news.html
-async function loadFeaturedNews() {
+// Lấy badge màu ngẫu nhiên
+function getBadgeColor(index) {
+    const colors = ['bg-blue-500', 'bg-orange-500', 'bg-purple-500', 'bg-green-500', 'bg-pink-500', 'bg-teal-500'];
+    return colors[index % colors.length];
+}
+
+// Lấy category
+function getCategory(index) {
+    const cats = ['Mẹo hay', 'Tin mới', 'Công nghệ', 'Đánh giá', 'Khuyến mãi', 'Thủ thuật'];
+    return cats[index % cats.length];
+}
+
+// Load và render tin tức
+async function loadNews() {
     try {
-        const response = await fetch(`${API_URL}/news/featured?limit=6`);
+        const response = await fetch(`${API_URL}/news/featured?limit=15`);
         const result = await response.json();
 
         if (result.success && result.data.length > 0) {
-            renderFeaturedNews(result.data);
-        }
-    } catch (error) {
-        console.error('Lỗi load tin tức nổi bật:', error);
-    }
-}
-
-// Render tin tức nổi bật
-function renderFeaturedNews(newsItems) {
-    const featuredContainer = document.getElementById('featured-news');
-    const newsListContainer = document.getElementById('news-list');
-
-    if (!featuredContainer || !newsListContainer) return;
-
-    // Tin nổi bật đầu tiên
-    if (newsItems.length > 0) {
-        const featured = newsItems[0];
-        featuredContainer.innerHTML = `
-            <article class="bg-white rounded-xl shadow-lg overflow-hidden mb-6 hover:shadow-xl transition">
-                <a href="news-detail.html?id=${featured.ma_tintuc}">
-                    <div class="relative">
-                        <img src="${getNewsImage(featured.anh_dai_dien)}" 
-                             alt="${featured.tieu_de}" class="w-full h-64 object-cover">
-                        <span class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">Nổi bật</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-red-600 transition cursor-pointer">
-                            ${featured.tieu_de}
-                        </h3>
-                        <p class="text-gray-600 mb-4">
-                            ${truncateText(featured.noi_dung, 200)}
-                        </p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-user-circle mr-2"></i>
-                            <span class="mr-4">${featured.tac_gia || 'Admin'}</span>
-                            <i class="far fa-clock mr-2"></i>
-                            <span>${formatDate(featured.ngay_dang)}</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-        `;
-    }
-
-    // Danh sách tin tức còn lại
-    if (newsItems.length > 1) {
-        const otherNews = newsItems.slice(1);
-        newsListContainer.innerHTML = otherNews.map(news => `
-            <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-                <a href="news-detail.html?id=${news.ma_tintuc}" class="flex w-full">
-                    <img src="${getNewsImage(news.anh_dai_dien)}" 
-                         alt="${news.tieu_de}" class="w-32 h-32 object-cover">
-                    <div class="p-4 flex-1">
-                        <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                            ${news.tieu_de}
-                        </h4>
-                        <div class="flex items-center text-xs text-gray-500">
-                            <i class="fas fa-user-circle mr-1"></i>
-                            <span class="mr-3">${news.tac_gia || 'Admin'}</span>
-                            <i class="far fa-clock mr-1"></i>
-                            <span>${formatDate(news.ngay_dang)}</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-        `).join('');
-    }
-}
-
-// Load tất cả tin tức với phân trang
-let currentPage = 1;
-const newsPerPage = 10;
-
-async function loadAllNews(page = 1) {
-    try {
-        const response = await fetch(`${API_URL}/news?page=${page}&limit=${newsPerPage}`);
-        const result = await response.json();
-
-        if (result.success) {
+            renderFeaturedMain(result.data[0]);
+            renderFeaturedList(result.data.slice(1, 4));
+            renderPopularNews(result.data.slice(0, 5));
             renderAllNews(result.data);
-            renderPagination(result.pagination);
-            currentPage = page;
         }
     } catch (error) {
         console.error('Lỗi load tin tức:', error);
+        showError();
     }
 }
 
-// Render tất cả tin tức
-function renderAllNews(newsItems) {
-    const container = document.getElementById('all-news-list');
+// Render tin chính (bên trái) - giống style index.html
+function renderFeaturedMain(news) {
+    const container = document.getElementById('featured-main');
     if (!container) return;
-
-    container.innerHTML = newsItems.map(news => `
-        <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-            <a href="news-detail.html?id=${news.ma_tintuc}" class="flex w-full">
+    
+    container.innerHTML = `
+        <a href="news-detail.html?id=${news.ma_tintuc}" class="block group">
+            <div class="relative h-[380px] rounded-2xl overflow-hidden">
                 <img src="${getNewsImage(news.anh_dai_dien)}" 
-                     alt="${news.tieu_de}" class="w-32 h-32 object-cover">
-                <div class="p-4 flex-1">
-                    <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                        ${news.tieu_de}
-                    </h4>
-                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">${truncateText(news.noi_dung, 100)}</p>
-                    <div class="flex items-center text-xs text-gray-500">
-                        <i class="fas fa-user-circle mr-1"></i>
-                        <span class="mr-3">${news.tac_gia || 'Admin'}</span>
-                        <i class="far fa-clock mr-1"></i>
-                        <span>${formatDate(news.ngay_dang)}</span>
+                     alt="${news.tieu_de}" 
+                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                     onerror="this.src='images/inta.webp'">
+                
+                <!-- Date & Category Badge -->
+                <div class="absolute bottom-4 left-4 right-4">
+                    <div class="flex items-center gap-2 text-white text-sm mb-3">
+                        <span class="font-medium">${formatDate(news.ngay_dang)}</span>
+                        <span>•</span>
+                        <span class="bg-blue-500 px-3 py-1 rounded-full text-xs font-semibold">Nổi bật</span>
                     </div>
+                </div>
+                
+                <!-- Gradient overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+            </div>
+            
+            <h3 class="text-lg md:text-xl font-bold text-gray-900 mt-4 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                ${news.tieu_de}
+            </h3>
+            <p class="text-sm md:text-base text-gray-600 line-clamp-2">
+                ${truncateText(news.noi_dung, 150)}
+            </p>
+        </a>
+    `;
+}
+
+// Render danh sách tin (bên phải)
+function renderFeaturedList(newsList) {
+    const container = document.getElementById('featured-list');
+    if (!container) return;
+    
+    container.innerHTML = newsList.map((news, index) => `
+        <a href="news-detail.html?id=${news.ma_tintuc}" class="flex gap-4 group">
+            <div class="relative w-36 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                <img src="${getNewsImage(news.anh_dai_dien)}" 
+                     alt="${news.tieu_de}" 
+                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                     onerror="this.src='images/uni8.jpg'">
+            </div>
+            <div class="flex-1 min-w-0 py-1">
+                <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-red-600 transition-colors mb-2">
+                    ${news.tieu_de}
+                </h4>
+                <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <span><i class="far fa-user mr-1"></i>${news.tac_gia || 'Admin'}</span>
+                    <span>•</span>
+                    <span><i class="far fa-clock mr-1"></i>${formatDate(news.ngay_dang)}</span>
+                </div>
+            </div>
+        </a>
+    `).join('');
+}
+
+// Render tin xem nhiều - giống style index.html
+function renderPopularNews(newsList) {
+    const container = document.getElementById('popular-news');
+    if (!container) return;
+    
+    container.innerHTML = newsList.map((news, index) => `
+        <article class="group cursor-pointer">
+            <a href="news-detail.html?id=${news.ma_tintuc}" class="block">
+                <div class="relative h-40 rounded-2xl overflow-hidden mb-3">
+                    <img src="${getNewsImage(news.anh_dai_dien)}" 
+                         alt="${news.tieu_de}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                         onerror="this.src='images/inta.webp'">
+                    <!-- Date & Category Badge -->
+                    <div class="absolute bottom-3 left-3 right-3">
+                        <div class="flex items-center gap-2 text-white text-xs">
+                            <span class="font-medium">${formatDate(news.ngay_dang)}</span>
+                            <span>•</span>
+                            <span class="${getBadgeColor(index)} px-2 py-0.5 rounded-full text-xs font-semibold">${getCategory(index)}</span>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>
+                <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-red-600 transition-colors mb-1">
+                    ${news.tieu_de}
+                </h4>
+                <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <span><i class="far fa-user mr-1"></i>${news.tac_gia || 'Admin'}</span>
                 </div>
             </a>
         </article>
     `).join('');
 }
 
-// Render phân trang
-function renderPagination(pagination) {
-    const container = document.getElementById('news-pagination');
+// Render tất cả tin tức - giống style index.html
+function renderAllNews(newsList) {
+    const container = document.getElementById('all-news');
     if (!container) return;
+    
+    container.innerHTML = newsList.map((news, index) => `
+        <article class="group cursor-pointer">
+            <a href="news-detail.html?id=${news.ma_tintuc}" class="block">
+                <div class="relative h-48 rounded-2xl overflow-hidden mb-4">
+                    <img src="${getNewsImage(news.anh_dai_dien)}" 
+                         alt="${news.tieu_de}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                         onerror="this.src='images/uni8.jpg'">
+                    <!-- Date & Category Badge -->
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex items-center gap-2 text-white text-sm">
+                            <span class="font-medium">${formatDate(news.ngay_dang)}</span>
+                            <span>•</span>
+                            <span class="${getBadgeColor(index)} px-3 py-1 rounded-full text-xs font-semibold">${getCategory(index)}</span>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                </div>
+                <h3 class="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                    ${news.tieu_de}
+                </h3>
+                <p class="text-sm text-gray-600 line-clamp-2">
+                    ${truncateText(news.noi_dung, 100)}
+                </p>
+            </a>
+        </article>
+    `).join('');
+}
 
-    const { page, totalPages } = pagination;
-    let html = '';
-
-    if (totalPages > 1) {
-        html = `
-            <button onclick="loadAllNews(${page - 1})" 
-                    class="px-4 py-2 rounded-lg ${page === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 text-white'}"
-                    ${page === 1 ? 'disabled' : ''}>
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <span class="px-4 py-2">Trang ${page} / ${totalPages}</span>
-            <button onclick="loadAllNews(${page + 1})" 
-                    class="px-4 py-2 rounded-lg ${page === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 text-white'}"
-                    ${page === totalPages ? 'disabled' : ''}>
-                <i class="fas fa-chevron-right"></i>
-            </button>
+// Hiển thị lỗi
+function showError() {
+    const container = document.getElementById('featured-main');
+    if (container) {
+        container.innerHTML = `
+            <div class="bg-gray-100 rounded-2xl p-8 text-center h-[380px] flex flex-col items-center justify-center">
+                <i class="fas fa-exclamation-circle text-5xl text-gray-300 mb-4"></i>
+                <p class="text-gray-500">Không thể tải tin tức. Vui lòng thử lại sau.</p>
+            </div>
         `;
     }
-
-    container.innerHTML = html;
 }
 
-// Tìm kiếm tin tức
-async function searchNews(keyword) {
-    if (!keyword.trim()) {
-        loadFeaturedNews();
-        return;
-    }
+// ============ NEWS DETAIL PAGE ============
 
-    try {
-        const response = await fetch(`${API_URL}/news/search/${encodeURIComponent(keyword)}`);
-        const result = await response.json();
-
-        if (result.success) {
-            const newsListContainer = document.getElementById('news-list');
-            const featuredContainer = document.getElementById('featured-news');
-
-            if (featuredContainer) {
-                featuredContainer.innerHTML = `
-                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-                        <h3 class="text-xl font-bold text-gray-900">
-                            Kết quả tìm kiếm cho: "${keyword}" (${result.data.length} kết quả)
-                        </h3>
-                    </div>
-                `;
-            }
-
-            if (newsListContainer) {
-                if (result.data.length === 0) {
-                    newsListContainer.innerHTML = `
-                        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-                            <i class="fas fa-search text-4xl text-gray-400 mb-4"></i>
-                            <p class="text-gray-600">Không tìm thấy tin tức nào phù hợp</p>
-                        </div>
-                    `;
-                } else {
-                    newsListContainer.innerHTML = result.data.map(news => `
-                        <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex">
-                            <a href="news-detail.html?id=${news.ma_tintuc}" class="flex w-full">
-                                <img src="${getNewsImage(news.anh_dai_dien)}" 
-                                     alt="${news.tieu_de}" class="w-32 h-32 object-cover">
-                                <div class="p-4 flex-1">
-                                    <h4 class="font-bold text-gray-900 mb-2 hover:text-red-600 transition cursor-pointer line-clamp-2">
-                                        ${news.tieu_de}
-                                    </h4>
-                                    <div class="flex items-center text-xs text-gray-500">
-                                        <i class="fas fa-user-circle mr-1"></i>
-                                        <span class="mr-3">${news.tac_gia || 'Admin'}</span>
-                                        <i class="far fa-clock mr-1"></i>
-                                        <span>${formatDate(news.ngay_dang)}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </article>
-                    `).join('');
-                }
-            }
-        }
-    } catch (error) {
-        console.error('Lỗi tìm kiếm tin tức:', error);
-    }
-}
-
-// Load chi tiết tin tức
 async function loadNewsDetail() {
     const urlParams = new URLSearchParams(window.location.search);
     const newsId = urlParams.get('id');
@@ -263,59 +222,53 @@ async function loadNewsDetail() {
             showNewsNotFound();
         }
     } catch (error) {
-        console.error('Lỗi load chi tiết tin tức:', error);
+        console.error('Lỗi load chi tiết:', error);
         showNewsNotFound();
     }
 }
 
-// Render chi tiết tin tức
 function renderNewsDetail(news) {
-    // Update page title
     document.title = `${news.tieu_de} - QuangHưng Mobile`;
     
-    // Update breadcrumb
     const breadcrumb = document.getElementById('breadcrumb-title');
-    if (breadcrumb) {
-        breadcrumb.textContent = news.tieu_de;
-    }
+    if (breadcrumb) breadcrumb.textContent = news.tieu_de;
 
-    // Update article content
     const articleContainer = document.getElementById('news-article');
     if (articleContainer) {
         articleContainer.innerHTML = `
-            <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" class="w-full h-96 object-cover" />
+            <div class="relative h-64 md:h-96 rounded-2xl overflow-hidden mb-6">
+                <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" 
+                     class="w-full h-full object-cover"
+                     onerror="this.src='images/inta.webp'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </div>
             
-            <div class="p-6">
-                <h1 class="text-3xl font-bold mb-4">${news.tieu_de}</h1>
-                
-                <div class="flex items-center text-sm text-gray-500 mb-6">
-                    <div class="flex items-center mr-4">
-                        <i class="far fa-calendar mr-2"></i>
-                        <span>${formatDate(news.ngay_dang)}</span>
-                    </div>
-                    <div class="flex items-center mr-4">
-                        <i class="far fa-user mr-2"></i>
-                        <span>${news.tac_gia || 'Admin'}</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="far fa-folder mr-2"></i>
-                        <span class="text-red-600">Tin công nghệ</span>
-                    </div>
-                </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">${news.tieu_de}</h1>
+            
+            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pb-4 border-b border-gray-200">
+                <span class="flex items-center">
+                    <i class="far fa-user text-red-main mr-2"></i>${news.tac_gia || 'Admin'}
+                </span>
+                <span class="flex items-center">
+                    <i class="far fa-calendar text-red-main mr-2"></i>${formatDate(news.ngay_dang)}
+                </span>
+                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold">Tin công nghệ</span>
+            </div>
 
-                <div class="prose max-w-none">
-                    ${news.noi_dung.split('\n').map(p => p.trim() ? `<p class="mb-4 text-gray-700 leading-relaxed">${p.trim()}</p>` : '').join('')}
-                </div>
+            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                ${news.noi_dung.split('\n').filter(p => p.trim()).map(p => `<p class="mb-4">${p.trim()}</p>`).join('')}
+            </div>
 
-                <div class="mt-6 flex items-center gap-4 pt-6 border-t border-gray-200">
-                    <span class="text-gray-700 font-semibold">Chia sẻ:</span>
-                    <a href="#" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white transition">
+            <div class="mt-8 pt-6 border-t border-gray-200 flex flex-wrap items-center gap-4">
+                <span class="text-gray-700 font-semibold">Chia sẻ:</span>
+                <div class="flex gap-2">
+                    <a href="#" class="w-9 h-9 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white transition text-sm">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-blue-400 hover:bg-blue-500 rounded-full flex items-center justify-center text-white transition">
+                    <a href="#" class="w-9 h-9 bg-sky-500 hover:bg-sky-600 rounded-full flex items-center justify-center text-white transition text-sm">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center text-white transition">
+                    <a href="#" class="w-9 h-9 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center text-white transition text-sm">
                         <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>
@@ -324,91 +277,60 @@ function renderNewsDetail(news) {
     }
 }
 
-// Render tin tức liên quan
 function renderRelatedNews(relatedNews) {
     const container = document.getElementById('related-news');
     if (!container || !relatedNews || relatedNews.length === 0) return;
 
     container.innerHTML = `
-        <h2 class="text-2xl font-bold mb-6">Bài viết liên quan</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            ${relatedNews.map(news => `
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <a href="news-detail.html?id=${news.ma_tintuc}">
-                        <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" class="w-full h-48 object-cover" />
-                        <div class="p-4">
-                            <div class="flex items-center text-sm text-gray-500 mb-2">
-                                <i class="far fa-calendar mr-2"></i>
-                                <span>${formatDate(news.ngay_dang)}</span>
-                            </div>
-                            <h3 class="font-semibold mb-2 hover:text-red-600 transition">${news.tieu_de}</h3>
-                            <span class="text-red-600 hover:text-red-700 font-semibold">Đọc tiếp</span>
-                        </div>
-                    </a>
-                </div>
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+            <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>BÀI VIẾT LIÊN QUAN
+        </h2>
+        <div class="grid md:grid-cols-2 gap-4">
+            ${relatedNews.slice(0, 4).map((news, index) => `
+                <a href="news-detail.html?id=${news.ma_tintuc}" class="flex gap-4 group">
+                    <div class="relative w-28 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                        <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                             onerror="this.src='images/uni8.jpg'">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-red-600 transition-colors mb-1">
+                            ${news.tieu_de}
+                        </h4>
+                        <p class="text-xs text-gray-500">
+                            <i class="far fa-clock mr-1"></i>${formatDate(news.ngay_dang)}
+                        </p>
+                    </div>
+                </a>
             `).join('')}
         </div>
     `;
 }
 
-// Hiển thị khi không tìm thấy tin tức
 function showNewsNotFound() {
     const articleContainer = document.getElementById('news-article');
     if (articleContainer) {
         articleContainer.innerHTML = `
-            <div class="p-6 text-center">
-                <i class="fas fa-newspaper text-6xl text-gray-400 mb-4"></i>
-                <h2 class="text-2xl font-bold text-gray-700 mb-2">Không tìm thấy tin tức</h2>
-                <p class="text-gray-600 mb-4">Tin tức bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
-                <a href="news.html" class="inline-block bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition">
-                    Quay lại trang tin tức
+            <div class="py-12 text-center">
+                <i class="fas fa-newspaper text-6xl text-gray-300 mb-6"></i>
+                <h2 class="text-2xl font-bold text-gray-700 mb-3">Không tìm thấy tin tức</h2>
+                <p class="text-gray-500 mb-6">Tin tức bạn đang tìm không tồn tại hoặc đã bị xóa.</p>
+                <a href="news.html" class="inline-block bg-red-main text-white px-6 py-2.5 rounded-lg hover:bg-red-dark transition font-semibold">
+                    <i class="fas fa-arrow-left mr-2"></i>Quay lại
                 </a>
             </div>
         `;
     }
 }
 
-// Render tin tức mới nhất cho sidebar
-function renderRecentNews(newsItems) {
-    const container = document.getElementById('recent-news-sidebar');
-    if (!container || !newsItems) return;
-
-    container.innerHTML = newsItems.slice(0, 5).map(news => `
-        <a href="news-detail.html?id=${news.ma_tintuc}" class="flex items-center space-x-3 mb-4">
-            <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" class="w-20 h-20 object-cover rounded" />
-            <div>
-                <h4 class="font-semibold text-sm line-clamp-2">${news.tieu_de}</h4>
-                <p class="text-gray-500 text-xs">${formatDate(news.ngay_dang)}</p>
-            </div>
-        </a>
-    `).join('');
-}
-
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    // Kiểm tra trang hiện tại
-    const isNewsPage = window.location.pathname.includes('news.html');
-    const isNewsDetailPage = window.location.pathname.includes('news-detail.html');
+    const path = window.location.pathname;
+    const isNewsPage = path.endsWith('news.html') || path.endsWith('news');
+    const isNewsDetailPage = path.includes('news-detail');
 
     if (isNewsPage) {
-        loadFeaturedNews();
-        
-        // Setup search
-        const searchInput = document.querySelector('input[placeholder*="Tìm"]');
-        const searchBtn = document.querySelector('.fa-search')?.parentElement;
-        
-        if (searchInput && searchBtn) {
-            searchBtn.addEventListener('click', () => searchNews(searchInput.value));
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') searchNews(searchInput.value);
-            });
-        }
-
-        // Load more button
-        const loadMoreBtn = document.getElementById('load-more-news');
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', () => loadAllNews(currentPage + 1));
-        }
+        loadNews();
     }
 
     if (isNewsDetailPage) {

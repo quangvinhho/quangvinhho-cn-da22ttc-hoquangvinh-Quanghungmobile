@@ -3,24 +3,25 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/database');
 
-// Map ảnh mặc định theo hãng
+// Map ảnh mặc định theo hãng - sử dụng ảnh sản phẩm thực tế
 const brandImageMap = {
-    'Apple': 'images/iphone17.avif',
-    'Samsung': 'images/samsung.webp',
+    'Apple': 'images/iphone-17-pro-max-256.jpg',
+    'Samsung': 'images/samsung-galaxy-s24_15__2.webp',
     'Xiaomi': 'images/Xiaomi.avif',
-    'Oppo': 'images/oppo-reno.avif',
-    'Vivo': 'images/oppo-reno.avif',
-    'Asus': 'images/Xiaomi.avif',
+    'Oppo': 'images/oppo_reno_13_f_4g_256gb.avif',
+    'Vivo': 'images/oppo_reno_13_f_4g_256gb.avif',
+    'Google': 'images/pixel-9-pro.avif',
     'Sony': 'images/sony-xperia-1-vi.webp',
-    'Vsmart': 'images/Xiaomi.avif',
-    'default': 'images/iphone17.avif'
+    'Tecno': 'images/TECNO.avif',
+    'Realme': 'images/reno10_5g_-_combo_product_-_blue_-_copy.webp',
+    'default': 'images/iphone-17-pro-max-256.jpg'
 };
 
 // Helper function để lấy ảnh phù hợp
 function getProductImage(row) {
-    // Nếu có ảnh trong DB và file tồn tại, dùng nó
+    // Nếu có ảnh trong DB, dùng nó
     const dbImage = row.anh_dai_dien || row.image;
-    if (dbImage && dbImage.includes('.avif') || dbImage && dbImage.includes('.webp') || dbImage && dbImage.includes('.png')) {
+    if (dbImage && (dbImage.includes('.avif') || dbImage.includes('.webp') || dbImage.includes('.png') || dbImage.includes('.jpg'))) {
         return dbImage.startsWith('images/') ? dbImage : `images/${dbImage}`;
     }
     

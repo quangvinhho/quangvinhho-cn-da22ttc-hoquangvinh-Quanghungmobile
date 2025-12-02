@@ -11,7 +11,8 @@
       theme: {
         extend: {
           colors: {
-            'red-main': '#d91e23',
+            'red-main': '#d70018',
+            'red-dark': '#b01117',
           }
         }
       }
@@ -26,299 +27,106 @@
   
   <style>
     * { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   </style>
 </head>
 <body class="bg-gray-100">
   
   <div id="header-placeholder"></div>
-  <!-- Spacer for fixed header - Responsive -->
   <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-  <main class="max-w-[1920px] mx-auto px-4 py-6">
+  <main class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4 py-4">
     
-    <!-- Banner Khuyến Mãi -->
-    <section class="mb-6">
-      <div class="bg-gradient-to-r from-red-600 to-red-500 rounded-2xl overflow-hidden shadow-xl">
-        <img src="images/H1_1440x242_1_95840a416f.webp" 
-             alt="Khuyến mãi" class="w-full h-48 object-cover">
-      </div>
-    </section>
+    <!-- Khung trắng chứa tin tức -->
+    <div class="bg-white rounded-xl md:rounded-2xl shadow-sm p-3 sm:p-4 md:p-5">
 
-    <!-- Voucher Section -->
-    <section class="mb-8">
-      <div class="flex items-center gap-4 mb-4 overflow-x-auto pb-2">
-        <div class="bg-red-600 text-white px-6 py-2 rounded-full font-bold whitespace-nowrap flex items-center gap-2">
-          <i class="fas fa-ticket-alt"></i>
-          VOUCHER LIÊN TAY
-        </div>
-        <div class="bg-blue-700 text-white px-6 py-2 rounded-full font-bold whitespace-nowrap">
-          VOUCHER ĐƠN TỪ 0Đ
-        </div>
-        <div class="bg-blue-800 text-white px-6 py-2 rounded-full font-bold whitespace-nowrap">
-          VOUCHER TỪ SHOP BÁN CHẠY
-        </div>
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-purple-600">📰 TIN TỨC CÔNG NGHỆ</h1>
+        <a href="index.html" class="text-red-600 hover:text-red-700 text-sm font-medium flex items-center gap-1">
+          <i class="fas fa-home"></i> Trang chủ
+        </a>
       </div>
 
-      <!-- Voucher Cards -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
-            <div class="flex-1">
-              <h4 class="font-bold text-gray-900">Giảm 10%</h4>
-              <p class="text-xs text-gray-600">Giảm tối đa 10k₫</p>
+      <!-- NỔI BẬT NHẤT -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+          <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>NỔI BẬT NHẤT
+        </h2>
+        
+        <div class="grid lg:grid-cols-5 gap-6">
+          <!-- Tin chính bên trái -->
+          <div class="lg:col-span-3" id="featured-main">
+            <div class="animate-pulse bg-gray-200 rounded-2xl h-[380px]"></div>
+          </div>
+          
+          <!-- Danh sách tin bên phải -->
+          <div class="lg:col-span-2 space-y-4" id="featured-list">
+            <div class="animate-pulse flex gap-4">
+              <div class="w-36 h-24 bg-gray-200 rounded-xl"></div>
+              <div class="flex-1 space-y-2 py-2">
+                <div class="h-4 bg-gray-200 rounded w-full"></div>
+                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div class="h-3 bg-gray-100 rounded w-1/2"></div>
+              </div>
             </div>
           </div>
-          <p class="text-xs text-gray-500 mb-2">Đã xài...</p>
-          <button class="text-blue-600 text-sm font-semibold">Điều Kiện</button>
+        </div>
+      </section>
+
+      <!-- XEM NHIỀU TUẦN QUA -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+          <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>XEM NHIỀU TUẦN QUA
+        </h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="popular-news">
+          <!-- Loading -->
+        </div>
+      </section>
+
+      <!-- TẤT CẢ TIN TỨC -->
+      <section>
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+          <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>TẤT CẢ TIN TỨC
+        </h2>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="all-news">
+          <!-- Loading -->
         </div>
         
-        <div class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-              <i class="fas fa-leaf text-green-600 text-xl"></i>
-            </div>
-            <div class="flex-1">
-              <h4 class="font-bold text-gray-900">Giảm 15%</h4>
-              <p class="text-xs text-gray-600">Giảm tối đa 20k₫</p>
-            </div>
-          </div>
-          <span class="inline-block bg-red-100 text-red-600 text-xs px-2 py-1 rounded mb-2">Shop Yêu Thích</span>
-          <button class="text-blue-600 text-sm font-semibold">Điều Kiện</button>
-        </div>
-
-        <div class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 bg-orange-100 rounded-full"></div>
-            <div class="flex-1">
-              <h4 class="font-bold text-gray-900">Giảm 10%</h4>
-              <p class="text-xs text-gray-600">Giảm tối đa 15k₫</p>
-            </div>
-          </div>
-          <span class="inline-block bg-red-100 text-red-600 text-xs px-2 py-1 rounded mb-2">Shop Yêu Thích</span>
-          <button class="text-blue-600 text-sm font-semibold">Điều Kiện</button>
-        </div>
-
-        <div class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 bg-gray-900 rounded-full"></div>
-            <div class="flex-1">
-              <h4 class="font-bold text-gray-900">Giảm 10%</h4>
-              <p class="text-xs text-gray-600">Giảm tối đa 20k₫</p>
-            </div>
-          </div>
-          <span class="inline-block bg-red-100 text-red-600 text-xs px-2 py-1 rounded mb-2">Shop Yêu Thích</span>
-          <button class="text-blue-600 text-sm font-semibold">Điều Kiện</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Chủ đề hot -->
-    <section class="mb-8">
-      <h2 class="text-2xl font-black text-gray-900 mb-4 border-b-4 border-red-600 inline-block pb-2">CHỦ ĐỀ HOT</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        <div class="aspect-square rounded-xl overflow-hidden relative group cursor-pointer shadow-lg hover:shadow-2xl transition-all">
-          <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=400&fit=crop" 
-               alt="Black Friday" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-            <span class="text-white font-bold text-base">#Black Friday</span>
-          </div>
-        </div>
-        
-        <div class="aspect-square rounded-xl overflow-hidden relative group cursor-pointer shadow-lg hover:shadow-2xl transition-all">
-          <img src="https://images.unsplash.com/photo-1556656793-08538906a9f8?w=400&h=400&fit=crop" 
-               alt="Tiệm Phở" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-            <span class="text-white font-bold text-base">#Tiệm Phở Của Anh Hải</span>
-          </div>
-        </div>
-
-        <div class="aspect-square rounded-xl overflow-hidden relative group cursor-pointer shadow-lg hover:shadow-2xl transition-all">
-          <img src="https://images.unsplash.com/photo-1592286927505-c0d6c9c24e5c?w=400&h=400&fit=crop" 
-               alt="CKTG" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-            <span class="text-white font-bold text-base">#CKTG LMHT</span>
-          </div>
-        </div>
-
-        <div class="aspect-square rounded-xl overflow-hidden relative group cursor-pointer shadow-lg hover:shadow-2xl transition-all">
-          <img src="https://images.unsplash.com/photo-1695048064998-18d5e69328c6?w=400&h=400&fit=crop" 
-               alt="iPhone 17" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-            <span class="text-white font-bold text-base">#Apple iPhone 17</span>
-          </div>
-        </div>
-
-        <div class="aspect-square rounded-xl overflow-hidden relative group cursor-pointer shadow-lg hover:shadow-2xl transition-all">
-          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=400&fit=crop" 
-               alt="OPPO" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-            <span class="text-white font-bold text-base">#OPPO Find X9</span>
-          </div>
-        </div>
-
-        <div class="aspect-square rounded-xl overflow-hidden relative group cursor-pointer shadow-lg hover:shadow-2xl transition-all">
-          <img src="https://images.unsplash.com/photo-1621768216002-5ac171876625?w=400&h=400&fit=crop" 
-               alt="iOS 26" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-            <span class="text-white font-bold text-base">#Apple iOS 26</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Nội bật nhất & Sidebar -->
-    <div class="grid lg:grid-cols-3 gap-6">
-      
-      <!-- Main Content -->
-      <div class="lg:col-span-2">
-        <h2 class="text-2xl font-black text-gray-900 mb-4 border-b-4 border-red-600 inline-block pb-2">NỔI BẬT NHẤT</h2>
-        
-        <!-- Featured Article - Dynamic -->
-        <div id="featured-news">
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6 animate-pulse">
-            <div class="w-full h-64 bg-gray-300"></div>
-            <div class="p-6">
-              <div class="h-6 bg-gray-300 rounded mb-3"></div>
-              <div class="h-4 bg-gray-200 rounded mb-2"></div>
-              <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- News List - Dynamic -->
-        <div id="news-list" class="space-y-4">
-          <!-- Loading skeleton -->
-          <div class="bg-white rounded-xl shadow-md overflow-hidden flex animate-pulse">
-            <div class="w-32 h-32 bg-gray-300"></div>
-            <div class="p-4 flex-1">
-              <div class="h-4 bg-gray-300 rounded mb-2"></div>
-              <div class="h-3 bg-gray-200 rounded w-1/2"></div>
-            </div>
-          </div>
-          <div class="bg-white rounded-xl shadow-md overflow-hidden flex animate-pulse">
-            <div class="w-32 h-32 bg-gray-300"></div>
-            <div class="p-4 flex-1">
-              <div class="h-4 bg-gray-300 rounded mb-2"></div>
-              <div class="h-3 bg-gray-200 rounded w-1/2"></div>
-            </div>
-          </div>
-        </div>
-
         <!-- Load More -->
         <div class="text-center mt-8">
-          <button id="load-more-news" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition">
-            <i class="fas fa-sync-alt mr-2"></i>
-            Xem thêm tin tức
+          <button id="load-more-news" class="border-2 border-red-main text-red-main hover:bg-red-main hover:text-white font-semibold py-2.5 px-8 rounded-lg transition">
+            Xem thêm tin tức <i class="fas fa-chevron-down ml-2"></i>
           </button>
         </div>
-      </div>
+      </section>
 
-      <!-- Sidebar -->
-      <div class="lg:col-span-1">
-        <!-- Search -->
-        <div class="bg-white rounded-xl shadow-md p-4 mb-6">
-          <h3 class="font-bold text-red-600 mb-3">TÌM KIẾM TIN TỨC</h3>
-          <div class="relative">
-            <input type="text" placeholder="Tìm tin tức..." 
-                   class="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none">
-            <button class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-600">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Hot Products -->
-        <div class="bg-white rounded-xl shadow-md p-4">
-          <h3 class="font-bold text-red-600 mb-4">SẢN PHẨM HOT</h3>
-          <div class="space-y-4">
-            <div class="flex gap-3 pb-3 border-b border-gray-100">
-              <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=100&h=100&fit=crop" 
-                   alt="Xiaomi" class="w-16 h-16 object-cover rounded-lg">
-              <div class="flex-1">
-                <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">Xiaomi Redmi Turbo 4 Pro 5G</h4>
-                <p class="text-red-600 font-bold">6.290.000₫</p>
-              </div>
-            </div>
-
-            <div class="flex gap-3 pb-3 border-b border-gray-100">
-              <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=100&h=100&fit=crop" 
-                   alt="Meizu" class="w-16 h-16 object-cover rounded-lg">
-              <div class="flex-1">
-                <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">Meizu Lucky 08 5G Q.tế</h4>
-                <p class="text-red-600 font-bold">3.550.000₫</p>
-              </div>
-            </div>
-
-            <div class="flex gap-3 pb-3 border-b border-gray-100">
-              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=100&h=100&fit=crop" 
-                   alt="vivo" class="w-16 h-16 object-cover rounded-lg">
-              <div class="flex-1">
-                <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">vivo X200 Pro 5G</h4>
-                <p class="text-red-600 font-bold">15.990.000₫</p>
-              </div>
-            </div>
-
-            <div class="flex gap-3 pb-3 border-b border-gray-100">
-              <img src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=100&h=100&fit=crop" 
-                   alt="iQOO" class="w-16 h-16 object-cover rounded-lg">
-              <div class="flex-1">
-                <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">iQOO Z10 Turbo Pro 5G</h4>
-                <p class="text-red-600 font-bold">6.590.000₫</p>
-              </div>
-            </div>
-
-            <div class="flex gap-3">
-              <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=100&h=100&fit=crop" 
-                   alt="iQOO" class="w-16 h-16 object-cover rounded-lg">
-              <div class="flex-1">
-                <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">iQOO Z10 Turbo 5G</h4>
-                <p class="text-red-600 font-bold">5.950.000₫</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-
   </main>
 
   <div id="footer-placeholder"></div>
 
-  <!-- News JS -->
   <script src="js/news.js"></script>
   
   <script>
-    (function () {
-      function loadHeader() {
-        fetch('components/header.html')
-          .then(response => response.text())
-          .then(html => {
-            document.getElementById('header-placeholder').innerHTML = html;
-            const script = document.createElement('script');
-            script.src = 'components/header.js';
-            document.body.appendChild(script);
-          });
-      }
+    // Load header & footer
+    fetch('components/header.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'components/header.js';
+        document.body.appendChild(script);
+      });
 
-      function loadFooter() {
-        fetch('components/footer.html')
-          .then(response => response.text())
-          .then(html => {
-            document.getElementById('footer-placeholder').innerHTML = html;
-          });
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          loadHeader();
-          loadFooter();
-        });
-      } else {
-        loadHeader();
-        loadFooter();
-      }
-    })();
+    fetch('components/footer.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      });
   </script>
 
 </body>

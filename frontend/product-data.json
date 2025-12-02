@@ -111,7 +111,7 @@
     {
       "id": 5,
       "name": "iPhone 15 Pro Max 256GB Titan",
-      "brand": "iphone",
+      "brand": "apple",
       "category": "dienthoai",
       "price": 28990000,
       "oldPrice": 34990000,
@@ -138,7 +138,7 @@
     {
       "id": 6,
       "name": "iPhone 15 Plus 128GB",
-      "brand": "iphone",
+      "brand": "apple",
       "category": "dienthoai",
       "price": 22990000,
       "oldPrice": 25990000,
@@ -165,7 +165,7 @@
     {
       "id": 7,
       "name": "iPhone 17 Pro Max 256GB",
-      "brand": "iphone",
+      "brand": "apple",
       "category": "dienthoai",
       "price": 33990000,
       "oldPrice": null,
@@ -192,7 +192,7 @@
     {
       "id": 8,
       "name": "iPhone 14 Pro Max 128GB - Like New 99%",
-      "brand": "iphone",
+      "brand": "apple",
       "category": "dienthoai",
       "price": 16390000,
       "oldPrice": 27990000,
