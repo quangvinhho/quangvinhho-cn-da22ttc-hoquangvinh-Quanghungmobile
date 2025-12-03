@@ -30,9 +30,72 @@ function getProductImage(row) {
     return brandImageMap[brand] || brandImageMap['default'];
 }
 
+// Map ảnh chi tiết theo hãng - sử dụng các ảnh liên quan trong thư mục images
+const brandDetailImages = {
+    'Apple': [
+        'images/iphone-17-pro_1.webp',
+        'images/iphone-17-pro-1_1.webp',
+        'images/iphone-17-pro-2_1_1.webp',
+        'images/iphone-17-pro-5_1.webp'
+    ],
+    'Samsung': [
+        'images/samsung-galaxy-s24_15__2.webp',
+        'images/samsung-galaxy-s24_17__2.webp',
+        'images/samsung-galaxy-s24_20__2.webp',
+        'images/galaxy-s24-plus-vang.webp'
+    ],
+    'Xiaomi': [
+        'images/Xiaomi.avif',
+        'images/home-poco-f8-pro-1125.webp',
+        'images/Xiaomi.avif',
+        'images/home-poco-f8-pro-1125.webp'
+    ],
+    'Oppo': [
+        'images/oppo-reno.avif',
+        'images/reno-xanh.avif',
+        'images/reno10_5g_-_combo_product_-_blue_-_copy.webp',
+        'images/oppo-find-x9-cate-open-sale.webp'
+    ],
+    'Sony': [
+        'images/sony-xperia-1-vi.webp',
+        'images/cate_XPERIA_10VII_1125.webp',
+        'images/sony-xperia-1-vi.webp',
+        'images/cate_XPERIA_10VII_1125.webp'
+    ],
+    'Google': [
+        'images/pixel-9-pro.avif',
+        'images/pixel-9-pro.avif',
+        'images/pixel-9-pro.avif',
+        'images/pixel-9-pro.avif'
+    ],
+    'Tecno': [
+        'images/TECNO.avif',
+        'images/TECNO.avif',
+        'images/TECNO.avif',
+        'images/TECNO.avif'
+    ]
+};
+
+// Helper function để lấy mảng ảnh chi tiết
+function getProductImages(row) {
+    const mainImage = getProductImage(row);
+    const brand = row.ten_hang || row.brand || '';
+    
+    // Nếu có ảnh trong DB, dùng nó
+    if (row.images) {
+        const images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+        if (images.length > 0) return images;
+    }
+    
+    // Tạo mảng ảnh từ ảnh chính + ảnh theo hãng
+    const brandImages = brandDetailImages[brand] || [];
+    return [mainImage, ...brandImages.slice(0, 3)];
+}
+
 // Helper function để map dữ liệu từ DB sang format frontend
 function mapProductToFrontend(row) {
     const brand = row.ten_hang || row.brand || 'unknown';
+    const mainImage = getProductImage(row);
     
     return {
         id: row.ma_sp || row.id,
@@ -50,8 +113,8 @@ function mapProductToFrontend(row) {
         os: row.os || 'Android',
         features: row.features ? (typeof row.features === 'string' ? JSON.parse(row.features) : row.features) : ['tragop'],
         colors: row.colors ? (typeof row.colors === 'string' ? JSON.parse(row.colors) : row.colors) : ['#000000'],
-        image: getProductImage(row),
-        images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+        image: mainImage,
+        images: getProductImages(row),
         sku: row.sku || `SKU-${row.ma_sp || row.id}`,
         rating: row.rating || 4.5,
         reviews: row.reviews || Math.floor(Math.random() * 200) + 50,

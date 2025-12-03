@@ -249,6 +249,78 @@
       </div>
     </div>
 
+    <!-- Review Product Modal -->
+    <div id="reviewProductModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-red-600 to-red-700 p-4 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-lg">Đánh giá sản phẩm</h3>
+              <p class="text-red-100 text-sm">Chia sẻ trải nghiệm của bạn</p>
+            </div>
+            <button onclick="closeReviewModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-4 max-h-[60vh] overflow-y-auto">
+          <!-- Product Info -->
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg mb-4">
+            <img id="reviewProductImage" src="" alt="" class="w-16 h-16 object-contain rounded border">
+            <div class="flex-1 min-w-0">
+              <h4 id="reviewProductName" class="font-semibold text-gray-800 text-sm truncate">---</h4>
+              <p id="reviewProductVariant" class="text-xs text-gray-500">---</p>
+            </div>
+          </div>
+          
+          <!-- Rating -->
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Đánh giá của bạn <span class="text-red-500">*</span></label>
+            <div id="reviewRatingInput" class="flex gap-2 justify-center">
+              <button type="button" onclick="setReviewRating(1)" class="text-3xl text-gray-300 hover:text-yellow-400 transition"><i class="far fa-star" data-rating="1"></i></button>
+              <button type="button" onclick="setReviewRating(2)" class="text-3xl text-gray-300 hover:text-yellow-400 transition"><i class="far fa-star" data-rating="2"></i></button>
+              <button type="button" onclick="setReviewRating(3)" class="text-3xl text-gray-300 hover:text-yellow-400 transition"><i class="far fa-star" data-rating="3"></i></button>
+              <button type="button" onclick="setReviewRating(4)" class="text-3xl text-gray-300 hover:text-yellow-400 transition"><i class="far fa-star" data-rating="4"></i></button>
+              <button type="button" onclick="setReviewRating(5)" class="text-3xl text-gray-300 hover:text-yellow-400 transition"><i class="far fa-star" data-rating="5"></i></button>
+            </div>
+            <p id="ratingText" class="text-center text-sm text-gray-500 mt-1">Chọn số sao</p>
+          </div>
+          
+          <!-- Comment -->
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Nhận xét <span class="text-red-500">*</span></label>
+            <textarea id="reviewCommentInput" rows="4" placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..." class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none resize-none"></textarea>
+          </div>
+          
+          <!-- Upload Images -->
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <i class="fas fa-camera mr-1"></i> Thêm hình ảnh (tối đa 5 ảnh)
+            </label>
+            <div class="flex items-center gap-3 flex-wrap">
+              <label class="cursor-pointer flex items-center justify-center w-16 h-16 border-2 border-dashed border-gray-300 rounded-lg hover:border-red-500 hover:bg-red-50 transition">
+                <input type="file" id="reviewImagesInput" accept="image/*" multiple class="hidden" onchange="previewReviewImagesProfile(this)" />
+                <div class="text-center">
+                  <i class="fas fa-plus text-gray-400"></i>
+                </div>
+              </label>
+              <div id="reviewImagePreviewProfile" class="flex gap-2 flex-wrap"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="p-4 border-t bg-gray-50">
+          <button onclick="submitProductReview()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2">
+            <i class="fas fa-paper-plane"></i> Gửi đánh giá
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer Component -->
     <div id="footer-placeholder"></div>
 
@@ -642,6 +714,12 @@
                 </div>
                 <div class="text-right">
                   <p class="font-bold text-red-600">${formatPrice(firstItem.price * firstItem.quantity)}</p>
+                  ${(order.status === 'delivered' || order.status === 'completed' || order.status === 'da_giao' || order.status === 'hoan_thanh' || order.status === 'confirmed' || order.status === 'paid') ? `
+                    <button onclick="openReviewModal(${firstItem.id}, '${firstItem.name.replace(/'/g, "\\'")}', '${firstItem.image || 'images/iphone.jpg'}', '${(firstItem.color || '') + ' ' + (firstItem.storage || '')}')" 
+                      class="mt-1 text-xs text-yellow-600 hover:text-yellow-700 font-semibold">
+                      <i class="fas fa-star mr-1"></i>Đánh giá
+                    </button>
+                  ` : ''}
                 </div>
               </div>
               ${moreItems > 0 ? `<p class="text-sm text-gray-500 mb-3">+ ${moreItems} sản phẩm khác</p>` : ''}
@@ -720,6 +798,8 @@
         const productsContainer = document.getElementById('modalProducts');
         const items = order.items || [];
         
+        const canReview = order.status === 'delivered' || order.status === 'completed' || order.status === 'da_giao' || order.status === 'hoan_thanh' || order.status === 'confirmed' || order.status === 'paid';
+        
         if (items.length > 0) {
           productsContainer.innerHTML = items.map(item => `
             <div class="flex items-center gap-3 p-3 bg-white rounded-lg border">
@@ -733,6 +813,12 @@
               <div class="text-right">
                 <p class="font-bold text-red-600 text-sm">${formatPrice(item.price)}</p>
                 <p class="text-xs text-gray-500">x${item.quantity}</p>
+                ${canReview ? `
+                  <button onclick="openReviewModal(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.image || 'images/iphone.jpg'}', '${(item.color || '') + ' ' + (item.storage || '')}')" 
+                    class="mt-1 text-xs bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-2 py-1 rounded font-semibold transition">
+                    <i class="fas fa-star mr-1"></i>Đánh giá
+                  </button>
+                ` : ''}
               </div>
             </div>
           `).join('');
@@ -859,7 +945,201 @@
           }, 500);
         }
       }
+      
+      // ===== REVIEW FUNCTIONS =====
+      let currentReviewProduct = null;
+      let selectedReviewRating = 0;
+      let reviewImagesProfile = [];
+      const ratingTexts = ['', 'Rất tệ', 'Tệ', 'Bình thường', 'Tốt', 'Tuyệt vời'];
+      
+      // Mở modal đánh giá
+      async function openReviewModal(productId, productName, productImage, productVariant) {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user || !user.ma_kh) {
+          alert('Vui lòng đăng nhập để đánh giá!');
+          return;
+        }
+        
+        // Kiểm tra quyền đánh giá
+        try {
+          const response = await fetch(`${API_URL}/reviews/can-review/${productId}/${user.ma_kh}`);
+          const data = await response.json();
+          
+          if (!data.canReview) {
+            alert(data.message);
+            return;
+          }
+        } catch (error) {
+          console.error('Lỗi kiểm tra quyền đánh giá:', error);
+        }
+        
+        currentReviewProduct = { id: productId, name: productName, image: productImage, variant: productVariant };
+        
+        // Cập nhật thông tin sản phẩm trong modal
+        document.getElementById('reviewProductImage').src = productImage;
+        document.getElementById('reviewProductImage').onerror = function() { this.src = 'images/iphone.jpg'; };
+        document.getElementById('reviewProductName').textContent = productName;
+        document.getElementById('reviewProductVariant').textContent = productVariant || '';
+        
+        // Reset form
+        selectedReviewRating = 0;
+        reviewImagesProfile = [];
+        document.getElementById('reviewCommentInput').value = '';
+        document.getElementById('reviewImagePreviewProfile').innerHTML = '';
+        document.getElementById('ratingText').textContent = 'Chọn số sao';
+        document.querySelectorAll('#reviewRatingInput i').forEach(star => {
+          star.className = 'far fa-star';
+          star.parentElement.classList.remove('text-yellow-400');
+          star.parentElement.classList.add('text-gray-300');
+        });
+        
+        // Đóng modal chi tiết đơn hàng nếu đang mở
+        closeOrderModal();
+        
+        // Hiển thị modal đánh giá
+        document.getElementById('reviewProductModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      // Đóng modal đánh giá
+      function closeReviewModal() {
+        document.getElementById('reviewProductModal').classList.add('hidden');
+        document.body.style.overflow = '';
+        currentReviewProduct = null;
+      }
+      
+      // Chọn số sao
+      function setReviewRating(rating) {
+        selectedReviewRating = rating;
+        document.getElementById('ratingText').textContent = ratingTexts[rating];
+        
+        document.querySelectorAll('#reviewRatingInput i').forEach((star, i) => {
+          if (i < rating) {
+            star.className = 'fas fa-star';
+            star.parentElement.classList.add('text-yellow-400');
+            star.parentElement.classList.remove('text-gray-300');
+          } else {
+            star.className = 'far fa-star';
+            star.parentElement.classList.remove('text-yellow-400');
+            star.parentElement.classList.add('text-gray-300');
+          }
+        });
+      }
+      
+      // Preview ảnh đánh giá
+      function previewReviewImagesProfile(input) {
+        const files = input.files;
+        const previewContainer = document.getElementById('reviewImagePreviewProfile');
+        
+        if (reviewImagesProfile.length + files.length > 5) {
+          alert('Chỉ được upload tối đa 5 ảnh!');
+          return;
+        }
+        
+        Array.from(files).forEach(file => {
+          if (!file.type.startsWith('image/')) {
+            alert('Chỉ chấp nhận file ảnh!');
+            return;
+          }
+          
+          if (file.size > 5 * 1024 * 1024) {
+            alert('Ảnh không được vượt quá 5MB!');
+            return;
+          }
+          
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const base64 = e.target.result;
+            reviewImagesProfile.push(base64);
+            
+            const imgWrapper = document.createElement('div');
+            imgWrapper.className = 'relative';
+            imgWrapper.innerHTML = `
+              <img src="${base64}" alt="Preview" class="w-16 h-16 object-cover rounded-lg border" />
+              <button type="button" onclick="removeReviewImageProfile(${reviewImagesProfile.length - 1}, this)" class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition">
+                <i class="fas fa-times"></i>
+              </button>
+            `;
+            previewContainer.appendChild(imgWrapper);
+          };
+          reader.readAsDataURL(file);
+        });
+        
+        input.value = '';
+      }
+      
+      // Xóa ảnh preview
+      function removeReviewImageProfile(index, btn) {
+        reviewImagesProfile.splice(index, 1);
+        btn.parentElement.remove();
+        
+        const previewContainer = document.getElementById('reviewImagePreviewProfile');
+        const buttons = previewContainer.querySelectorAll('button');
+        buttons.forEach((b, i) => {
+          b.setAttribute('onclick', `removeReviewImageProfile(${i}, this)`);
+        });
+      }
+      
+      // Gửi đánh giá
+      async function submitProductReview() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user || !user.ma_kh) {
+          alert('Vui lòng đăng nhập để đánh giá!');
+          return;
+        }
+        
+        if (!currentReviewProduct) {
+          alert('Không tìm thấy sản phẩm!');
+          return;
+        }
+        
+        const comment = document.getElementById('reviewCommentInput').value.trim();
+        
+        if (selectedReviewRating === 0) {
+          alert('Vui lòng chọn số sao!');
+          return;
+        }
+        
+        if (!comment) {
+          alert('Vui lòng nhập nhận xét!');
+          return;
+        }
+        
+        try {
+          const response = await fetch(`${API_URL}/reviews`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              productId: currentReviewProduct.id,
+              userId: user.ma_kh,
+              rating: selectedReviewRating,
+              comment: comment,
+              images: reviewImagesProfile
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (response.ok) {
+            alert('Cảm ơn bạn đã đánh giá sản phẩm!');
+            closeReviewModal();
+          } else {
+            if (data.code === 'NOT_PURCHASED') {
+              alert('Bạn cần mua sản phẩm này trước khi đánh giá!');
+            } else {
+              alert(data.error || 'Không thể gửi đánh giá!');
+            }
+          }
+        } catch (error) {
+          console.error('Lỗi gửi đánh giá:', error);
+          alert('Có lỗi xảy ra, vui lòng thử lại!');
+        }
+      }
     </script>
+
+    <!-- AI Chatbot -->
+    <link rel="stylesheet" href="components/ai-chatbot.css">
+    <script src="components/ai-chatbot.js"></script>
   </body>
 </html>
 

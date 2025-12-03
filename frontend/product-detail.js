@@ -631,7 +631,7 @@ function viewImage(src) {
 }
 
 // ===== REVIEW FORM =====
-function toggleReviewForm() {
+async function toggleReviewForm() {
   const form = document.getElementById('reviewForm');
   form.classList.toggle('hidden');
   
@@ -644,14 +644,41 @@ function toggleReviewForm() {
       </button>
     `).join('');
     
-    // Kiểm tra đăng nhập và hiển thị thông báo
+    // Kiểm tra đăng nhập và quyền đánh giá
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     const loginMsg = document.getElementById('loginRequiredMsg');
+    const submitBtn = form.querySelector('button[onclick="submitReview()"]');
+    
     if (loginMsg) {
       if (!user || !user.ma_kh) {
+        loginMsg.innerHTML = `<i class="fas fa-info-circle mr-2"></i>Vui lòng <a href="login.html" class="text-red-600 font-semibold hover:underline">đăng nhập</a> để đánh giá sản phẩm.`;
         loginMsg.classList.remove('hidden');
+        if (submitBtn) submitBtn.disabled = true;
       } else {
-        loginMsg.classList.add('hidden');
+        // Kiểm tra quyền đánh giá (đã mua hàng chưa)
+        try {
+          const response = await fetch(`${API_URL}/reviews/can-review/${currentProduct.id}/${user.ma_kh}`);
+          const data = await response.json();
+          
+          if (!data.canReview) {
+            loginMsg.innerHTML = `<i class="fas fa-info-circle mr-2"></i>${data.message}`;
+            loginMsg.className = 'mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800';
+            loginMsg.classList.remove('hidden');
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+          } else {
+            loginMsg.classList.add('hidden');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+          }
+        } catch (error) {
+          console.error('Lỗi kiểm tra quyền đánh giá:', error);
+          loginMsg.classList.add('hidden');
+        }
       }
     }
   }
@@ -774,7 +801,12 @@ async function submitReview() {
       // Reload đánh giá
       loadReviews();
     } else {
-      showToast(data.error || 'Không thể gửi đánh giá!', 'error');
+      // Xử lý lỗi cụ thể
+      if (data.code === 'NOT_PURCHASED') {
+        showToast('Bạn cần mua sản phẩm này trước khi đánh giá!', 'error');
+      } else {
+        showToast(data.error || 'Không thể gửi đánh giá!', 'error');
+      }
     }
   } catch (error) {
     console.error('Lỗi gửi đánh giá:', error);

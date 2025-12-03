@@ -19,9 +19,9 @@
       "image": "images/samsung_galaxy_a36_5g.avif",
       "images": [
         "images/samsung_galaxy_a36_5g.avif",
-        "images/samsung_galaxy_a36_5g.avif",
-        "images/samsung_galaxy_a36_5g.avif",
-        "images/samsung_galaxy_a36_5g.avif"
+        "images/samsung-galaxy-s24_15__2.webp",
+        "images/samsung-galaxy-s24_17__2.webp",
+        "images/samsung-galaxy-s24_20__2.webp"
       ],
       "sku": "SSG-A36-5G-128",
       "rating": 4.5,
@@ -46,9 +46,9 @@
       "image": "images/A56.avif",
       "images": [
         "images/A56.avif",
-        "images/A56.avif",
-        "images/A56.avif",
-        "images/A56.avif"
+        "images/samsung-galaxy-s24_15__2.webp",
+        "images/samsung-galaxy-s24_17__2.webp",
+        "images/samsung-galaxy-s24_20__2.webp"
       ],
       "sku": "SSG-A56-5G-256",
       "rating": 4.6,
@@ -73,9 +73,9 @@
       "image": "images/A16.avif",
       "images": [
         "images/A16.avif",
-        "images/A16.avif",
-        "images/A16.avif",
-        "images/A16.avif"
+        "images/A17.avif",
+        "images/samsung-galaxy-s24_15__2.webp",
+        "images/samsung-galaxy-s24_17__2.webp"
       ],
       "sku": "SSG-A16-5G-128",
       "rating": 4.4,
@@ -100,9 +100,9 @@
       "image": "images/A17.avif",
       "images": [
         "images/A17.avif",
-        "images/A17.avif",
-        "images/A17.avif",
-        "images/A17.avif"
+        "images/A16.avif",
+        "images/samsung-galaxy-s24_15__2.webp",
+        "images/samsung-galaxy-s24_20__2.webp"
       ],
       "sku": "SSG-A17-5G-128",
       "rating": 4.3,
@@ -128,8 +128,8 @@
       "images": [
         "images/15-256.avif",
         "images/iphone-15-pro-max-256-99.png",
-        "images/15-256.avif",
-        "images/15-256.avif"
+        "images/15IP.avif",
+        "images/iphone-14-pro-max-128-99.webp"
       ],
       "sku": "APL-IP15PM-256",
       "rating": 4.9,
@@ -154,9 +154,9 @@
       "image": "images/15IP.avif",
       "images": [
         "images/15IP.avif",
-        "images/15IP.avif",
-        "images/15IP.avif",
-        "images/15IP.avif"
+        "images/15-256.avif",
+        "images/iphone-15-pro-max-256-99.png",
+        "images/iphone-14-pro-max-128-99.webp"
       ],
       "sku": "APL-IP15P-128",
       "rating": 4.7,
@@ -208,9 +208,9 @@
       "image": "images/iphone-14-pro-max-128-99.webp",
       "images": [
         "images/iphone-14-pro-max-128-99.webp",
-        "images/iphone-14-pro-max-128-99.webp",
-        "images/iphone-14-pro-max-128-99.webp",
-        "images/iphone-14-pro-max-128-99.webp"
+        "images/15-256.avif",
+        "images/15IP.avif",
+        "images/iphone-15-pro-max-256-99.png"
       ],
       "sku": "APL-IP14PM-128-LN",
       "rating": 4.6,
@@ -235,9 +235,9 @@
       "image": "images/samsung.webp",
       "images": [
         "images/samsung.webp",
-        "images/samsung.webp",
-        "images/samsung.webp",
-        "images/samsung.webp"
+        "images/samsung-galaxy-s24_15__2.webp",
+        "images/samsung-galaxy-s24_17__2.webp",
+        "images/samsung-galaxy-s24_20__2.webp"
       ],
       "sku": "SSG-S25U-256",
       "rating": 4.8,
@@ -263,8 +263,8 @@
       "images": [
         "images/samsung_galaxy_s24_fe_5g.avif",
         "images/25fe.png",
-        "images/samsung_galaxy_s24_fe_5g.avif",
-        "images/samsung_galaxy_s24_fe_5g.avif"
+        "images/samsung-galaxy-s24_15__2.webp",
+        "images/samsung-galaxy-s24_17__2.webp"
       ],
       "sku": "SSG-S24FE-128",
       "rating": 4.7,
@@ -344,8 +344,8 @@
       "images": [
         "images/oppx9.avif",
         "images/oppo-find-x9-cate-open-sale.webp",
-        "images/oppx9.avif",
-        "images/oppx9.avif"
+        "images/oppo-reno.avif",
+        "images/reno-xanh.avif"
       ],
       "sku": "OPO-FX9P-256",
       "rating": 4.8,
@@ -370,9 +370,9 @@
       "image": "images/oppo_reno_13_f_4g_256gb.avif",
       "images": [
         "images/oppo_reno_13_f_4g_256gb.avif",
-        "images/oppo_reno_13_f_4g_256gb.avif",
-        "images/oppo_reno_13_f_4g_256gb.avif",
-        "images/oppo_reno_13_f_4g_256gb.avif"
+        "images/oppo-reno.avif",
+        "images/reno-xanh.avif",
+        "images/reno10_5g_-_combo_product_-_blue_-_copy.webp"
       ],
       "sku": "OPO-R13F-256",
       "rating": 4.3,
@@ -397,9 +397,9 @@
       "image": "images/Xiaomi.avif",
       "images": [
         "images/Xiaomi.avif",
+        "images/home-poco-f8-pro-1125.webp",
         "images/Xiaomi.avif",
-        "images/Xiaomi.avif",
-        "images/Xiaomi.avif"
+        "images/home-poco-f8-pro-1125.webp"
       ],
       "sku": "XIA-14-512",
       "rating": 4.7,
@@ -424,9 +424,9 @@
       "image": "images/home-poco-f8-pro-1125.webp",
       "images": [
         "images/home-poco-f8-pro-1125.webp",
+        "images/Xiaomi.avif",
         "images/home-poco-f8-pro-1125.webp",
-        "images/home-poco-f8-pro-1125.webp",
-        "images/home-poco-f8-pro-1125.webp"
+        "images/Xiaomi.avif"
       ],
       "sku": "XIA-POCO-F8P-256",
       "rating": 4.6,
@@ -478,9 +478,9 @@
       "image": "images/sony-xperia-1-vi.webp",
       "images": [
         "images/sony-xperia-1-vi.webp",
+        "images/cate_XPERIA_10VII_1125.webp",
         "images/sony-xperia-1-vi.webp",
-        "images/sony-xperia-1-vi.webp",
-        "images/sony-xperia-1-vi.webp"
+        "images/cate_XPERIA_10VII_1125.webp"
       ],
       "sku": "SNY-X1VI-256",
       "rating": 4.6,
@@ -505,9 +505,9 @@
       "image": "images/cate_XPERIA_10VII_1125.webp",
       "images": [
         "images/cate_XPERIA_10VII_1125.webp",
+        "images/sony-xperia-1-vi.webp",
         "images/cate_XPERIA_10VII_1125.webp",
-        "images/cate_XPERIA_10VII_1125.webp",
-        "images/cate_XPERIA_10VII_1125.webp"
+        "images/sony-xperia-1-vi.webp"
       ],
       "sku": "SNY-X10VII-128",
       "rating": 4.4,

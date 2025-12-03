@@ -101,6 +101,24 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Số sao phải từ 1-5' });
         }
         
+        // Kiểm tra xem user đã mua sản phẩm này chưa (đơn hàng đã xác nhận trở lên)
+        const [purchaseCheck] = await pool.query(`
+            SELECT dh.ma_don 
+            FROM don_hang dh
+            INNER JOIN chi_tiet_don_hang ct ON dh.ma_don = ct.ma_don
+            WHERE dh.ma_kh = ? 
+              AND ct.ma_sp = ? 
+              AND dh.trang_thai IN ('delivered', 'completed', 'da_giao', 'hoan_thanh', 'confirmed', 'paid', 'shipping')
+            LIMIT 1
+        `, [userId, productId]);
+        
+        if (purchaseCheck.length === 0) {
+            return res.status(403).json({ 
+                error: 'Bạn cần mua sản phẩm này trước khi đánh giá',
+                code: 'NOT_PURCHASED'
+            });
+        }
+        
         // Kiểm tra xem user đã đánh giá sản phẩm này chưa
         const [existing] = await pool.query(
             'SELECT ma_dg FROM danh_gia WHERE ma_sp = ? AND ma_kh = ?',
@@ -185,6 +203,48 @@ router.delete('/:id', async (req, res) => {
         res.json({ message: 'Đã xóa đánh giá' });
     } catch (error) {
         console.error('Lỗi xóa đánh giá:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET /api/reviews/can-review/:productId/:userId - Kiểm tra user có thể đánh giá sản phẩm không
+router.get('/can-review/:productId/:userId', async (req, res) => {
+    try {
+        const { productId, userId } = req.params;
+        
+        // Kiểm tra đã mua sản phẩm chưa (đơn hàng đã xác nhận trở lên)
+        const [purchaseCheck] = await pool.query(`
+            SELECT dh.ma_don 
+            FROM don_hang dh
+            INNER JOIN chi_tiet_don_hang ct ON dh.ma_don = ct.ma_don
+            WHERE dh.ma_kh = ? 
+              AND ct.ma_sp = ? 
+              AND dh.trang_thai IN ('delivered', 'completed', 'da_giao', 'hoan_thanh', 'confirmed', 'paid', 'shipping')
+            LIMIT 1
+        `, [userId, productId]);
+        
+        const hasPurchased = purchaseCheck.length > 0;
+        
+        // Kiểm tra đã đánh giá chưa
+        const [reviewCheck] = await pool.query(
+            'SELECT ma_dg FROM danh_gia WHERE ma_sp = ? AND ma_kh = ?',
+            [productId, userId]
+        );
+        
+        const hasReviewed = reviewCheck.length > 0;
+        
+        res.json({
+            canReview: hasPurchased && !hasReviewed,
+            hasPurchased,
+            hasReviewed,
+            message: !hasPurchased 
+                ? 'Bạn cần mua sản phẩm này trước khi đánh giá' 
+                : hasReviewed 
+                    ? 'Bạn đã đánh giá sản phẩm này rồi' 
+                    : 'Bạn có thể đánh giá sản phẩm này'
+        });
+    } catch (error) {
+        console.error('Lỗi kiểm tra quyền đánh giá:', error);
         res.status(500).json({ error: error.message });
     }
 });
