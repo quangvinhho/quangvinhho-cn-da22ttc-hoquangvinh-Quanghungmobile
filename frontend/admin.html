@@ -1,438 +1,618 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản trị - QuangHưngShop</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  </head>
-  <body class="bg-gray-50">
-    <div class="flex h-screen overflow-hidden">
-      <!-- Sidebar - Hidden on mobile, shown on lg+ -->
-      <aside class="hidden lg:flex w-64 bg-gray-800 text-white flex-col flex-shrink-0">
-        <div class="p-6 border-b border-gray-700">
-          <h1 class="text-2xl font-bold">
-            <i class="fas fa-mobile-alt mr-2"></i>QuangHưngShop
-          </h1>
-          <p class="text-sm text-gray-400 mt-1">Admin Dashboard</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quan tri - QuangHungShop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * { font-family: Inter, sans-serif; }
+    .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .sidebar-gradient { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
+    .card-gradient-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .card-gradient-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .card-gradient-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .card-gradient-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+    .sidebar-item { transition: all 0.3s ease; }
+    .sidebar-item:hover { background: rgba(255, 255, 255, 0.1); }
+    .sidebar-item.active { background: linear-gradient(90deg, rgba(102, 126, 234, 0.3) 0%, transparent 100%); border-left: 3px solid #667eea; }
+    .stat-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
+    .section-content { display: none; }
+    .section-content.active { display: block; }
+  </style>
+</head>
+<body class="bg-slate-100">
+  <div class="flex h-screen overflow-hidden">
+    <aside class="hidden lg:flex w-72 sidebar-gradient text-white flex-col flex-shrink-0 shadow-2xl">
+      <div class="p-6 border-b border-slate-700/50">
+        <div class="flex items-center space-x-3">
+          <div class="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center shadow-lg"><i class="fas fa-mobile-alt text-xl"></i></div>
+          <div><h1 class="text-xl font-bold">QuangHungShop</h1><p class="text-xs text-slate-400">Admin Dashboard</p></div>
         </div>
-
-        <nav class="flex-1 overflow-y-auto p-4">
-          <div class="space-y-2">
-            <a href="#" class="flex items-center px-4 py-3 bg-red-600 rounded-lg font-semibold">
-              <i class="fas fa-chart-line mr-3"></i>
-              <span>Tổng quan</span>
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-              <i class="fas fa-shopping-bag mr-3"></i>
-              <span>Đơn hàng</span>
-              <span class="ml-auto bg-red-600 text-xs px-2 py-1 rounded-full">12</span>
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-              <i class="fas fa-box mr-3"></i>
-              <span>Sản phẩm</span>
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-              <i class="fas fa-users mr-3"></i>
-              <span>Khách hàng</span>
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-              <i class="fas fa-tags mr-3"></i>
-              <span>Danh mục</span>
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-              <i class="fas fa-star mr-3"></i>
-              <span>Đánh giá</span>
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-              <i class="fas fa-chart-bar mr-3"></i>
-              <span>Thống kê</span>
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-              <i class="fas fa-cog mr-3"></i>
-              <span>Cài đặt</span>
-            </a>
-          </div>
-        </nav>
-
-        <div class="p-4 border-t border-gray-700">
-          <div class="flex items-center space-x-3 mb-3">
-            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center font-bold">
-              AD
-            </div>
-            <div>
-              <p class="font-semibold">Admin</p>
-              <p class="text-xs text-gray-400">admin@quanghungshop.vn</p>
-            </div>
-          </div>
-          <a href="login.html" class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
-            <i class="fas fa-sign-out-alt mr-2"></i>
-            <span>Đăng xuất</span>
-          </a>
-        </div>
-      </aside>
-
-      <div class="flex-1 flex flex-col overflow-hidden">
-        <header class="bg-white shadow-md px-4 lg:px-6 py-4">
-          <div class="flex items-center justify-between">
-            <!-- Mobile menu button -->
-            <button id="mobile-sidebar-btn" class="lg:hidden text-gray-600 hover:text-gray-800 mr-4">
-              <i class="fas fa-bars text-xl"></i>
-            </button>
-            <h2 class="text-xl lg:text-2xl font-bold text-gray-800">Tổng quan</h2>
-            <div class="flex items-center space-x-4">
-              <button class="relative text-gray-600 hover:text-gray-800">
-                <i class="fas fa-bell text-xl"></i>
-                <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
-              </button>
-              <div class="text-gray-600">
-                <i class="fas fa-calendar-alt mr-2"></i>
-                <span>02/10/2025</span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main class="flex-1 overflow-y-auto p-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow-md p-6">
-              <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-dollar-sign text-2xl text-red-600"></i>
-                </div>
-                <span class="text-green-600 text-sm font-semibold">+12.5%</span>
-              </div>
-              <p class="text-gray-600 text-sm mb-1">Doanh thu tháng này</p>
-              <p class="text-3xl font-bold text-gray-800">1.5B đ</p>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-              <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-shopping-cart text-2xl text-green-600"></i>
-                </div>
-                <span class="text-green-600 text-sm font-semibold">+8.2%</span>
-              </div>
-              <p class="text-gray-600 text-sm mb-1">Đơn hàng</p>
-              <p class="text-3xl font-bold text-gray-800">1,254</p>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-              <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-users text-2xl text-orange-600"></i>
-                </div>
-                <span class="text-green-600 text-sm font-semibold">+15.3%</span>
-              </div>
-              <p class="text-gray-600 text-sm mb-1">Khách hàng mới</p>
-              <p class="text-3xl font-bold text-gray-800">432</p>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-              <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-box text-2xl text-purple-600"></i>
-                </div>
-                <span class="text-red-600 text-sm font-semibold">-3.1%</span>
-              </div>
-              <p class="text-gray-600 text-sm mb-1">Sản phẩm còn lại</p>
-              <p class="text-3xl font-bold text-gray-800">2,156</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold">Doanh thu theo tháng</h3>
-                <select class="border rounded-lg px-3 py-2 outline-none focus:border-blue-600">
-                  <option>2025</option>
-                  <option>2024</option>
-                </select>
-              </div>
-              <div class="h-64 flex items-end justify-between space-x-2">
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 45%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 55%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 65%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 50%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 70%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 80%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 75%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 85%"></div>
-                <div class="flex-1 bg-blue-200 rounded-t hover:bg-blue-300 transition cursor-pointer" style="height: 90%"></div>
-                <div class="flex-1 bg-red-600 rounded-t hover:bg-red-700 transition cursor-pointer" style="height: 95%"></div>
-                <div class="flex-1 bg-gray-200 rounded-t" style="height: 30%"></div>
-                <div class="flex-1 bg-gray-200 rounded-t" style="height: 30%"></div>
-              </div>
-              <div class="grid grid-cols-12 gap-2 mt-2 text-xs text-gray-600 text-center">
-                <div>T1</div>
-                <div>T2</div>
-                <div>T3</div>
-                <div>T4</div>
-                <div>T5</div>
-                <div>T6</div>
-                <div>T7</div>
-                <div>T8</div>
-                <div>T9</div>
-                <div class="font-semibold text-red-600">T10</div>
-                <div>T11</div>
-                <div>T12</div>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-              <h3 class="text-xl font-bold mb-6">Sản phẩm bán chạy</h3>
-              <div class="space-y-4">
-                <div class="flex items-center space-x-3">
-                  <img src="https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-12 h-12 object-cover rounded" />
-                  <div class="flex-1">
-                    <p class="font-semibold text-sm">iPhone 15 Pro Max</p>
-                    <p class="text-xs text-gray-600">256 đã bán</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm font-bold text-red-600">7.6B</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                  <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-12 h-12 object-cover rounded" />
-                  <div class="flex-1">
-                    <p class="font-semibold text-sm">Samsung S24 Ultra</p>
-                    <p class="text-xs text-gray-600">198 đã bán</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm font-bold text-red-600">6.5B</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                  <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-12 h-12 object-cover rounded" />
-                  <div class="flex-1">
-                    <p class="font-semibold text-sm">Xiaomi 14 Pro</p>
-                    <p class="text-xs text-gray-600">167 đã bán</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm font-bold text-red-600">3.3B</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                  <img src="https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-12 h-12 object-cover rounded" />
-                  <div class="flex-1">
-                    <p class="font-semibold text-sm">OPPO Find X7</p>
-                    <p class="text-xs text-gray-600">143 đã bán</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm font-bold text-red-600">3.7B</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                  <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Product" class="w-12 h-12 object-cover rounded" />
-                  <div class="flex-1">
-                    <p class="font-semibold text-sm">Vivo X100 Pro</p>
-                    <p class="text-xs text-gray-600">128 đã bán</p>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm font-bold text-red-600">2.9B</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-xl font-bold">Đơn hàng mới nhất</h3>
-              <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Xem tất cả</a>
-            </div>
-
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead>
-                  <tr class="border-b">
-                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Mã đơn</th>
-                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Khách hàng</th>
-                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Sản phẩm</th>
-                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Ngày đặt</th>
-                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Tổng tiền</th>
-                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Trạng thái</th>
-                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="border-b hover:bg-gray-50">
-                    <td class="py-3 px-4 text-red-600 font-semibold">#DH001250</td>
-                    <td class="py-3 px-4">Nguyễn Văn A</td>
-                    <td class="py-3 px-4">iPhone 15 Pro Max</td>
-                    <td class="py-3 px-4">02/10/2025</td>
-                    <td class="py-3 px-4 font-semibold">29.990.000đ</td>
-                    <td class="py-3 px-4">
-                      <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-sm font-semibold">Chờ xác nhận</span>
-                    </td>
-                    <td class="py-3 px-4">
-                      <button class="text-blue-600 hover:text-blue-700 mr-2">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button class="text-green-600 hover:text-green-700">
-                        <i class="fas fa-check"></i>
-                      </button>
-                    </td>
-                  </tr>
-
-                  <tr class="border-b hover:bg-gray-50">
-                    <td class="py-3 px-4 text-red-600 font-semibold">#DH001249</td>
-                    <td class="py-3 px-4">Trần Thị B</td>
-                    <td class="py-3 px-4">Samsung S24 Ultra</td>
-                    <td class="py-3 px-4">02/10/2025</td>
-                    <td class="py-3 px-4 font-semibold">32.990.000đ</td>
-                    <td class="py-3 px-4">
-                      <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">Đang giao</span>
-                    </td>
-                    <td class="py-3 px-4">
-                      <button class="text-blue-600 hover:text-blue-700 mr-2">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button class="text-green-600 hover:text-green-700">
-                        <i class="fas fa-check"></i>
-                      </button>
-                    </td>
-                  </tr>
-
-                  <tr class="border-b hover:bg-gray-50">
-                    <td class="py-3 px-4 text-red-600 font-semibold">#DH001248</td>
-                    <td class="py-3 px-4">Lê Văn C</td>
-                    <td class="py-3 px-4">Xiaomi 14 Pro</td>
-                    <td class="py-3 px-4">01/10/2025</td>
-                    <td class="py-3 px-4 font-semibold">19.990.000đ</td>
-                    <td class="py-3 px-4">
-                      <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">Đã giao</span>
-                    </td>
-                    <td class="py-3 px-4">
-                      <button class="text-blue-600 hover:text-blue-700 mr-2">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button class="text-gray-400">
-                        <i class="fas fa-check"></i>
-                      </button>
-                    </td>
-                  </tr>
-
-                  <tr class="border-b hover:bg-gray-50">
-                    <td class="py-3 px-4 text-red-600 font-semibold">#DH001247</td>
-                    <td class="py-3 px-4">Phạm Thị D</td>
-                    <td class="py-3 px-4">OPPO Find X7</td>
-                    <td class="py-3 px-4">01/10/2025</td>
-                    <td class="py-3 px-4 font-semibold">25.990.000đ</td>
-                    <td class="py-3 px-4">
-                      <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-sm font-semibold">Chờ xác nhận</span>
-                    </td>
-                    <td class="py-3 px-4">
-                      <button class="text-blue-600 hover:text-blue-700 mr-2">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button class="text-green-600 hover:text-green-700">
-                        <i class="fas fa-check"></i>
-                      </button>
-                    </td>
-                  </tr>
-
-                  <tr class="hover:bg-gray-50">
-                    <td class="py-3 px-4 text-red-600 font-semibold">#DH001246</td>
-                    <td class="py-3 px-4">Hoàng Văn E</td>
-                    <td class="py-3 px-4">Vivo X100 Pro</td>
-                    <td class="py-3 px-4">30/09/2025</td>
-                    <td class="py-3 px-4 font-semibold">22.990.000đ</td>
-              <td class="py-3 px-4">
-                <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">Đã hủy</span>
-                    </td>
-                    <td class="py-3 px-4">
-                      <button class="text-blue-600 hover:text-blue-700 mr-2">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button class="text-gray-400">
-                        <i class="fas fa-check"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </main>
       </div>
-    </div>
-
-    <!-- Mobile Sidebar Overlay -->
-    <div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden" onclick="closeMobileSidebar()"></div>
-    
-    <!-- Mobile Sidebar -->
-    <aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-64 bg-gray-800 text-white flex flex-col z-50 transform -translate-x-full transition-transform duration-300 lg:hidden">
-      <div class="p-6 border-b border-gray-700 flex items-center justify-between">
-        <div>
-          <h1 class="text-xl font-bold">
-            <i class="fas fa-mobile-alt mr-2"></i>QuangHưng
-          </h1>
-          <p class="text-xs text-gray-400 mt-1">Admin Dashboard</p>
-        </div>
-        <button onclick="closeMobileSidebar()" class="text-gray-400 hover:text-white">
-          <i class="fas fa-times text-xl"></i>
-        </button>
-      </div>
-
-      <nav class="flex-1 overflow-y-auto p-4">
-        <div class="space-y-2">
-          <a href="#" class="flex items-center px-4 py-3 bg-red-600 rounded-lg font-semibold">
-            <i class="fas fa-chart-line mr-3"></i>
-            <span>Tổng quan</span>
-          </a>
-          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-            <i class="fas fa-shopping-bag mr-3"></i>
-            <span>Đơn hàng</span>
-            <span class="ml-auto bg-red-600 text-xs px-2 py-1 rounded-full">12</span>
-          </a>
-          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-            <i class="fas fa-box mr-3"></i>
-            <span>Sản phẩm</span>
-          </a>
-          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-            <i class="fas fa-users mr-3"></i>
-            <span>Khách hàng</span>
-          </a>
-          <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition">
-            <i class="fas fa-cog mr-3"></i>
-            <span>Cài đặt</span>
-          </a>
+      <nav class="flex-1 overflow-y-auto py-6 px-4">
+        <p class="text-xs text-slate-500 uppercase mb-4 px-4">Menu chinh</p>
+        <div class="space-y-1">
+          <a href="#" onclick="showSection('dashboard')" class="sidebar-item active flex items-center px-4 py-3 rounded-xl text-white" id="nav-dashboard"><div class="w-10 h-10 rounded-lg bg-violet-500 flex items-center justify-center mr-3"><i class="fas fa-chart-pie"></i></div><span>Tong quan</span></a>
+          <a href="#" onclick="showSection('orders')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-orders"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-shopping-bag"></i></div><span>Don hang</span><span class="ml-auto bg-rose-500 text-xs px-2 py-1 rounded-full" id="pending-count">0</span></a>
+          <a href="#" onclick="showSection('products')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-products"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-box"></i></div><span>San pham</span></a>
+          <a href="#" onclick="showSection('customers')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-customers"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-users"></i></div><span>Khach hang</span></a>
+          <a href="#" onclick="showSection('news')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-news"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-newspaper"></i></div><span>Tin tuc</span></a>
+          <a href="#" onclick="showSection('reviews')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-reviews"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-star"></i></div><span>Danh gia</span></a>
         </div>
       </nav>
-
-      <div class="p-4 border-t border-gray-700">
-        <a href="login.html" class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
-          <i class="fas fa-sign-out-alt mr-2"></i>
-          <span>Đăng xuất</span>
-        </a>
+      <div class="p-4 border-t border-slate-700/50">
+        <div class="bg-slate-800/50 rounded-2xl p-4">
+          <div class="flex items-center space-x-3 mb-4">
+            <div id="admin-avatar" class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center font-bold text-lg overflow-hidden">AD</div>
+            <div>
+              <p class="font-semibold" id="admin-name">Admin</p>
+              <p class="text-xs text-slate-400" id="admin-role">Quan tri vien</p>
+            </div>
+          </div>
+          <button onclick="logout()" class="w-full flex items-center justify-center px-4 py-2.5 bg-rose-500 hover:bg-rose-600 rounded-xl font-medium"><i class="fas fa-sign-out-alt mr-2"></i>Dang xuat</button>
+        </div>
       </div>
     </aside>
-
-    <script>
-      // Mobile sidebar toggle
-      const mobileSidebarBtn = document.getElementById('mobile-sidebar-btn');
-      const mobileSidebar = document.getElementById('mobile-sidebar');
-      const mobileSidebarOverlay = document.getElementById('mobile-sidebar-overlay');
-
-      if (mobileSidebarBtn) {
-        mobileSidebarBtn.addEventListener('click', function() {
-          mobileSidebar.classList.remove('-translate-x-full');
-          mobileSidebarOverlay.classList.remove('hidden');
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <header class="bg-white shadow-sm px-4 lg:px-8 py-4 border-b border-slate-200">
+        <div class="flex items-center justify-between">
+          <div><h2 class="text-2xl font-bold text-slate-800" id="page-title">Tong quan</h2><p class="text-sm text-slate-500" id="welcome-text">Chao mung tro lai, Admin!</p></div>
+          <div class="flex items-center space-x-4">
+            <div class="hidden md:flex items-center text-slate-600 bg-slate-100 px-4 py-2 rounded-xl"><i class="fas fa-calendar-alt mr-2 text-violet-500"></i><span class="text-sm" id="current-date"></span></div>
+          </div>
+        </div>
+      </header>
+      <main class="flex-1 overflow-y-auto p-4 lg:p-8 bg-gradient-to-br from-slate-100 to-slate-200">
+        <div id="section-dashboard" class="section-content active">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-1 flex items-center justify-center shadow-lg"><i class="fas fa-dollar-sign text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>12%</span></div><p class="text-slate-500 text-sm mb-1">Doanh thu thang</p><p class="text-3xl font-bold text-slate-800" id="stat-revenue">0d</p></div>
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-2 flex items-center justify-center shadow-lg"><i class="fas fa-shopping-cart text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>8%</span></div><p class="text-slate-500 text-sm mb-1">Don hang moi</p><p class="text-3xl font-bold text-slate-800" id="stat-orders">0</p></div>
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-3 flex items-center justify-center shadow-lg"><i class="fas fa-users text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>5%</span></div><p class="text-slate-500 text-sm mb-1">Khach hang</p><p class="text-3xl font-bold text-slate-800" id="stat-customers">0</p></div>
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-4 flex items-center justify-center shadow-lg"><i class="fas fa-box text-white text-xl"></i></div><span class="text-amber-500 text-sm font-semibold bg-amber-50 px-3 py-1 rounded-full"><i class="fas fa-minus mr-1"></i>2%</span></div><p class="text-slate-500 text-sm mb-1">San pham</p><p class="text-3xl font-bold text-slate-800" id="stat-products">0</p></div>
+          </div>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-2xl shadow-lg p-6"><h3 class="text-lg font-bold text-slate-800 mb-6">Doanh thu theo thang</h3><canvas id="revenueChart" height="300"></canvas></div>
+            <div class="bg-white rounded-2xl shadow-lg p-6"><h3 class="text-lg font-bold text-slate-800 mb-6">Don hang theo trang thai</h3><canvas id="ordersChart" height="300"></canvas></div>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex items-center justify-between mb-6"><h3 class="text-lg font-bold text-slate-800">Don hang gan day</h3><a href="#" onclick="showSection('orders')" class="text-violet-600 text-sm font-medium">Xem tat ca</a></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Ma don</th><th class="pb-4">Khach hang</th><th class="pb-4">Tong tien</th><th class="pb-4">Trang thai</th><th class="pb-4">Ngay dat</th></tr></thead><tbody id="recent-orders-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+        </div>
+        <div id="section-orders" class="section-content">
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly don hang</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="order-search" placeholder="Tim don hang..." class="bg-transparent outline-none text-sm w-40"></div><select id="order-status-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tat ca</option><option value="pending">Cho xu ly</option><option value="confirmed">Da xac nhan</option><option value="shipping">Dang giao</option><option value="delivered">Da giao</option><option value="cancelled">Da huy</option></select></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Ma don</th><th class="pb-4">Khach hang</th><th class="pb-4">SDT</th><th class="pb-4">Tong tien</th><th class="pb-4">Trang thai</th><th class="pb-4">Ngay dat</th><th class="pb-4">Thao tac</th></tr></thead><tbody id="orders-table"><tr><td colspan="7" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+        </div>
+        <div id="section-products" class="section-content">
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly san pham</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="product-search" placeholder="Tim san pham..." class="bg-transparent outline-none text-sm w-40"></div><select id="product-brand-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tat ca hang</option></select><button onclick="openProductModal()" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-plus mr-2"></i>Them san pham</button></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Anh</th><th class="pb-4">Ten san pham</th><th class="pb-4">Hang</th><th class="pb-4">Gia</th><th class="pb-4">Ton kho</th><th class="pb-4">Thao tac</th></tr></thead><tbody id="products-table"><tr><td colspan="6" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+        </div>
+        <div id="section-customers" class="section-content">
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly khach hang</h3><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="customer-search" placeholder="Tim khach hang..." class="bg-transparent outline-none text-sm w-40"></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Avatar</th><th class="pb-4">Ho ten</th><th class="pb-4">Email</th><th class="pb-4">SDT</th><th class="pb-4">Don hang</th><th class="pb-4">Tong chi tieu</th></tr></thead><tbody id="customers-table"><tr><td colspan="6" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+        </div>
+        <div id="section-news" class="section-content">
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly tin tuc</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="news-search" placeholder="Tim tin tuc..." class="bg-transparent outline-none text-sm w-40"></div><button onclick="openNewsModal()" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-plus mr-2"></i>Them tin tuc</button></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Anh</th><th class="pb-4">Tieu de</th><th class="pb-4">Tac gia</th><th class="pb-4">Ngay dang</th><th class="pb-4">Thao tac</th></tr></thead><tbody id="news-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+        </div>
+        <div id="section-reviews" class="section-content">
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly danh gia</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="review-search" placeholder="Tim danh gia..." class="bg-transparent outline-none text-sm w-40"></div><select id="review-rating-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tat ca sao</option><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select></div></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"><div class="bg-amber-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-amber-600" id="avg-rating">0</div><div class="text-sm text-slate-600">Diem TB</div></div><div class="bg-emerald-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-emerald-600" id="total-reviews">0</div><div class="text-sm text-slate-600">Tong danh gia</div></div><div class="bg-blue-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-blue-600" id="positive-reviews">0%</div><div class="text-sm text-slate-600">Tich cuc</div></div><div class="bg-rose-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-rose-600" id="negative-reviews">0%</div><div class="text-sm text-slate-600">Tieu cuc</div></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Khach hang</th><th class="pb-4">San pham</th><th class="pb-4">Danh gia</th><th class="pb-4">Noi dung</th><th class="pb-4">Ngay</th></tr></thead><tbody id="reviews-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div id="toast" class="fixed bottom-4 right-4 z-50 transform translate-y-20 opacity-0 transition-all duration-300"><div class="bg-slate-800 text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3"><i id="toast-icon" class="fas fa-check-circle text-emerald-400"></i><span id="toast-message">Thanh cong!</span></div></div>
+  
+  <!-- Product Modal -->
+  <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto m-4">
+      <div class="p-6 border-b border-slate-200">
+        <h3 class="text-xl font-bold text-slate-800" id="product-modal-title">Them san pham moi</h3>
+      </div>
+      <div class="p-6">
+        <form id="product-form">
+          <input type="hidden" id="product-id">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Ten san pham <span class="text-red-500">*</span></label>
+              <input type="text" id="product-name" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: iPhone 15 Pro Max">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Hang <span class="text-red-500">*</span></label>
+              <select id="product-brand" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="">Chon hang</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Gia (VND) <span class="text-red-500">*</span></label>
+              <input type="number" id="product-price" required min="0" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: 29990000">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Ton kho <span class="text-red-500">*</span></label>
+              <input type="number" id="product-stock" required min="0" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: 50">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Mau sac</label>
+              <input type="text" id="product-color" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: Xanh, Den, Trang">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Bo nho</label>
+              <input type="text" id="product-storage" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: 128GB, 256GB">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-slate-700 mb-2">Mo ta</label>
+            <textarea id="product-description" rows="4" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhap mo ta san pham..."></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-slate-700 mb-2">URL Anh dai dien</label>
+            <input type="text" id="product-image" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="images/ten-san-pham.jpg">
+            <p class="text-xs text-slate-500 mt-1">Nhap duong dan anh (tuong doi hoac tuyet doi)</p>
+          </div>
+          <div class="flex gap-3 justify-end">
+            <button type="button" onclick="closeProductModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">Huy</button>
+            <button type="submit" class="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium">Luu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- News Modal -->
+  <div id="news-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center"><div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto m-4"><div class="p-6 border-b border-slate-200"><h3 class="text-xl font-bold text-slate-800" id="news-modal-title">Them tin tuc moi</h3></div><div class="p-6"><form id="news-form"><input type="hidden" id="news-id"><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">Tieu de <span class="text-red-500">*</span></label><input type="text" id="news-title" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhap tieu de tin tuc"></div><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">Noi dung <span class="text-red-500">*</span></label><textarea id="news-content" required rows="8" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhap noi dung tin tuc"></textarea></div><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">URL Anh dai dien</label><input type="text" id="news-image" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="https://example.com/image.jpg"><p class="text-xs text-slate-500 mt-1">De trong neu khong co anh</p></div><div class="flex gap-3 justify-end"><button type="button" onclick="closeNewsModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">Huy</button><button type="submit" class="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium">Luu</button></div></form></div></div></div>
+  <script>
+    const API_URL = 'http://localhost:3000/api';
+    const PLACEHOLDER_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY0NzQ4YiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';
+    let allOrders = [], allProducts = [], allCustomers = [], allReviews = [];
+    document.addEventListener('DOMContentLoaded', () => { 
+      document.getElementById('current-date').textContent = new Date().toLocaleDateString('vi-VN'); 
+      loadAdminInfo();
+      loadBrands();
+      loadDashboardData(); 
+    });
+    
+    // Load admin info from localStorage and then refresh from database
+    async function loadAdminInfo() {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      
+      // Kiểm tra quyền admin (hỗ trợ cả Google login và normal login)
+      if (!isAdmin && !user.isAdmin && user.role !== 'admin') {
+        alert('Ban khong co quyen truy cap trang nay!');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Hiển thị thông tin từ localStorage trước (để nhanh)
+      displayAdminInfo(user);
+      
+      // Nếu có ma_admin, load lại từ database
+      if (user.ma_admin) {
+        try {
+          const res = await fetch(API_URL + '/admin/profile/' + user.ma_admin);
+          const data = await res.json();
+          
+          if (data.success && data.data) {
+            // Merge dữ liệu từ DB với dữ liệu hiện tại (giữ lại avatar từ Google nếu có)
+            const updatedUser = { 
+              ...user, 
+              ...data.data,
+              avt: data.data.avt || user.avt // Ưu tiên avatar từ DB, nếu không có thì dùng từ Google
+            };
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+            // Hiển thị thông tin mới từ database
+            displayAdminInfo(updatedUser);
+          }
+        } catch (e) {
+          console.error('Error loading admin info from DB:', e);
+          // Vẫn hiển thị từ localStorage nếu lỗi API
+        }
+      }
+    }
+    
+    // Hàm hiển thị thông tin admin lên giao diện
+    function displayAdminInfo(admin) {
+      const adminName = admin.ho_ten || admin.ten_admin || 'Admin';
+      const adminAvatar = admin.avt || admin.avatar || '';
+      const adminRole = admin.quyen === 'superadmin' ? 'Super Admin' : 'Quan tri vien';
+      
+      // Cập nhật tên admin
+      document.getElementById('admin-name').textContent = adminName;
+      document.getElementById('welcome-text').textContent = 'Chao mung tro lai, ' + adminName + '!';
+      
+      // Cập nhật avatar
+      const avatarElement = document.getElementById('admin-avatar');
+      if (adminAvatar) {
+        const firstChar = adminName.charAt(0).toUpperCase();
+        avatarElement.innerHTML = '<img src="' + adminAvatar + '" alt="Avatar" class="w-full h-full object-cover rounded-full" onerror="this.style.display=\'none\'; this.parentElement.textContent=\'' + firstChar + '\'">';
+      } else {
+        avatarElement.textContent = adminName.charAt(0).toUpperCase();
+      }
+      
+      // Cập nhật role
+      document.getElementById('admin-role').textContent = adminRole;
+    }
+    function logout() { 
+      localStorage.removeItem('user'); 
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('isAdmin');
+      window.location.href = 'login.html'; 
+    }
+    function showSection(section) {
+      document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.sidebar-item').forEach(el => { el.classList.remove('active', 'text-white'); el.classList.add('text-slate-300'); });
+      document.getElementById('section-' + section).classList.add('active');
+      const navItem = document.getElementById('nav-' + section);
+      if (navItem) { navItem.classList.add('active', 'text-white'); navItem.classList.remove('text-slate-300'); }
+      const titles = { dashboard: 'Tong quan', orders: 'Quan ly don hang', products: 'Quan ly san pham', customers: 'Quan ly khach hang', news: 'Quan ly tin tuc', reviews: 'Quan ly danh gia' };
+      document.getElementById('page-title').textContent = titles[section] || 'Tong quan';
+      if (section === 'dashboard') loadDashboardData();
+      else if (section === 'orders') loadOrders();
+      else if (section === 'products') loadProducts();
+      else if (section === 'customers') loadCustomers();
+      else if (section === 'news') loadNews();
+      else if (section === 'reviews') loadReviews();
+    }
+    async function loadDashboardData() {
+      let products = [], ordersData = [], customersData = [];
+      try { products = await fetch(API_URL + '/products').then(r => r.json()); } catch(e) { products = [{id:1,name:'iPhone 15 Pro',price:34990000},{id:2,name:'Samsung S24',price:31990000},{id:3,name:'Xiaomi 14',price:19990000}]; }
+      try { const orders = await fetch(API_URL + '/admin/orders').then(r => r.json()); ordersData = orders.data || orders || []; } catch(e) { ordersData = [{ma_don:1001,ten_nguoi_nhan:'Nguyen Van A',tong_tien:34990000,trang_thai:'pending',thoi_gian:new Date()},{ma_don:1002,ten_nguoi_nhan:'Tran Thi B',tong_tien:31990000,trang_thai:'confirmed',thoi_gian:new Date()}]; }
+      try { const customers = await fetch(API_URL + '/admin/customers').then(r => r.json()); customersData = customers.data || customers || []; } catch(e) { customersData = [{ma_kh:1,ho_ten:'Nguyen Van A'},{ma_kh:2,ho_ten:'Tran Thi B'}]; }
+      const revenue = ordersData.reduce((sum, o) => sum + parseFloat(o.tong_tien || 0), 0);
+      const pendingOrders = ordersData.filter(o => o.trang_thai === 'pending').length;
+      document.getElementById('stat-revenue').textContent = formatCurrency(revenue);
+      document.getElementById('stat-orders').textContent = ordersData.length;
+      document.getElementById('stat-customers').textContent = customersData.length;
+      document.getElementById('stat-products').textContent = products.length || 0;
+      document.getElementById('pending-count').textContent = pendingOrders;
+      renderRecentOrders(ordersData.slice(0, 5));
+      initRevenueChart(ordersData);
+      initOrdersChart(ordersData);
+    }
+    function renderRecentOrders(orders) {
+      const tbody = document.getElementById('recent-orders-table');
+      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Chua co don hang</td></tr>'; return; }
+      tbody.innerHTML = orders.map(o => '<tr class="border-b border-slate-50"><td class="py-4 font-medium text-violet-600">#' + o.ma_don + '</td><td class="py-4">' + (o.ten_nguoi_nhan || 'N/A') + '</td><td class="py-4 font-semibold">' + formatCurrency(o.tong_tien) + '</td><td class="py-4">' + getStatusBadge(o.trang_thai) + '</td><td class="py-4 text-slate-500">' + formatDate(o.thoi_gian) + '</td></tr>').join('');
+    }
+    function initRevenueChart(orders) {
+      const ctx = document.getElementById('revenueChart'); if (!ctx) return;
+      const monthlyRevenue = Array(12).fill(0);
+      orders.forEach(o => { const m = new Date(o.thoi_gian).getMonth(); monthlyRevenue[m] += parseFloat(o.tong_tien || 0); });
+      new Chart(ctx, { type: 'line', data: { labels: ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'], datasets: [{ label: 'Doanh thu', data: monthlyRevenue, borderColor: '#667eea', backgroundColor: 'rgba(102,126,234,0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, plugins: { legend: { display: false } } } });
+    }
+    function initOrdersChart(orders) {
+      const ctx = document.getElementById('ordersChart'); if (!ctx) return;
+      const counts = { pending: 0, confirmed: 0, shipping: 0, delivered: 0, cancelled: 0 };
+      orders.forEach(o => { if (counts.hasOwnProperty(o.trang_thai)) counts[o.trang_thai]++; });
+      new Chart(ctx, { type: 'doughnut', data: { labels: ['Cho xu ly','Da xac nhan','Dang giao','Da giao','Da huy'], datasets: [{ data: Object.values(counts), backgroundColor: ['#f59e0b','#3b82f6','#8b5cf6','#10b981','#ef4444'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
+    }
+    async function loadOrders() {
+      try { const res = await fetch(API_URL + '/admin/orders'); const data = await res.json(); allOrders = data.data || data || []; renderOrders(allOrders); }
+      catch(e) { allOrders = [{ma_don:1001,ten_nguoi_nhan:'Nguyen Van A',so_dt:'0901234567',tong_tien:34990000,trang_thai:'pending',thoi_gian:new Date()},{ma_don:1002,ten_nguoi_nhan:'Tran Thi B',so_dt:'0912345678',tong_tien:31990000,trang_thai:'confirmed',thoi_gian:new Date()}]; renderOrders(allOrders); }
+    }
+    function renderOrders(orders) {
+      const tbody = document.getElementById('orders-table');
+      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-400">Khong co don hang</td></tr>'; return; }
+      tbody.innerHTML = orders.map(o => '<tr class="border-b border-slate-50"><td class="py-4 font-medium text-violet-600">#' + o.ma_don + '</td><td class="py-4">' + (o.ten_nguoi_nhan || 'N/A') + '</td><td class="py-4 text-slate-500">' + (o.so_dt || 'N/A') + '</td><td class="py-4 font-semibold">' + formatCurrency(o.tong_tien) + '</td><td class="py-4"><select onchange="updateOrderStatus(' + o.ma_don + ', this.value)" class="text-xs border rounded-lg px-2 py-1"><option value="pending"' + (o.trang_thai==='pending'?' selected':'') + '>Cho xu ly</option><option value="confirmed"' + (o.trang_thai==='confirmed'?' selected':'') + '>Da xac nhan</option><option value="shipping"' + (o.trang_thai==='shipping'?' selected':'') + '>Dang giao</option><option value="delivered"' + (o.trang_thai==='delivered'?' selected':'') + '>Da giao</option><option value="cancelled"' + (o.trang_thai==='cancelled'?' selected':'') + '>Da huy</option></select></td><td class="py-4 text-slate-500">' + formatDate(o.thoi_gian) + '</td><td class="py-4"><button class="text-violet-600"><i class="fas fa-eye"></i></button></td></tr>').join('');
+    }
+    async function updateOrderStatus(id, status) { try { await fetch(API_URL + '/admin/orders/' + id + '/status', { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status:status}) }); showToast('Cap nhat thanh cong'); } catch(e) { showToast('Loi cap nhat', 'error'); } }
+    let allBrands = [], editingProductId = null;
+    async function loadBrands() {
+      try {
+        const res = await fetch(API_URL + '/admin/brands');
+        const data = await res.json();
+        allBrands = data.data || [];
+        const select = document.getElementById('product-brand');
+        const filter = document.getElementById('product-brand-filter');
+        const options = '<option value="">Chon hang</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
+        const filterOptions = '<option value="">Tat ca hang</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
+        select.innerHTML = options;
+        filter.innerHTML = filterOptions;
+      } catch(e) { console.error('Error loading brands:', e); }
+    }
+    function getBrandName(brandId) {
+      const brand = allBrands.find(b => b.ma_hang === brandId);
+      return brand ? brand.ten_hang : 'N/A';
+    }
+    async function loadProducts() {
+      try {
+        const res = await fetch(API_URL + '/products');
+        allProducts = await res.json();
+        renderProducts(allProducts);
+      } catch(e) {
+        console.error('Error loading products:', e);
+        showToast('Loi tai san pham', 'error');
+      }
+    }
+    function renderProducts(products) {
+      const tbody = document.getElementById('products-table');
+      if (!products.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Khong co san pham</td></tr>'; return; }
+      tbody.innerHTML = products.map(p => {
+        const productId = p.ma_sp || p.id;
+        const productName = p.ten_sp || p.name || 'N/A';
+        const productImage = p.anh_dai_dien || p.image || PLACEHOLDER_IMAGE;
+        const productStorage = p.bo_nho || p.storage || '';
+        const productColor = p.mau_sac || '';
+        const productPrice = p.gia || p.price || 0;
+        const productStock = p.so_luong_ton || p.stock || 0;
+        const brandId = p.ma_hang;
+        return '<tr class="border-b border-slate-50 hover:bg-slate-50"><td class="py-4"><img src="' + productImage + '" class="w-16 h-16 object-cover rounded-xl" onerror="this.src=\'' + PLACEHOLDER_IMAGE + '\'"></td><td class="py-4"><p class="font-medium">' + productName + '</p><p class="text-xs text-slate-500">' + productStorage + (productColor ? ' - ' + productColor : '') + '</p></td><td class="py-4"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-medium">' + getBrandName(brandId) + '</span></td><td class="py-4 font-semibold text-violet-600">' + formatCurrency(productPrice) + '</td><td class="py-4"><span class="px-2 py-1 rounded-lg text-xs font-medium ' + (productStock>10?'bg-emerald-100 text-emerald-700':productStock>0?'bg-amber-100 text-amber-700':'bg-red-100 text-red-700') + '">' + productStock + '</span></td><td class="py-4 space-x-2"><button onclick="viewProduct(' + productId + ')" class="text-violet-600 hover:text-violet-800" title="Xem"><i class="fas fa-eye"></i></button><button onclick="editProduct(' + productId + ')" class="text-blue-600 hover:text-blue-800" title="Sua"><i class="fas fa-edit"></i></button><button onclick="deleteProduct(' + productId + ')" class="text-red-600 hover:text-red-800" title="Xoa"><i class="fas fa-trash"></i></button></td></tr>';
+      }).join('');
+    }
+    function openProductModal(productId) {
+      editingProductId = productId || null;
+      const modal = document.getElementById('product-modal');
+      const form = document.getElementById('product-form');
+      form.reset();
+      if (productId) {
+        const product = allProducts.find(p => (p.ma_sp || p.id) === productId);
+        if (product) {
+          document.getElementById('product-modal-title').textContent = 'Chinh sua san pham';
+          document.getElementById('product-id').value = product.ma_sp || product.id;
+          document.getElementById('product-name').value = product.ten_sp || product.name || '';
+          document.getElementById('product-brand').value = product.ma_hang || '';
+          document.getElementById('product-price').value = product.gia || product.price || '';
+          document.getElementById('product-stock').value = product.so_luong_ton || product.stock || '';
+          document.getElementById('product-color').value = product.mau_sac || '';
+          document.getElementById('product-storage').value = product.bo_nho || product.storage || '';
+          document.getElementById('product-description').value = product.mo_ta || product.description || '';
+          document.getElementById('product-image').value = product.anh_dai_dien || product.image || '';
+        }
+      } else {
+        document.getElementById('product-modal-title').textContent = 'Them san pham moi';
+      }
+      modal.classList.remove('hidden');
+    }
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+      editingProductId = null;
+    }
+    function viewProduct(id) {
+      const product = allProducts.find(p => (p.ma_sp || p.id) === id);
+      if (product) {
+        const name = product.ten_sp || product.name || 'N/A';
+        const price = product.gia || product.price || 0;
+        const stock = product.so_luong_ton || product.stock || 0;
+        const color = product.mau_sac || 'N/A';
+        const storage = product.bo_nho || product.storage || 'N/A';
+        const desc = product.mo_ta || product.description || 'Khong co';
+        alert('CHI TIET SAN PHAM\n\nTen: ' + name + '\nHang: ' + getBrandName(product.ma_hang) + '\nGia: ' + formatCurrency(price) + '\nTon kho: ' + stock + '\nMau sac: ' + color + '\nBo nho: ' + storage + '\nMo ta: ' + desc);
+      }
+    }
+    function editProduct(id) { openProductModal(id); }
+    async function deleteProduct(id) {
+      if (!confirm('Ban co chac chan muon xoa san pham nay?')) return;
+      try {
+        const res = await fetch(API_URL + '/admin/products/' + id, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Xoa san pham thanh cong');
+          loadProducts();
+        } else {
+          showToast(data.message || 'Loi xoa san pham', 'error');
+        }
+      } catch(e) {
+        console.error('Error deleting product:', e);
+        showToast('Loi xoa san pham', 'error');
+      }
+    }
+    document.getElementById('product-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const productData = {
+        ten_sp: document.getElementById('product-name').value,
+        ma_hang: document.getElementById('product-brand').value,
+        gia: document.getElementById('product-price').value,
+        so_luong_ton: document.getElementById('product-stock').value,
+        mau_sac: document.getElementById('product-color').value || null,
+        bo_nho: document.getElementById('product-storage').value || null,
+        mo_ta: document.getElementById('product-description').value || null,
+        anh_dai_dien: document.getElementById('product-image').value || null
+      };
+      try {
+        const url = editingProductId ? API_URL + '/admin/products/' + editingProductId : API_URL + '/admin/products';
+        const method = editingProductId ? 'PUT' : 'POST';
+        const res = await fetch(url, { method: method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(productData) });
+        const data = await res.json();
+        if (data.success) {
+          showToast(editingProductId ? 'Cap nhat san pham thanh cong' : 'Them san pham thanh cong');
+          closeProductModal();
+          loadProducts();
+        } else {
+          showToast(data.message || 'Loi luu san pham', 'error');
+        }
+      } catch(e) {
+        console.error('Error saving product:', e);
+        showToast('Loi luu san pham', 'error');
+      }
+    });
+    async function loadCustomers() {
+      try { const res = await fetch(API_URL + '/admin/customers'); const data = await res.json(); allCustomers = data.data || data || []; renderCustomers(allCustomers); }
+      catch(e) { allCustomers = [{ma_kh:1,ho_ten:'Nguyen Van A',email:'a@email.com',so_dt:'0901234567',so_don_hang:5,tong_chi_tieu:150000000},{ma_kh:2,ho_ten:'Tran Thi B',email:'b@email.com',so_dt:'0912345678',so_don_hang:3,tong_chi_tieu:89000000}]; renderCustomers(allCustomers); }
+    }
+    function renderCustomers(customers) {
+      const tbody = document.getElementById('customers-table');
+      if (!customers.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Khong co khach hang</td></tr>'; return; }
+      tbody.innerHTML = customers.map(c => '<tr class="border-b border-slate-50"><td class="py-4">' + (c.avt ? '<img src="' + c.avt + '" class="w-10 h-10 rounded-full object-cover">' : '<div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center text-white font-medium">' + (c.ho_ten||'K').charAt(0) + '</div>') + '</td><td class="py-4 font-medium">' + (c.ho_ten || 'N/A') + '</td><td class="py-4 text-slate-500">' + (c.email || 'N/A') + '</td><td class="py-4 text-slate-500">' + (c.so_dt || 'N/A') + '</td><td class="py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-medium">' + (c.so_don_hang || 0) + '</span></td><td class="py-4 font-semibold text-emerald-600">' + formatCurrency(c.tong_chi_tieu || 0) + '</td></tr>').join('');
+    }
+    async function loadReviews() {
+      try { const res = await fetch(API_URL + '/admin/reviews'); const data = await res.json(); allReviews = data.data || data || []; renderReviews(allReviews); updateReviewStats(allReviews); }
+      catch(e) { allReviews = [{ma_dg:1,ho_ten:'Nguyen Van A',ten_sp:'iPhone 15 Pro',so_sao:5,binh_luan:'San pham tuyet voi!',ngay_danh_gia:new Date()},{ma_dg:2,ho_ten:'Tran Thi B',ten_sp:'Samsung S24',so_sao:4,binh_luan:'Rat hai long',ngay_danh_gia:new Date()}]; renderReviews(allReviews); updateReviewStats(allReviews); }
+    }
+    function renderReviews(reviews) {
+      const tbody = document.getElementById('reviews-table');
+      if (!reviews.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Khong co danh gia</td></tr>'; return; }
+      tbody.innerHTML = reviews.map(r => '<tr class="border-b border-slate-50"><td class="py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-medium text-sm">' + (r.ho_ten||'K').charAt(0) + '</div><span class="font-medium">' + (r.ho_ten||'Khach hang') + '</span></div></td><td class="py-4 text-slate-500">' + (r.ten_sp || 'N/A') + '</td><td class="py-4"><div class="flex items-center gap-1">' + renderStars(r.so_sao) + '</div></td><td class="py-4 text-slate-600 max-w-[200px] truncate">' + (r.binh_luan || '') + '</td><td class="py-4 text-slate-500">' + formatDate(r.ngay_danh_gia) + '</td></tr>').join('');
+    }
+    function updateReviewStats(reviews) {
+      const total = reviews.length;
+      const avg = total > 0 ? (reviews.reduce((s, r) => s + r.so_sao, 0) / total).toFixed(1) : 0;
+      const positive = total > 0 ? Math.round((reviews.filter(r => r.so_sao >= 4).length / total) * 100) : 0;
+      const negative = total > 0 ? Math.round((reviews.filter(r => r.so_sao <= 2).length / total) * 100) : 0;
+      document.getElementById('avg-rating').textContent = avg;
+      document.getElementById('total-reviews').textContent = total;
+      document.getElementById('positive-reviews').textContent = positive + '%';
+      document.getElementById('negative-reviews').textContent = negative + '%';
+    }
+    function renderStars(rating) { var s = ''; for (var i = 1; i <= 5; i++) s += '<i class="fas fa-star ' + (i <= rating ? 'text-amber-400' : 'text-slate-200') + ' text-sm"></i>'; return s; }
+    function formatCurrency(amount) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseFloat(amount) || 0); }
+    function formatDate(d) { if (!d) return 'N/A'; return new Date(d).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
+    function getStatusBadge(s) { var badges = { pending: '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-xs font-medium">Cho xu ly</span>', confirmed: '<span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-medium">Da xac nhan</span>', shipping: '<span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-medium">Dang giao</span>', delivered: '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-medium">Da giao</span>', cancelled: '<span class="px-2 py-1 bg-red-100 text-red-700 rounded-lg text-xs font-medium">Da huy</span>' }; return badges[s] || badges.pending; }
+    function showToast(msg, type) { type = type || 'success'; var toast = document.getElementById('toast'); document.getElementById('toast-message').textContent = msg; document.getElementById('toast-icon').className = type === 'success' ? 'fas fa-check-circle text-emerald-400' : 'fas fa-exclamation-circle text-red-400'; toast.classList.remove('translate-y-20', 'opacity-0'); toast.classList.add('translate-y-0', 'opacity-100'); setTimeout(function() { toast.classList.add('translate-y-20', 'opacity-0'); toast.classList.remove('translate-y-0', 'opacity-100'); }, 3000); }
+    document.getElementById('order-search').addEventListener('input', function(e) { 
+      var s = e.target.value.toLowerCase().trim(); 
+      if (!s) { renderOrders(allOrders); return; }
+      renderOrders(allOrders.filter(function(o) { 
+        return (o.ten_nguoi_nhan && o.ten_nguoi_nhan.toLowerCase().indexOf(s) >= 0) || 
+               String(o.ma_don).indexOf(s) >= 0 ||
+               (o.so_dt && o.so_dt.indexOf(s) >= 0); 
+      })); 
+    });
+    document.getElementById('order-status-filter').addEventListener('change', function(e) { 
+      var s = e.target.value; 
+      var searchVal = document.getElementById('order-search').value.toLowerCase().trim();
+      var filtered = s ? allOrders.filter(function(o) { return o.trang_thai === s; }) : allOrders;
+      if (searchVal) {
+        filtered = filtered.filter(function(o) { 
+          return (o.ten_nguoi_nhan && o.ten_nguoi_nhan.toLowerCase().indexOf(searchVal) >= 0) || 
+                 String(o.ma_don).indexOf(searchVal) >= 0; 
         });
       }
-
-      function closeMobileSidebar() {
-        mobileSidebar.classList.add('-translate-x-full');
-        mobileSidebarOverlay.classList.add('hidden');
+      renderOrders(filtered); 
+    });
+    document.getElementById('product-search').addEventListener('input', function(e) { 
+      var s = e.target.value.toLowerCase().trim(); 
+      if (!s) { renderProducts(allProducts); return; }
+      renderProducts(allProducts.filter(function(p) { 
+        var name = (p.ten_sp || p.name || '').toLowerCase();
+        var desc = (p.mo_ta || p.description || '').toLowerCase();
+        var color = (p.mau_sac || '').toLowerCase();
+        var storage = (p.bo_nho || p.storage || '').toString().toLowerCase();
+        return name.indexOf(s) >= 0 || desc.indexOf(s) >= 0 || color.indexOf(s) >= 0 || storage.indexOf(s) >= 0; 
+      })); 
+    });
+    document.getElementById('product-brand-filter').addEventListener('change', function(e) { 
+      var b = e.target.value; 
+      var searchVal = document.getElementById('product-search').value.toLowerCase().trim();
+      var filtered = b ? allProducts.filter(function(p) { return p.ma_hang == b; }) : allProducts;
+      if (searchVal) {
+        filtered = filtered.filter(function(p) { 
+          var name = (p.ten_sp || p.name || '').toLowerCase();
+          var desc = (p.mo_ta || p.description || '').toLowerCase();
+          return name.indexOf(searchVal) >= 0 || desc.indexOf(searchVal) >= 0; 
+        });
       }
-    </script>
-  </body>
+      renderProducts(filtered); 
+    });
+    document.getElementById('customer-search').addEventListener('input', function(e) { 
+      var s = e.target.value.toLowerCase().trim(); 
+      if (!s) { renderCustomers(allCustomers); return; }
+      renderCustomers(allCustomers.filter(function(c) { 
+        return (c.ho_ten && c.ho_ten.toLowerCase().indexOf(s) >= 0) || 
+               (c.email && c.email.toLowerCase().indexOf(s) >= 0) ||
+               (c.so_dt && c.so_dt.indexOf(s) >= 0); 
+      })); 
+    });
+    document.getElementById('review-rating-filter').addEventListener('change', function(e) { 
+      var r = e.target.value; 
+      var searchVal = document.getElementById('review-search').value.toLowerCase().trim();
+      var filtered = r ? allReviews.filter(function(rv) { return rv.so_sao === parseInt(r); }) : allReviews;
+      if (searchVal) {
+        filtered = filtered.filter(function(rv) { 
+          return (rv.ho_ten && rv.ho_ten.toLowerCase().indexOf(searchVal) >= 0) || 
+                 (rv.ten_sp && rv.ten_sp.toLowerCase().indexOf(searchVal) >= 0) ||
+                 (rv.binh_luan && rv.binh_luan.toLowerCase().indexOf(searchVal) >= 0); 
+        });
+      }
+      renderReviews(filtered); 
+      updateReviewStats(filtered);
+    });
+    document.getElementById('review-search').addEventListener('input', function(e) { 
+      var s = e.target.value.toLowerCase().trim(); 
+      var ratingFilter = document.getElementById('review-rating-filter').value;
+      var filtered = ratingFilter ? allReviews.filter(function(rv) { return rv.so_sao === parseInt(ratingFilter); }) : allReviews;
+      if (s) {
+        filtered = filtered.filter(function(rv) { 
+          return (rv.ho_ten && rv.ho_ten.toLowerCase().indexOf(s) >= 0) || 
+                 (rv.ten_sp && rv.ten_sp.toLowerCase().indexOf(s) >= 0) ||
+                 (rv.binh_luan && rv.binh_luan.toLowerCase().indexOf(s) >= 0); 
+        });
+      }
+      renderReviews(filtered);
+      updateReviewStats(filtered);
+    });
+    let allNews = [], editingNewsId = null;
+    async function loadNews() {
+      try { const res = await fetch(API_URL + '/admin/news'); const data = await res.json(); allNews = data.data || data || []; renderNews(allNews); }
+      catch(e) { console.error('Error loading news:', e); allNews = [{ma_tintuc:1,tieu_de:'Khai truong showroom moi',noi_dung:'Chung toi vui mung thong bao khai truong showroom...',anh_dai_dien:'',ten_admin:'Admin',ngay_dang:new Date()}]; renderNews(allNews); }
+    }
+    function renderNews(news) {
+      const tbody = document.getElementById('news-table');
+      if (!news.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Khong co tin tuc</td></tr>'; return; }
+      tbody.innerHTML = news.map(n => '<tr class="border-b border-slate-50"><td class="py-4">' + (n.anh_dai_dien ? '<img src="' + n.anh_dai_dien + '" class="w-16 h-16 object-cover rounded-xl">' : '<div class="w-16 h-16 bg-slate-200 rounded-xl flex items-center justify-center"><i class="fas fa-newspaper text-slate-400"></i></div>') + '</td><td class="py-4"><p class="font-medium max-w-md">' + n.tieu_de + '</p><p class="text-xs text-slate-500 mt-1">' + truncateText(n.noi_dung, 80) + '</p></td><td class="py-4 text-slate-600">' + (n.ten_admin || 'N/A') + '</td><td class="py-4 text-slate-500">' + formatDate(n.ngay_dang) + '</td><td class="py-4"><button onclick="editNews(' + n.ma_tintuc + ')" class="text-blue-600 mr-2 hover:text-blue-800"><i class="fas fa-edit"></i></button><button onclick="deleteNews(' + n.ma_tintuc + ')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button></td></tr>').join('');
+    }
+    function openNewsModal(newsId) {
+      editingNewsId = newsId || null;
+      const modal = document.getElementById('news-modal');
+      const form = document.getElementById('news-form');
+      form.reset();
+      if (newsId) {
+        const news = allNews.find(n => n.ma_tintuc === newsId);
+        if (news) {
+          document.getElementById('news-modal-title').textContent = 'Chinh sua tin tuc';
+          document.getElementById('news-id').value = news.ma_tintuc;
+          document.getElementById('news-title').value = news.tieu_de;
+          document.getElementById('news-content').value = news.noi_dung;
+          document.getElementById('news-image').value = news.anh_dai_dien || '';
+        }
+      } else {
+        document.getElementById('news-modal-title').textContent = 'Them tin tuc moi';
+      }
+      modal.classList.remove('hidden');
+    }
+    function closeNewsModal() {
+      document.getElementById('news-modal').classList.add('hidden');
+      editingNewsId = null;
+    }
+    function editNews(id) { openNewsModal(id); }
+    async function deleteNews(id) {
+      if (!confirm('Ban co chac chan muon xoa tin tuc nay?')) return;
+      try {
+        const res = await fetch(API_URL + '/admin/news/' + id, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) { showToast('Xoa tin tuc thanh cong'); loadNews(); }
+        else { showToast('Loi: ' + data.message, 'error'); }
+      } catch(e) { console.error('Error deleting news:', e); showToast('Loi xoa tin tuc', 'error'); }
+    }
+    document.getElementById('news-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const newsData = {
+        tieu_de: document.getElementById('news-title').value,
+        noi_dung: document.getElementById('news-content').value,
+        anh_dai_dien: document.getElementById('news-image').value || null,
+        ma_admin: 1
+      };
+      try {
+        const url = editingNewsId ? API_URL + '/admin/news/' + editingNewsId : API_URL + '/admin/news';
+        const method = editingNewsId ? 'PUT' : 'POST';
+        const res = await fetch(url, { method: method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(newsData) });
+        const data = await res.json();
+        if (data.success) {
+          showToast(editingNewsId ? 'Cap nhat tin tuc thanh cong' : 'Them tin tuc thanh cong');
+          closeNewsModal();
+          loadNews();
+        } else { showToast('Loi: ' + data.message, 'error'); }
+      } catch(e) { console.error('Error saving news:', e); showToast('Loi luu tin tuc', 'error'); }
+    });
+    document.getElementById('news-search').addEventListener('input', function(e) {
+      var s = e.target.value.toLowerCase().trim();
+      if (!s) { renderNews(allNews); return; }
+      renderNews(allNews.filter(function(n) { 
+        return (n.tieu_de && n.tieu_de.toLowerCase().indexOf(s) >= 0) || 
+               (n.noi_dung && n.noi_dung.toLowerCase().indexOf(s) >= 0) ||
+               (n.ten_admin && n.ten_admin.toLowerCase().indexOf(s) >= 0); 
+      }));
+    });
+    function truncateText(text, maxLength) {
+      if (!text) return '';
+      return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+    }
+  </script>
+</body>
 </html>
-

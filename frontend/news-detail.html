@@ -165,18 +165,25 @@
       try {
         const res = await fetch('http://localhost:3000/api/products?limit=4');
         const data = await res.json();
-        if (data.success) {
+        const products = data.data || data || [];
+        if (products.length > 0) {
+          const PLACEHOLDER = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2UyZThmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiM2NDc0OGIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWc8L3RleHQ+PC9zdmc+';
           const container = document.getElementById('hot-products');
-          container.innerHTML = data.data.slice(0, 4).map(p => `
-            <a href="product-detail.html?id=${p.ma_sp}" class="flex gap-3 group">
-              <img src="${p.anh_dai_dien || 'images/placeholder.jpg'}" alt="${p.ten_sp}" 
-                   class="w-14 h-14 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/56'">
+          container.innerHTML = products.slice(0, 4).map(p => {
+            const productId = p.ma_sp || p.id;
+            const productName = p.ten_sp || p.name || 'Sản phẩm';
+            const productImage = p.anh_dai_dien || p.image || PLACEHOLDER;
+            const productPrice = p.gia || p.price || 0;
+            return `
+            <a href="product-detail.html?id=${productId}" class="flex gap-3 group">
+              <img src="${productImage}" alt="${productName}" 
+                   class="w-14 h-14 object-cover rounded-lg" onerror="this.src='${PLACEHOLDER}'">
               <div class="flex-1 min-w-0">
-                <h4 class="font-medium text-sm text-gray-800 line-clamp-2 group-hover:text-red-main transition">${p.ten_sp}</h4>
-                <p class="text-red-main font-bold text-sm">${Number(p.gia).toLocaleString('vi-VN')}₫</p>
+                <h4 class="font-medium text-sm text-gray-800 line-clamp-2 group-hover:text-red-main transition">${productName}</h4>
+                <p class="text-red-main font-bold text-sm">${Number(productPrice).toLocaleString('vi-VN')}₫</p>
               </div>
             </a>
-          `).join('');
+          `}).join('');
         }
       } catch (e) {
         console.error('Error:', e);

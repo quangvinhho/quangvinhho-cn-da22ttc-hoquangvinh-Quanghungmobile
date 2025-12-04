@@ -757,42 +757,75 @@
 /* ===== RESPONSIVE GRID - 4 cột cố định trên desktop ===== */
 @media (max-width: 640px) {
   .product-card {
-    padding: 12px;
-    border-radius: 14px;
+    padding: 10px;
+    border-radius: 12px;
   }
 
   .spec-badge {
-    padding: 4px 8px;
-    font-size: 0.7rem;
+    padding: 3px 6px;
+    font-size: 0.65rem;
   }
 
   .cta-button {
-    height: 42px;
-    font-size: 0.85rem;
-    padding: 10px 12px;
+    height: 38px;
+    font-size: 0.75rem;
+    padding: 8px 10px;
   }
   
   #productsGrid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
+    gap: 8px !important;
   }
   
   #filterSidebar {
-    width: 100%;
+    display: none !important;
+  }
+  
+  /* Sort bar responsive */
+  .sort-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  
+  .sort-btn i {
+    margin-right: 4px !important;
+  }
+  
+  /* Product count */
+  #productCount {
+    font-size: 1rem;
+  }
+  
+  /* Load more button */
+  #loadMoreBtn {
+    padding: 12px 24px;
+    font-size: 0.875rem;
   }
 }
 
 @media (min-width: 640px) and (max-width: 768px) {
   #productsGrid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 16px !important;
+    gap: 12px !important;
+  }
+  
+  #filterSidebar {
+    display: none !important;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
   #productsGrid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 18px !important;
+    gap: 14px !important;
+  }
+  
+  #filterSidebar {
+    display: none !important;
+  }
+  
+  .mobile-filter-btn {
+    display: flex !important;
   }
 }
 
@@ -983,14 +1016,14 @@ section.bg-gray-50 button.active {
 /* ===== MOBILE FILTER BUTTON ===== */
 .mobile-filter-btn {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
+  bottom: 80px;
+  right: 16px;
+  width: 52px;
+  height: 52px;
   background: linear-gradient(135deg, var(--red-main) 0%, #ef4444 100%);
   color: white;
   border-radius: 50%;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 20px rgba(217, 30, 35, 0.4);
@@ -1009,29 +1042,153 @@ section.bg-gray-50 button.active {
   transform: scale(0.95);
 }
 
+@media (max-width: 1023px) {
+  .mobile-filter-btn {
+    display: flex !important;
+  }
+}
+
 @media (min-width: 1024px) {
   .mobile-filter-btn {
-    display: none;
+    display: none !important;
   }
 }
 
 /* Mobile Filter Sidebar Styles */
+#mobileFilterSidebar {
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.2);
+}
+
 #mobileFilterSidebar .filter-section {
   background: white;
   border-radius: 12px;
   margin-bottom: 12px;
   border: 1px solid #e5e7eb;
+  overflow: hidden;
 }
 
 #mobileFilterSidebar .filter-section-header {
-  padding: 12px 16px;
+  padding: 14px 16px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9fafb;
+}
+
+#mobileFilterSidebar .filter-section-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#mobileFilterSidebar .filter-section-header h3 i {
+  color: var(--red-main);
 }
 
 #mobileFilterSidebar .filter-section-content {
-  padding: 0 16px 16px;
+  padding: 12px 16px 16px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+#mobileFilterSidebar .filter-section.expanded .filter-section-content {
+  max-height: 500px;
+  padding: 12px 16px 16px;
 }
 
 #mobileFilterSidebar .filter-option {
-  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
+
+#mobileFilterSidebar .filter-option:hover {
+  background: #fef2f2;
+}
+
+#mobileFilterSidebar .filter-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--red-main);
+}
+
+#mobileFilterSidebar .filter-option .option-label {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+/* Mobile filter apply button */
+#mobileFilterSidebar .apply-filter-btn {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--red-main) 0%, #ef4444 100%);
+  color: white;
+  padding: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  margin-top: 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#mobileFilterSidebar .apply-filter-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===== MOBILE PRODUCT CARD OPTIMIZATIONS ===== */
+@media (max-width: 640px) {
+  .product-card .relative.overflow-hidden {
+    aspect-ratio: 1;
+  }
+  
+  .product-card .flex.flex-wrap.gap-1 {
+    gap: 4px !important;
+  }
+  
+  .product-card .flex.items-center.gap-2 {
+    gap: 4px !important;
+  }
+  
+  /* Hide some elements on mobile */
+  .product-card .color-dot:nth-child(n+4) {
+    display: none;
+  }
+  
+  .product-card .product-rating .reviews {
+    display: none;
+  }
+}
+
+/* ===== IPAD SPECIFIC FIXES ===== */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  #productsGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .product-card {
+    padding: 12px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  #productsGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+

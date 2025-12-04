@@ -49,6 +49,8 @@ const cartRoutes = require('./routes/cart');
 const paymentRoutes = require('./routes/payment');
 const orderRoutes = require('./routes/orders');
 const newsRoutes = require('./routes/news');
+const adminRoutes = require('./routes/admin');
+const searchRoutes = require('./routes/search');
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
@@ -57,6 +59,8 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/news', newsRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/search', searchRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

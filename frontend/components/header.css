@@ -59,3 +59,116 @@
 #mobile-submenu.show {
   max-height: 500px;
 }
+
+/* ===== SEARCH SUGGESTIONS DROPDOWN ===== */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 100;
+  animation: fadeInDropdown 0.2s ease-out;
+}
+
+@keyframes fadeInDropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-suggestions::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0 0 8px 0;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.suggestion-item:hover {
+  background-color: #fef2f2;
+}
+
+.suggestion-item.selected {
+  background-color: #fee2e2;
+}
+
+/* Product suggestion styles */
+.suggestion-item.product-suggestion {
+  padding: 10px 16px;
+}
+
+.suggestion-item.product-suggestion img {
+  border: 1px solid #e5e7eb;
+}
+
+.suggestion-item.product-suggestion:hover {
+  background-color: #fef2f2;
+}
+
+.suggestion-item.product-suggestion:hover img {
+  border-color: #fca5a5;
+}
+
+.suggestion-item i.fa-history {
+  color: #9ca3af;
+}
+
+.suggestion-item i.fa-search {
+  color: #3b82f6;
+}
+
+.suggestion-item span {
+  color: #374151;
+  font-size: 14px;
+}
+
+.suggestion-item strong {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Mobile search suggestions */
+#mobile-search-bar .search-suggestions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 0 0 8px 8px;
+  margin-top: -1px;
+}

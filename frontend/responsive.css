@@ -25,39 +25,64 @@ body {
   
   /* Container */
   .container {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  /* Main content padding */
+  main.container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
   
   /* Product cards - 2 cột */
   #productsGrid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.5rem !important;
+    gap: 8px !important;
+    width: 100% !important;
   }
   
   .product-card {
-    padding: 0.625rem;
+    padding: 8px;
     border-radius: 12px;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   
   .product-card img {
     height: 120px;
+    object-fit: contain;
   }
   
   .product-card h3 {
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
     line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   
-  .product-card .text-lg {
-    font-size: 0.9rem !important;
+  .product-card .text-lg,
+  .product-card .font-extrabold {
+    font-size: 0.85rem !important;
+  }
+  
+  .product-card .text-xs {
+    font-size: 0.65rem !important;
   }
   
   /* Buttons */
   .cta-button {
-    font-size: 0.75rem;
-    padding: 0.5rem;
-    height: 36px;
+    font-size: 0.7rem;
+    padding: 0.4rem;
+    height: 34px;
+  }
+  
+  /* Sort buttons */
+  .sort-btn {
+    padding: 6px 10px;
+    font-size: 11px;
   }
   
   /* Banner */
@@ -72,6 +97,10 @@ body {
   /* Mobile filter button - hiện */
   .mobile-filter-btn {
     display: flex !important;
+    bottom: 80px;
+    right: 16px;
+    width: 50px;
+    height: 50px;
   }
   
   /* Hide desktop elements */
@@ -96,14 +125,32 @@ body {
   
   /* Spec badges */
   .spec-badge {
-    font-size: 0.65rem;
-    padding: 3px 6px;
+    font-size: 0.6rem;
+    padding: 2px 5px;
+    gap: 2px;
+  }
+  
+  /* Brand buttons */
+  .brand-btn {
+    width: 80px !important;
+    height: 48px !important;
   }
   
   /* Modal adjustments */
   .modal-content, [class*="max-w-"] {
     max-width: 95vw !important;
     margin: 0.5rem;
+  }
+  
+  /* Sort bar */
+  .sort-btn span {
+    display: none;
+  }
+  
+  /* Color dots */
+  .color-dot {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -116,11 +163,20 @@ body {
   
   #productsGrid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  
+  .product-card {
+    padding: 12px;
   }
   
   .product-card img {
     height: 160px;
+  }
+  
+  .product-card h3 {
+    font-size: 0.85rem !important;
   }
   
   #filterSidebar {
@@ -130,32 +186,46 @@ body {
   .mobile-filter-btn {
     display: flex !important;
   }
+  
+  .sort-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }
 
 /* ===== TABLET LANDSCAPE / iPad (768px - 1023px) ===== */
 @media (min-width: 768px) and (max-width: 1023px) {
   .container {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
   /* Product grid - 3 cột */
   #productsGrid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 1rem !important;
+    gap: 14px !important;
+    width: 100% !important;
   }
   
   .product-card {
-    padding: 0.875rem;
+    padding: 12px;
   }
   
   .product-card img {
-    height: 180px;
+    height: 160px;
   }
   
-  /* Filter sidebar - có thể hiện hoặc ẩn */
+  .product-card h3 {
+    font-size: 0.9rem !important;
+  }
+  
+  /* Filter sidebar - ẩn trên iPad */
   #filterSidebar {
-    width: 240px;
+    display: none !important;
+  }
+  
+  .mobile-filter-btn {
+    display: flex !important;
   }
   
   /* Typography */
@@ -168,6 +238,17 @@ body {
   /* Profile grid */
   .lg\:grid-cols-4 {
     grid-template-columns: 1fr 2fr !important;
+  }
+  
+  /* Sort buttons */
+  .sort-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  
+  /* Brand buttons horizontal scroll */
+  .brand-btn {
+    width: 90px !important;
   }
 }
 

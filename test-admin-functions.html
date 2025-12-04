@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Functions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 { color: #667eea; }
+        h2 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background: #5568d3; }
+        .result {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn-delete { background: #ef4444; }
+        .btn-delete:hover { background: #dc2626; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Admin Functions - QuangHungShop</h1>
+    
+    <!-- SẢN PHẨM -->
+    <div class="test-section">
+        <h2>📦 QUẢN LÝ SẢN PHẨM</h2>
+        
+        <h3>1. Lấy danh sách sản phẩm</h3>
+        <button onclick="testGetProducts()">GET /api/products</button>
+        <button onclick="testGetAdminProducts()">GET /api/admin/products</button>
+        <div class="result" id="products-result"></div>
+        
+        <h3>2. Lấy danh sách hãng</h3>
+        <button onclick="testGetBrands()">GET /api/admin/brands</button>
+        <div class="result" id="brands-result"></div>
+        
+        <h3>3. Thêm sản phẩm mới</h3>
+        <div class="form-group">
+            <label>Tên sản phẩm:</label>
+            <input type="text" id="new-product-name" value="Test Product - Samsung S25">
+        </div>
+        <div class="form-group">
+            <label>Mã hãng (chọn sau khi load brands):</label>
+            <select id="new-product-brand">
+                <option value="">Chọn hãng</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Giá:</label>
+            <input type="number" id="new-product-price" value="25990000">
+        </div>
+        <div class="form-group">
+            <label>Tồn kho:</label>
+            <input type="number" id="new-product-stock" value="30">
+        </div>
+        <div class="form-group">
+            <label>Màu sắc:</label>
+            <input type="text" id="new-product-color" value="Xanh">
+        </div>
+        <div class="form-group">
+            <label>Bộ nhớ:</label>
+            <input type="text" id="new-product-storage" value="256GB">
+        </div>
+        <button onclick="testAddProduct()">POST /api/admin/products (Thêm sản phẩm)</button>
+        <div class="result" id="add-product-result"></div>
+        
+        <h3>4. Cập nhật sản phẩm</h3>
+        <div class="form-group">
+            <label>ID sản phẩm cần cập nhật:</label>
+            <input type="number" id="update-product-id" placeholder="Nhập ID sản phẩm">
+        </div>
+        <div class="form-group">
+            <label>Tên mới:</label>
+            <input type="text" id="update-product-name" value="Samsung S25 Ultra (Updated)">
+        </div>
+        <div class="form-group">
+            <label>Giá mới:</label>
+            <input type="number" id="update-product-price" value="29990000">
+        </div>
+        <button onclick="testUpdateProduct()">PUT /api/admin/products/:id (Cập nhật)</button>
+        <div class="result" id="update-product-result"></div>
+        
+        <h3>5. Xóa sản phẩm</h3>
+        <div class="form-group">
+            <label>ID sản phẩm cần xóa:</label>
+            <input type="number" id="delete-product-id" placeholder="Nhập ID sản phẩm">
+        </div>
+        <button class="btn-delete" onclick="testDeleteProduct()">DELETE /api/admin/products/:id (Xóa)</button>
+        <div class="result" id="delete-product-result"></div>
+    </div>
+    
+    <!-- TIN TỨC -->
+    <div class="test-section">
+        <h2>📰 QUẢN LÝ TIN TỨC</h2>
+        
+        <h3>1. Lấy danh sách tin tức</h3>
+        <button onclick="testGetNews()">GET /api/admin/news</button>
+        <div class="result" id="news-result"></div>
+        
+        <h3>2. Thêm tin tức mới</h3>
+        <div class="form-group">
+            <label>Tiêu đề:</label>
+            <input type="text" id="new-news-title" value="Test Tin Tức - Ra mắt Samsung S25">
+        </div>
+        <div class="form-group">
+            <label>Nội dung:</label>
+            <textarea id="new-news-content" rows="4">Samsung chính thức ra mắt dòng Galaxy S25 với nhiều cải tiến đáng chú ý...</textarea>
+        </div>
+        <div class="form-group">
+            <label>URL ảnh:</label>
+            <input type="text" id="new-news-image" value="https://via.placeholder.com/400x300">
+        </div>
+        <button onclick="testAddNews()">POST /api/admin/news (Thêm tin tức)</button>
+        <div class="result" id="add-news-result"></div>
+        
+        <h3>3. Cập nhật tin tức</h3>
+        <div class="form-group">
+            <label>ID tin tức cần cập nhật:</label>
+            <input type="number" id="update-news-id" placeholder="Nhập ID tin tức">
+        </div>
+        <div class="form-group">
+            <label>Tiêu đề mới:</label>
+            <input type="text" id="update-news-title" value="Tin Tức Updated">
+        </div>
+        <button onclick="testUpdateNews()">PUT /api/admin/news/:id (Cập nhật)</button>
+        <div class="result" id="update-news-result"></div>
+        
+        <h3>4. Xóa tin tức</h3>
+        <div class="form-group">
+            <label>ID tin tức cần xóa:</label>
+            <input type="number" id="delete-news-id" placeholder="Nhập ID tin tức">
+        </div>
+        <button class="btn-delete" onclick="testDeleteNews()">DELETE /api/admin/news/:id (Xóa)</button>
+        <div class="result" id="delete-news-result"></div>
+    </div>
+    
+    <!-- ĐÁNH GIÁ -->
+    <div class="test-section">
+        <h2>⭐ QUẢN LÝ ĐÁNH GIÁ</h2>
+        
+        <h3>1. Lấy danh sách đánh giá</h3>
+        <button onclick="testGetReviews()">GET /api/admin/reviews</button>
+        <div class="result" id="reviews-result"></div>
+        
+        <h3>2. Xóa đánh giá</h3>
+        <div class="form-group">
+            <label>ID đánh giá cần xóa:</label>
+            <input type="number" id="delete-review-id" placeholder="Nhập ID đánh giá">
+        </div>
+        <button class="btn-delete" onclick="testDeleteReview()">DELETE /api/admin/reviews/:id (Xóa)</button>
+        <div class="result" id="delete-review-result"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        
+        // Utility functions
+        function showResult(elementId, data, status = 'success') {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<div class="${status}">
+                <strong>${status === 'success' ? '✅ Success' : '❌ Error'}</strong>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            </div>`;
+        }
+        
+        function showError(elementId, error) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<div class="error">
+                <strong>❌ Error:</strong>
+                <pre>${error.message || error}</pre>
+            </div>`;
+        }
+        
+        // PRODUCTS
+        async function testGetProducts() {
+            try {
+                const response = await fetch(`${API_URL}/products`);
+                const data = await response.json();
+                showResult('products-result', data);
+            } catch (error) {
+                showError('products-result', error);
+            }
+        }
+        
+        async function testGetAdminProducts() {
+            try {
+                const response = await fetch(`${API_URL}/admin/products`);
+                const data = await response.json();
+                showResult('products-result', data);
+            } catch (error) {
+                showError('products-result', error);
+            }
+        }
+        
+        async function testGetBrands() {
+            try {
+                const response = await fetch(`${API_URL}/admin/brands`);
+                const data = await response.json();
+                showResult('brands-result', data);
+                
+                // Populate brand select
+                const select = document.getElementById('new-product-brand');
+                const brands = data.data || [];
+                select.innerHTML = '<option value="">Chọn hãng</option>' + 
+                    brands.map(b => `<option value="${b.ma_hang}">${b.ten_hang}</option>`).join('');
+            } catch (error) {
+                showError('brands-result', error);
+            }
+        }
+        
+        async function testAddProduct() {
+            const productData = {
+                ten_sp: document.getElementById('new-product-name').value,
+                ma_hang: document.getElementById('new-product-brand').value,
+                gia: document.getElementById('new-product-price').value,
+                so_luong_ton: document.getElementById('new-product-stock').value,
+                mau_sac: document.getElementById('new-product-color').value,
+                bo_nho: document.getElementById('new-product-storage').value,
+                mo_ta: 'Test product description',
+                anh_dai_dien: 'images/test.jpg'
+            };
+            
+            if (!productData.ma_hang) {
+                alert('Vui lòng chọn hãng (load brands trước)');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+                const data = await response.json();
+                showResult('add-product-result', data);
+                if (data.success) {
+                    alert(`✅ Thêm thành công! ID: ${data.data.id}`);
+                }
+            } catch (error) {
+                showError('add-product-result', error);
+            }
+        }
+        
+        async function testUpdateProduct() {
+            const id = document.getElementById('update-product-id').value;
+            if (!id) {
+                alert('Vui lòng nhập ID sản phẩm');
+                return;
+            }
+            
+            const productData = {
+                ten_sp: document.getElementById('update-product-name').value,
+                gia: document.getElementById('update-product-price').value
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/products/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+                const data = await response.json();
+                showResult('update-product-result', data);
+            } catch (error) {
+                showError('update-product-result', error);
+            }
+        }
+        
+        async function testDeleteProduct() {
+            const id = document.getElementById('delete-product-id').value;
+            if (!id) {
+                alert('Vui lòng nhập ID sản phẩm');
+                return;
+            }
+            
+            if (!confirm(`Xác nhận xóa sản phẩm ID: ${id}?`)) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/products/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                showResult('delete-product-result', data);
+            } catch (error) {
+                showError('delete-product-result', error);
+            }
+        }
+        
+        // NEWS
+        async function testGetNews() {
+            try {
+                const response = await fetch(`${API_URL}/admin/news`);
+                const data = await response.json();
+                showResult('news-result', data);
+            } catch (error) {
+                showError('news-result', error);
+            }
+        }
+        
+        async function testAddNews() {
+            const newsData = {
+                tieu_de: document.getElementById('new-news-title').value,
+                noi_dung: document.getElementById('new-news-content').value,
+                anh_dai_dien: document.getElementById('new-news-image').value,
+                ma_admin: 1
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/news`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newsData)
+                });
+                const data = await response.json();
+                showResult('add-news-result', data);
+                if (data.success) {
+                    alert(`✅ Thêm tin tức thành công! ID: ${data.data.id}`);
+                }
+            } catch (error) {
+                showError('add-news-result', error);
+            }
+        }
+        
+        async function testUpdateNews() {
+            const id = document.getElementById('update-news-id').value;
+            if (!id) {
+                alert('Vui lòng nhập ID tin tức');
+                return;
+            }
+            
+            const newsData = {
+                tieu_de: document.getElementById('update-news-title').value,
+                noi_dung: 'Nội dung đã được cập nhật'
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/news/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newsData)
+                });
+                const data = await response.json();
+                showResult('update-news-result', data);
+            } catch (error) {
+                showError('update-news-result', error);
+            }
+        }
+        
+        async function testDeleteNews() {
+            const id = document.getElementById('delete-news-id').value;
+            if (!id) {
+                alert('Vui lòng nhập ID tin tức');
+                return;
+            }
+            
+            if (!confirm(`Xác nhận xóa tin tức ID: ${id}?`)) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/news/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                showResult('delete-news-result', data);
+            } catch (error) {
+                showError('delete-news-result', error);
+            }
+        }
+        
+        // REVIEWS
+        async function testGetReviews() {
+            try {
+                const response = await fetch(`${API_URL}/admin/reviews`);
+                const data = await response.json();
+                showResult('reviews-result', data);
+            } catch (error) {
+                showError('reviews-result', error);
+            }
+        }
+        
+        async function testDeleteReview() {
+            const id = document.getElementById('delete-review-id').value;
+            if (!id) {
+                alert('Vui lòng nhập ID đánh giá');
+                return;
+            }
+            
+            if (!confirm(`Xác nhận xóa đánh giá ID: ${id}?`)) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/reviews/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                showResult('delete-review-result', data);
+            } catch (error) {
+                showError('delete-review-result', error);
+            }
+        }
+        
+        // Auto load on page load
+        window.onload = () => {
+            testGetBrands();
+        };
+    </script>
+</body>
+</html>
