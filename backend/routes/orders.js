@@ -191,11 +191,18 @@ router.get('/user/:userId', async (req, res) => {
       );
       
       // Format items với đường dẫn ảnh đúng
-      const formattedItems = items.map(item => ({
-        ...item,
-        image: item.image ? `images/${item.image}` : 'images/iphone.jpg',
-        price: parseFloat(item.price)
-      }));
+      const formattedItems = items.map(item => {
+        let imagePath = item.image || 'images/iphone.jpg';
+        // Tránh trùng lặp images/images/
+        if (imagePath && !imagePath.startsWith('images/') && !imagePath.startsWith('http')) {
+          imagePath = `images/${imagePath}`;
+        }
+        return {
+          ...item,
+          image: imagePath,
+          price: parseFloat(item.price)
+        };
+      });
       
       return {
         ...order,
@@ -208,6 +215,113 @@ router.get('/user/:userId', async (req, res) => {
   } catch (error) {
     console.error('Get user orders error:', error);
     res.status(500).json({ success: false, message: 'Lỗi lấy danh sách đơn hàng' });
+  }
+});
+
+// PUT /api/orders/:orderId/cancel - Người dùng hủy đơn hàng (chỉ khi chưa được admin xác nhận)
+router.put('/:orderId/cancel', async (req, res) => {
+  let connection;
+  
+  try {
+    connection = await pool.getConnection();
+    await connection.beginTransaction();
+    
+    const { orderId } = req.params;
+    const { userId } = req.body;
+
+    // Kiểm tra đơn hàng tồn tại và thuộc về user
+    const [orders] = await connection.query(
+      'SELECT * FROM don_hang WHERE ma_don = ?',
+      [orderId]
+    );
+
+    if (orders.length === 0) {
+      await connection.rollback();
+      connection.release();
+      return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    }
+
+    const order = orders[0];
+
+    // Kiểm tra quyền sở hữu (nếu có userId)
+    if (userId && order.ma_kh && order.ma_kh != userId) {
+      await connection.rollback();
+      connection.release();
+      return res.status(403).json({ success: false, message: 'Bạn không có quyền hủy đơn hàng này' });
+    }
+
+    // Chỉ cho phép hủy khi đơn hàng ở trạng thái 'pending' (chờ xử lý)
+    if (order.trang_thai !== 'pending') {
+      await connection.rollback();
+      connection.release();
+      const statusLabels = {
+        'confirmed': 'đã được xác nhận',
+        'shipping': 'đang giao hàng',
+        'delivered': 'đã giao hàng',
+        'completed': 'đã hoàn thành',
+        'cancelled': 'đã bị hủy'
+      };
+      const statusText = statusLabels[order.trang_thai] || order.trang_thai;
+      return res.status(400).json({ 
+        success: false, 
+        message: `Không thể hủy đơn hàng đã ${statusText}. Chỉ có thể hủy đơn hàng đang chờ xử lý.`
+      });
+    }
+
+    // Lấy lý do hủy từ request
+    const { cancelReason } = req.body;
+
+    // Cập nhật trạng thái đơn hàng thành cancelled và lưu lý do hủy
+    await connection.query(
+      'UPDATE don_hang SET trang_thai = ?, ly_do_huy = ? WHERE ma_don = ?',
+      ['cancelled', cancelReason || 'Không có lý do', orderId]
+    );
+
+    // Hoàn lại số lượng tồn kho cho các sản phẩm
+    const [orderItems] = await connection.query(
+      'SELECT ma_sp, so_luong FROM chi_tiet_don_hang WHERE ma_don = ?',
+      [orderId]
+    );
+
+    for (const item of orderItems) {
+      await connection.query(
+        'UPDATE san_pham SET so_luong_ton = so_luong_ton + ? WHERE ma_sp = ?',
+        [item.so_luong, item.ma_sp]
+      );
+    }
+
+    // Cập nhật trạng thái thanh toán (dùng 'failed' vì ENUM không có 'cancelled')
+    await connection.query(
+      "UPDATE thanh_toan SET trang_thai = 'failed' WHERE ma_don = ?",
+      [orderId]
+    );
+
+    // Nếu có sử dụng voucher, hoàn lại số lượng voucher
+    if (order.ma_km) {
+      await connection.query(
+        'UPDATE khuyen_mai SET so_luong = so_luong + 1 WHERE ma_km = ?',
+        [order.ma_km]
+      );
+    }
+
+    await connection.commit();
+    connection.release();
+
+    res.json({
+      success: true,
+      message: 'Đã hủy đơn hàng thành công'
+    });
+
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+      connection.release();
+    }
+    console.error('Cancel order error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi hủy đơn hàng: ' + error.message
+    });
   }
 });
 

@@ -395,8 +395,18 @@
             // Merge giỏ hàng guest vào giỏ hàng user
             mergeGuestCart(data.data.ma_kh);
             
-            // Chuyển về trang chủ để thấy header đã đăng nhập
-            window.location.href = 'index.html';
+            // Kiểm tra redirect URL (cho checkout)
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect');
+            
+            if (redirectUrl === 'checkout') {
+              window.location.href = 'checkout.html';
+            } else if (redirectUrl) {
+              window.location.href = redirectUrl + '.html';
+            } else {
+              // Chuyển về trang chủ để thấy header đã đăng nhập
+              window.location.href = 'index.html';
+            }
             return;
           }
 

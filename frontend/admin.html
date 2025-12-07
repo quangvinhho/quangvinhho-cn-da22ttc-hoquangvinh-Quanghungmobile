@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quan tri - QuangHungShop</title>
+  <title>Quản trị - QuangHungShop</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -33,14 +33,15 @@
         </div>
       </div>
       <nav class="flex-1 overflow-y-auto py-6 px-4">
-        <p class="text-xs text-slate-500 uppercase mb-4 px-4">Menu chinh</p>
+        <p class="text-xs text-slate-500 uppercase mb-4 px-4">Menu chính</p>
         <div class="space-y-1">
-          <a href="#" onclick="showSection('dashboard')" class="sidebar-item active flex items-center px-4 py-3 rounded-xl text-white" id="nav-dashboard"><div class="w-10 h-10 rounded-lg bg-violet-500 flex items-center justify-center mr-3"><i class="fas fa-chart-pie"></i></div><span>Tong quan</span></a>
-          <a href="#" onclick="showSection('orders')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-orders"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-shopping-bag"></i></div><span>Don hang</span><span class="ml-auto bg-rose-500 text-xs px-2 py-1 rounded-full" id="pending-count">0</span></a>
-          <a href="#" onclick="showSection('products')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-products"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-box"></i></div><span>San pham</span></a>
-          <a href="#" onclick="showSection('customers')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-customers"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-users"></i></div><span>Khach hang</span></a>
-          <a href="#" onclick="showSection('news')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-news"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-newspaper"></i></div><span>Tin tuc</span></a>
-          <a href="#" onclick="showSection('reviews')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-reviews"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-star"></i></div><span>Danh gia</span></a>
+          <a href="#" onclick="showSection('dashboard')" class="sidebar-item active flex items-center px-4 py-3 rounded-xl text-white" id="nav-dashboard"><div class="w-10 h-10 rounded-lg bg-violet-500 flex items-center justify-center mr-3"><i class="fas fa-chart-pie"></i></div><span>Tổng quan</span></a>
+          <a href="#" onclick="showSection('orders')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-orders"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-shopping-bag"></i></div><span>Đơn hàng</span><span class="ml-auto bg-rose-500 text-xs px-2 py-1 rounded-full" id="pending-count">0</span></a>
+          <a href="#" onclick="showSection('products')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-products"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-box"></i></div><span>Sản phẩm</span></a>
+          <a href="#" onclick="showSection('brands')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-brands"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-tags"></i></div><span>Danh mục</span></a>
+          <a href="#" onclick="showSection('customers')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-customers"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-users"></i></div><span>Khách hàng</span></a>
+          <a href="#" onclick="showSection('news')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-news"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-newspaper"></i></div><span>Tin tức</span></a>
+          <a href="#" onclick="showSection('reviews')" class="sidebar-item flex items-center px-4 py-3 rounded-xl text-slate-300" id="nav-reviews"><div class="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-3"><i class="fas fa-star"></i></div><span>Đánh giá</span></a>
         </div>
       </nav>
       <div class="p-4 border-t border-slate-700/50">
@@ -49,17 +50,17 @@
             <div id="admin-avatar" class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center font-bold text-lg overflow-hidden">AD</div>
             <div>
               <p class="font-semibold" id="admin-name">Admin</p>
-              <p class="text-xs text-slate-400" id="admin-role">Quan tri vien</p>
+              <p class="text-xs text-slate-400" id="admin-role">Quản trị viên</p>
             </div>
           </div>
-          <button onclick="logout()" class="w-full flex items-center justify-center px-4 py-2.5 bg-rose-500 hover:bg-rose-600 rounded-xl font-medium"><i class="fas fa-sign-out-alt mr-2"></i>Dang xuat</button>
+          <button onclick="logout()" class="w-full flex items-center justify-center px-4 py-2.5 bg-rose-500 hover:bg-rose-600 rounded-xl font-medium"><i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất</button>
         </div>
       </div>
     </aside>
     <div class="flex-1 flex flex-col overflow-hidden">
       <header class="bg-white shadow-sm px-4 lg:px-8 py-4 border-b border-slate-200">
         <div class="flex items-center justify-between">
-          <div><h2 class="text-2xl font-bold text-slate-800" id="page-title">Tong quan</h2><p class="text-sm text-slate-500" id="welcome-text">Chao mung tro lai, Admin!</p></div>
+          <div><h2 class="text-2xl font-bold text-slate-800" id="page-title">Tổng quan</h2><p class="text-sm text-slate-500" id="welcome-text">Chào mừng trở lại, Admin!</p></div>
           <div class="flex items-center space-x-4">
             <div class="hidden md:flex items-center text-slate-600 bg-slate-100 px-4 py-2 rounded-xl"><i class="fas fa-calendar-alt mr-2 text-violet-500"></i><span class="text-sm" id="current-date"></span></div>
           </div>
@@ -68,86 +69,433 @@
       <main class="flex-1 overflow-y-auto p-4 lg:p-8 bg-gradient-to-br from-slate-100 to-slate-200">
         <div id="section-dashboard" class="section-content active">
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-1 flex items-center justify-center shadow-lg"><i class="fas fa-dollar-sign text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>12%</span></div><p class="text-slate-500 text-sm mb-1">Doanh thu thang</p><p class="text-3xl font-bold text-slate-800" id="stat-revenue">0d</p></div>
-            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-2 flex items-center justify-center shadow-lg"><i class="fas fa-shopping-cart text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>8%</span></div><p class="text-slate-500 text-sm mb-1">Don hang moi</p><p class="text-3xl font-bold text-slate-800" id="stat-orders">0</p></div>
-            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-3 flex items-center justify-center shadow-lg"><i class="fas fa-users text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>5%</span></div><p class="text-slate-500 text-sm mb-1">Khach hang</p><p class="text-3xl font-bold text-slate-800" id="stat-customers">0</p></div>
-            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-4 flex items-center justify-center shadow-lg"><i class="fas fa-box text-white text-xl"></i></div><span class="text-amber-500 text-sm font-semibold bg-amber-50 px-3 py-1 rounded-full"><i class="fas fa-minus mr-1"></i>2%</span></div><p class="text-slate-500 text-sm mb-1">San pham</p><p class="text-3xl font-bold text-slate-800" id="stat-products">0</p></div>
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-1 flex items-center justify-center shadow-lg"><i class="fas fa-dollar-sign text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>12%</span></div><p class="text-slate-500 text-sm mb-1">Doanh thu tháng</p><p class="text-3xl font-bold text-slate-800" id="stat-revenue">0d</p></div>
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-2 flex items-center justify-center shadow-lg"><i class="fas fa-shopping-cart text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>8%</span></div><p class="text-slate-500 text-sm mb-1">Đơn hàng mới</p><p class="text-3xl font-bold text-slate-800" id="stat-orders">0</p></div>
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-3 flex items-center justify-center shadow-lg"><i class="fas fa-users text-white text-xl"></i></div><span class="text-emerald-500 text-sm font-semibold bg-emerald-50 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>5%</span></div><p class="text-slate-500 text-sm mb-1">Khách hàng</p><p class="text-3xl font-bold text-slate-800" id="stat-customers">0</p></div>
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 transition-all"><div class="flex items-center justify-between mb-4"><div class="w-14 h-14 rounded-2xl card-gradient-4 flex items-center justify-center shadow-lg"><i class="fas fa-box text-white text-xl"></i></div><span class="text-amber-500 text-sm font-semibold bg-amber-50 px-3 py-1 rounded-full"><i class="fas fa-minus mr-1"></i>2%</span></div><p class="text-slate-500 text-sm mb-1">Sản phẩm</p><p class="text-3xl font-bold text-slate-800" id="stat-products">0</p></div>
           </div>
           <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white rounded-2xl shadow-lg p-6"><h3 class="text-lg font-bold text-slate-800 mb-6">Doanh thu theo thang</h3><canvas id="revenueChart" height="300"></canvas></div>
-            <div class="bg-white rounded-2xl shadow-lg p-6"><h3 class="text-lg font-bold text-slate-800 mb-6">Don hang theo trang thai</h3><canvas id="ordersChart" height="300"></canvas></div>
+            <div class="bg-white rounded-2xl shadow-lg p-6"><h3 class="text-lg font-bold text-slate-800 mb-6">Doanh thu theo tháng</h3><canvas id="revenueChart" height="300"></canvas></div>
+            <div class="bg-white rounded-2xl shadow-lg p-6"><h3 class="text-lg font-bold text-slate-800 mb-6">Đơn hàng theo trạng thái</h3><canvas id="ordersChart" height="300"></canvas></div>
           </div>
-          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex items-center justify-between mb-6"><h3 class="text-lg font-bold text-slate-800">Don hang gan day</h3><a href="#" onclick="showSection('orders')" class="text-violet-600 text-sm font-medium">Xem tat ca</a></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Ma don</th><th class="pb-4">Khach hang</th><th class="pb-4">Tong tien</th><th class="pb-4">Trang thai</th><th class="pb-4">Ngay dat</th></tr></thead><tbody id="recent-orders-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex items-center justify-between mb-6"><h3 class="text-lg font-bold text-slate-800">Đơn hàng gần đây</h3><a href="#" onclick="showSection('orders')" class="text-violet-600 text-sm font-medium">Xem tất cả</a></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Mã đơn</th><th class="pb-4">Khách hàng</th><th class="pb-4">Tổng tiền</th><th class="pb-4">Trạng thái</th><th class="pb-4">Ngày đặt</th></tr></thead><tbody id="recent-orders-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Đang tải...</td></tr></tbody></table></div></div>
         </div>
         <div id="section-orders" class="section-content">
-          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly don hang</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="order-search" placeholder="Tim don hang..." class="bg-transparent outline-none text-sm w-40"></div><select id="order-status-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tat ca</option><option value="pending">Cho xu ly</option><option value="confirmed">Da xac nhan</option><option value="shipping">Dang giao</option><option value="delivered">Da giao</option><option value="cancelled">Da huy</option></select></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Ma don</th><th class="pb-4">Khach hang</th><th class="pb-4">SDT</th><th class="pb-4">Tong tien</th><th class="pb-4">Trang thai</th><th class="pb-4">Ngay dat</th><th class="pb-4">Thao tac</th></tr></thead><tbody id="orders-table"><tr><td colspan="7" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quản lý đơn hàng</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="order-search" placeholder="Tìm đơn hàng..." class="bg-transparent outline-none text-sm w-40"></div><select id="order-status-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tất cả</option><option value="pending">Chờ xử lý</option><option value="confirmed">Đã xác nhận</option><option value="shipping">Đang giao</option><option value="delivered">Đã giao</option><option value="cancelled">Đã hủy</option></select></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Mã đơn</th><th class="pb-4">Khách hàng</th><th class="pb-4">SĐT</th><th class="pb-4">Tổng tiền</th><th class="pb-4">Trạng thái</th><th class="pb-4">Ngày đặt</th><th class="pb-4">Thao tác</th></tr></thead><tbody id="orders-table"><tr><td colspan="7" class="py-8 text-center text-slate-400">Đang tải...</td></tr></tbody></table></div></div>
         </div>
         <div id="section-products" class="section-content">
-          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly san pham</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="product-search" placeholder="Tim san pham..." class="bg-transparent outline-none text-sm w-40"></div><select id="product-brand-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tat ca hang</option></select><button onclick="openProductModal()" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-plus mr-2"></i>Them san pham</button></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Anh</th><th class="pb-4">Ten san pham</th><th class="pb-4">Hang</th><th class="pb-4">Gia</th><th class="pb-4">Ton kho</th><th class="pb-4">Thao tac</th></tr></thead><tbody id="products-table"><tr><td colspan="6" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quản lý sản phẩm</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="product-search" placeholder="Tìm sản phẩm..." class="bg-transparent outline-none text-sm w-40"></div><select id="product-brand-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tất cả hãng</option></select><button onclick="openProductModal()" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-plus mr-2"></i>Thêm sản phẩm</button></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Ảnh</th><th class="pb-4">Tên sản phẩm</th><th class="pb-4">Hãng</th><th class="pb-4">Giá</th><th class="pb-4">Tồn kho</th><th class="pb-4">Thao tác</th></tr></thead><tbody id="products-table"><tr><td colspan="6" class="py-8 text-center text-slate-400">Đang tải...</td></tr></tbody></table></div></div>
+        </div>
+        <!-- Section Quản lý Danh mục (Hãng sản xuất) -->
+        <div id="section-brands" class="section-content">
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <h3 class="text-lg font-bold text-slate-800">Quản lý danh mục (Hãng sản xuất)</h3>
+              <div class="flex gap-3">
+                <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2">
+                  <i class="fas fa-search text-slate-400 mr-2"></i>
+                  <input type="text" id="brand-search" placeholder="Tìm hãng..." class="bg-transparent outline-none text-sm w-40">
+                </div>
+                <button onclick="openBrandModal()" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-xl text-sm font-medium">
+                  <i class="fas fa-plus mr-2"></i>Thêm hãng mới
+                </button>
+              </div>
+            </div>
+            <!-- Thống kê -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div class="bg-violet-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-violet-600" id="total-brands">0</div>
+                <div class="text-sm text-slate-600">Tổng số hãng</div>
+              </div>
+              <div class="bg-emerald-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-emerald-600" id="brands-with-products">0</div>
+                <div class="text-sm text-slate-600">Có sản phẩm</div>
+              </div>
+              <div class="bg-amber-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-amber-600" id="brands-empty">0</div>
+                <div class="text-sm text-slate-600">Chưa có SP</div>
+              </div>
+              <div class="bg-blue-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-blue-600" id="total-countries">0</div>
+                <div class="text-sm text-slate-600">Quốc gia</div>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="text-left text-slate-500 text-sm border-b border-slate-100">
+                    <th class="pb-4">STT</th>
+                    <th class="pb-4">Tên hãng</th>
+                    <th class="pb-4">Quốc gia</th>
+                    <th class="pb-4">Số sản phẩm</th>
+                    <th class="pb-4">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="brands-table">
+                  <tr><td colspan="5" class="py-8 text-center text-slate-400">Đang tải...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div id="section-customers" class="section-content">
-          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly khach hang</h3><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="customer-search" placeholder="Tim khach hang..." class="bg-transparent outline-none text-sm w-40"></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Avatar</th><th class="pb-4">Ho ten</th><th class="pb-4">Email</th><th class="pb-4">SDT</th><th class="pb-4">Don hang</th><th class="pb-4">Tong chi tieu</th></tr></thead><tbody id="customers-table"><tr><td colspan="6" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quản lý khách hàng</h3><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="customer-search" placeholder="Tìm khách hàng..." class="bg-transparent outline-none text-sm w-40"></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Avatar</th><th class="pb-4">Họ tên</th><th class="pb-4">Email</th><th class="pb-4">SĐT</th><th class="pb-4">Đơn hàng</th><th class="pb-4">Tổng chi tiêu</th></tr></thead><tbody id="customers-table"><tr><td colspan="6" class="py-8 text-center text-slate-400">Đang tải...</td></tr></tbody></table></div></div>
         </div>
         <div id="section-news" class="section-content">
-          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly tin tuc</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="news-search" placeholder="Tim tin tuc..." class="bg-transparent outline-none text-sm w-40"></div><button onclick="openNewsModal()" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-plus mr-2"></i>Them tin tuc</button></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Anh</th><th class="pb-4">Tieu de</th><th class="pb-4">Tac gia</th><th class="pb-4">Ngay dang</th><th class="pb-4">Thao tac</th></tr></thead><tbody id="news-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quản lý tin tức</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="news-search" placeholder="Tìm tin tức..." class="bg-transparent outline-none text-sm w-40"></div><button onclick="openNewsModal()" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-xl text-sm font-medium"><i class="fas fa-plus mr-2"></i>Thêm tin tức</button></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Ảnh</th><th class="pb-4">Tiêu đề</th><th class="pb-4">Tác giả</th><th class="pb-4">Ngày đăng</th><th class="pb-4">Thao tác</th></tr></thead><tbody id="news-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Đang tải...</td></tr></tbody></table></div></div>
         </div>
         <div id="section-reviews" class="section-content">
-          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quan ly danh gia</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="review-search" placeholder="Tim danh gia..." class="bg-transparent outline-none text-sm w-40"></div><select id="review-rating-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tat ca sao</option><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select></div></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"><div class="bg-amber-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-amber-600" id="avg-rating">0</div><div class="text-sm text-slate-600">Diem TB</div></div><div class="bg-emerald-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-emerald-600" id="total-reviews">0</div><div class="text-sm text-slate-600">Tong danh gia</div></div><div class="bg-blue-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-blue-600" id="positive-reviews">0%</div><div class="text-sm text-slate-600">Tich cuc</div></div><div class="bg-rose-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-rose-600" id="negative-reviews">0%</div><div class="text-sm text-slate-600">Tieu cuc</div></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Khach hang</th><th class="pb-4">San pham</th><th class="pb-4">Danh gia</th><th class="pb-4">Noi dung</th><th class="pb-4">Ngay</th></tr></thead><tbody id="reviews-table"><tr><td colspan="5" class="py-8 text-center text-slate-400">Dang tai...</td></tr></tbody></table></div></div>
+          <div class="bg-white rounded-2xl shadow-lg p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><h3 class="text-lg font-bold text-slate-800">Quản lý đánh giá</h3><div class="flex gap-3"><div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="review-search" placeholder="Tìm đánh giá..." class="bg-transparent outline-none text-sm w-40"></div><select id="review-rating-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tất cả sao</option><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select></div></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"><div class="bg-amber-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-amber-600" id="avg-rating">0</div><div class="text-sm text-slate-600">Điểm TB</div></div><div class="bg-emerald-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-emerald-600" id="total-reviews">0</div><div class="text-sm text-slate-600">Tổng đánh giá</div></div><div class="bg-blue-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-blue-600" id="positive-reviews">0%</div><div class="text-sm text-slate-600">Tích cực</div></div><div class="bg-rose-50 rounded-xl p-4 text-center"><div class="text-3xl font-bold text-rose-600" id="negative-reviews">0%</div><div class="text-sm text-slate-600">Tiêu cực</div></div></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Khách hàng</th><th class="pb-4">Sản phẩm</th><th class="pb-4">Đánh giá</th><th class="pb-4">Nội dung</th><th class="pb-4">Ngày</th><th class="pb-4">Thao tác</th></tr></thead><tbody id="reviews-table"><tr><td colspan="6" class="py-8 text-center text-slate-400">Đang tải...</td></tr></tbody></table></div></div>
         </div>
       </main>
     </div>
   </div>
-  <div id="toast" class="fixed bottom-4 right-4 z-50 transform translate-y-20 opacity-0 transition-all duration-300"><div class="bg-slate-800 text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3"><i id="toast-icon" class="fas fa-check-circle text-emerald-400"></i><span id="toast-message">Thanh cong!</span></div></div>
+  <div id="toast" class="fixed bottom-4 right-4 z-50 transform translate-y-20 opacity-0 transition-all duration-300"><div class="bg-slate-800 text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3"><i id="toast-icon" class="fas fa-check-circle text-emerald-400"></i><span id="toast-message">Thành công!</span></div></div>
   
-  <!-- Product Modal -->
+  <!-- Product Modal - Bước 1: Thông tin cơ bản -->
   <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto m-4">
       <div class="p-6 border-b border-slate-200">
-        <h3 class="text-xl font-bold text-slate-800" id="product-modal-title">Them san pham moi</h3>
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-slate-800" id="product-modal-title">Thêm sản phẩm mới</h3>
+          <div class="flex items-center gap-2 text-sm text-slate-500">
+            <span class="w-8 h-8 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold">1</span>
+            <span>Thông tin cơ bản</span>
+          </div>
+        </div>
       </div>
       <div class="p-6">
         <form id="product-form">
           <input type="hidden" id="product-id">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="mb-4">
-              <label class="block text-sm font-medium text-slate-700 mb-2">Ten san pham <span class="text-red-500">*</span></label>
-              <input type="text" id="product-name" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: iPhone 15 Pro Max">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Tên sản phẩm <span class="text-red-500">*</span></label>
+              <input type="text" id="product-name" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="VD: iPhone 16 Pro Max 256GB">
             </div>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-slate-700 mb-2">Hang <span class="text-red-500">*</span></label>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Hãng <span class="text-red-500">*</span></label>
               <select id="product-brand" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
-                <option value="">Chon hang</option>
+                <option value="">Chọn hãng</option>
               </select>
             </div>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-slate-700 mb-2">Gia (VND) <span class="text-red-500">*</span></label>
-              <input type="number" id="product-price" required min="0" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: 29990000">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Giá (VNĐ) <span class="text-red-500">*</span></label>
+              <input type="number" id="product-price" required min="0" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="VD: 29990000">
             </div>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-slate-700 mb-2">Ton kho <span class="text-red-500">*</span></label>
-              <input type="number" id="product-stock" required min="0" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: 50">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Tồn kho <span class="text-red-500">*</span></label>
+              <input type="number" id="product-stock" required min="0" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="VD: 50">
             </div>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-slate-700 mb-2">Mau sac</label>
-              <input type="text" id="product-color" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: Xanh, Den, Trang">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Mau sac <span class="text-xs text-slate-400">(Chọn từ bảng màu hoặc tự thêm)</span></label>
+              <input type="hidden" id="product-color" value="">
+              <input type="hidden" id="product-color-names" value="">
+              
+              <!-- Màu đã chọn -->
+              <div id="selected-colors" class="flex flex-wrap gap-2 mb-3 min-h-[40px] p-2 border border-slate-200 rounded-xl bg-slate-50">
+                <span class="text-slate-400 text-sm" id="color-placeholder">Chưa chọn màu nào...</span>
+              </div>
+              
+              <!-- Thêm màu tùy chỉnh -->
+              <div class="flex items-center gap-2 mb-3 p-3 bg-blue-50 rounded-xl border border-blue-200">
+                <input type="color" id="custom-color-picker" value="#FF6B00" class="w-10 h-10 rounded-lg cursor-pointer border-0">
+                <input type="text" id="custom-color-name" placeholder="Nhập tên màu (VD: Titan Cam)" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="button" onclick="addCustomColor()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center gap-1">
+                  <i class="fas fa-plus"></i> Thêm
+                </button>
+              </div>
+              
+              <!-- Bảng màu gợi ý -->
+              <p class="text-xs text-slate-500 mb-2"><i class="fas fa-palette mr-1"></i>Hoặc chọn nhanh từ bảng màu:</p>
+              <div class="grid grid-cols-8 gap-2" id="color-picker-grid">
+                <!-- Màu cơ bản -->
+                <button type="button" onclick="toggleColor('#000000', 'Đen')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#000000" title="Đen" data-color="#000000" data-name="Đen"></button>
+                <button type="button" onclick="toggleColor('#FFFFFF', 'Trắng')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FFFFFF" title="Trắng" data-color="#FFFFFF" data-name="Trắng"></button>
+                <button type="button" onclick="toggleColor('#C0C0C0', 'Bạc')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#C0C0C0" title="Bạc" data-color="#C0C0C0" data-name="Bạc"></button>
+                <button type="button" onclick="toggleColor('#808080', 'Xám')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#808080" title="Xám" data-color="#808080" data-name="Xám"></button>
+                <button type="button" onclick="toggleColor('#FFD700', 'Vàng Gold')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FFD700" title="Vàng Gold" data-color="#FFD700" data-name="Vàng Gold"></button>
+                <button type="button" onclick="toggleColor('#FFC0CB', 'Hồng')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FFC0CB" title="Hồng" data-color="#FFC0CB" data-name="Hồng"></button>
+                <button type="button" onclick="toggleColor('#FF6B00', 'Cam')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FF6B00" title="Cam" data-color="#FF6B00" data-name="Cam"></button>
+                <button type="button" onclick="toggleColor('#FF0000', 'Đỏ')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FF0000" title="Đỏ" data-color="#FF0000" data-name="Đỏ"></button>
+                <!-- Màu xanh -->
+                <button type="button" onclick="toggleColor('#0000FF', 'Xanh Dương')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#0000FF" title="Xanh Dương" data-color="#0000FF" data-name="Xanh Dương"></button>
+                <button type="button" onclick="toggleColor('#00BFFF', 'Xanh Da Trời')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#00BFFF" title="Xanh Da Trời" data-color="#00BFFF" data-name="Xanh Da Trời"></button>
+                <button type="button" onclick="toggleColor('#008000', 'Xanh Lá')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#008000" title="Xanh Lá" data-color="#008000" data-name="Xanh Lá"></button>
+                <button type="button" onclick="toggleColor('#90EE90', 'Xanh Mint')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#90EE90" title="Xanh Mint" data-color="#90EE90" data-name="Xanh Mint"></button>
+                <button type="button" onclick="toggleColor('#008080', 'Xanh Teal')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#008080" title="Xanh Teal" data-color="#008080" data-name="Xanh Teal"></button>
+                <button type="button" onclick="toggleColor('#4B0082', 'Tím Indigo')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#4B0082" title="Tím Indigo" data-color="#4B0082" data-name="Tím Indigo"></button>
+                <button type="button" onclick="toggleColor('#800080', 'Tím')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#800080" title="Tím" data-color="#800080" data-name="Tím"></button>
+                <button type="button" onclick="toggleColor('#E6E6FA', 'Lavender')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#E6E6FA" title="Lavender" data-color="#E6E6FA" data-name="Lavender"></button>
+                <!-- Màu titan/điện thoại -->
+                <button type="button" onclick="toggleColor('#3C3C3C', 'Titan Tự Nhiên')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#3C3C3C" title="Titan Tự Nhiên" data-color="#3C3C3C" data-name="Titan Tự Nhiên"></button>
+                <button type="button" onclick="toggleColor('#F5F5DC', 'Titan Trắng')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#F5F5DC" title="Titan Trắng" data-color="#F5F5DC" data-name="Titan Trắng"></button>
+                <button type="button" onclick="toggleColor('#3B4B59', 'Titan Xanh')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#3B4B59" title="Titan Xanh" data-color="#3B4B59" data-name="Titan Xanh"></button>
+                <button type="button" onclick="toggleColor('#1C1C1C', 'Titan Đen')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#1C1C1C" title="Titan Đen" data-color="#1C1C1C" data-name="Titan Đen"></button>
+                <button type="button" onclick="toggleColor('#2D2926', 'Graphite')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#2D2926" title="Graphite" data-color="#2D2926" data-name="Graphite"></button>
+                <button type="button" onclick="toggleColor('#FAF0E6', 'Cream')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FAF0E6" title="Cream" data-color="#FAF0E6" data-name="Cream"></button>
+                <button type="button" onclick="toggleColor('#8B4513', 'Nâu')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#8B4513" title="Nâu" data-color="#8B4513" data-name="Nâu"></button>
+                <button type="button" onclick="toggleColor('#800000', 'Đỏ Đô')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#800000" title="Đỏ Đô" data-color="#800000" data-name="Đỏ Đô"></button>
+              </div>
             </div>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-slate-700 mb-2">Bo nho</label>
-              <input type="text" id="product-storage" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Vi du: 128GB, 256GB">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Bộ nhớ (GB)</label>
+              <select id="product-storage" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="64">64GB</option>
+                <option value="128" selected>128GB</option>
+                <option value="256">256GB</option>
+                <option value="512">512GB</option>
+                <option value="1024">1TB</option>
+              </select>
             </div>
           </div>
           <div class="mb-4">
-            <label class="block text-sm font-medium text-slate-700 mb-2">Mo ta</label>
-            <textarea id="product-description" rows="4" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhap mo ta san pham..."></textarea>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Mô tả ngắn</label>
+            <textarea id="product-description" rows="3" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Mô tả ngắn về sản phẩm..."></textarea>
           </div>
           <div class="mb-4">
-            <label class="block text-sm font-medium text-slate-700 mb-2">URL Anh dai dien</label>
-            <input type="text" id="product-image" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="images/ten-san-pham.jpg">
-            <p class="text-xs text-slate-500 mt-1">Nhap duong dan anh (tuong doi hoac tuyet doi)</p>
+            <label class="block text-sm font-medium text-slate-700 mb-2"><i class="fas fa-image text-violet-500 mr-2"></i>Ảnh đại diện</label>
+            <input type="hidden" id="product-image">
+            <div class="flex items-center gap-4">
+              <div id="image-preview" class="w-24 h-24 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center bg-slate-50 overflow-hidden">
+                <i class="fas fa-image text-slate-400 text-2xl" id="image-placeholder"></i>
+                <img id="preview-img" src="" class="w-full h-full object-cover hidden">
+              </div>
+              <div class="flex-1">
+                <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-xl font-medium transition">
+                  <i class="fas fa-upload"></i>
+                  <span>Chọn ảnh</span>
+                  <input type="file" id="product-image-file" accept="image/*" class="hidden" onchange="previewImage(this)">
+                </label>
+                <p class="text-xs text-slate-500 mt-2">Chọn file ảnh từ máy tính (JPG, PNG, WEBP)</p>
+              </div>
+            </div>
           </div>
-          <div class="flex gap-3 justify-end">
-            <button type="button" onclick="closeProductModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">Huy</button>
-            <button type="submit" class="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium">Luu</button>
+          
+          <!-- Anh mo ta san pham -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-slate-700 mb-2">
+              <i class="fas fa-images text-blue-500 mr-2"></i>Ảnh mô tả sản phẩm 
+              <span class="text-xs text-slate-400">(Tối đa 5 ảnh)</span>
+            </label>
+            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 bg-slate-50">
+              <!-- Preview grid -->
+              <div id="gallery-preview" class="grid grid-cols-5 gap-3 mb-3">
+                <!-- Ảnh sẽ được thêm vào đây -->
+              </div>
+              <!-- Upload button -->
+              <div class="flex items-center gap-3">
+                <label id="add-gallery-btn" class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-xl font-medium transition">
+                  <i class="fas fa-plus"></i>
+                  <span>Thêm ảnh mô tả</span>
+                  <input type="file" id="gallery-image-file" accept="image/*" multiple class="hidden" onchange="addGalleryImages(this)">
+                </label>
+                <span class="text-xs text-slate-500">(<span id="gallery-count">0</span>/5 ảnh)</span>
+                <button type="button" onclick="clearGalleryImages()" class="text-xs text-red-500 hover:text-red-700 ml-auto">
+                  <i class="fas fa-trash mr-1"></i>Xóa tất cả
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex gap-3 justify-end pt-4 border-t border-slate-200">
+            <button type="button" onclick="closeProductModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">Hủy</button>
+            <button type="submit" class="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium flex items-center gap-2">
+              <span id="product-submit-text">Tiếp tục</span>
+              <i class="fas fa-arrow-right" id="product-submit-icon"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Config Modal - Bước 2: Thông số kỹ thuật -->
+  <div id="config-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto m-4">
+      <div class="p-6 border-b border-slate-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">Thông số kỹ thuật</h3>
+            <p class="text-sm text-slate-500 mt-1" id="config-product-name">Sản phẩm: ...</p>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-500">
+            <span class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">2</span>
+            <span>Cấu hình chi tiết</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <form id="config-form">
+          <input type="hidden" id="config-product-id">
+          
+          <!-- Thông báo -->
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+            <div class="flex items-start gap-3">
+              <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
+              <div class="text-sm text-blue-700">
+                <p class="font-medium">Nhập thông số kỹ thuật chi tiết</p>
+                <p class="mt-1">Thông số này sẽ hiển thị ở trang chi tiết sản phẩm. Bạn có thể bỏ qua bước này và thêm sau.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Nut goi y tu dong -->
+          <div class="mb-4">
+            <button type="button" onclick="autoFillSpecs()" class="w-full py-3 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition shadow-lg">
+              <i class="fas fa-magic"></i>
+              <span>Tự động điền thông số theo hãng</span>
+            </button>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2"><i class="fas fa-memory text-violet-500 mr-2"></i>RAM</label>
+              <select id="config-ram" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="">Chọn RAM</option>
+                <option value="4GB">4GB</option>
+                <option value="6GB">6GB</option>
+                <option value="8GB">8GB</option>
+                <option value="12GB">12GB</option>
+                <option value="16GB">16GB</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2"><i class="fas fa-microchip text-violet-500 mr-2"></i>Chip / CPU</label>
+              <select id="config-chip" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="">Chọn Chip</option>
+                <optgroup label="Apple">
+                  <option value="Apple A18 Pro">Apple A18 Pro</option>
+                  <option value="Apple A18">Apple A18</option>
+                  <option value="Apple A17 Pro">Apple A17 Pro</option>
+                  <option value="Apple A16 Bionic">Apple A16 Bionic</option>
+                  <option value="Apple A15 Bionic">Apple A15 Bionic</option>
+                </optgroup>
+                <optgroup label="Qualcomm">
+                  <option value="Snapdragon 8 Elite">Snapdragon 8 Elite</option>
+                  <option value="Snapdragon 8 Gen 3">Snapdragon 8 Gen 3</option>
+                  <option value="Snapdragon 8 Gen 2">Snapdragon 8 Gen 2</option>
+                  <option value="Snapdragon 7+ Gen 3">Snapdragon 7+ Gen 3</option>
+                  <option value="Snapdragon 6 Gen 1">Snapdragon 6 Gen 1</option>
+                </optgroup>
+                <optgroup label="Samsung">
+                  <option value="Exynos 2400">Exynos 2400</option>
+                  <option value="Exynos 2200">Exynos 2200</option>
+                  <option value="Exynos 1480">Exynos 1480</option>
+                </optgroup>
+                <optgroup label="MediaTek">
+                  <option value="Dimensity 9300">Dimensity 9300</option>
+                  <option value="Dimensity 8300">Dimensity 8300</option>
+                  <option value="Dimensity 7300">Dimensity 7300</option>
+                  <option value="Helio G99">Helio G99</option>
+                </optgroup>
+                <optgroup label="Google">
+                  <option value="Google Tensor G4">Google Tensor G4</option>
+                  <option value="Google Tensor G3">Google Tensor G3</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2"><i class="fas fa-mobile-alt text-violet-500 mr-2"></i>Màn hình</label>
+              <select id="config-screen" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="">Chọn màn hình</option>
+                <optgroup label="6.1 inch">
+                  <option value='6.1" Super Retina XDR, 2556x1179, 120Hz'>6.1" Super Retina XDR, 120Hz (iPhone)</option>
+                  <option value='6.1" Dynamic AMOLED 2X, 2340x1080, 120Hz'>6.1" Dynamic AMOLED 2X, 120Hz (Samsung)</option>
+                </optgroup>
+                <optgroup label="6.7 - 6.9 inch">
+                  <option value='6.7" Super Retina XDR, 2796x1290, 120Hz'>6.7" Super Retina XDR, 120Hz (iPhone Pro Max)</option>
+                  <option value='6.8" Dynamic AMOLED 2X, 3120x1440, 120Hz'>6.8" Dynamic AMOLED 2X, 120Hz (Samsung Ultra)</option>
+                  <option value='6.73" AMOLED, 3200x1440, 120Hz'>6.73" AMOLED, 3200x1440, 120Hz (Xiaomi)</option>
+                  <option value='6.7" LTPO AMOLED, 2992x1344, 120Hz'>6.7" LTPO AMOLED, 120Hz (Google Pixel)</option>
+                  <option value='6.7" AMOLED, 2780x1264, 120Hz'>6.7" AMOLED, 120Hz (OPPO)</option>
+                </optgroup>
+                <optgroup label="6.5 inch">
+                  <option value='6.5" Super AMOLED, 2340x1080, 120Hz'>6.5" Super AMOLED, 120Hz</option>
+                  <option value='6.5" IPS LCD, 2400x1080, 90Hz'>6.5" IPS LCD, 90Hz</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2"><i class="fas fa-camera text-violet-500 mr-2"></i>Camera</label>
+              <select id="config-camera" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="">Chọn camera</option>
+                <optgroup label="Camera cao cap">
+                  <option value="200MP + 50MP + 12MP + 10MP">200MP + 50MP + 12MP + 10MP (Samsung Ultra)</option>
+                  <option value="48MP + 12MP + 12MP (ProRAW, 5x Zoom)">48MP + 12MP + 12MP, 5x Zoom (iPhone Pro Max)</option>
+                  <option value="48MP + 12MP + 12MP">48MP + 12MP + 12MP (iPhone Pro)</option>
+                  <option value="50MP + 50MP + 48MP">50MP + 50MP + 48MP (Google Pixel Pro)</option>
+                </optgroup>
+                <optgroup label="Camera tam trung">
+                  <option value="50MP + 12MP + 10MP">50MP + 12MP + 10MP</option>
+                  <option value="50MP + 12MP + 5MP">50MP + 12MP + 5MP</option>
+                  <option value="50MP + 8MP + 2MP">50MP + 8MP + 2MP</option>
+                  <option value="108MP + 8MP + 2MP">108MP + 8MP + 2MP (Xiaomi)</option>
+                </optgroup>
+                <optgroup label="Camera pho thong">
+                  <option value="48MP + 2MP">48MP + 2MP</option>
+                  <option value="50MP + 2MP">50MP + 2MP</option>
+                  <option value="13MP + 2MP">13MP + 2MP</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2"><i class="fas fa-battery-full text-violet-500 mr-2"></i>Pin</label>
+              <select id="config-battery" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="">Chọn pin</option>
+                <optgroup label="Pin lon (5000mAh+)">
+                  <option value="5000mAh, sac nhanh 45W">5000mAh, sac nhanh 45W (Samsung)</option>
+                  <option value="5000mAh, sac nhanh 120W">5000mAh, sac nhanh 120W (Xiaomi)</option>
+                  <option value="5400mAh, sac nhanh 80W">5400mAh, sac nhanh 80W (OPPO)</option>
+                  <option value="5050mAh, sac nhanh 37W">5050mAh, sac nhanh 37W (Google Pixel)</option>
+                </optgroup>
+                <optgroup label="Pin vua (4500-4999mAh)">
+                  <option value="4685mAh, sac nhanh 27W, MagSafe 25W">4685mAh, sac 27W, MagSafe (iPhone Pro Max)</option>
+                  <option value="4500mAh, sac nhanh 25W">4500mAh, sac nhanh 25W</option>
+                  <option value="4700mAh, sac nhanh 67W">4700mAh, sac nhanh 67W</option>
+                </optgroup>
+                <optgroup label="Pin nho (<4500mAh)">
+                  <option value="3561mAh, sac nhanh 20W, MagSafe 15W">3561mAh, sac 20W (iPhone 16)</option>
+                  <option value="4000mAh, sac nhanh 25W">4000mAh, sac nhanh 25W</option>
+                  <option value="3800mAh, sac nhanh 18W">3800mAh, sac nhanh 18W</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-slate-700 mb-2"><i class="fab fa-android text-violet-500 mr-2"></i>Hệ điều hành</label>
+              <select id="config-os" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <option value="">Chọn hệ điều hành</option>
+                <optgroup label="iOS">
+                  <option value="iOS 18">iOS 18</option>
+                  <option value="iOS 17">iOS 17</option>
+                  <option value="iOS 16">iOS 16</option>
+                </optgroup>
+                <optgroup label="Android">
+                  <option value="Android 15">Android 15</option>
+                  <option value="Android 14">Android 14</option>
+                  <option value="Android 14, One UI 6.1">Android 14, One UI 6.1 (Samsung)</option>
+                  <option value="Android 14, HyperOS">Android 14, HyperOS (Xiaomi)</option>
+                  <option value="Android 14, ColorOS 14">Android 14, ColorOS 14 (OPPO)</option>
+                  <option value="Android 14, Funtouch OS">Android 14, Funtouch OS (Vivo)</option>
+                </optgroup>
+                <optgroup label="Khac">
+                  <option value="HarmonyOS 4.0">HarmonyOS 4.0</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          
+          <div class="flex gap-3 justify-between pt-4 border-t border-slate-200">
+            <button type="button" onclick="skipConfig()" class="px-6 py-2 text-slate-600 hover:text-slate-800 font-medium">
+              <i class="fas fa-forward mr-2"></i>Bỏ qua
+            </button>
+            <div class="flex gap-3">
+              <button type="button" onclick="backToProductModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">
+                <i class="fas fa-arrow-left mr-2"></i>Quay lại
+              </button>
+              <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-medium">
+                <i class="fas fa-check mr-2"></i>Hoàn tất
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -155,11 +503,362 @@
   </div>
   
   <!-- News Modal -->
-  <div id="news-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center"><div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto m-4"><div class="p-6 border-b border-slate-200"><h3 class="text-xl font-bold text-slate-800" id="news-modal-title">Them tin tuc moi</h3></div><div class="p-6"><form id="news-form"><input type="hidden" id="news-id"><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">Tieu de <span class="text-red-500">*</span></label><input type="text" id="news-title" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhap tieu de tin tuc"></div><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">Noi dung <span class="text-red-500">*</span></label><textarea id="news-content" required rows="8" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhap noi dung tin tuc"></textarea></div><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">URL Anh dai dien</label><input type="text" id="news-image" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="https://example.com/image.jpg"><p class="text-xs text-slate-500 mt-1">De trong neu khong co anh</p></div><div class="flex gap-3 justify-end"><button type="button" onclick="closeNewsModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">Huy</button><button type="submit" class="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium">Luu</button></div></form></div></div></div>
+  <div id="news-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center"><div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto m-4"><div class="p-6 border-b border-slate-200"><h3 class="text-xl font-bold text-slate-800" id="news-modal-title">Thêm tin tức mới</h3></div><div class="p-6"><form id="news-form"><input type="hidden" id="news-id"><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">Tiêu đề <span class="text-red-500">*</span></label><input type="text" id="news-title" required class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhập tiêu đề tin tức"></div><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">Nội dung <span class="text-red-500">*</span></label><textarea id="news-content" required rows="8" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Nhập nội dung tin tức"></textarea></div><div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-2">URL Ảnh đại diện</label><input type="text" id="news-image" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="https://example.com/image.jpg"><p class="text-xs text-slate-500 mt-1">Để trống nếu không có ảnh</p></div><div class="flex gap-3 justify-end"><button type="button" onclick="closeNewsModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">Hủy</button><button type="submit" class="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium">Lưu</button></div></form></div></div></div>
+  
+  <!-- Brand Modal -->
+  <div id="brand-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto m-4">
+      <div class="p-6 border-b border-slate-200">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-slate-800" id="brand-modal-title">Thêm hãng mới</h3>
+          <button onclick="closeBrandModal()" class="text-slate-400 hover:text-slate-600">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+      </div>
+      <div class="p-6">
+        <form id="brand-form">
+          <input type="hidden" id="brand-id">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-slate-700 mb-2">
+              <i class="fas fa-tag text-violet-500 mr-2"></i>Tên hãng <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="brand-name" required 
+              class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" 
+              placeholder="VD: Apple, Samsung, Xiaomi...">
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-slate-700 mb-2">
+              <i class="fas fa-globe text-blue-500 mr-2"></i>Quốc gia
+            </label>
+            <select id="brand-country" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+              <option value="">-- Chọn quốc gia --</option>
+            </select>
+            <p class="text-xs text-slate-500 mt-1">Quốc gia xuất xứ của hãng</p>
+          </div>
+          <div class="flex gap-3 justify-end pt-4 border-t border-slate-200">
+            <button type="button" onclick="closeBrandModal()" class="px-6 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50">Hủy</button>
+            <button type="submit" class="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium">
+              <i class="fas fa-save mr-2"></i>Lưu
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <script>
     const API_URL = 'http://localhost:3000/api';
     const PLACEHOLDER_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY0NzQ4YiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';
     let allOrders = [], allProducts = [], allCustomers = [], allReviews = [];
+    let selectedImageFile = null; // Luu file anh duoc chon
+    
+    // Cau hinh mac dinh theo hang
+    const brandSpecs = {
+      'Apple': {
+        ram: '8GB',
+        chip: 'Apple A18 Pro',
+        screen: '6.7" Super Retina XDR, 2796x1290, 120Hz',
+        camera: '48MP + 12MP + 12MP (ProRAW, 5x Zoom)',
+        battery: '4685mAh, sac nhanh 27W, MagSafe 25W',
+        os: 'iOS 18'
+      },
+      'Samsung': {
+        ram: '12GB',
+        chip: 'Snapdragon 8 Gen 3',
+        screen: '6.8" Dynamic AMOLED 2X, 3120x1440, 120Hz',
+        camera: '200MP + 50MP + 12MP + 10MP',
+        battery: '5000mAh, sac nhanh 45W',
+        os: 'Android 14, One UI 6.1'
+      },
+      'Xiaomi': {
+        ram: '12GB',
+        chip: 'Snapdragon 8 Gen 3',
+        screen: '6.73" AMOLED, 3200x1440, 120Hz',
+        camera: '108MP + 8MP + 2MP',
+        battery: '5000mAh, sac nhanh 120W',
+        os: 'Android 14, HyperOS'
+      },
+      'OPPO': {
+        ram: '12GB',
+        chip: 'Dimensity 9300',
+        screen: '6.7" AMOLED, 2780x1264, 120Hz',
+        camera: '50MP + 8MP + 2MP',
+        battery: '5400mAh, sac nhanh 80W',
+        os: 'Android 14, ColorOS 14'
+      },
+      'Google': {
+        ram: '12GB',
+        chip: 'Google Tensor G4',
+        screen: '6.7" LTPO AMOLED, 2992x1344, 120Hz',
+        camera: '50MP + 50MP + 48MP',
+        battery: '5050mAh, sac nhanh 37W',
+        os: 'Android 15'
+      },
+      'Vivo': {
+        ram: '12GB',
+        chip: 'Snapdragon 8 Gen 2',
+        screen: '6.7" AMOLED, 2780x1264, 120Hz',
+        camera: '50MP + 12MP + 5MP',
+        battery: '4700mAh, sac nhanh 67W',
+        os: 'Android 14, Funtouch OS'
+      },
+      'Realme': {
+        ram: '8GB',
+        chip: 'Dimensity 7300',
+        screen: '6.5" Super AMOLED, 2340x1080, 120Hz',
+        camera: '50MP + 8MP + 2MP',
+        battery: '5000mAh, sac nhanh 120W',
+        os: 'Android 14'
+      },
+      'Huawei': {
+        ram: '12GB',
+        chip: 'Kirin 9000s',
+        screen: '6.7" LTPO OLED, 2848x1224, 120Hz',
+        camera: '50MP + 12MP + 12MP',
+        battery: '5000mAh, sac nhanh 88W',
+        os: 'HarmonyOS 4.0'
+      }
+    };
+    
+    // ===== COLOR PICKER FUNCTIONS =====
+    var selectedColors = []; // [{hex: '#000000', name: 'Đen'}, ...]
+    
+    function toggleColor(hex, name) {
+      const index = selectedColors.findIndex(c => c.hex === hex);
+      if (index > -1) {
+        // Bỏ chọn màu
+        selectedColors.splice(index, 1);
+      } else {
+        // Thêm màu
+        selectedColors.push({hex: hex, name: name});
+      }
+      updateColorDisplay();
+    }
+    
+    // Thêm màu tùy chỉnh từ color picker
+    function addCustomColor() {
+      const colorPicker = document.getElementById('custom-color-picker');
+      const colorNameInput = document.getElementById('custom-color-name');
+      const hex = colorPicker.value.toUpperCase();
+      const name = colorNameInput.value.trim();
+      
+      if (!name) {
+        showToast('Vui lòng nhập tên màu!', 'error');
+        colorNameInput.focus();
+        return;
+      }
+      
+      // Kiểm tra màu đã tồn tại chưa
+      if (selectedColors.find(c => c.hex.toUpperCase() === hex)) {
+        showToast('Màu này đã được chọn!', 'error');
+        return;
+      }
+      
+      // Thêm màu mới
+      selectedColors.push({ hex: hex, name: name });
+      updateColorDisplay();
+      
+      // Reset input
+      colorNameInput.value = '';
+      showToast('Đã thêm màu: ' + name);
+    }
+    
+    function updateColorDisplay() {
+      const container = document.getElementById('selected-colors');
+      const colorInput = document.getElementById('product-color');
+      const colorNamesInput = document.getElementById('product-color-names');
+      
+      // Update button states trong bảng màu
+      document.querySelectorAll('.color-btn').forEach(btn => {
+        const color = btn.getAttribute('data-color');
+        if (selectedColors.find(c => c.hex.toUpperCase() === color.toUpperCase())) {
+          btn.classList.add('ring-2', 'ring-violet-500', 'ring-offset-1');
+        } else {
+          btn.classList.remove('ring-2', 'ring-violet-500', 'ring-offset-1');
+        }
+      });
+      
+      if (selectedColors.length === 0) {
+        container.innerHTML = '<span class="text-slate-400 text-sm" id="color-placeholder">Chưa chọn màu nào...</span>';
+        colorInput.value = '';
+        colorNamesInput.value = '';
+      } else {
+        container.innerHTML = selectedColors.map(c => 
+          '<span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm shadow-sm">' +
+          '<span class="w-5 h-5 rounded-full border border-slate-300 shadow-inner" style="background:' + c.hex + '"></span>' +
+          '<span class="font-medium">' + c.name + '</span>' +
+          '<button type="button" onclick="removeColor(\'' + c.hex + '\')" class="text-slate-400 hover:text-red-500 ml-1 text-lg leading-none">&times;</button>' +
+          '</span>'
+        ).join('');
+        // Lưu vào hidden input: mảng hex và mảng tên
+        colorInput.value = JSON.stringify(selectedColors.map(c => c.hex));
+        colorNamesInput.value = JSON.stringify(selectedColors.map(c => c.name));
+      }
+    }
+    
+    function removeColor(hex) {
+      selectedColors = selectedColors.filter(c => c.hex.toUpperCase() !== hex.toUpperCase());
+      updateColorDisplay();
+    }
+    
+    function resetColorPicker() {
+      selectedColors = [];
+      updateColorDisplay();
+    }
+    
+    function loadColorsFromData(colorsJson, colorNamesJson) {
+      selectedColors = [];
+      try {
+        const colors = typeof colorsJson === 'string' ? JSON.parse(colorsJson) : (colorsJson || []);
+        const names = typeof colorNamesJson === 'string' ? JSON.parse(colorNamesJson) : (colorNamesJson || []);
+        for (let i = 0; i < colors.length; i++) {
+          selectedColors.push({
+            hex: colors[i],
+            name: names[i] || colors[i]
+          });
+        }
+      } catch(e) {
+        console.log('Error parsing colors:', e);
+      }
+      updateColorDisplay();
+    }
+    
+    // Preview anh khi chon file
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        selectedImageFile = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('preview-img').src = e.target.result;
+          document.getElementById('preview-img').classList.remove('hidden');
+          document.getElementById('image-placeholder').classList.add('hidden');
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    // ===== GALLERY IMAGES FUNCTIONS =====
+    var galleryImageFiles = []; // Lưu các file ảnh mô tả
+    
+    function addGalleryImages(input) {
+      if (input.files && input.files.length > 0) {
+        const maxImages = 5;
+        const currentCount = galleryImageFiles.length;
+        const remainingSlots = maxImages - currentCount;
+        
+        if (remainingSlots <= 0) {
+          showToast('Đã đạt tối đa 5 ảnh mô tả!', 'error');
+          return;
+        }
+        
+        // Chỉ lấy số ảnh còn được phép thêm
+        const filesToAdd = Array.from(input.files).slice(0, remainingSlots);
+        
+        filesToAdd.forEach(file => {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            galleryImageFiles.push({
+              file: file,
+              dataUrl: e.target.result
+            });
+            renderGalleryPreview();
+          };
+          reader.readAsDataURL(file);
+        });
+        
+        // Reset input để có thể chọn lại cùng file
+        input.value = '';
+      }
+    }
+    
+    function renderGalleryPreview() {
+      const container = document.getElementById('gallery-preview');
+      const countEl = document.getElementById('gallery-count');
+      
+      countEl.textContent = galleryImageFiles.length;
+      
+      if (galleryImageFiles.length === 0) {
+        container.innerHTML = '<p class="text-slate-400 text-sm col-span-5 text-center py-4">Chưa có ảnh mô tả nào</p>';
+        return;
+      }
+      
+      container.innerHTML = galleryImageFiles.map((img, index) => `
+        <div class="relative group">
+          <img src="${img.dataUrl}" class="w-full h-20 object-cover rounded-lg border border-slate-200">
+          <button type="button" onclick="removeGalleryImage(${index})" 
+            class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+            <i class="fas fa-times"></i>
+          </button>
+          <span class="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">${index + 1}</span>
+        </div>
+      `).join('');
+    }
+    
+    function removeGalleryImage(index) {
+      galleryImageFiles.splice(index, 1);
+      renderGalleryPreview();
+    }
+    
+    function clearGalleryImages() {
+      galleryImageFiles = [];
+      renderGalleryPreview();
+    }
+    
+    function resetGalleryImages() {
+      galleryImageFiles = [];
+      document.getElementById('gallery-image-file').value = '';
+      renderGalleryPreview();
+    }
+    
+    // Reset preview anh
+    function resetImagePreview() {
+      document.getElementById('preview-img').src = '';
+      document.getElementById('preview-img').classList.add('hidden');
+      document.getElementById('image-placeholder').classList.remove('hidden');
+      document.getElementById('product-image-file').value = '';
+      document.getElementById('product-image').value = '';
+      selectedImageFile = null;
+      resetColorPicker(); // Reset colors khi mở modal mới
+      resetGalleryImages(); // Reset gallery images
+    }
+    
+    // Tu dong dien thong so theo hang
+    function autoFillSpecs() {
+      // Lay ten hang tu san pham
+      const productName = configProductName.toLowerCase();
+      let brandName = '';
+      
+      // Xac dinh hang dua tren ten san pham hoac brand ID
+      for (const brand of Object.keys(brandSpecs)) {
+        if (productName.includes(brand.toLowerCase())) {
+          brandName = brand;
+          break;
+        }
+      }
+      
+      // Neu khong tim thay, thu lay tu allBrands
+      if (!brandName && configProductId) {
+        const product = allProducts.find(p => (p.ma_sp || p.id) === configProductId);
+        if (product && product.ma_hang) {
+          const brand = allBrands.find(b => b.ma_hang === product.ma_hang);
+          if (brand) brandName = brand.ten_hang;
+        }
+      }
+      
+      if (brandName && brandSpecs[brandName]) {
+        const specs = brandSpecs[brandName];
+        document.getElementById('config-ram').value = specs.ram;
+        document.getElementById('config-chip').value = specs.chip;
+        document.getElementById('config-screen').value = specs.screen;
+        document.getElementById('config-camera').value = specs.camera;
+        document.getElementById('config-battery').value = specs.battery;
+        document.getElementById('config-os').value = specs.os;
+        showToast('Đã tự động điền thông số ' + brandName);
+      } else {
+        showToast('Không tìm thấy gợi ý cho hãng này. Vui lòng chọn thủ công.', 'error');
+      }
+    }
+    
     document.addEventListener('DOMContentLoaded', () => { 
       document.getElementById('current-date').textContent = new Date().toLocaleDateString('vi-VN'); 
       loadAdminInfo();
@@ -174,7 +873,7 @@
       
       // Kiểm tra quyền admin (hỗ trợ cả Google login và normal login)
       if (!isAdmin && !user.isAdmin && user.role !== 'admin') {
-        alert('Ban khong co quyen truy cap trang nay!');
+        alert('Bạn không có quyền truy cập trang này!');
         window.location.href = 'login.html';
         return;
       }
@@ -211,11 +910,11 @@
     function displayAdminInfo(admin) {
       const adminName = admin.ho_ten || admin.ten_admin || 'Admin';
       const adminAvatar = admin.avt || admin.avatar || '';
-      const adminRole = admin.quyen === 'superadmin' ? 'Super Admin' : 'Quan tri vien';
+      const adminRole = admin.quyen === 'superadmin' ? 'Super Admin' : 'Quản trị viên';
       
       // Cập nhật tên admin
       document.getElementById('admin-name').textContent = adminName;
-      document.getElementById('welcome-text').textContent = 'Chao mung tro lai, ' + adminName + '!';
+      document.getElementById('welcome-text').textContent = 'Chào mừng trở lại, ' + adminName + '!';
       
       // Cập nhật avatar
       const avatarElement = document.getElementById('admin-avatar');
@@ -241,14 +940,15 @@
       document.getElementById('section-' + section).classList.add('active');
       const navItem = document.getElementById('nav-' + section);
       if (navItem) { navItem.classList.add('active', 'text-white'); navItem.classList.remove('text-slate-300'); }
-      const titles = { dashboard: 'Tong quan', orders: 'Quan ly don hang', products: 'Quan ly san pham', customers: 'Quan ly khach hang', news: 'Quan ly tin tuc', reviews: 'Quan ly danh gia' };
-      document.getElementById('page-title').textContent = titles[section] || 'Tong quan';
+      const titles = { dashboard: 'Tổng quan', orders: 'Quản lý đơn hàng', products: 'Quản lý sản phẩm', customers: 'Quản lý khách hàng', news: 'Quản lý tin tức', reviews: 'Quản lý đánh giá', brands: 'Quản lý hãng sản xuất' };
+      document.getElementById('page-title').textContent = titles[section] || 'Tổng quan';
       if (section === 'dashboard') loadDashboardData();
       else if (section === 'orders') loadOrders();
       else if (section === 'products') loadProducts();
       else if (section === 'customers') loadCustomers();
       else if (section === 'news') loadNews();
       else if (section === 'reviews') loadReviews();
+      else if (section === 'brands') loadBrandsSection();
     }
     async function loadDashboardData() {
       let products = [], ordersData = [], customersData = [];
@@ -268,7 +968,7 @@
     }
     function renderRecentOrders(orders) {
       const tbody = document.getElementById('recent-orders-table');
-      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Chua co don hang</td></tr>'; return; }
+      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Chưa có đơn hàng</td></tr>'; return; }
       tbody.innerHTML = orders.map(o => '<tr class="border-b border-slate-50"><td class="py-4 font-medium text-violet-600">#' + o.ma_don + '</td><td class="py-4">' + (o.ten_nguoi_nhan || 'N/A') + '</td><td class="py-4 font-semibold">' + formatCurrency(o.tong_tien) + '</td><td class="py-4">' + getStatusBadge(o.trang_thai) + '</td><td class="py-4 text-slate-500">' + formatDate(o.thoi_gian) + '</td></tr>').join('');
     }
     function initRevenueChart(orders) {
@@ -281,7 +981,7 @@
       const ctx = document.getElementById('ordersChart'); if (!ctx) return;
       const counts = { pending: 0, confirmed: 0, shipping: 0, delivered: 0, cancelled: 0 };
       orders.forEach(o => { if (counts.hasOwnProperty(o.trang_thai)) counts[o.trang_thai]++; });
-      new Chart(ctx, { type: 'doughnut', data: { labels: ['Cho xu ly','Da xac nhan','Dang giao','Da giao','Da huy'], datasets: [{ data: Object.values(counts), backgroundColor: ['#f59e0b','#3b82f6','#8b5cf6','#10b981','#ef4444'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
+      new Chart(ctx, { type: 'doughnut', data: { labels: ['Chờ xử lý','Đã xác nhận','Đang giao','Đã giao','Đã hủy'], datasets: [{ data: Object.values(counts), backgroundColor: ['#f59e0b','#3b82f6','#8b5cf6','#10b981','#ef4444'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
     }
     async function loadOrders() {
       try { const res = await fetch(API_URL + '/admin/orders'); const data = await res.json(); allOrders = data.data || data || []; renderOrders(allOrders); }
@@ -289,27 +989,50 @@
     }
     function renderOrders(orders) {
       const tbody = document.getElementById('orders-table');
-      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-400">Khong co don hang</td></tr>'; return; }
-      tbody.innerHTML = orders.map(o => '<tr class="border-b border-slate-50"><td class="py-4 font-medium text-violet-600">#' + o.ma_don + '</td><td class="py-4">' + (o.ten_nguoi_nhan || 'N/A') + '</td><td class="py-4 text-slate-500">' + (o.so_dt || 'N/A') + '</td><td class="py-4 font-semibold">' + formatCurrency(o.tong_tien) + '</td><td class="py-4"><select onchange="updateOrderStatus(' + o.ma_don + ', this.value)" class="text-xs border rounded-lg px-2 py-1"><option value="pending"' + (o.trang_thai==='pending'?' selected':'') + '>Cho xu ly</option><option value="confirmed"' + (o.trang_thai==='confirmed'?' selected':'') + '>Da xac nhan</option><option value="shipping"' + (o.trang_thai==='shipping'?' selected':'') + '>Dang giao</option><option value="delivered"' + (o.trang_thai==='delivered'?' selected':'') + '>Da giao</option><option value="cancelled"' + (o.trang_thai==='cancelled'?' selected':'') + '>Da huy</option></select></td><td class="py-4 text-slate-500">' + formatDate(o.thoi_gian) + '</td><td class="py-4"><button class="text-violet-600"><i class="fas fa-eye"></i></button></td></tr>').join('');
+      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="8" class="py-8 text-center text-slate-400">Không có đơn hàng</td></tr>'; return; }
+      tbody.innerHTML = orders.map(o => {
+        const cancelReasonHtml = o.trang_thai === 'cancelled' && o.ly_do_huy 
+          ? '<div class="text-xs text-red-500 mt-1"><i class="fas fa-info-circle mr-1"></i>' + o.ly_do_huy + '</div>' 
+          : '';
+        return '<tr class="border-b border-slate-50"><td class="py-4 font-medium text-violet-600">#' + o.ma_don + '</td><td class="py-4">' + (o.ten_nguoi_nhan || 'N/A') + '</td><td class="py-4 text-slate-500">' + (o.so_dt || 'N/A') + '</td><td class="py-4 font-semibold">' + formatCurrency(o.tong_tien) + '</td><td class="py-4"><select onchange="updateOrderStatus(' + o.ma_don + ', this.value)" class="text-xs border rounded-lg px-2 py-1"><option value="pending"' + (o.trang_thai==='pending'?' selected':'') + '>Chờ xử lý</option><option value="confirmed"' + (o.trang_thai==='confirmed'?' selected':'') + '>Đã xác nhận</option><option value="shipping"' + (o.trang_thai==='shipping'?' selected':'') + '>Đang giao</option><option value="delivered"' + (o.trang_thai==='delivered'?' selected':'') + '>Đã giao</option><option value="cancelled"' + (o.trang_thai==='cancelled'?' selected':'') + '>Đã hủy</option></select>' + cancelReasonHtml + '</td><td class="py-4 text-slate-500">' + formatDate(o.thoi_gian) + '</td><td class="py-4"><button onclick="viewOrderDetail(' + o.ma_don + ')" class="text-violet-600 hover:text-violet-800" title="Xem chi tiết"><i class="fas fa-eye"></i></button></td></tr>';
+      }).join('');
     }
-    async function updateOrderStatus(id, status) { try { await fetch(API_URL + '/admin/orders/' + id + '/status', { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status:status}) }); showToast('Cap nhat thanh cong'); } catch(e) { showToast('Loi cap nhat', 'error'); } }
-    let allBrands = [], editingProductId = null;
+    async function updateOrderStatus(id, status) { try { await fetch(API_URL + '/admin/orders/' + id + '/status', { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status:status}) }); showToast('Cập nhật thành công'); } catch(e) { showToast('Lỗi cập nhật', 'error'); } }
+    let allBrands = [], editingProductId = null, configProductId = null, configProductName = '';
     async function loadBrands() {
       try {
         const res = await fetch(API_URL + '/admin/brands');
         const data = await res.json();
-        allBrands = data.data || [];
+        console.log('Brands API response:', data);
+        allBrands = data.data || data || [];
+        console.log('allBrands:', allBrands);
         const select = document.getElementById('product-brand');
         const filter = document.getElementById('product-brand-filter');
-        const options = '<option value="">Chon hang</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
-        const filterOptions = '<option value="">Tat ca hang</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
+        if (!select) { console.error('product-brand element not found!'); return; }
+        const options = '<option value="">Chọn hãng</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
+        const filterOptions = '<option value="">Tất cả hãng</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
         select.innerHTML = options;
-        filter.innerHTML = filterOptions;
+        if (filter) filter.innerHTML = filterOptions;
+        console.log('Brands loaded successfully:', allBrands.length, 'brands');
       } catch(e) { console.error('Error loading brands:', e); }
     }
-    function getBrandName(brandId) {
-      const brand = allBrands.find(b => b.ma_hang === brandId);
-      return brand ? brand.ten_hang : 'N/A';
+    function getBrandName(brandIdOrSlug) {
+      // Hỗ trợ cả ma_hang (number) và brand slug (string)
+      if (!brandIdOrSlug) return 'N/A';
+      
+      // Nếu là số, tìm theo ma_hang
+      if (typeof brandIdOrSlug === 'number') {
+        const brand = allBrands.find(b => b.ma_hang === brandIdOrSlug);
+        return brand ? brand.ten_hang : 'N/A';
+      }
+      
+      // Nếu là string (slug), tìm theo ten_hang (lowercase)
+      const slug = brandIdOrSlug.toString().toLowerCase();
+      const brand = allBrands.find(b => b.ten_hang.toLowerCase() === slug);
+      if (brand) return brand.ten_hang;
+      
+      // Fallback: capitalize first letter
+      return slug.charAt(0).toUpperCase() + slug.slice(1);
     }
     async function loadProducts() {
       try {
@@ -318,12 +1041,12 @@
         renderProducts(allProducts);
       } catch(e) {
         console.error('Error loading products:', e);
-        showToast('Loi tai san pham', 'error');
+        showToast('Lỗi tải sản phẩm', 'error');
       }
     }
     function renderProducts(products) {
       const tbody = document.getElementById('products-table');
-      if (!products.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Khong co san pham</td></tr>'; return; }
+      if (!products.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Không có sản phẩm</td></tr>'; return; }
       tbody.innerHTML = products.map(p => {
         const productId = p.ma_sp || p.id;
         const productName = p.ten_sp || p.name || 'N/A';
@@ -332,8 +1055,8 @@
         const productColor = p.mau_sac || '';
         const productPrice = p.gia || p.price || 0;
         const productStock = p.so_luong_ton || p.stock || 0;
-        const brandId = p.ma_hang;
-        return '<tr class="border-b border-slate-50 hover:bg-slate-50"><td class="py-4"><img src="' + productImage + '" class="w-16 h-16 object-cover rounded-xl" onerror="this.src=\'' + PLACEHOLDER_IMAGE + '\'"></td><td class="py-4"><p class="font-medium">' + productName + '</p><p class="text-xs text-slate-500">' + productStorage + (productColor ? ' - ' + productColor : '') + '</p></td><td class="py-4"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-medium">' + getBrandName(brandId) + '</span></td><td class="py-4 font-semibold text-violet-600">' + formatCurrency(productPrice) + '</td><td class="py-4"><span class="px-2 py-1 rounded-lg text-xs font-medium ' + (productStock>10?'bg-emerald-100 text-emerald-700':productStock>0?'bg-amber-100 text-amber-700':'bg-red-100 text-red-700') + '">' + productStock + '</span></td><td class="py-4 space-x-2"><button onclick="viewProduct(' + productId + ')" class="text-violet-600 hover:text-violet-800" title="Xem"><i class="fas fa-eye"></i></button><button onclick="editProduct(' + productId + ')" class="text-blue-600 hover:text-blue-800" title="Sua"><i class="fas fa-edit"></i></button><button onclick="deleteProduct(' + productId + ')" class="text-red-600 hover:text-red-800" title="Xoa"><i class="fas fa-trash"></i></button></td></tr>';
+        const brandIdOrSlug = p.ma_hang || p.brand;
+        return '<tr class="border-b border-slate-50 hover:bg-slate-50"><td class="py-4"><img src="' + productImage + '" class="w-16 h-16 object-cover rounded-xl" onerror="this.src=\'' + PLACEHOLDER_IMAGE + '\'"></td><td class="py-4"><p class="font-medium">' + productName + '</p><p class="text-xs text-slate-500">' + productStorage + (productColor ? ' - ' + productColor : '') + '</p></td><td class="py-4"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-medium">' + getBrandName(brandIdOrSlug) + '</span></td><td class="py-4 font-semibold text-violet-600">' + formatCurrency(productPrice) + '</td><td class="py-4"><span class="px-2 py-1 rounded-lg text-xs font-medium ' + (productStock>10?'bg-emerald-100 text-emerald-700':productStock>0?'bg-amber-100 text-amber-700':'bg-red-100 text-red-700') + '">' + productStock + '</span></td><td class="py-4 space-x-2"><button onclick="viewProduct(' + productId + ')" class="text-violet-600 hover:text-violet-800" title="Xem"><i class="fas fa-eye"></i></button><button onclick="editProduct(' + productId + ')" class="text-blue-600 hover:text-blue-800" title="Sửa"><i class="fas fa-edit"></i></button><button onclick="editConfig(' + productId + ')" class="text-emerald-600 hover:text-emerald-800" title="Cấu hình"><i class="fas fa-cog"></i></button><button onclick="deleteProduct(' + productId + ')" class="text-red-600 hover:text-red-800" title="Xóa"><i class="fas fa-trash"></i></button></td></tr>';
       }).join('');
     }
     function openProductModal(productId) {
@@ -341,28 +1064,59 @@
       const modal = document.getElementById('product-modal');
       const form = document.getElementById('product-form');
       form.reset();
+      resetImagePreview(); // Reset preview anh
+      
+      // Đảm bảo brands đã được load
+      if (allBrands.length === 0) {
+        loadBrands();
+      }
+      
       if (productId) {
         const product = allProducts.find(p => (p.ma_sp || p.id) === productId);
         if (product) {
-          document.getElementById('product-modal-title').textContent = 'Chinh sua san pham';
+          document.getElementById('product-modal-title').textContent = 'Chỉnh sửa sản phẩm';
+          document.getElementById('product-submit-text').textContent = 'Tiếp tục';
           document.getElementById('product-id').value = product.ma_sp || product.id;
           document.getElementById('product-name').value = product.ten_sp || product.name || '';
           document.getElementById('product-brand').value = product.ma_hang || '';
           document.getElementById('product-price').value = product.gia || product.price || '';
           document.getElementById('product-stock').value = product.so_luong_ton || product.stock || '';
-          document.getElementById('product-color').value = product.mau_sac || '';
-          document.getElementById('product-storage').value = product.bo_nho || product.storage || '';
+          document.getElementById('product-storage').value = product.bo_nho || product.storage || '128';
           document.getElementById('product-description').value = product.mo_ta || product.description || '';
           document.getElementById('product-image').value = product.anh_dai_dien || product.image || '';
+          
+          // Load màu sắc từ database (JSON format: {colors: [...], colorNames: [...]})
+          resetColorPicker();
+          if (product.mau_sac) {
+            try {
+              const colorData = typeof product.mau_sac === 'string' ? JSON.parse(product.mau_sac) : product.mau_sac;
+              if (colorData.colors && colorData.colorNames) {
+                loadColorsFromData(colorData.colors, colorData.colorNames);
+              }
+            } catch(e) {
+              console.log('Could not parse color data:', e);
+            }
+          }
+          
+          // Hien thi anh hien tai neu co
+          const existingImage = product.anh_dai_dien || product.image;
+          if (existingImage) {
+            document.getElementById('preview-img').src = existingImage;
+            document.getElementById('preview-img').classList.remove('hidden');
+            document.getElementById('image-placeholder').classList.add('hidden');
+          }
         }
       } else {
-        document.getElementById('product-modal-title').textContent = 'Them san pham moi';
+        document.getElementById('product-modal-title').textContent = 'Thêm sản phẩm mới';
+        document.getElementById('product-submit-text').textContent = 'Tiếp tục';
+        resetColorPicker();
       }
       modal.classList.remove('hidden');
     }
     function closeProductModal() {
       document.getElementById('product-modal').classList.add('hidden');
       editingProductId = null;
+      resetImagePreview();
     }
     function viewProduct(id) {
       const product = allProducts.find(p => (p.ma_sp || p.id) === id);
@@ -372,63 +1126,218 @@
         const stock = product.so_luong_ton || product.stock || 0;
         const color = product.mau_sac || 'N/A';
         const storage = product.bo_nho || product.storage || 'N/A';
-        const desc = product.mo_ta || product.description || 'Khong co';
-        alert('CHI TIET SAN PHAM\n\nTen: ' + name + '\nHang: ' + getBrandName(product.ma_hang) + '\nGia: ' + formatCurrency(price) + '\nTon kho: ' + stock + '\nMau sac: ' + color + '\nBo nho: ' + storage + '\nMo ta: ' + desc);
+        const desc = product.mo_ta || product.description || 'Không có';
+        alert('CHI TIẾT SẢN PHẨM\n\nTên: ' + name + '\nHãng: ' + getBrandName(product.ma_hang) + '\nGiá: ' + formatCurrency(price) + '\nTồn kho: ' + stock + '\nMàu sắc: ' + color + '\nBộ nhớ: ' + storage + '\nMô tả: ' + desc);
       }
     }
     function editProduct(id) { openProductModal(id); }
+    function editConfig(id) {
+      const product = allProducts.find(p => (p.ma_sp || p.id) === id);
+      if (product) {
+        openConfigModal(id, product.ten_sp || product.name || 'San pham');
+      }
+    }
     async function deleteProduct(id) {
-      if (!confirm('Ban co chac chan muon xoa san pham nay?')) return;
+      if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) return;
       try {
         const res = await fetch(API_URL + '/admin/products/' + id, { method: 'DELETE' });
         const data = await res.json();
         if (data.success) {
-          showToast('Xoa san pham thanh cong');
+          showToast('Xóa sản phẩm thành công');
           loadProducts();
         } else {
-          showToast(data.message || 'Loi xoa san pham', 'error');
+          showToast(data.message || 'Lỗi xóa sản phẩm', 'error');
         }
       } catch(e) {
         console.error('Error deleting product:', e);
-        showToast('Loi xoa san pham', 'error');
+        showToast('Lỗi xóa sản phẩm', 'error');
       }
     }
+    // Buoc 2: Mo modal cau hinh
+    function openConfigModal(productId, productName) {
+      configProductId = productId;
+      configProductName = productName;
+      document.getElementById('product-modal').classList.add('hidden');
+      document.getElementById('config-product-id').value = productId;
+      document.getElementById('config-product-name').textContent = 'Sản phẩm: ' + productName;
+      document.getElementById('config-form').reset();
+      loadConfigForProduct(productId);
+      document.getElementById('config-modal').classList.remove('hidden');
+    }
+    async function loadConfigForProduct(productId) {
+      try {
+        const res = await fetch(API_URL + '/admin/products/' + productId + '/specs');
+        const data = await res.json();
+        if (data.success && data.data) {
+          const specs = data.data;
+          document.getElementById('config-ram').value = specs.ram || '';
+          document.getElementById('config-chip').value = specs.chip || '';
+          document.getElementById('config-screen').value = specs.man_hinh || '';
+          document.getElementById('config-camera').value = specs.camera || '';
+          document.getElementById('config-battery').value = specs.pin || '';
+          document.getElementById('config-os').value = specs.he_dieu_hanh || '';
+        }
+      } catch(e) { console.log('Chưa có cấu hình cho sản phẩm này'); }
+    }
+    function closeConfigModal() {
+      document.getElementById('config-modal').classList.add('hidden');
+      configProductId = null;
+      loadProducts();
+      loadDashboardData();
+    }
+    function skipConfig() {
+      showToast('Đã thêm sản phẩm. Bạn có thể thêm cấu hình sau.');
+      closeConfigModal();
+    }
+    function backToProductModal() {
+      document.getElementById('config-modal').classList.add('hidden');
+      if (configProductId) {
+        editingProductId = configProductId;
+        openProductModal(configProductId);
+      }
+    }
+    // Config form submit
+    document.getElementById('config-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const configData = {
+        ram: document.getElementById('config-ram').value,
+        chip: document.getElementById('config-chip').value,
+        man_hinh: document.getElementById('config-screen').value,
+        camera: document.getElementById('config-camera').value,
+        pin: document.getElementById('config-battery').value,
+        he_dieu_hanh: document.getElementById('config-os').value
+      };
+      try {
+        const res = await fetch(API_URL + '/admin/products/' + configProductId + '/specs', {
+          method: 'PUT',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(configData)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Lưu cấu hình thành công!');
+          closeConfigModal();
+        } else {
+          showToast(data.message || 'Lỗi lưu cấu hình', 'error');
+        }
+      } catch(e) {
+        console.error('Error saving config:', e);
+        showToast('Lỗi lưu cấu hình', 'error');
+      }
+    });
+    // Product form submit - Buoc 1
     document.getElementById('product-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      let imageUrl = document.getElementById('product-image').value || null;
+      
+      // Neu co file anh duoc chon, upload truoc
+      if (selectedImageFile) {
+        try {
+          const formData = new FormData();
+          formData.append('image', selectedImageFile);
+          
+          const uploadRes = await fetch(API_URL + '/admin/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const uploadData = await uploadRes.json();
+          
+          if (uploadData.success && uploadData.url) {
+            imageUrl = uploadData.url;
+          } else {
+            // Fallback: Dung data URL
+            imageUrl = document.getElementById('preview-img').src;
+          }
+        } catch(uploadErr) {
+          console.log('Upload failed, using data URL');
+          imageUrl = document.getElementById('preview-img').src;
+        }
+      }
+      
       const productData = {
         ten_sp: document.getElementById('product-name').value,
         ma_hang: document.getElementById('product-brand').value,
         gia: document.getElementById('product-price').value,
         so_luong_ton: document.getElementById('product-stock').value,
         mau_sac: document.getElementById('product-color').value || null,
+        ten_mau_sac: document.getElementById('product-color-names').value || null,
         bo_nho: document.getElementById('product-storage').value || null,
         mo_ta: document.getElementById('product-description').value || null,
-        anh_dai_dien: document.getElementById('product-image').value || null
+        anh_dai_dien: imageUrl
       };
       try {
-        const url = editingProductId ? API_URL + '/admin/products/' + editingProductId : API_URL + '/admin/products';
-        const method = editingProductId ? 'PUT' : 'POST';
-        const res = await fetch(url, { method: method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(productData) });
-        const data = await res.json();
-        if (data.success) {
-          showToast(editingProductId ? 'Cap nhat san pham thanh cong' : 'Them san pham thanh cong');
-          closeProductModal();
-          loadProducts();
+        if (editingProductId) {
+          const res = await fetch(API_URL + '/admin/products/' + editingProductId, { 
+            method: 'PUT', 
+            headers: {'Content-Type':'application/json'}, 
+            body: JSON.stringify(productData) 
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast('Cập nhật sản phẩm thành công! Tiếp tục thêm cấu hình...');
+            // Upload gallery images
+            await uploadGalleryImages(editingProductId);
+            openConfigModal(editingProductId, productData.ten_sp);
+          } else {
+            showToast(data.message || 'Lỗi cập nhật sản phẩm', 'error');
+          }
         } else {
-          showToast(data.message || 'Loi luu san pham', 'error');
+          const res = await fetch(API_URL + '/admin/products', { 
+            method: 'POST', 
+            headers: {'Content-Type':'application/json'}, 
+            body: JSON.stringify(productData) 
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast('Thêm sản phẩm thành công! Tiếp tục thêm cấu hình...');
+            // Upload gallery images
+            await uploadGalleryImages(data.data.id);
+            closeProductModal();
+            openConfigModal(data.data.id, productData.ten_sp);
+          } else {
+            showToast(data.message || 'Lỗi thêm sản phẩm', 'error');
+          }
         }
       } catch(e) {
         console.error('Error saving product:', e);
-        showToast('Loi luu san pham', 'error');
+        showToast('Lỗi lưu sản phẩm', 'error');
       }
     });
+    
+    // Upload gallery images cho san pham
+    async function uploadGalleryImages(productId) {
+      if (galleryImageFiles.length === 0) return;
+      
+      try {
+        for (const img of galleryImageFiles) {
+          const formData = new FormData();
+          formData.append('image', img.file);
+          formData.append('productId', productId);
+          
+          const uploadRes = await fetch(API_URL + '/admin/upload-gallery', {
+            method: 'POST',
+            body: formData
+          });
+          const uploadData = await uploadRes.json();
+          
+          if (!uploadData.success) {
+            console.log('Failed to upload gallery image:', uploadData.message);
+          }
+        }
+        showToast('Đã upload ' + galleryImageFiles.length + ' ảnh mô tả');
+      } catch(err) {
+        console.error('Error uploading gallery:', err);
+      }
+    }
+    
     async function loadCustomers() {
       try { const res = await fetch(API_URL + '/admin/customers'); const data = await res.json(); allCustomers = data.data || data || []; renderCustomers(allCustomers); }
       catch(e) { allCustomers = [{ma_kh:1,ho_ten:'Nguyen Van A',email:'a@email.com',so_dt:'0901234567',so_don_hang:5,tong_chi_tieu:150000000},{ma_kh:2,ho_ten:'Tran Thi B',email:'b@email.com',so_dt:'0912345678',so_don_hang:3,tong_chi_tieu:89000000}]; renderCustomers(allCustomers); }
     }
     function renderCustomers(customers) {
       const tbody = document.getElementById('customers-table');
-      if (!customers.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Khong co khach hang</td></tr>'; return; }
+      if (!customers.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Không có khách hàng</td></tr>'; return; }
       tbody.innerHTML = customers.map(c => '<tr class="border-b border-slate-50"><td class="py-4">' + (c.avt ? '<img src="' + c.avt + '" class="w-10 h-10 rounded-full object-cover">' : '<div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center text-white font-medium">' + (c.ho_ten||'K').charAt(0) + '</div>') + '</td><td class="py-4 font-medium">' + (c.ho_ten || 'N/A') + '</td><td class="py-4 text-slate-500">' + (c.email || 'N/A') + '</td><td class="py-4 text-slate-500">' + (c.so_dt || 'N/A') + '</td><td class="py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-medium">' + (c.so_don_hang || 0) + '</span></td><td class="py-4 font-semibold text-emerald-600">' + formatCurrency(c.tong_chi_tieu || 0) + '</td></tr>').join('');
     }
     async function loadReviews() {
@@ -437,8 +1346,8 @@
     }
     function renderReviews(reviews) {
       const tbody = document.getElementById('reviews-table');
-      if (!reviews.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Khong co danh gia</td></tr>'; return; }
-      tbody.innerHTML = reviews.map(r => '<tr class="border-b border-slate-50"><td class="py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-medium text-sm">' + (r.ho_ten||'K').charAt(0) + '</div><span class="font-medium">' + (r.ho_ten||'Khach hang') + '</span></div></td><td class="py-4 text-slate-500">' + (r.ten_sp || 'N/A') + '</td><td class="py-4"><div class="flex items-center gap-1">' + renderStars(r.so_sao) + '</div></td><td class="py-4 text-slate-600 max-w-[200px] truncate">' + (r.binh_luan || '') + '</td><td class="py-4 text-slate-500">' + formatDate(r.ngay_danh_gia) + '</td></tr>').join('');
+      if (!reviews.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Không có đánh giá</td></tr>'; return; }
+      tbody.innerHTML = reviews.map(r => '<tr class="border-b border-slate-50"><td class="py-4"><div class="flex items-center gap-2">' + (r.avt ? '<img src="' + r.avt + '" class="w-8 h-8 rounded-full object-cover">' : '<div class="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-medium text-sm">' + (r.ho_ten||'K').charAt(0) + '</div>') + '<span class="font-medium">' + (r.ho_ten||'Khách hàng') + '</span></div></td><td class="py-4 text-slate-500">' + (r.ten_sp || 'N/A') + '</td><td class="py-4"><div class="flex items-center gap-1">' + renderStars(r.so_sao) + '</div></td><td class="py-4 text-slate-600 max-w-[200px] truncate">' + (r.binh_luan || '') + '</td><td class="py-4 text-slate-500">' + formatDate(r.ngay_danh_gia) + '</td><td class="py-4 space-x-2"><button onclick="viewReview(' + r.ma_dg + ')" class="text-violet-600 hover:text-violet-800" title="Xem chi tiết"><i class="fas fa-eye"></i></button><button onclick="deleteReview(' + r.ma_dg + ')" class="text-red-600 hover:text-red-800" title="Xóa"><i class="fas fa-trash"></i></button></td></tr>').join('');
     }
     function updateReviewStats(reviews) {
       const total = reviews.length;
@@ -453,7 +1362,7 @@
     function renderStars(rating) { var s = ''; for (var i = 1; i <= 5; i++) s += '<i class="fas fa-star ' + (i <= rating ? 'text-amber-400' : 'text-slate-200') + ' text-sm"></i>'; return s; }
     function formatCurrency(amount) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseFloat(amount) || 0); }
     function formatDate(d) { if (!d) return 'N/A'; return new Date(d).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
-    function getStatusBadge(s) { var badges = { pending: '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-xs font-medium">Cho xu ly</span>', confirmed: '<span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-medium">Da xac nhan</span>', shipping: '<span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-medium">Dang giao</span>', delivered: '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-medium">Da giao</span>', cancelled: '<span class="px-2 py-1 bg-red-100 text-red-700 rounded-lg text-xs font-medium">Da huy</span>' }; return badges[s] || badges.pending; }
+    function getStatusBadge(s) { var badges = { pending: '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-xs font-medium">Chờ xử lý</span>', confirmed: '<span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-medium">Đã xác nhận</span>', shipping: '<span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-medium">Đang giao</span>', delivered: '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-medium">Đã giao</span>', cancelled: '<span class="px-2 py-1 bg-red-100 text-red-700 rounded-lg text-xs font-medium">Đã hủy</span>' }; return badges[s] || badges.pending; }
     function showToast(msg, type) { type = type || 'success'; var toast = document.getElementById('toast'); document.getElementById('toast-message').textContent = msg; document.getElementById('toast-icon').className = type === 'success' ? 'fas fa-check-circle text-emerald-400' : 'fas fa-exclamation-circle text-red-400'; toast.classList.remove('translate-y-20', 'opacity-0'); toast.classList.add('translate-y-0', 'opacity-100'); setTimeout(function() { toast.classList.add('translate-y-20', 'opacity-0'); toast.classList.remove('translate-y-0', 'opacity-100'); }, 3000); }
     document.getElementById('order-search').addEventListener('input', function(e) { 
       var s = e.target.value.toLowerCase().trim(); 
@@ -490,7 +1399,13 @@
     document.getElementById('product-brand-filter').addEventListener('change', function(e) { 
       var b = e.target.value; 
       var searchVal = document.getElementById('product-search').value.toLowerCase().trim();
-      var filtered = b ? allProducts.filter(function(p) { return p.ma_hang == b; }) : allProducts;
+      var filtered = b ? allProducts.filter(function(p) { 
+        // Hỗ trợ cả ma_hang (number) và brand (slug)
+        if (p.ma_hang) return p.ma_hang == b;
+        // Nếu không có ma_hang, so sánh brand slug với tên hãng
+        var brandData = allBrands.find(function(br) { return br.ma_hang == b; });
+        return brandData && p.brand && p.brand.toLowerCase() === brandData.ten_hang.toLowerCase();
+      }) : allProducts;
       if (searchVal) {
         filtered = filtered.filter(function(p) { 
           var name = (p.ten_sp || p.name || '').toLowerCase();
@@ -544,8 +1459,8 @@
     }
     function renderNews(news) {
       const tbody = document.getElementById('news-table');
-      if (!news.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Khong co tin tuc</td></tr>'; return; }
-      tbody.innerHTML = news.map(n => '<tr class="border-b border-slate-50"><td class="py-4">' + (n.anh_dai_dien ? '<img src="' + n.anh_dai_dien + '" class="w-16 h-16 object-cover rounded-xl">' : '<div class="w-16 h-16 bg-slate-200 rounded-xl flex items-center justify-center"><i class="fas fa-newspaper text-slate-400"></i></div>') + '</td><td class="py-4"><p class="font-medium max-w-md">' + n.tieu_de + '</p><p class="text-xs text-slate-500 mt-1">' + truncateText(n.noi_dung, 80) + '</p></td><td class="py-4 text-slate-600">' + (n.ten_admin || 'N/A') + '</td><td class="py-4 text-slate-500">' + formatDate(n.ngay_dang) + '</td><td class="py-4"><button onclick="editNews(' + n.ma_tintuc + ')" class="text-blue-600 mr-2 hover:text-blue-800"><i class="fas fa-edit"></i></button><button onclick="deleteNews(' + n.ma_tintuc + ')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button></td></tr>').join('');
+      if (!news.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Không có tin tức</td></tr>'; return; }
+      tbody.innerHTML = news.map(n => '<tr class="border-b border-slate-50"><td class="py-4">' + (n.anh_dai_dien ? '<img src="' + n.anh_dai_dien + '" class="w-16 h-16 object-cover rounded-xl">' : '<div class="w-16 h-16 bg-slate-200 rounded-xl flex items-center justify-center"><i class="fas fa-newspaper text-slate-400"></i></div>') + '</td><td class="py-4"><p class="font-medium max-w-md">' + n.tieu_de + '</p><p class="text-xs text-slate-500 mt-1">' + truncateText(n.noi_dung, 80) + '</p></td><td class="py-4 text-slate-600">' + (n.ten_admin || 'N/A') + '</td><td class="py-4 text-slate-500">' + formatDate(n.ngay_dang) + '</td><td class="py-4 space-x-2"><button onclick="viewNews(' + n.ma_tintuc + ')" class="text-violet-600 hover:text-violet-800" title="Xem chi tiết"><i class="fas fa-eye"></i></button><button onclick="editNews(' + n.ma_tintuc + ')" class="text-blue-600 hover:text-blue-800" title="Chỉnh sửa"><i class="fas fa-edit"></i></button><button onclick="deleteNews(' + n.ma_tintuc + ')" class="text-red-600 hover:text-red-800" title="Xóa"><i class="fas fa-trash"></i></button></td></tr>').join('');
     }
     function openNewsModal(newsId) {
       editingNewsId = newsId || null;
@@ -555,7 +1470,7 @@
       if (newsId) {
         const news = allNews.find(n => n.ma_tintuc === newsId);
         if (news) {
-          document.getElementById('news-modal-title').textContent = 'Chinh sua tin tuc';
+          document.getElementById('news-modal-title').textContent = 'Chỉnh sửa tin tức';
           document.getElementById('news-id').value = news.ma_tintuc;
           document.getElementById('news-title').value = news.tieu_de;
           document.getElementById('news-content').value = news.noi_dung;
@@ -572,13 +1487,13 @@
     }
     function editNews(id) { openNewsModal(id); }
     async function deleteNews(id) {
-      if (!confirm('Ban co chac chan muon xoa tin tuc nay?')) return;
+      if (!confirm('Bạn có chắc chắn muốn xóa tin tức này?')) return;
       try {
         const res = await fetch(API_URL + '/admin/news/' + id, { method: 'DELETE' });
         const data = await res.json();
-        if (data.success) { showToast('Xoa tin tuc thanh cong'); loadNews(); }
-        else { showToast('Loi: ' + data.message, 'error'); }
-      } catch(e) { console.error('Error deleting news:', e); showToast('Loi xoa tin tuc', 'error'); }
+        if (data.success) { showToast('Xóa tin tức thành công'); loadNews(); }
+        else { showToast('Lỗi: ' + data.message, 'error'); }
+      } catch(e) { console.error('Error deleting news:', e); showToast('Lỗi xóa tin tức', 'error'); }
     }
     document.getElementById('news-form').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -594,11 +1509,11 @@
         const res = await fetch(url, { method: method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(newsData) });
         const data = await res.json();
         if (data.success) {
-          showToast(editingNewsId ? 'Cap nhat tin tuc thanh cong' : 'Them tin tuc thanh cong');
+          showToast(editingNewsId ? 'Cập nhật tin tức thành công' : 'Thêm tin tức thành công');
           closeNewsModal();
           loadNews();
-        } else { showToast('Loi: ' + data.message, 'error'); }
-      } catch(e) { console.error('Error saving news:', e); showToast('Loi luu tin tuc', 'error'); }
+        } else { showToast('Lỗi: ' + data.message, 'error'); }
+      } catch(e) { console.error('Error saving news:', e); showToast('Lỗi lưu tin tức', 'error'); }
     });
     document.getElementById('news-search').addEventListener('input', function(e) {
       var s = e.target.value.toLowerCase().trim();
@@ -609,10 +1524,207 @@
                (n.ten_admin && n.ten_admin.toLowerCase().indexOf(s) >= 0); 
       }));
     });
+    function viewNews(id) {
+      const news = allNews.find(n => n.ma_tintuc === id);
+      if (news) {
+        alert('CHI TIẾT TIN TỨC\n\nTiêu đề: ' + news.tieu_de + '\nTác giả: ' + (news.ten_admin || 'Admin') + '\nNgày đăng: ' + formatDate(news.ngay_dang) + '\n\nNội dung:\n' + (news.noi_dung || 'Không có nội dung'));
+      }
+    }
+    function viewReview(id) {
+      const review = allReviews.find(r => r.ma_dg === id);
+      if (review) {
+        alert('CHI TIẾT ĐÁNH GIÁ\n\nKhách hàng: ' + (review.ho_ten || 'N/A') + '\nSản phẩm: ' + (review.ten_sp || 'N/A') + '\nSố sao: ' + review.so_sao + '/5\nNgày đánh giá: ' + formatDate(review.ngay_danh_gia) + '\n\nBình luận:\n' + (review.binh_luan || 'Không có bình luận'));
+      }
+    }
+    async function deleteReview(id) {
+      if (!confirm('Bạn có chắc chắn muốn xóa đánh giá này?')) return;
+      try {
+        const res = await fetch(API_URL + '/admin/reviews/' + id, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Xóa đánh giá thành công');
+          loadReviews();
+        } else {
+          showToast(data.message || 'Lỗi xóa đánh giá', 'error');
+        }
+      } catch(e) {
+        console.error('Error deleting review:', e);
+        showToast('Lỗi xóa đánh giá', 'error');
+      }
+    }
     function truncateText(text, maxLength) {
       if (!text) return '';
       return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
+
+    // =============== QUẢN LÝ HÃNG SẢN XUẤT ===============
+    let allBrandsData = [], allCountries = [], editingBrandId = null;
+    
+    async function loadBrandsSection() {
+      await loadCountries();
+      try {
+        const res = await fetch(API_URL + '/admin/brands');
+        const data = await res.json();
+        allBrandsData = data.data || data || [];
+        renderBrandsTable(allBrandsData);
+        // Cập nhật thống kê
+        updateBrandsStats();
+      } catch(e) {
+        console.error('Error loading brands:', e);
+        showToast('Lỗi tải danh sách hãng', 'error');
+      }
+    }
+    
+    function updateBrandsStats() {
+      const totalBrands = allBrandsData.length;
+      const brandsWithProducts = allBrandsData.filter(b => b.so_san_pham > 0).length;
+      const brandsEmpty = allBrandsData.filter(b => !b.so_san_pham || b.so_san_pham === 0).length;
+      const uniqueCountries = [...new Set(allBrandsData.map(b => b.ma_quoc_gia).filter(Boolean))].length;
+      
+      document.getElementById('total-brands').textContent = totalBrands;
+      document.getElementById('brands-with-products').textContent = brandsWithProducts;
+      document.getElementById('brands-empty').textContent = brandsEmpty;
+      document.getElementById('total-countries').textContent = uniqueCountries;
+    }
+    
+    async function loadCountries() {
+      try {
+        const res = await fetch(API_URL + '/admin/countries');
+        const data = await res.json();
+        allCountries = data.data || data || [];
+        const select = document.getElementById('brand-country');
+        if (select) {
+          select.innerHTML = '<option value="">Chọn quốc gia</option>' + 
+            allCountries.map(c => '<option value="' + c.ma_quoc_gia + '">' + c.ten_quoc_gia + '</option>').join('');
+        }
+      } catch(e) {
+        console.error('Error loading countries:', e);
+      }
+    }
+    
+    function renderBrandsTable(brands) {
+      const tbody = document.getElementById('brands-table');
+      if (!tbody) return;
+      if (!brands.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Chưa có hãng sản xuất nào</td></tr>';
+        return;
+      }
+      tbody.innerHTML = brands.map((b, index) => `
+        <tr class="border-b border-slate-50 hover:bg-slate-50">
+          <td class="py-4 font-medium text-violet-600">${index + 1}</td>
+          <td class="py-4 font-semibold">${b.ten_hang}</td>
+          <td class="py-4">${b.ten_quoc_gia || 'N/A'}</td>
+          <td class="py-4 text-center"><span class="bg-violet-100 text-violet-600 px-2 py-1 rounded-full text-xs font-medium">${b.so_san_pham || 0}</span></td>
+          <td class="py-4">
+            <button onclick="openBrandModal(${b.ma_hang})" class="text-violet-600 hover:text-violet-800 mr-3" title="Sửa"><i class="fas fa-edit"></i></button>
+            <button onclick="deleteBrand(${b.ma_hang})" class="text-red-500 hover:text-red-700" title="Xóa"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    
+    function openBrandModal(brandId = null) {
+      editingBrandId = brandId;
+      const modal = document.getElementById('brand-modal');
+      const title = document.getElementById('brand-modal-title');
+      const form = document.getElementById('brand-form');
+      
+      if (brandId) {
+        const brand = allBrandsData.find(b => b.ma_hang === brandId);
+        if (brand) {
+          title.textContent = 'Sửa hãng sản xuất';
+          document.getElementById('brand-id').value = brand.ma_hang;
+          document.getElementById('brand-name').value = brand.ten_hang;
+          document.getElementById('brand-country').value = brand.ma_quoc_gia || '';
+        }
+      } else {
+        title.textContent = 'Thêm hãng mới';
+        form.reset();
+        document.getElementById('brand-id').value = '';
+      }
+      modal.classList.remove('hidden');
+    }
+    
+    function closeBrandModal() {
+      document.getElementById('brand-modal').classList.add('hidden');
+      editingBrandId = null;
+    }
+    
+    async function saveBrand(event) {
+      event.preventDefault();
+      const brandId = document.getElementById('brand-id').value;
+      const ten_hang = document.getElementById('brand-name').value.trim();
+      const ma_quoc_gia = document.getElementById('brand-country').value;
+      
+      if (!ten_hang) {
+        showToast('Vui lòng nhập tên hãng', 'error');
+        return;
+      }
+      
+      try {
+        let res;
+        if (editingBrandId) {
+          res = await fetch(API_URL + '/admin/brands/' + editingBrandId, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ ten_hang, ma_quoc_gia: ma_quoc_gia || null })
+          });
+        } else {
+          res = await fetch(API_URL + '/admin/brands', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ ten_hang, ma_quoc_gia: ma_quoc_gia || null })
+          });
+        }
+        
+        const data = await res.json();
+        if (data.success) {
+          showToast(editingBrandId ? 'Cập nhật hãng thành công' : 'Thêm hãng thành công');
+          closeBrandModal();
+          loadBrandsSection();
+          loadBrands(); // Reload brands for product dropdown
+        } else {
+          showToast(data.message || 'Lỗi lưu hãng', 'error');
+        }
+      } catch(e) {
+        console.error('Error saving brand:', e);
+        showToast('Lỗi lưu hãng sản xuất', 'error');
+      }
+    }
+    
+    async function deleteBrand(brandId) {
+      if (!confirm('Bạn có chắc chắn muốn xóa hãng này?')) return;
+      
+      try {
+        const res = await fetch(API_URL + '/admin/brands/' + brandId, { method: 'DELETE' });
+        const data = await res.json();
+        
+        if (data.success) {
+          showToast('Xóa hãng thành công');
+          loadBrandsSection();
+          loadBrands();
+        } else {
+          showToast(data.message || 'Không thể xóa hãng này', 'error');
+        }
+      } catch(e) {
+        console.error('Error deleting brand:', e);
+        showToast('Lỗi xóa hãng', 'error');
+      }
+    }
+    
+    // Event listener cho tìm kiếm hãng
+    document.getElementById('brand-search')?.addEventListener('input', function() {
+      const keyword = this.value.toLowerCase();
+      const filtered = allBrandsData.filter(b => 
+        b.ten_hang.toLowerCase().includes(keyword) || 
+        (b.ten_quoc_gia && b.ten_quoc_gia.toLowerCase().includes(keyword))
+      );
+      renderBrandsTable(filtered);
+    });
+    
+    // Event listener cho form hãng
+    document.getElementById('brand-form')?.addEventListener('submit', saveBrand);
   </script>
 </body>
 </html>
+

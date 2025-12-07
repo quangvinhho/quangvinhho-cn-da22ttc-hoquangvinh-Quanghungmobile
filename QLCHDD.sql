@@ -277,6 +277,24 @@ CREATE TABLE lien_he (
   trang_thai ENUM('new','read','replied') DEFAULT 'new'
 );
 
+-------------------------------------------------------------
+-- 20. ĐỊA CHỈ NHẬN HÀNG (Giống Shopee - Nhiều địa chỉ)
+-------------------------------------------------------------
+CREATE TABLE dia_chi_nhan_hang (
+  ma_dia_chi INT AUTO_INCREMENT PRIMARY KEY,
+  ma_kh INT NOT NULL,
+  ho_ten_nguoi_nhan VARCHAR(150) NOT NULL,
+  so_dien_thoai VARCHAR(20) NOT NULL,
+  tinh_thanh VARCHAR(100) NOT NULL,
+  quan_huyen VARCHAR(100) NOT NULL,
+  phuong_xa VARCHAR(100) NOT NULL,
+  dia_chi_cu_the VARCHAR(300) NOT NULL,
+  loai_dia_chi ENUM('nha_rieng','co_quan') DEFAULT 'nha_rieng',
+  mac_dinh TINYINT DEFAULT 0,
+  ngay_tao DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh) ON DELETE CASCADE
+);
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO quoc_gia (ten_quoc_gia) VALUES

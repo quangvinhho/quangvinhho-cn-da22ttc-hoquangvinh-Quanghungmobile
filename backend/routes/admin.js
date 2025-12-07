@@ -2,6 +2,115 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/database');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Cau hinh multer de upload anh
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const uploadDir = path.join(__dirname, '../../frontend/images/products');
+        // Tao thu muc neu chua co
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        // Tao ten file duy nhat
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const ext = path.extname(file.originalname);
+        cb(null, 'product-' + uniqueSuffix + ext);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB
+    fileFilter: function (req, file, cb) {
+        const allowedTypes = /jpeg|jpg|png|gif|webp|avif/;
+        const ext = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+        const mime = allowedTypes.test(file.mimetype);
+        if (ext && mime) {
+            return cb(null, true);
+        }
+        cb(new Error('Chi chap nhan file anh (jpg, png, gif, webp, avif)'));
+    }
+});
+
+// ==================== UPLOAD IMAGE ====================
+
+// POST /api/admin/upload - Upload anh dai dien san pham
+router.post('/upload', (req, res) => {
+    upload.single('image')(req, res, function(err) {
+        if (err instanceof multer.MulterError) {
+            console.error('Multer error:', err);
+            return res.status(400).json({ success: false, message: 'Loi upload: ' + err.message });
+        } else if (err) {
+            console.error('Upload error:', err);
+            return res.status(400).json({ success: false, message: err.message });
+        }
+        
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'Khong co file duoc upload' });
+        }
+        
+        // Tra ve URL tuong doi
+        const imageUrl = 'images/products/' + req.file.filename;
+        console.log('Uploaded file:', imageUrl);
+        res.json({ 
+            success: true, 
+            message: 'Upload thanh cong',
+            url: imageUrl,
+            filename: req.file.filename
+        });
+    });
+});
+
+// POST /api/admin/upload-gallery - Upload anh mo ta san pham
+router.post('/upload-gallery', (req, res) => {
+    upload.single('image')(req, res, async function(err) {
+        if (err instanceof multer.MulterError) {
+            console.error('Multer error:', err);
+            return res.status(400).json({ success: false, message: 'Loi upload: ' + err.message });
+        } else if (err) {
+            console.error('Upload error:', err);
+            return res.status(400).json({ success: false, message: err.message });
+        }
+        
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'Khong co file duoc upload' });
+        }
+        
+        const productId = req.body.productId;
+        if (!productId) {
+            return res.status(400).json({ success: false, message: 'Thieu productId' });
+        }
+        
+        // Tra ve URL tuong doi
+        const imageUrl = 'images/products/' + req.file.filename;
+        console.log('Uploaded gallery image:', imageUrl, 'for product:', productId);
+        
+        // Luu vao bang anh_san_pham
+        try {
+            await pool.query(
+                'INSERT INTO anh_san_pham (ma_sp, duong_dan) VALUES (?, ?)',
+                [productId, imageUrl]
+            );
+            
+            res.json({ 
+                success: true, 
+                message: 'Upload thanh cong',
+                url: imageUrl,
+                filename: req.file.filename,
+                productId: productId
+            });
+        } catch (dbError) {
+            console.error('Error saving to database:', dbError);
+            res.status(500).json({ success: false, message: 'Loi luu vao database: ' + dbError.message });
+        }
+    });
+});
 
 // ==================== ADMIN PROFILE ====================
 
@@ -320,35 +429,144 @@ router.get('/products', async (req, res) => {
     }
 });
 
-// POST /api/admin/products - Thêm sản phẩm mới
+// POST /api/admin/products - Thêm sản phẩm mới (kèm thông số kỹ thuật)
 router.post('/products', async (req, res) => {
     try {
-        const { ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, mo_ta, anh_dai_dien } = req.body;
+        const { ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta, anh_dai_dien, cau_hinh } = req.body;
         
+        // Lưu màu sắc dạng JSON object chứa cả hex và tên
+        let colorData = null;
+        if (mau_sac) {
+            try {
+                const hexColors = typeof mau_sac === 'string' ? JSON.parse(mau_sac) : mau_sac;
+                const colorNames = ten_mau_sac ? (typeof ten_mau_sac === 'string' ? JSON.parse(ten_mau_sac) : ten_mau_sac) : [];
+                colorData = JSON.stringify({ colors: hexColors, colorNames: colorNames });
+            } catch(e) {
+                colorData = mau_sac; // Fallback: giữ nguyên nếu không parse được
+            }
+        }
+        
+        // Thêm sản phẩm
         const [result] = await pool.query(
             `INSERT INTO san_pham (ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, mo_ta, anh_dai_dien) 
              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [ten_sp, ma_hang, gia, bo_nho || 128, so_luong_ton || 0, mau_sac, mo_ta, anh_dai_dien]
+            [ten_sp, ma_hang, gia, bo_nho || 128, so_luong_ton || 0, colorData, mo_ta, anh_dai_dien]
         );
         
-        res.json({ success: true, message: 'Thêm sản phẩm thành công', data: { id: result.insertId } });
+        const productId = result.insertId;
+        
+        // Thêm thông số kỹ thuật vào bảng cau_hinh nếu có
+        if (cau_hinh && (cau_hinh.ram || cau_hinh.chip || cau_hinh.man_hinh || cau_hinh.camera || cau_hinh.pin || cau_hinh.he_dieu_hanh)) {
+            await pool.query(
+                `INSERT INTO cau_hinh (ma_sp, ram, chip, man_hinh, camera, pin, he_dieu_hanh) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [productId, cau_hinh.ram || null, cau_hinh.chip || null, cau_hinh.man_hinh || null, 
+                 cau_hinh.camera || null, cau_hinh.pin || null, cau_hinh.he_dieu_hanh || null]
+            );
+        }
+        
+        res.json({ success: true, message: 'Thêm sản phẩm thành công', data: { id: productId } });
     } catch (error) {
         console.error('Error adding product:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });
 
-// PUT /api/admin/products/:id - Cập nhật sản phẩm
+// GET /api/admin/products/:id/specs - Lấy thông số kỹ thuật của sản phẩm
+router.get('/products/:id/specs', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [rows] = await pool.query('SELECT * FROM cau_hinh WHERE ma_sp = ?', [id]);
+        
+        if (rows.length === 0) {
+            return res.json({ success: true, data: null });
+        }
+        
+        res.json({ success: true, data: rows[0] });
+    } catch (error) {
+        console.error('Error getting product specs:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/products/:id/specs - Cập nhật thông số kỹ thuật riêng
+router.put('/products/:id/specs', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ram, chip, man_hinh, camera, pin, he_dieu_hanh } = req.body;
+        
+        // Kiểm tra đã có cấu hình chưa
+        const [existing] = await pool.query('SELECT * FROM cau_hinh WHERE ma_sp = ?', [id]);
+        
+        if (existing.length > 0) {
+            // Update cấu hình hiện có
+            await pool.query(
+                `UPDATE cau_hinh SET ram = ?, chip = ?, man_hinh = ?, camera = ?, pin = ?, he_dieu_hanh = ? WHERE ma_sp = ?`,
+                [ram || null, chip || null, man_hinh || null, camera || null, pin || null, he_dieu_hanh || null, id]
+            );
+        } else {
+            // Insert cấu hình mới
+            await pool.query(
+                `INSERT INTO cau_hinh (ma_sp, ram, chip, man_hinh, camera, pin, he_dieu_hanh) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [id, ram || null, chip || null, man_hinh || null, camera || null, pin || null, he_dieu_hanh || null]
+            );
+        }
+        
+        res.json({ success: true, message: 'Cập nhật cấu hình thành công' });
+    } catch (error) {
+        console.error('Error updating product specs:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/products/:id - Cập nhật sản phẩm (kèm thông số kỹ thuật)
 router.put('/products/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, mo_ta, anh_dai_dien } = req.body;
+        const { ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta, anh_dai_dien, cau_hinh } = req.body;
         
+        // Lưu màu sắc dạng JSON object chứa cả hex và tên
+        let colorData = null;
+        if (mau_sac) {
+            try {
+                const hexColors = typeof mau_sac === 'string' ? JSON.parse(mau_sac) : mau_sac;
+                const colorNames = ten_mau_sac ? (typeof ten_mau_sac === 'string' ? JSON.parse(ten_mau_sac) : ten_mau_sac) : [];
+                colorData = JSON.stringify({ colors: hexColors, colorNames: colorNames });
+            } catch(e) {
+                colorData = mau_sac; // Fallback: giữ nguyên nếu không parse được
+            }
+        }
+        
+        // Cập nhật sản phẩm
         await pool.query(
             `UPDATE san_pham SET ten_sp = ?, ma_hang = ?, gia = ?, bo_nho = ?, 
              so_luong_ton = ?, mau_sac = ?, mo_ta = ?, anh_dai_dien = ? WHERE ma_sp = ?`,
-            [ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, mo_ta, anh_dai_dien, id]
+            [ten_sp, ma_hang, gia, bo_nho, so_luong_ton, colorData, mo_ta, anh_dai_dien, id]
         );
+        
+        // Cập nhật thông số kỹ thuật nếu có
+        if (cau_hinh) {
+            // Kiểm tra đã có cấu hình chưa
+            const [existing] = await pool.query('SELECT * FROM cau_hinh WHERE ma_sp = ?', [id]);
+            
+            if (existing.length > 0) {
+                // Update cấu hình hiện có
+                await pool.query(
+                    `UPDATE cau_hinh SET ram = ?, chip = ?, man_hinh = ?, camera = ?, pin = ?, he_dieu_hanh = ? WHERE ma_sp = ?`,
+                    [cau_hinh.ram || null, cau_hinh.chip || null, cau_hinh.man_hinh || null, 
+                     cau_hinh.camera || null, cau_hinh.pin || null, cau_hinh.he_dieu_hanh || null, id]
+                );
+            } else if (cau_hinh.ram || cau_hinh.chip || cau_hinh.man_hinh || cau_hinh.camera || cau_hinh.pin || cau_hinh.he_dieu_hanh) {
+                // Insert cấu hình mới
+                await pool.query(
+                    `INSERT INTO cau_hinh (ma_sp, ram, chip, man_hinh, camera, pin, he_dieu_hanh) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [id, cau_hinh.ram || null, cau_hinh.chip || null, cau_hinh.man_hinh || null, 
+                     cau_hinh.camera || null, cau_hinh.pin || null, cau_hinh.he_dieu_hanh || null]
+                );
+            }
+        }
         
         res.json({ success: true, message: 'Cập nhật sản phẩm thành công' });
     } catch (error) {
@@ -368,6 +586,10 @@ router.delete('/products/:id', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Không thể xóa sản phẩm đã có trong đơn hàng' });
         }
         
+        // Xóa cấu hình của sản phẩm
+        await pool.query('DELETE FROM cau_hinh WHERE ma_sp = ?', [id]);
+        // Xóa ảnh sản phẩm
+        await pool.query('DELETE FROM anh_san_pham WHERE ma_sp = ?', [id]);
         // Xóa đánh giá của sản phẩm
         await pool.query('DELETE FROM danh_gia WHERE ma_sp = ?', [id]);
         // Xóa sản phẩm
@@ -385,10 +607,98 @@ router.delete('/products/:id', async (req, res) => {
 // GET /api/admin/brands - Lấy danh sách hãng sản xuất
 router.get('/brands', async (req, res) => {
     try {
-        const [brands] = await pool.query('SELECT * FROM hang_san_xuat ORDER BY ten_hang');
+        const [brands] = await pool.query(`
+            SELECT h.*, q.ten_quoc_gia, 
+                   (SELECT COUNT(*) FROM san_pham WHERE ma_hang = h.ma_hang) as so_san_pham
+            FROM hang_san_xuat h
+            LEFT JOIN quoc_gia q ON h.ma_quoc_gia = q.ma_quoc_gia
+            ORDER BY h.ten_hang
+        `);
         res.json({ success: true, data: brands });
     } catch (error) {
         console.error('Error getting brands:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/countries - Lấy danh sách quốc gia
+router.get('/countries', async (req, res) => {
+    try {
+        const [countries] = await pool.query('SELECT * FROM quoc_gia ORDER BY ten_quoc_gia');
+        res.json({ success: true, data: countries });
+    } catch (error) {
+        console.error('Error getting countries:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/brands - Thêm hãng sản xuất mới
+router.post('/brands', async (req, res) => {
+    try {
+        const { ten_hang, ma_quoc_gia } = req.body;
+        
+        if (!ten_hang) {
+            return res.status(400).json({ success: false, message: 'Tên hãng không được để trống' });
+        }
+        
+        const [result] = await pool.query(
+            'INSERT INTO hang_san_xuat (ten_hang, ma_quoc_gia) VALUES (?, ?)',
+            [ten_hang, ma_quoc_gia || null]
+        );
+        
+        res.json({ 
+            success: true, 
+            message: 'Thêm hãng thành công',
+            data: { id: result.insertId, ten_hang, ma_quoc_gia }
+        });
+    } catch (error) {
+        console.error('Error adding brand:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/brands/:id - Cập nhật hãng sản xuất
+router.put('/brands/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ten_hang, ma_quoc_gia } = req.body;
+        
+        if (!ten_hang) {
+            return res.status(400).json({ success: false, message: 'Tên hãng không được để trống' });
+        }
+        
+        await pool.query(
+            'UPDATE hang_san_xuat SET ten_hang = ?, ma_quoc_gia = ? WHERE ma_hang = ?',
+            [ten_hang, ma_quoc_gia || null, id]
+        );
+        
+        res.json({ success: true, message: 'Cập nhật hãng thành công' });
+    } catch (error) {
+        console.error('Error updating brand:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/brands/:id - Xóa hãng sản xuất
+router.delete('/brands/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // Kiểm tra có sản phẩm nào đang dùng hãng này không
+        const [products] = await pool.query('SELECT COUNT(*) as count FROM san_pham WHERE ma_hang = ?', [id]);
+        
+        if (products[0].count > 0) {
+            return res.status(400).json({ 
+                success: false, 
+                message: `Không thể xóa hãng này vì đang có ${products[0].count} sản phẩm thuộc hãng` 
+            });
+        }
+        
+        await pool.query('DELETE FROM hang_san_xuat WHERE ma_hang = ?', [id]);
+        
+        res.json({ success: true, message: 'Xóa hãng thành công' });
+    } catch (error) {
+        console.error('Error deleting brand:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });

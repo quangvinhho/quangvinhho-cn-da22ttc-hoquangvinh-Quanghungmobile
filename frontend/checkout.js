@@ -36,8 +36,29 @@ function getCartKey() {
   return 'cart_guest';
 }
 
+// ===== KIỂM TRA ĐĂNG NHẬP =====
+function checkLoginRequired() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  
+  if (!isLoggedIn || !user || !user.ma_kh) {
+    // Hiển thị thông báo và chuyển về trang đăng nhập
+    showToast('Vui lòng đăng nhập để thanh toán!', 'error');
+    setTimeout(() => {
+      window.location.href = 'login.html?redirect=checkout';
+    }, 1500);
+    return false;
+  }
+  return true;
+}
+
 // ===== LOAD CART DATA =====
 async function loadCart() {
+  // Kiểm tra đăng nhập trước
+  if (!checkLoginRequired()) {
+    return;
+  }
+  
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   
   // Nếu user đã đăng nhập, thử load từ database trước
@@ -247,47 +268,17 @@ function validateForm() {
   const ward = document.getElementById('ward').value;
   const address = document.getElementById('address').value.trim();
   
-  if (!fullName) {
-    showToast('Vui lòng nhập họ tên!', 'error');
-    document.getElementById('fullName').focus();
-    return false;
-  }
-  
-  if (!phone) {
-    showToast('Vui lòng nhập số điện thoại!', 'error');
-    document.getElementById('phone').focus();
+  // Kiểm tra đã chọn địa chỉ chưa
+  if (!fullName || !phone || !province || !district || !ward || !address) {
+    showToast('Vui lòng chọn địa chỉ nhận hàng!', 'error');
+    openSelectAddressModal();
     return false;
   }
   
   // Validate phone number (Vietnamese format)
   const phoneRegex = /^(0|\+84)[0-9]{9}$/;
   if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
-    showToast('Số điện thoại không hợp lệ!', 'error');
-    document.getElementById('phone').focus();
-    return false;
-  }
-  
-  if (!province) {
-    showToast('Vui lòng chọn Tỉnh/Thành phố!', 'error');
-    document.getElementById('province').focus();
-    return false;
-  }
-  
-  if (!district) {
-    showToast('Vui lòng chọn Quận/Huyện!', 'error');
-    document.getElementById('district').focus();
-    return false;
-  }
-  
-  if (!ward) {
-    showToast('Vui lòng chọn Phường/Xã!', 'error');
-    document.getElementById('ward').focus();
-    return false;
-  }
-  
-  if (!address) {
-    showToast('Vui lòng nhập địa chỉ cụ thể!', 'error');
-    document.getElementById('address').focus();
+    showToast('Số điện thoại không hợp lệ! Vui lòng chọn địa chỉ khác.', 'error');
     return false;
   }
   
@@ -346,7 +337,7 @@ function placeOrder() {
     },
     orderDate: new Date().toISOString(),
     orderId: orderId,
-    status: getSelectedPayment() === 'cod' ? 'confirmed' : 'pending_payment'
+    status: 'pending' // Tất cả đơn hàng mới đều ở trạng thái "Chờ xử lý", chờ admin xác nhận
   };
   
   const paymentMethod = getSelectedPayment();
@@ -1131,13 +1122,26 @@ async function completeOrder(orderData) {
   // Dispatch event để cập nhật cart badge
   window.dispatchEvent(new Event('cartUpdated'));
   
-  // Show success message
-  showToast('Đặt hàng thành công! Đang chuyển hướng...', 'success');
+  // Show success message with countdown
+  let countdown = 5;
+  const updateToast = () => {
+    showToast(`Đặt hàng thành công! Đang chuyển hướng sau ${countdown}s...`, 'success');
+  };
+  updateToast();
   
-  // Redirect to success page after 2 seconds
+  const countdownInterval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      updateToast();
+    } else {
+      clearInterval(countdownInterval);
+    }
+  }, 1000);
+  
+  // Redirect to success page after 5 seconds
   setTimeout(() => {
     window.location.href = `order-success.html?orderId=${orderData.orderId}`;
-  }, 2000);
+  }, 5000);
 }
 
 // ===== CUSTOM DROPDOWN FUNCTIONS =====
@@ -1329,45 +1333,152 @@ function onDistrictChange(value) {
   });
 }
 
-// ===== AUTO-FILL USER INFO =====
-function autoFillUserInfo() {
+// ===== AUTO-FILL USER INFO - Load default address from API =====
+let allUserAddresses = [];
+let selectedAddressData = null;
+
+async function autoFillUserInfo() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
-  if (!user) return;
+  if (!user || !user.ma_kh) return;
   
-  // Điền thông tin cơ bản
-  if (user.ho_ten) {
-    document.getElementById('fullName').value = user.ho_ten;
+  // Load địa chỉ mặc định từ API
+  try {
+    const response = await fetch(`${API_URL}/address/${user.ma_kh}/default`);
+    const data = await response.json();
+    
+    document.getElementById('selected-address-loading').classList.add('hidden');
+    
+    if (data.success && data.data) {
+      selectAddress(data.data);
+    } else {
+      // Không có địa chỉ nào
+      document.getElementById('selected-address-empty').classList.remove('hidden');
+    }
+  } catch (error) {
+    console.error('Error loading default address:', error);
+    document.getElementById('selected-address-loading').classList.add('hidden');
+    document.getElementById('selected-address-empty').classList.remove('hidden');
   }
-  if (user.so_dt) {
-    document.getElementById('phone').value = user.so_dt;
-  }
+  
+  // Điền email từ user profile
   if (user.email) {
     document.getElementById('email').value = user.email;
   }
+}
+
+// Chọn địa chỉ (set vào form)
+function selectAddress(address) {
+  selectedAddressData = address;
   
-  // Ưu tiên 1: Kiểm tra địa chỉ đã lưu từ đơn hàng trước (có đầy đủ key)
-  const savedAddress = localStorage.getItem('savedShippingAddress');
-  if (savedAddress) {
-    try {
-      const addressData = JSON.parse(savedAddress);
-      if (addressData.provinceKey) {
-        autoFillAddressFromObject(addressData);
-        return;
-      }
-    } catch (e) {
-      console.log('Không thể parse địa chỉ đã lưu');
-    }
+  // Update hidden inputs
+  document.getElementById('selectedAddressId').value = address.ma_dia_chi;
+  document.getElementById('fullName').value = address.ho_ten_nguoi_nhan;
+  document.getElementById('phone').value = address.so_dien_thoai;
+  document.getElementById('province').value = address.tinh_thanh;
+  document.getElementById('district').value = address.quan_huyen;
+  document.getElementById('ward').value = address.phuong_xa;
+  document.getElementById('address').value = address.dia_chi_cu_the;
+  
+  // Update display
+  const contentEl = document.getElementById('selected-address-content');
+  const loadingEl = document.getElementById('selected-address-loading');
+  const emptyEl = document.getElementById('selected-address-empty');
+  
+  if (loadingEl) loadingEl.classList.add('hidden');
+  if (emptyEl) emptyEl.classList.add('hidden');
+  if (contentEl) {
+    contentEl.classList.remove('hidden');
+    contentEl.innerHTML = `
+      <div class="flex items-start gap-3">
+        <i class="fas fa-map-marker-alt text-red-600 mt-1 text-lg"></i>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <span class="font-semibold text-gray-800">${address.ho_ten_nguoi_nhan}</span>
+            <span class="text-gray-400">|</span>
+            <span class="text-gray-600">${address.so_dien_thoai}</span>
+            ${address.mac_dinh ? '<span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded">Mặc định</span>' : ''}
+          </div>
+          <p class="text-gray-600 text-sm">${address.dia_chi_cu_the}</p>
+          <p class="text-gray-500 text-sm">${address.phuong_xa}, ${address.quan_huyen}, ${address.tinh_thanh}</p>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// Mở modal chọn địa chỉ
+async function openSelectAddressModal() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!user || !user.ma_kh) {
+    showToast('Vui lòng đăng nhập!', 'error');
+    return;
   }
   
-  // Ưu tiên 2: Xử lý địa chỉ từ profile user
-  if (user.dia_chi) {
-    if (typeof user.dia_chi === 'object' && user.dia_chi.provinceKey) {
-      // Nếu địa chỉ là object với đầy đủ thông tin
-      autoFillAddressFromObject(user.dia_chi);
-    } else if (typeof user.dia_chi === 'string') {
-      // Nếu địa chỉ là chuỗi, parse và tìm trong VIETNAM_ADDRESS
-      parseAndFillAddressFromString(user.dia_chi);
+  document.getElementById('selectAddressModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  
+  // Load danh sách địa chỉ
+  try {
+    const response = await fetch(`${API_URL}/address/${user.ma_kh}`);
+    const data = await response.json();
+    
+    const loadingEl = document.getElementById('address-modal-loading');
+    const emptyEl = document.getElementById('address-modal-empty');
+    const listEl = document.getElementById('address-list-modal');
+    
+    if (loadingEl) loadingEl.classList.add('hidden');
+    
+    if (data.success && data.data.length > 0) {
+      allUserAddresses = data.data;
+      if (emptyEl) emptyEl.classList.add('hidden');
+      
+      // Render danh sách địa chỉ
+      listEl.innerHTML = data.data.map(addr => `
+        <div class="border rounded-lg p-4 hover:shadow-md transition cursor-pointer ${addr.ma_dia_chi === selectedAddressData?.ma_dia_chi ? 'border-red-500 bg-red-50' : 'bg-gray-50 hover:border-red-300'}"
+             onclick="selectAddressFromModal(${addr.ma_dia_chi})">
+          <div class="flex items-start gap-3">
+            <div class="mt-1">
+              ${addr.ma_dia_chi === selectedAddressData?.ma_dia_chi 
+                ? '<i class="fas fa-check-circle text-red-600 text-lg"></i>' 
+                : '<i class="far fa-circle text-gray-400 text-lg"></i>'}
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                <span class="font-semibold text-gray-800">${addr.ho_ten_nguoi_nhan}</span>
+                <span class="text-gray-400">|</span>
+                <span class="text-gray-600">${addr.so_dien_thoai}</span>
+                ${addr.mac_dinh ? '<span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded">Mặc định</span>' : ''}
+              </div>
+              <p class="text-gray-600 text-sm">${addr.dia_chi_cu_the}</p>
+              <p class="text-gray-500 text-sm">${addr.phuong_xa}, ${addr.quan_huyen}, ${addr.tinh_thanh}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      listEl.innerHTML = '';
+      if (emptyEl) emptyEl.classList.remove('hidden');
     }
+  } catch (error) {
+    console.error('Error loading addresses:', error);
+    document.getElementById('address-modal-loading').classList.add('hidden');
+    document.getElementById('address-modal-empty').classList.remove('hidden');
+  }
+}
+
+// Đóng modal chọn địa chỉ
+function closeSelectAddressModal() {
+  document.getElementById('selectAddressModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+// Chọn địa chỉ từ modal
+function selectAddressFromModal(addressId) {
+  const address = allUserAddresses.find(a => a.ma_dia_chi === addressId);
+  if (address) {
+    selectAddress(address);
+    closeSelectAddressModal();
+    showToast('Đã chọn địa chỉ giao hàng!', 'success');
   }
 }
 
@@ -1609,25 +1720,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
   
-  // Load danh sách tỉnh/thành phố
-  loadProvinces();
-  
   // Load giỏ hàng
   loadCart();
   
-  // Auto-fill thông tin user nếu đã đăng nhập (không gây scroll)
+  // Auto-fill thông tin user và load địa chỉ mặc định
   setTimeout(() => {
-    // Lưu vị trí scroll hiện tại
-    const scrollPos = window.scrollY;
-    
     autoFillUserInfo();
-    
-    // Khôi phục vị trí scroll về đầu trang
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    });
     
     // Đảm bảo scroll về đầu sau khi mọi thứ hoàn tất
     setTimeout(() => {

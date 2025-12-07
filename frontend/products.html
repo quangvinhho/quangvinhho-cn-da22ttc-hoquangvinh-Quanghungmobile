@@ -313,32 +313,32 @@
                     
                     <div class="filter-section-content" id="priceSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="price-filter" value="0-2000000" onchange="applyFilters()">
+                            <input type="checkbox" class="price-filter" value="0-2000000" onchange="togglePriceFilter('0-2000000')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Dưới 2 triệu</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="price-filter" value="2000000-4000000" onchange="applyFilters()">
+                            <input type="checkbox" class="price-filter" value="2000000-4000000" onchange="togglePriceFilter('2000000-4000000')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Từ 2 - 4 triệu</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="price-filter" value="4000000-7000000" onchange="applyFilters()">
+                            <input type="checkbox" class="price-filter" value="4000000-7000000" onchange="togglePriceFilter('4000000-7000000')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Từ 4 - 7 triệu</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="price-filter" value="7000000-13000000" onchange="applyFilters()">
+                            <input type="checkbox" class="price-filter" value="7000000-13000000" onchange="togglePriceFilter('7000000-13000000')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Từ 7 - 13 triệu</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="price-filter" value="13000000-20000000" onchange="applyFilters()">
+                            <input type="checkbox" class="price-filter" value="13000000-20000000" onchange="togglePriceFilter('13000000-20000000')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Từ 13 - 20 triệu</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="price-filter" value="20000000-999999999" onchange="applyFilters()">
+                            <input type="checkbox" class="price-filter" value="20000000-999999999" onchange="togglePriceFilter('20000000-999999999')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Trên 20 triệu</span>
                         </label>
@@ -373,13 +373,13 @@
                     
                     <div class="filter-section-content" id="osSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="os-filter" value="ios" onchange="applyFilters()">
+                            <input type="checkbox" class="os-filter" value="ios" onchange="toggleOsFilter('ios')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">iOS</span>
                             <span class="count-badge">24</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="os-filter" value="android" onchange="applyFilters()">
+                            <input type="checkbox" class="os-filter" value="android" onchange="toggleOsFilter('android')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Android</span>
                             <span class="count-badge">118</span>
@@ -401,22 +401,22 @@
                     
                     <div class="filter-section-content" id="romSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="rom-filter" value="128" onchange="applyFilters()">
+                            <input type="checkbox" class="rom-filter" value="128" onchange="toggleRomFilter('128')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">≤128 GB</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="rom-filter" value="256" onchange="applyFilters()">
+                            <input type="checkbox" class="rom-filter" value="256" onchange="toggleRomFilter('256')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">256 GB</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="rom-filter" value="512" onchange="applyFilters()">
+                            <input type="checkbox" class="rom-filter" value="512" onchange="toggleRomFilter('512')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">512 GB</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="rom-filter" value="1024" onchange="applyFilters()">
+                            <input type="checkbox" class="rom-filter" value="1024" onchange="toggleRomFilter('1024')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">1 TB</span>
                         </label>
@@ -437,17 +437,17 @@
                     
                     <div class="filter-section-content" id="connectSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="connect-filter" value="nfc" onchange="applyFilters()">
+                            <input type="checkbox" class="connect-filter" value="nfc" onchange="toggleConnectFilter('nfc')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">NFC</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="connect-filter" value="bluetooth" onchange="applyFilters()">
+                            <input type="checkbox" class="connect-filter" value="bluetooth" onchange="toggleConnectFilter('bluetooth')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Bluetooth</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="connect-filter" value="infrared" onchange="applyFilters()">
+                            <input type="checkbox" class="connect-filter" value="infrared" onchange="toggleConnectFilter('infrared')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Hồng ngoại</span>
                         </label>
@@ -468,22 +468,22 @@
                     
                     <div class="filter-section-content" id="batterySection">
                         <label class="filter-option">
-                            <input type="checkbox" class="battery-filter" value="0-3000" onchange="applyFilters()">
+                            <input type="checkbox" class="battery-filter" value="0-3000" onchange="toggleBatteryFilter('0-3000')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Dưới 3000 mAh</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="battery-filter" value="3000-4000" onchange="applyFilters()">
+                            <input type="checkbox" class="battery-filter" value="3000-4000" onchange="toggleBatteryFilter('3000-4000')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">3000 - 4000 mAh</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="battery-filter" value="4000-5500" onchange="applyFilters()">
+                            <input type="checkbox" class="battery-filter" value="4000-5500" onchange="toggleBatteryFilter('4000-5500')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">4000 - 5500 mAh</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="battery-filter" value="5500-99999" onchange="applyFilters()">
+                            <input type="checkbox" class="battery-filter" value="5500-99999" onchange="toggleBatteryFilter('5500-99999')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Pin trâu: trên 5500 mAh</span>
                         </label>
@@ -504,11 +504,11 @@
                     
                     <div class="filter-section-content" id="networkSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="5g" onchange="applyFilters()">
+                            <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="5g" onchange="toggleNetworkFilter('5g')">
                             <span class="text-sm text-gray-600">5G</span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="4g" onchange="applyFilters()">
+                            <input type="checkbox" class="network-filter w-4 h-4 accent-blue-600" value="4g" onchange="toggleNetworkFilter('4g')">
                             <span class="text-sm text-gray-600">4G</span>
                         </label>
                     </div>
@@ -528,27 +528,27 @@
                     
                     <div class="filter-section-content" id="ramSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="ram-filter" value="16" onchange="applyFilters()">
+                            <input type="checkbox" class="ram-filter" value="16" onchange="toggleRamFilter('16')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">16 GB</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="ram-filter" value="12" onchange="applyFilters()">
+                            <input type="checkbox" class="ram-filter" value="12" onchange="toggleRamFilter('12')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">12 GB</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="ram-filter" value="8" onchange="applyFilters()">
+                            <input type="checkbox" class="ram-filter" value="8" onchange="toggleRamFilter('8')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">8 GB</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="ram-filter" value="6" onchange="applyFilters()">
+                            <input type="checkbox" class="ram-filter" value="6" onchange="toggleRamFilter('6')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">6 GB</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="ram-filter" value="4" onchange="applyFilters()">
+                            <input type="checkbox" class="ram-filter" value="4" onchange="toggleRamFilter('4')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">4 GB</span>
                         </label>
@@ -569,12 +569,12 @@
                     
                     <div class="filter-section-content" id="sdSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="sd-filter" value="microsd" onchange="applyFilters()">
+                            <input type="checkbox" class="sd-filter" value="microsd" onchange="toggleSdFilter('microsd')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Hỗ trợ MicroSD</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="sd-filter" value="none" onchange="applyFilters()">
+                            <input type="checkbox" class="sd-filter" value="none" onchange="toggleSdFilter('none')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Không hỗ trợ</span>
                         </label>
@@ -595,22 +595,22 @@
                     
                     <div class="filter-section-content" id="screenSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="screen-filter" value="small" onchange="applyFilters()">
+                            <input type="checkbox" class="screen-filter" value="small" onchange="toggleScreenFilter('small')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Dưới 6 inch</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="screen-filter" value="6-6.5" onchange="applyFilters()">
+                            <input type="checkbox" class="screen-filter" value="6-6.5" onchange="toggleScreenFilter('6-6.5')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">6 - 6.5 inch</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="screen-filter" value="6.5+" onchange="applyFilters()">
+                            <input type="checkbox" class="screen-filter" value="6.5+" onchange="toggleScreenFilter('6.5+')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Trên 6.5 inch</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="refresh-filter" value="120" onchange="applyFilters()">
+                            <input type="checkbox" class="refresh-filter" value="120" onchange="toggleRefreshFilter('120')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">120Hz trở lên</span>
                         </label>
@@ -631,22 +631,22 @@
                     
                     <div class="filter-section-content" id="featureSection">
                         <label class="filter-option">
-                            <input type="checkbox" class="feature-filter" value="wireless-charging" onchange="applyFilters()">
+                            <input type="checkbox" class="feature-filter" value="wireless-charging" onchange="toggleFeatureFilter('wireless-charging')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Sạc không dây</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="feature-filter" value="waterproof" onchange="applyFilters()">
+                            <input type="checkbox" class="feature-filter" value="waterproof" onchange="toggleFeatureFilter('waterproof')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Kháng nước/bụi</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="feature-filter" value="face-id" onchange="applyFilters()">
+                            <input type="checkbox" class="feature-filter" value="face-id" onchange="toggleFeatureFilter('face-id')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Nhận diện khuôn mặt</span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" class="feature-filter" value="fingerprint" onchange="applyFilters()">
+                            <input type="checkbox" class="feature-filter" value="fingerprint" onchange="toggleFeatureFilter('fingerprint')">
                             <span class="custom-checkbox"></span>
                             <span class="option-label">Vân tay dưới màn hình</span>
                         </label>

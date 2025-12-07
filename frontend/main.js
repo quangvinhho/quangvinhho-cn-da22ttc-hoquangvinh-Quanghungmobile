@@ -80,8 +80,52 @@ function updateCartBadge() {
   });
 }
 
+// Kiểm tra đăng nhập
+function isLoggedIn() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  return user && user.ma_kh;
+}
+
+// Modal yêu cầu đăng nhập
+function showLoginRequiredModal() {
+  // Kiểm tra xem modal đã tồn tại chưa
+  if (document.getElementById('login-required-modal')) return;
+  
+  const modal = document.createElement('div');
+  modal.id = 'login-required-modal';
+  modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]';
+  modal.innerHTML = `
+    <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 text-center shadow-xl">
+      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-user-lock text-3xl text-red-600"></i>
+      </div>
+      <h3 class="text-xl font-bold text-gray-900 mb-2">Yêu cầu đăng nhập</h3>
+      <p class="text-gray-600 mb-6">Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng</p>
+      <div class="flex gap-3">
+        <button onclick="closeLoginModal()" class="flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">Đóng</button>
+        <a href="login.html" class="flex-1 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-center font-medium">Đăng nhập</a>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeLoginModal();
+  });
+}
+
+function closeLoginModal() {
+  const modal = document.getElementById('login-required-modal');
+  if (modal) modal.remove();
+}
+
 // Add to cart
 function addToCart(product) {
+  // Kiểm tra đăng nhập trước
+  if (!isLoggedIn()) {
+    showLoginRequiredModal();
+    return;
+  }
+  
   const cartKey = getCartKey();
   const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
   

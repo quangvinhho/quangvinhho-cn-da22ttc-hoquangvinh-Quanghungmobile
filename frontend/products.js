@@ -126,17 +126,105 @@ function filterByBrand(brand) {
 }
 
 function toggleBrandFilter(brand) {
-    const idx = selectedBrands.indexOf(brand);
-    if (idx > -1) selectedBrands.splice(idx, 1);
-    else selectedBrands.push(brand);
+    const checkbox = document.querySelector(`.brand-filter[value="${brand}"]`);
+    const isChecked = checkbox ? checkbox.checked : false;
+    
+    // Bỏ tích tất cả các checkbox brand khác (chỉ cho phép chọn 1)
+    document.querySelectorAll('.brand-filter').forEach(cb => {
+        if (cb.value !== brand) {
+            cb.checked = false;
+        }
+    });
+    
+    // Cập nhật selectedBrands - chỉ giữ 1 brand
+    if (isChecked) {
+        selectedBrands = [brand];
+    } else {
+        selectedBrands = [];
+    }
+    
     applyFilters();
 }
 
 function toggleAccessoryFilter(type) {
-    const idx = selectedAccessoryTypes.indexOf(type);
-    if (idx > -1) selectedAccessoryTypes.splice(idx, 1);
-    else selectedAccessoryTypes.push(type);
+    const checkbox = document.querySelector(`.accessory-filter[value="${type}"]`);
+    const isChecked = checkbox ? checkbox.checked : false;
+    
+    // Bỏ tích tất cả các checkbox accessory khác (chỉ cho phép chọn 1)
+    document.querySelectorAll('.accessory-filter').forEach(cb => {
+        if (cb.value !== type) {
+            cb.checked = false;
+        }
+    });
+    
+    // Cập nhật selectedAccessoryTypes - chỉ giữ 1 type
+    if (isChecked) {
+        selectedAccessoryTypes = [type];
+    } else {
+        selectedAccessoryTypes = [];
+    }
+    
     applyFilters();
+}
+
+// Hàm toggle chung cho tất cả các loại filter - chỉ cho phép chọn 1 ô
+function toggleSingleFilter(filterClass, value) {
+    const checkbox = document.querySelector(`.${filterClass}[value="${value}"]`);
+    const isChecked = checkbox ? checkbox.checked : false;
+    
+    // Bỏ tích tất cả các checkbox khác trong cùng nhóm (chỉ cho phép chọn 1)
+    document.querySelectorAll(`.${filterClass}`).forEach(cb => {
+        if (cb.value !== value) {
+            cb.checked = false;
+        }
+    });
+    
+    applyFilters();
+}
+
+// Các hàm toggle cho từng loại filter
+function togglePriceFilter(value) {
+    toggleSingleFilter('price-filter', value);
+}
+
+function toggleOsFilter(value) {
+    toggleSingleFilter('os-filter', value);
+}
+
+function toggleRomFilter(value) {
+    toggleSingleFilter('rom-filter', value);
+}
+
+function toggleConnectFilter(value) {
+    toggleSingleFilter('connect-filter', value);
+}
+
+function toggleBatteryFilter(value) {
+    toggleSingleFilter('battery-filter', value);
+}
+
+function toggleNetworkFilter(value) {
+    toggleSingleFilter('network-filter', value);
+}
+
+function toggleRamFilter(value) {
+    toggleSingleFilter('ram-filter', value);
+}
+
+function toggleSdFilter(value) {
+    toggleSingleFilter('sd-filter', value);
+}
+
+function toggleScreenFilter(value) {
+    toggleSingleFilter('screen-filter', value);
+}
+
+function toggleRefreshFilter(value) {
+    toggleSingleFilter('refresh-filter', value);
+}
+
+function toggleFeatureFilter(value) {
+    toggleSingleFilter('feature-filter', value);
 }
 
 function applyCustomPriceRange() {
@@ -150,17 +238,44 @@ function applyCustomPriceRange() {
 }
 
 function applyFilters() {
+    // Hàm helper để xử lý logic chỉ chọn 1 checkbox trong mỗi nhóm filter
+    function handleSingleSelect(filterClass) {
+        const checkedFilters = document.querySelectorAll(`.${filterClass}:checked`);
+        if (checkedFilters.length > 1) {
+            // Lấy giá trị cuối cùng được chọn và bỏ tích các checkbox khác
+            const lastChecked = checkedFilters[checkedFilters.length - 1];
+            checkedFilters.forEach(cb => {
+                if (cb !== lastChecked) {
+                    cb.checked = false;
+                }
+            });
+        }
+    }
+    
+    // Áp dụng logic chỉ chọn 1 cho tất cả các loại filter
+    handleSingleSelect('price-filter');
+    handleSingleSelect('brand-filter');
+    handleSingleSelect('os-filter');
+    handleSingleSelect('rom-filter');
+    handleSingleSelect('connect-filter');
+    handleSingleSelect('battery-filter');
+    handleSingleSelect('network-filter');
+    handleSingleSelect('ram-filter');
+    handleSingleSelect('accessory-filter');
+    
     // Collect price filters
     selectedPriceRanges = [];
-    document.querySelectorAll('.price-filter:checked').forEach(cb => {
-        if (cb.value !== 'all') selectedPriceRanges.push(cb.value);
-    });
+    const checkedPriceFilter = document.querySelector('.price-filter:checked');
+    if (checkedPriceFilter && checkedPriceFilter.value !== 'all') {
+        selectedPriceRanges = [checkedPriceFilter.value];
+    }
     
     // Collect brand filters
     selectedBrands = [];
-    document.querySelectorAll('.brand-filter:checked').forEach(cb => {
-        selectedBrands.push(cb.value);
-    });
+    const checkedBrandFilter = document.querySelector('.brand-filter:checked');
+    if (checkedBrandFilter) {
+        selectedBrands = [checkedBrandFilter.value];
+    }
     
     updateFilterTags();
     renderProducts();
@@ -431,6 +546,10 @@ function addToCart(productId) {
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
+            // Lấy màu đầu tiên từ mảng colors nếu có
+            const firstColor = product.colors && product.colors.length > 0 ? product.colors[0] : '#000000';
+            const firstColorName = product.colorNames && product.colorNames.length > 0 ? product.colorNames[0] : 'Mặc định';
+            
             cart.push({
                 id: product.id,
                 name: product.name,
@@ -438,8 +557,8 @@ function addToCart(productId) {
                 originalPrice: product.oldPrice || product.price,
                 image: product.image,
                 quantity: 1,
-                color: product.color || 'Mặc định',
-                colorCode: product.colorCode || '#000000',
+                color: firstColorName,
+                colorCode: firstColor,
                 storage: product.storage ? `${product.storage}GB` : '128GB',
                 ram: product.ram ? `${product.ram}GB` : null,
                 inStock: true,
