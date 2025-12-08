@@ -46,9 +46,64 @@
 
         <main class="lg:col-span-3">
           <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 class="text-2xl font-bold mb-6">Thông tin cá nhân</h2>
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">Thông tin cá nhân</h2>
+              <button id="edit-profile-btn" onclick="toggleEditMode(true)" class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition text-sm">
+                <i class="fas fa-edit mr-1"></i>Chỉnh sửa
+              </button>
+            </div>
 
-            <form id="profile-form" class="space-y-6" onsubmit="handleUpdateProfile(event)" enctype="multipart/form-data">
+            <!-- VIEW MODE - Hiển thị thông tin (mặc định) -->
+            <div id="profile-view-mode" class="space-y-6">
+              <!-- Avatar Display -->
+              <div class="flex items-center gap-6 pb-6 border-b">
+                <div class="relative">
+                  <div id="view-avatar-preview" class="w-24 h-24 rounded-full bg-red-600 flex items-center justify-center overflow-hidden border-4 border-gray-200">
+                    <span id="view-avatar-text" class="text-white text-2xl font-bold">U</span>
+                    <img id="view-avatar-img" src="" alt="Avatar" class="w-full h-full object-cover hidden">
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-800">Ảnh đại diện</h3>
+                  <p class="text-sm text-gray-500">Nhấn "Chỉnh sửa" để thay đổi</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-500 text-sm mb-1">Họ và tên</label>
+                  <p id="view-name" class="text-gray-800 font-medium text-lg">---</p>
+                </div>
+                <div>
+                  <label class="block text-gray-500 text-sm mb-1">Số điện thoại</label>
+                  <p id="view-phone" class="text-gray-800 font-medium text-lg">---</p>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-500 text-sm mb-1">Email</label>
+                <p id="view-email" class="text-gray-800 font-medium text-lg">---</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-500 text-sm mb-1">Giới tính</label>
+                  <p id="view-gender" class="text-gray-800 font-medium text-lg">---</p>
+                </div>
+                <div>
+                  <label class="block text-gray-500 text-sm mb-1">Ngày sinh</label>
+                  <p id="view-birthday" class="text-gray-800 font-medium text-lg">---</p>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-500 text-sm mb-1">Địa chỉ</label>
+                <p id="view-address" class="text-gray-800 font-medium text-lg">---</p>
+              </div>
+            </div>
+
+            <!-- EDIT MODE - Form chỉnh sửa (ẩn mặc định) -->
+            <form id="profile-form" class="space-y-6 hidden" onsubmit="handleUpdateProfile(event)" enctype="multipart/form-data">
               <!-- Avatar Upload -->
               <div class="flex items-center gap-6 pb-6 border-b">
                 <div class="relative">
@@ -114,10 +169,10 @@
 
               <div class="flex space-x-4">
                 <button type="submit" class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition">
-                  <i class="fas fa-save mr-2"></i>Cập nhật thông tin
+                  <i class="fas fa-save mr-2"></i>Lưu thay đổi
                 </button>
-                <button type="button" onclick="loadUserProfile()" class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition">
-                  <i class="fas fa-undo mr-2"></i>Hủy
+                <button type="button" onclick="toggleEditMode(false)" class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition">
+                  <i class="fas fa-times mr-2"></i>Hủy
                 </button>
               </div>
             </form>
@@ -611,8 +666,82 @@
         }
       }
 
-      // Load thông tin user vào form
-      function loadUserProfile() {
+      // Toggle giữa View Mode và Edit Mode
+      function toggleEditMode(isEdit) {
+        const viewMode = document.getElementById('profile-view-mode');
+        const editForm = document.getElementById('profile-form');
+        const editBtn = document.getElementById('edit-profile-btn');
+        
+        if (isEdit) {
+          // Chuyển sang Edit Mode
+          viewMode.classList.add('hidden');
+          editForm.classList.remove('hidden');
+          editBtn.classList.add('hidden');
+          // Load dữ liệu vào form
+          loadUserProfileForm();
+        } else {
+          // Chuyển về View Mode
+          viewMode.classList.remove('hidden');
+          editForm.classList.add('hidden');
+          editBtn.classList.remove('hidden');
+          // Refresh view data
+          loadUserProfileView();
+        }
+      }
+
+      // Load thông tin user vào View Mode
+      function loadUserProfileView() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        
+        if (!user) {
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        // Hiển thị thông tin
+        document.getElementById('view-name').textContent = user.ho_ten || '---';
+        document.getElementById('view-phone').textContent = user.so_dt || '---';
+        document.getElementById('view-email').textContent = user.email || '---';
+        document.getElementById('view-address').textContent = user.dia_chi || '---';
+        
+        // Giới tính
+        const genderMap = { 'nam': 'Nam', 'nu': 'Nữ', 'khac': 'Khác' };
+        document.getElementById('view-gender').textContent = genderMap[user.gioi_tinh] || '---';
+        
+        // Ngày sinh
+        if (user.ngay_sinh) {
+          const date = new Date(user.ngay_sinh);
+          document.getElementById('view-birthday').textContent = date.toLocaleDateString('vi-VN');
+        } else {
+          document.getElementById('view-birthday').textContent = '---';
+        }
+        
+        // Avatar trong view mode
+        const viewAvatarImg = document.getElementById('view-avatar-img');
+        const viewAvatarText = document.getElementById('view-avatar-text');
+        
+        if (user.avt) {
+          if (viewAvatarImg) {
+            viewAvatarImg.src = user.avt;
+            viewAvatarImg.classList.remove('hidden');
+            viewAvatarImg.onerror = function() {
+              this.classList.add('hidden');
+              if (viewAvatarText) viewAvatarText.classList.remove('hidden');
+            };
+          }
+          if (viewAvatarText) viewAvatarText.classList.add('hidden');
+        } else {
+          const initials = (user.ho_ten || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          if (viewAvatarText) {
+            viewAvatarText.textContent = initials;
+            viewAvatarText.classList.remove('hidden');
+          }
+          if (viewAvatarImg) viewAvatarImg.classList.add('hidden');
+        }
+      }
+
+      // Load thông tin user vào Form (Edit Mode)
+      function loadUserProfileForm() {
         const user = JSON.parse(localStorage.getItem('user') || 'null');
         
         if (!user) {
@@ -657,6 +786,11 @@
         }
       }
 
+      // Hàm cũ để tương thích
+      function loadUserProfile() {
+        loadUserProfileView();
+      }
+
       // Cập nhật thông tin user
       async function handleUpdateProfile(event) {
         event.preventDefault();
@@ -675,6 +809,18 @@
           formData.append('ho_ten', document.getElementById('profile-name').value.trim());
           formData.append('so_dt', document.getElementById('profile-phone').value.trim());
           formData.append('dia_chi', document.getElementById('profile-address').value.trim());
+          
+          // Thêm giới tính
+          const selectedGender = document.querySelector('input[name="gender"]:checked');
+          if (selectedGender) {
+            formData.append('gioi_tinh', selectedGender.value);
+          }
+          
+          // Thêm ngày sinh
+          const birthdayValue = document.getElementById('profile-birthday').value;
+          if (birthdayValue) {
+            formData.append('ngay_sinh', birthdayValue);
+          }
           
           // Nếu có chọn avatar mới
           const avatarInput = document.getElementById('profile-avatar');
@@ -695,9 +841,9 @@
             
             alert('Cập nhật thông tin thành công!');
             
-            // Reload sidebar và form
+            // Reload sidebar và quay về View Mode
             loadSidebarUser();
-            loadUserProfile();
+            toggleEditMode(false);
           } else {
             alert(data.message || 'Cập nhật thất bại!');
           }

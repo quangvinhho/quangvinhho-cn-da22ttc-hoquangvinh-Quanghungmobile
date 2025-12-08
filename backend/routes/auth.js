@@ -292,6 +292,8 @@ router.post('/login', async (req, res) => {
                 so_dt: user.so_dt,
                 dia_chi: user.dia_chi,
                 avt: user.avt,
+                gioi_tinh: user.gioi_tinh,
+                ngay_sinh: user.ngay_sinh,
                 role: 'customer'
             }
         });
@@ -362,7 +364,7 @@ router.post('/admin/login', async (req, res) => {
 router.put('/profile/:id', handleUpload, async (req, res) => {
     try {
         const { id } = req.params;
-        const { ho_ten, so_dt, dia_chi } = req.body;
+        const { ho_ten, so_dt, dia_chi, gioi_tinh, ngay_sinh } = req.body;
         const avtFile = req.file;
 
         // Kiểm tra user tồn tại
@@ -386,6 +388,14 @@ router.put('/profile/:id', handleUpload, async (req, res) => {
         if (dia_chi !== undefined) {
             updateFields.push('dia_chi = ?');
             updateValues.push(dia_chi || null);
+        }
+        if (gioi_tinh !== undefined) {
+            updateFields.push('gioi_tinh = ?');
+            updateValues.push(gioi_tinh || null);
+        }
+        if (ngay_sinh !== undefined) {
+            updateFields.push('ngay_sinh = ?');
+            updateValues.push(ngay_sinh || null);
         }
         if (avtFile) {
             const avtPath = `images/avatars/${avtFile.filename}`;
@@ -418,6 +428,8 @@ router.put('/profile/:id', handleUpload, async (req, res) => {
                 so_dt: user.so_dt,
                 dia_chi: user.dia_chi,
                 avt: user.avt,
+                gioi_tinh: user.gioi_tinh,
+                ngay_sinh: user.ngay_sinh,
                 role: 'customer'
             }
         });
@@ -637,7 +649,7 @@ router.put('/change-password/:id', async (req, res) => {
 
 // ==================== GOOGLE OAUTH ====================
 
-// GET /api/auth/google - Bắt đầu đăng nhập Google
+// GET /api/auth/google - Bắt đầu đăng nhập Google (cho khách hàng)
 router.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
@@ -649,6 +661,68 @@ router.get('/google/callback',
         // Đăng nhập thành công - redirect về frontend với user data
         const userData = encodeURIComponent(JSON.stringify(req.user));
         res.redirect(`/login.html?google_success=true&user=${userData}`);
+    }
+);
+
+// ==================== GOOGLE OAUTH CHO ADMIN ====================
+
+// GET /api/auth/admin/google - Bắt đầu đăng nhập Google cho Admin
+router.get('/admin/google', (req, res, next) => {
+    // Lưu flag admin vào session để callback biết redirect về đâu
+    req.session.adminLogin = true;
+    passport.authenticate('google', {
+        scope: ['profile', 'email']
+    })(req, res, next);
+});
+
+// GET /api/auth/admin/google/callback - Callback từ Google cho Admin
+router.get('/admin/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/admin-login.html?error=google_failed' }),
+    async (req, res) => {
+        try {
+            const email = req.user.email;
+            const google_id = req.user.google_id || null;
+            const ho_ten = req.user.ho_ten;
+            const avt = req.user.avt;
+
+            // Kiểm tra xem email có trong bảng admin không
+            const [admins] = await pool.query(
+                'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?',
+                [email, email]
+            );
+
+            if (admins.length === 0) {
+                // Email không phải admin - redirect với lỗi
+                return res.redirect('/admin-login.html?error=not_admin');
+            }
+
+            const admin = admins[0];
+
+            // Cập nhật google_id và avatar nếu chưa có
+            await pool.query(
+                'UPDATE admin SET google_id = COALESCE(google_id, ?), avt = COALESCE(avt, ?), email = COALESCE(email, ?) WHERE ma_admin = ?',
+                [google_id, avt, email, admin.ma_admin]
+            );
+
+            // Tạo dữ liệu admin để trả về frontend
+            const adminData = {
+                ma_admin: admin.ma_admin,
+                tai_khoan: admin.tai_khoan,
+                email: email,
+                ho_ten: admin.ho_ten || ho_ten,
+                avt: admin.avt || avt,
+                quyen: admin.quyen,
+                role: 'admin',
+                isAdmin: true
+            };
+
+            const userData = encodeURIComponent(JSON.stringify(adminData));
+            res.redirect(`/admin-login.html?google_success=true&user=${userData}`);
+
+        } catch (error) {
+            console.error('Admin Google OAuth Error:', error);
+            res.redirect('/admin-login.html?error=google_failed');
+        }
     }
 );
 

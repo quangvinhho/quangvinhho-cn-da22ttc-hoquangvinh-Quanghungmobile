@@ -11,8 +11,9 @@
       theme: {
         extend: {
           colors: {
-            'red-main': '#d70018',
+            'red-main': '#d91e23',
             'red-dark': '#b01117',
+            'red-light': '#ffe5e6',
           }
         }
       }
@@ -43,16 +44,33 @@
 
       <!-- Header -->
       <div class="flex items-center justify-between mb-6">
-        <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-purple-600">📰 TIN TỨC CÔNG NGHỆ</h1>
-        <a href="index.html" class="text-red-600 hover:text-red-700 text-sm font-medium flex items-center gap-1">
+        <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-red-main flex items-center gap-2">
+          <i class="fas fa-newspaper"></i> TIN TỨC CÔNG NGHỆ
+        </h1>
+        <a href="index.html" class="text-red-main hover:text-red-dark text-sm font-medium flex items-center gap-1 transition">
           <i class="fas fa-home"></i> Trang chủ
         </a>
       </div>
 
-      <!-- NỔI BẬT NHẤT -->
+      <!-- TIN MỚI NHẤT -->
       <section class="mb-8">
         <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-          <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>NỔI BẬT NHẤT
+          <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>TIN MỚI NHẤT
+        </h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="latest-news">
+          <!-- Loading skeleton -->
+          <div class="animate-pulse">
+            <div class="bg-gray-200 rounded-xl h-40 mb-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TIN NỔI BẬT -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+          <span class="w-1 h-5 bg-orange-500 mr-2 rounded"></span>TIN NỔI BẬT
         </h2>
         
         <div class="grid lg:grid-cols-5 gap-6">
@@ -75,21 +93,10 @@
         </div>
       </section>
 
-      <!-- XEM NHIỀU TUẦN QUA -->
-      <section class="mb-8">
-        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-          <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>XEM NHIỀU TUẦN QUA
-        </h2>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="popular-news">
-          <!-- Loading -->
-        </div>
-      </section>
-
       <!-- TẤT CẢ TIN TỨC -->
       <section>
         <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-          <span class="w-1 h-5 bg-red-main mr-2 rounded"></span>TẤT CẢ TIN TỨC
+          <span class="w-1 h-5 bg-blue-500 mr-2 rounded"></span>TẤT CẢ TIN TỨC
         </h2>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="all-news">

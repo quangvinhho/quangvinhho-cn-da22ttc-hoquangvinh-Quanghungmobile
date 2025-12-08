@@ -257,12 +257,12 @@
             <!-- Countdown Timer -->
             <div class="flex items-center gap-1.5 bg-white/20 px-2.5 py-1 rounded-full">
               <span class="text-white/90 text-xs hidden sm:inline">Kết thúc:</span>
-              <div class="flex gap-0.5 items-center">
-                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs">08</span>
+              <div class="flex gap-0.5 items-center" id="countdown-timer">
+                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs" id="hours">08</span>
                 <span class="text-white text-xs">:</span>
-                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs">45</span>
+                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs" id="minutes">45</span>
                 <span class="text-white text-xs">:</span>
-                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs">30</span>
+                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs" id="seconds">30</span>
               </div>
             </div>
           </div>
@@ -271,433 +271,519 @@
           <!-- Replace scroller with a responsive grid using same card styles so layout matches the other product areas -->
           <div class="product-grid-responsive">
             <!-- Deal 1 -->
-            <a href="product_detail.html?id=11" class="product-card-hover rounded-xl p-4">
-              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                <span
-                  class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Giảm
-                  sốc</span>
-                <span
-                  class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-30%</span>
-                <img src="images/A17.avif" alt="Samsung Galaxy A71"
-                  class="card-image rounded-md w-full h-full object-contain">
-              </div>
-              <div class="mt-auto flex flex-col gap-3">
-                <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Samsung Galaxy A17 5G (8GB |
-                  128GB)</h3>
-                <div class="price-block flex items-end gap-3">
-                  <div class="text-lg font-black text-red-600 leading-none">4.599.000₫</div>
-                  <div class="text-xs text-gray-400 line-through mb-1">6.590.000₫</div>
+            <div class="product-card-hover rounded-xl p-4 bg-white relative group">
+              <a href="product-detail.html?id=11" class="block">
+                <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                  <span class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Giảm sốc</span>
+                  <span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-30%</span>
+                  <img src="images/A17.avif" alt="Samsung Galaxy A17" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
                 </div>
-                <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">Trả
-                  trước: 1.274.700₫ · Còn 6/10 suất</div>
-                <div class="flex items-center justify-between mt-1">
-                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i
-                      class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                      class="far fa-star"></i></div>
-                  <div class="text-xs text-gray-500">(36)</div>
+                <div class="mt-auto flex flex-col gap-2">
+                  <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">Samsung Galaxy A17 5G (8GB | 128GB)</h3>
+                  <div class="price-block flex items-end gap-3">
+                    <div class="text-lg font-black text-red-600 leading-none">4.599.000₫</div>
+                    <div class="text-xs text-gray-400 line-through mb-1">6.590.000₫</div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+                    <div class="text-xs text-gray-500">(36)</div>
+                  </div>
                 </div>
+              </a>
+              <div class="flex gap-2 mt-3">
+                <a href="product-detail.html?id=11" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                  <i class="fas fa-bolt"></i> Mua ngay
+                </a>
+                <button onclick="addToCartQuick(11, 'Samsung Galaxy A17 5G', 4599000, 'images/A17.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
               </div>
-            </a>
+            </div>
 
             <!-- Deal 2 -->
-            <a href="product_detail.html?id=12" class="product-card-hover rounded-xl p-4">
-              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                <span
-                  class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Flash
-                  Sale</span>
-                <span
-                  class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-25%</span>
-                <img src="images/A56.avif" alt="Samsung Flash"
-                  class="card-image rounded-md w-full h-full object-contain">
-              </div>
-              <div class="mt-auto flex flex-col gap-3">
-                <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Samsung Galaxy A56 5G (128GB
-                  | 256GB)</h3>
-                <div class="price-block flex items-end gap-3">
-                  <div class="text-lg font-black text-red-600 leading-none">35.799.000₫</div>
-                  <div class="text-xs text-gray-400 line-through mb-1">47.990.000₫</div>
+            <div class="product-card-hover rounded-xl p-4 bg-white relative group">
+              <a href="product-detail.html?id=12" class="block">
+                <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                  <span class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Flash Sale</span>
+                  <span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-25%</span>
+                  <img src="images/A56.avif" alt="Samsung Galaxy A56" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
                 </div>
-                <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">Trả
-                  trước: 14.734.700₫ · Flash sale</div>
-                <div class="flex items-center justify-between mt-1">
-                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i
-                      class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                      class="fas fa-star-half-alt"></i></div>
-                  <div class="text-xs text-gray-500">(8)</div>
+                <div class="mt-auto flex flex-col gap-2">
+                  <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">Samsung Galaxy A56 5G (128GB | 256GB)</h3>
+                  <div class="price-block flex items-end gap-3">
+                    <div class="text-lg font-black text-red-600 leading-none">10.799.000₫</div>
+                    <div class="text-xs text-gray-400 line-through mb-1">14.990.000₫</div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    <div class="text-xs text-gray-500">(8)</div>
+                  </div>
                 </div>
+              </a>
+              <div class="flex gap-2 mt-3">
+                <a href="product-detail.html?id=12" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                  <i class="fas fa-bolt"></i> Mua ngay
+                </a>
+                <button onclick="addToCartQuick(12, 'Samsung Galaxy A56 5G', 10799000, 'images/A56.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
               </div>
-            </a>
+            </div>
 
             <!-- Deal 3 -->
-            <a href="product_detail.html?id=13" class="product-card-hover rounded-xl p-4">
-              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                <span
-                  class="absolute top-0 left-0 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Siêu
-                  giảm giá</span>
-                <span
-                  class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-35%</span>
-                <img src="images/TECNO.avif" alt="Flash sale 3"
-                  class="card-image rounded-md w-full h-full object-contain">
-              </div>
-              <div class="mt-auto flex flex-col gap-3">
-                <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Tecno</h3>
-                <div class="price-block flex items-end gap-3">
-                  <div class="text-lg font-black text-red-600 leading-none">20.999.000₫</div>
-                  <div class="text-xs text-gray-400 line-through mb-1">32.990.000₫</div>
+            <div class="product-card-hover rounded-xl p-4 bg-white relative group">
+              <a href="product-detail.html?id=13" class="block">
+                <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                  <span class="absolute top-0 left-0 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Siêu giảm giá</span>
+                  <span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-35%</span>
+                  <img src="images/TECNO.avif" alt="Tecno" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
                 </div>
-                <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">Trả
-                  trước: 6.346.700₫ · Còn vài suất</div>
-                <div class="flex items-center justify-between mt-1">
-                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i
-                      class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                      class="fas fa-star"></i></div>
-                  <div class="text-xs text-gray-500">(91)</div>
+                <div class="mt-auto flex flex-col gap-2">
+                  <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">Tecno Spark 20 Pro (8GB | 256GB)</h3>
+                  <div class="price-block flex items-end gap-3">
+                    <div class="text-lg font-black text-red-600 leading-none">4.999.000₫</div>
+                    <div class="text-xs text-gray-400 line-through mb-1">7.690.000₫</div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <div class="text-xs text-gray-500">(91)</div>
+                  </div>
                 </div>
+              </a>
+              <div class="flex gap-2 mt-3">
+                <a href="product-detail.html?id=13" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                  <i class="fas fa-bolt"></i> Mua ngay
+                </a>
+                <button onclick="addToCartQuick(13, 'Tecno Spark 20 Pro', 4999000, 'images/TECNO.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
               </div>
-            </a>
+            </div>
 
             <!-- Deal 4 -->
-            <a href="product_detail.html?id=14" class="product-card-hover rounded-xl p-4">
-              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                <span
-                  class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Giảm
-                  sốc</span>
-                <span
-                  class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-20%</span>
-                <img src="images/oppo-reno.avif" alt="Deal 4" class="card-image rounded-md w-full h-full object-contain"
-                  onerror="this.src='images/iphone.jpg'">
-              </div>
-              <div class="mt-auto flex flex-col gap-3">
-                <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Deal đặc biệt</h3>
-                <div class="price-block flex items-end gap-3">
-                  <div class="text-lg font-black text-red-600 leading-none">20.999.000₫</div>
-                  <div class="text-xs text-gray-400 line-through mb-1">32.990.000₫</div>
+            <div class="product-card-hover rounded-xl p-4 bg-white relative group">
+              <a href="product-detail.html?id=14" class="block">
+                <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                  <span class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Giảm sốc</span>
+                  <span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-20%</span>
+                  <img src="images/oppo-reno.avif" alt="Oppo Reno" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
                 </div>
-                <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">Trả
-                  trước: 6.346.700₫ · Còn 4 suất</div>
-                <div class="flex items-center justify-between mt-1">
-                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i
-                      class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                      class="fas fa-star"></i></div>
-                  <div class="text-xs text-gray-500">(18)</div>
-                </div>
-              </div>
-            </a>
-            <!-- Product 4 -->
-            <a href="product_detail.html" class="product-card-hover rounded-xl p-4">
-              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                <span
-                  class="absolute top-0 left-0 bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">HOT
-                  SALE</span>
-                <img src="images/oppx9.avif" alt="OPPO A6" class="card-image rounded-md w-full h-full object-contain">
-              </div>
-              <div class="mt-auto flex flex-col gap-3">
-                <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">OPPOX9 Pro (8GB | 256GB)</h3>
-                <div class="price-block flex items-end gap-3">
-                  <div class="text-lg font-black text-red-600 leading-none">5.990.000₫</div>
-                  <div class="text-xs text-gray-400 line-through mb-1">7.690.000₫</div>
-                </div>
-                <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">Trả
-                  góp 0 lãi, 0 phí · Ưu đãi lên đến 1.5 triệu</div>
-                <div class="flex items-center justify-between mt-1">
-                  <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                      class="fas fa-star"></i><i class="fas fa-star"></i>
+                <div class="mt-auto flex flex-col gap-2">
+                  <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">Oppo Reno11 F 5G (8GB | 256GB)</h3>
+                  <div class="price-block flex items-end gap-3">
+                    <div class="text-lg font-black text-red-600 leading-none">8.490.000₫</div>
+                    <div class="text-xs text-gray-400 line-through mb-1">10.990.000₫</div>
                   </div>
-                  <div class="text-xs text-gray-500">(22)</div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <div class="text-xs text-gray-500">(18)</div>
+                  </div>
                 </div>
+              </a>
+              <div class="flex gap-2 mt-3">
+                <a href="product-detail.html?id=14" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                  <i class="fas fa-bolt"></i> Mua ngay
+                </a>
+                <button onclick="addToCartQuick(14, 'Oppo Reno11 F 5G', 8490000, 'images/oppo-reno.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
               </div>
-            </a>
+            </div>
 
+            <!-- Deal 5 -->
+            <div class="product-card-hover rounded-xl p-4 bg-white relative group">
+              <a href="product-detail.html?id=15" class="block">
+                <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                  <span class="absolute top-0 left-0 bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">HOT SALE</span>
+                  <img src="images/oppx9.avif" alt="OPPO X9 Pro" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
+                </div>
+                <div class="mt-auto flex flex-col gap-2">
+                  <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">OPPO Find X9 Pro (8GB | 256GB)</h3>
+                  <div class="price-block flex items-end gap-3">
+                    <div class="text-lg font-black text-red-600 leading-none">5.990.000₫</div>
+                    <div class="text-xs text-gray-400 line-through mb-1">7.690.000₫</div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <div class="text-xs text-gray-500">(22)</div>
+                  </div>
+                </div>
+              </a>
+              <div class="flex gap-2 mt-3">
+                <a href="product-detail.html?id=15" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                  <i class="fas fa-bolt"></i> Mua ngay
+                </a>
+                <button onclick="addToCartQuick(15, 'OPPO Find X9 Pro', 5990000, 'images/oppx9.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
 
           </div>
         </div>
       </div>
   </section>
+
   <!-- SẢN PHẨM CHÍNH HÃNG -->
   <section class="py-3 sm:py-4 bg-gray-50 reveal-on-scroll">
     <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
       <div class="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 md:p-5">
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-red-600">SẢN PHẨM CHÍNH HÃNG</h2>
-          <a href="products.html" class="text-red-600 hover:text-red-700 text-xs md:text-sm font-medium">
-            Xem tất cả →
+          <div class="flex items-center gap-3">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-red-600">✅ SẢN PHẨM CHÍNH HÃNG</h2>
+            <span class="hidden md:inline-flex items-center bg-green-100 text-green-600 text-xs font-semibold px-3 py-1 rounded-full">
+              <i class="fas fa-shield-alt mr-1"></i>BẢO HÀNH TOÀN QUỐC
+            </span>
+          </div>
+          <a href="products.html" class="text-red-600 hover:text-red-700 text-xs md:text-sm font-medium flex items-center gap-1">
+            Xem tất cả <i class="fas fa-arrow-right"></i>
           </a>
         </div>
 
         <!-- Grid Layout 5 cột -->
         <div class="product-grid-responsive">
-          <a href="product_detail.html?id=20" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">APPLE
-                VN/A</span>
-              <img src="images/15-256.avif" alt="iPhone 15 Pro Max"
-                class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto flex flex-col gap-3">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">iPhone 15 Pro Max 256GB Titan
-              </h3>
-              <div class="price-block flex items-end gap-3">
-                <div class="text-lg font-black text-red-600 leading-none">33.990.000₫</div>
-                <div class="text-xs text-gray-400 line-through mb-1">38.990.000₫</div>
+          <!-- Product 1 -->
+          <div class="product-card-hover rounded-xl p-4 relative group">
+            <a href="product-detail.html?id=20" class="block">
+              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                <span class="absolute top-0 left-0 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">APPLE VN/A</span>
+                <img src="images/15-256.avif" alt="iPhone 15 Pro Max" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
               </div>
-              <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">Trả góp
-                0 lãi, 0 phí · Ưu đãi lên đến 5.5 triệu</div>
-              <div class="flex items-center justify-between mt-1">
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star"></i>
+              <div class="mt-auto flex flex-col gap-2">
+                <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">iPhone 15 Pro Max 256GB Titan</h3>
+                <div class="price-block flex items-end gap-3">
+                  <div class="text-lg font-black text-red-600 leading-none">33.990.000₫</div>
+                  <div class="text-xs text-gray-400 line-through mb-1">38.990.000₫</div>
                 </div>
-                <div class="text-xs text-gray-500">(892)</div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                  <div class="text-xs text-gray-500">(892)</div>
+                </div>
               </div>
+            </a>
+            <div class="flex gap-2 mt-3">
+              <a href="product-detail.html?id=20" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                <i class="fas fa-bolt"></i> Mua ngay
+              </a>
+              <button onclick="addToCartQuick(20, 'iPhone 15 Pro Max 256GB', 33990000, 'images/15-256.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                <i class="fas fa-cart-plus"></i>
+              </button>
             </div>
-          </a>
+          </div>
 
-          <a href="product_detail.html?id=21" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-red-600 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">GIẢM
-                15%</span>
-              <img src="images/A16.avif" alt="Samsung S24" class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Samsung Galaxy A16 5G 128GB
-              </h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">3.990.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">4.990.000₫</span>
+          <!-- Product 2 -->
+          <div class="product-card-hover rounded-xl p-4 relative group">
+            <a href="product-detail.html?id=21" class="block">
+              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                <span class="absolute top-0 left-0 bg-gradient-to-r from-red-600 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">GIẢM 15%</span>
+                <img src="images/A16.avif" alt="Samsung Galaxy A16" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
               </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star"></i>
+              <div class="mt-auto flex flex-col gap-2">
+                <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">Samsung Galaxy A16 5G 128GB</h3>
+                <div class="price-block flex items-end gap-3">
+                  <div class="text-lg font-black text-red-600 leading-none">3.990.000₫</div>
+                  <div class="text-xs text-gray-400 line-through mb-1">4.990.000₫</div>
                 </div>
-                <span class="text-xs text-gray-500">(120)</span>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                  <div class="text-xs text-gray-500">(120)</div>
+                </div>
               </div>
+            </a>
+            <div class="flex gap-2 mt-3">
+              <a href="product-detail.html?id=21" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                <i class="fas fa-bolt"></i> Mua ngay
+              </a>
+              <button onclick="addToCartQuick(21, 'Samsung Galaxy A16 5G', 3990000, 'images/A16.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                <i class="fas fa-cart-plus"></i>
+              </button>
             </div>
-          </a>
+          </div>
 
-          <a href="product_detail.html?id=22" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-gray-800 to-black text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">ĐỘC
-                QUYỀN</span>
-              <img src="images/Xiaomi.avif" alt="Xiaomi 14" class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Xiaomi 14 5G (12GB | 512GB)
-              </h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">19.990.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">24.990.000₫</span>
+          <!-- Product 3 -->
+          <div class="product-card-hover rounded-xl p-4 relative group">
+            <a href="product-detail.html?id=22" class="block">
+              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                <span class="absolute top-0 left-0 bg-gradient-to-r from-gray-800 to-black text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">ĐỘC QUYỀN</span>
+                <img src="images/Xiaomi.avif" alt="Xiaomi 14" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
               </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+              <div class="mt-auto flex flex-col gap-2">
+                <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">Xiaomi 14 5G (12GB | 512GB)</h3>
+                <div class="price-block flex items-end gap-3">
+                  <div class="text-lg font-black text-red-600 leading-none">19.990.000₫</div>
+                  <div class="text-xs text-gray-400 line-through mb-1">24.990.000₫</div>
                 </div>
-                <span class="text-xs text-gray-500">(85)</span>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                  <div class="text-xs text-gray-500">(85)</div>
+                </div>
               </div>
+            </a>
+            <div class="flex gap-2 mt-3">
+              <a href="product-detail.html?id=22" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                <i class="fas fa-bolt"></i> Mua ngay
+              </a>
+              <button onclick="addToCartQuick(22, 'Xiaomi 14 5G', 19990000, 'images/Xiaomi.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                <i class="fas fa-cart-plus"></i>
+              </button>
             </div>
-          </a>
+          </div>
 
-          <a href="product_detail.html?id=23" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">SALE
-                SỐC</span>
-              <img src="images/oppo-reno.avif" alt="iQOO" class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Oppo Reno12 F 5G (8GB | 256GB)
-              </h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">8.090.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">11.990.000₫</span>
+          <!-- Product 4 -->
+          <div class="product-card-hover rounded-xl p-4 relative group">
+            <a href="product-detail.html?id=23" class="block">
+              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                <span class="absolute top-0 left-0 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">SALE SỐC</span>
+                <img src="images/oppo-reno.avif" alt="Oppo Reno12" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
               </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star"></i>
+              <div class="mt-auto flex flex-col gap-2">
+                <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">Oppo Reno12 F 5G (8GB | 256GB)</h3>
+                <div class="price-block flex items-end gap-3">
+                  <div class="text-lg font-black text-red-600 leading-none">8.090.000₫</div>
+                  <div class="text-xs text-gray-400 line-through mb-1">11.990.000₫</div>
                 </div>
-                <span class="text-xs text-gray-500">(200)</span>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                  <div class="text-xs text-gray-500">(200)</div>
+                </div>
               </div>
+            </a>
+            <div class="flex gap-2 mt-3">
+              <a href="product-detail.html?id=23" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                <i class="fas fa-bolt"></i> Mua ngay
+              </a>
+              <button onclick="addToCartQuick(23, 'Oppo Reno12 F 5G', 8090000, 'images/oppo-reno.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                <i class="fas fa-cart-plus"></i>
+              </button>
             </div>
-          </a>
+          </div>
 
-          <a href="product_detail.html?id=24" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-green-600 to-teal-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">MỚI
-                VỀ</span>
-              <img src="images/reno-xanh.avif" alt="OPPO Reno"
-                class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">OPPO Reno12 F 5G (8GB | 256GB)
-              </h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">9.490.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">11.990.000₫</span>
+          <!-- Product 5 -->
+          <div class="product-card-hover rounded-xl p-4 relative group">
+            <a href="product-detail.html?id=24" class="block">
+              <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                <span class="absolute top-0 left-0 bg-gradient-to-r from-green-600 to-teal-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">MỚI VỀ</span>
+                <img src="images/reno-xanh.avif" alt="OPPO Reno12" class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105">
               </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="far fa-star"></i>
+              <div class="mt-auto flex flex-col gap-2">
+                <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">OPPO Reno12 F 5G (8GB | 256GB)</h3>
+                <div class="price-block flex items-end gap-3">
+                  <div class="text-lg font-black text-red-600 leading-none">9.490.000₫</div>
+                  <div class="text-xs text-gray-400 line-through mb-1">11.990.000₫</div>
                 </div>
-                <span class="text-xs text-gray-500">(56)</span>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+                  <div class="text-xs text-gray-500">(56)</div>
+                </div>
               </div>
+            </a>
+            <div class="flex gap-2 mt-3">
+              <a href="product-detail.html?id=24" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                <i class="fas fa-bolt"></i> Mua ngay
+              </a>
+              <button onclick="addToCartQuick(24, 'OPPO Reno12 F 5G', 9490000, 'images/reno-xanh.avif')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
+                <i class="fas fa-cart-plus"></i>
+              </button>
             </div>
-          </a>
+          </div>
 
         </div>
       </div>
     </div>
   </section>
-  <!-- ĐIỆN THOẠI NỔI BẬT -->
+
+  <!-- TOP BÁN CHẠY - Load động từ API sản phẩm bán chạy -->
   <section class="py-3 sm:py-4 bg-gray-50 reveal-on-scroll">
     <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
       <div class="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 md:p-5">
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-blue-600">🔥 ĐIỆN THOẠI NỔI BẬT</h2>
-          <a href="products.html" class="text-red-600 hover:text-red-700 text-xs md:text-sm font-medium">
-            Xem tất cả →
+          <div class="flex items-center gap-3">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-red-600">🔥 TOP BÁN CHẠY</h2>
+            <span class="hidden md:inline-flex items-center bg-orange-100 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full animate-pulse">
+              <i class="fas fa-crown mr-1"></i>BEST SELLER
+            </span>
+          </div>
+          <a href="products.html" class="text-red-600 hover:text-red-700 text-xs md:text-sm font-medium flex items-center gap-1">
+            Xem tất cả <i class="fas fa-arrow-right"></i>
           </a>
         </div>
 
-        <!-- Grid Layout 5 cột -->
-        <div class="product-grid-responsive">
-          <a href="product_detail.html?id=20" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">APPLE
-                VN/A</span>
-              <img src="images/15-256.avif" alt="iPhone 16 Pro Max"
-                class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto flex flex-col gap-3">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">iPhone 15 Pro Max 256GB Titan
-              </h3>
-              <div class="price-block flex items-end gap-3">
-                <div class="text-lg font-black text-red-600 leading-none">33.990.000₫</div>
-                <div class="text-xs text-gray-400 line-through mb-1">38.990.000₫</div>
-              </div>
-              <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">Trả góp
-                0 lãi, 0 phí · Ưu đãi lên đến 5.5 triệu</div>
-              <div class="flex items-center justify-between mt-1">
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <div class="text-xs text-gray-500">(892)</div>
-              </div>
-            </div>
-          </a>
-
-          <a href="product_detail.html?id=21" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-red-600 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">GIẢM
-                15%</span>
-              <img src="images/samsung_galaxy_s24_fe_5g.avif" alt="Samsung S24"
-                class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Samsung Galaxy S24 5G 512GB
-              </h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">32.990.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">38.990.000₫</span>
-              </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <span class="text-xs text-gray-500">(120)</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="product_detail.html?id=22" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-gray-800 to-black text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">ĐỘC
-                QUYỀN</span>
-              <img src="images/iphone17.avif" alt="Xiaomi 14"
-                class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">iPhone 17 5G (128GB | 512GB)
-              </h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">19.990.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">24.990.000₫</span>
-              </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                </div>
-                <span class="text-xs text-gray-500">(85)</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="product_detail.html?id=23" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">SALE
-                SỐC</span>
-              <img src="images/samsung_galaxy_a36_5g.avif" alt="iQOO"
-                class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">Samsung Galaxy A36 5G (12GB |
-                512GB)</h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">8.090.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">11.990.000₫</span>
-              </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <span class="text-xs text-gray-500">(200)</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="product_detail.html?id=24" class="product-card-hover rounded-xl p-4">
-            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-              <span
-                class="absolute top-0 left-0 bg-gradient-to-r from-green-600 to-teal-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">MỚI
-                VỀ</span>
-              <img src="images/oppo_reno_13_f_4g_256gb.avif" alt="OPPO Reno"
-                class="card-image rounded-md w-full h-full object-contain">
-            </div>
-            <div class="mt-auto">
-              <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">OPPO Reno13 F 5G (8GB | 256GB)
-              </h3>
-              <div class="flex items-end gap-2 mb-2">
-                <span class="text-lg font-black text-red-600">9.490.000₫</span>
-                <span class="text-xs text-gray-400 line-through mb-1">11.990.000₫</span>
-              </div>
-              <div class="flex items-center gap-1 mb-3">
-                <div class="flex text-yellow-400 text-xs">
-                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i><i class="far fa-star"></i>
-                </div>
-                <span class="text-xs text-gray-500">(56)</span>
-              </div>
-            </div>
-          </a>
-
+        <!-- Grid Layout 5 cột - Load động từ API -->
+        <div id="featured-products-grid" class="product-grid-responsive">
+          <!-- Skeleton loading -->
+          <div class="product-card-hover rounded-xl p-4 animate-pulse">
+            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse">
+            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse">
+            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse">
+            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse">
+            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
         </div>
+        
+        <!-- Script load sản phẩm bán chạy từ API -->
+        <script>
+          (async function loadBestSellerProducts() {
+            const badges = ['APPLE VN/A', 'GIẢM 15%', 'ĐỘC QUYỀN', 'SALE SỐC', 'MỚI VỀ'];
+            const badgeColors = [
+              'from-blue-600 to-cyan-500',
+              'from-red-600 to-orange-500', 
+              'from-gray-800 to-black',
+              'from-purple-600 to-pink-500',
+              'from-green-600 to-teal-500'
+            ];
+            
+            try {
+              const res = await fetch('http://localhost:3000/api/products/featured?limit=5');
+              const data = await res.json();
+              
+              if (data.success && data.data.length > 0) {
+                const grid = document.getElementById('featured-products-grid');
+                grid.innerHTML = data.data.map((product, index) => {
+                  const price = new Intl.NumberFormat('vi-VN').format(product.price) + '₫';
+                  const oldPrice = new Intl.NumberFormat('vi-VN').format(product.oldPrice) + '₫';
+                  const badge = product.badge || badges[index % badges.length];
+                  const badgeColor = product.badgeColor || badgeColors[index % badgeColors.length];
+                  const rating = product.rating || 5;
+                  const reviewCount = product.reviewCount || Math.floor(Math.random() * 200) + 50;
+                  const storage = product.storage ? ` ${product.storage}GB` : '';
+                  
+                  // Render stars
+                  let stars = '';
+                  for (let i = 1; i <= 5; i++) {
+                    if (i <= Math.floor(rating)) {
+                      stars += '<i class="fas fa-star"></i>';
+                    } else if (i - 0.5 <= rating) {
+                      stars += '<i class="fas fa-star-half-alt"></i>';
+                    } else {
+                      stars += '<i class="far fa-star"></i>';
+                    }
+                  }
+                  
+                  return `
+                    <div class="product-card-hover rounded-xl p-4 relative group">
+                      <a href="product-detail.html?id=${product.id}" class="block">
+                        <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+                          <span class="absolute top-0 left-0 bg-gradient-to-r ${badgeColor} text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">${badge}</span>
+                          ${product.totalSold > 0 ? `<span class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">🔥 ${product.totalSold} đã bán</span>` : ''}
+                          <img src="${product.image}" alt="${product.name}" 
+                            class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
+                            onerror="this.src='images/iphone-17-pro-max-256.jpg'">
+                        </div>
+                        <div class="mt-auto flex flex-col gap-2">
+                          <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">${product.name}${storage}</h3>
+                          <div class="price-block flex items-end gap-3">
+                            <div class="text-lg font-black text-red-600 leading-none">${price}</div>
+                            <div class="text-xs text-gray-400 line-through mb-1">${oldPrice}</div>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1 text-yellow-400 text-xs">${stars}</div>
+                            <div class="text-xs text-gray-500">(${reviewCount})</div>
+                          </div>
+                        </div>
+                      </a>
+                      <!-- Nút Mua ngay và Thêm giỏ hàng -->
+                      <div class="flex gap-2 mt-3">
+                        <a href="product-detail.html?id=${product.id}" 
+                           class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                          <i class="fas fa-bolt"></i> Mua ngay
+                        </a>
+                        <button onclick="event.preventDefault(); addToCartQuick(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.image}')" 
+                                class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center"
+                                title="Thêm vào giỏ">
+                          <i class="fas fa-cart-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  `;
+                }).join('');
+              }
+            } catch (e) {
+              console.error('Error loading best seller products:', e);
+            }
+          })();
+          
+          // Hàm thêm vào giỏ hàng nhanh
+          function addToCartQuick(productId, productName, price, image) {
+            // Lấy giỏ hàng hiện tại từ localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Kiểm tra sản phẩm đã có trong giỏ chưa
+            const existingIndex = cart.findIndex(item => item.id === productId);
+            
+            if (existingIndex > -1) {
+              // Tăng số lượng nếu đã có
+              cart[existingIndex].quantity += 1;
+            } else {
+              // Thêm mới
+              cart.push({
+                id: productId,
+                name: productName,
+                price: price,
+                image: image,
+                quantity: 1
+              });
+            }
+            
+            // Lưu lại
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Cập nhật badge số lượng giỏ hàng (nếu có)
+            const cartBadge = document.querySelector('.cart-count, #cart-count');
+            if (cartBadge) {
+              const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+              cartBadge.textContent = totalItems;
+              cartBadge.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+            
+            // Hiển thị thông báo
+            showAddToCartNotification(productName);
+          }
+          
+          // Hiển thị thông báo đã thêm vào giỏ
+          function showAddToCartNotification(productName) {
+            // Tạo toast notification
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-3 rounded-xl shadow-lg z-50 flex items-center gap-3 animate-slide-in';
+            toast.innerHTML = `
+              <i class="fas fa-check-circle text-xl"></i>
+              <div>
+                <p class="font-semibold">Đã thêm vào giỏ hàng!</p>
+                <p class="text-sm opacity-90">${productName.substring(0, 30)}...</p>
+              </div>
+              <a href="cart.html" class="ml-2 bg-white text-green-600 px-3 py-1 rounded-lg text-sm font-semibold hover:bg-green-50">
+                Xem giỏ
+              </a>
+            `;
+            document.body.appendChild(toast);
+            
+            // Xóa sau 3 giây
+            setTimeout(() => {
+              toast.style.opacity = '0';
+              toast.style.transform = 'translateY(20px)';
+              setTimeout(() => toast.remove(), 300);
+            }, 3000);
+          }
+        </script>
       </div>
     </div>
   </section>
@@ -2001,33 +2087,45 @@
       const discount = product.oldPrice ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100) : 0;
       const discountBadge = discount > 0 ? `<span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-${discount}%</span>` : '';
       const productImage = product.image || PLACEHOLDER_IMG;
+      const productName = product.name.replace(/'/g, "\\'");
 
       return `
-        <a href="product_detail.html?id=${product.id}" class="product-card-hover rounded-xl p-4">
-          <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-            ${discountBadge}
-            <img src="${productImage}" alt="${product.name}"
-              class="card-image rounded-md w-full h-full object-contain"
-              onerror="this.src='${PLACEHOLDER_IMG}'">
-          </div>
-          <div class="mt-auto flex flex-col gap-3">
-            <h3 class="font-bold text-sm text-gray-800 mb-2 line-clamp-2 min-h-[40px]">${product.name}</h3>
-            <div class="price-block flex items-end gap-3">
-              <div class="text-lg font-black text-red-600 leading-none">${formatPrice(product.price)}</div>
-              ${product.oldPrice ? `<div class="text-xs text-gray-400 line-through mb-1">${formatPrice(product.oldPrice)}</div>` : ''}
+        <div class="product-card-hover rounded-xl p-4 bg-white relative group">
+          <a href="product-detail.html?id=${product.id}" class="block">
+            <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
+              ${discountBadge}
+              <img src="${productImage}" alt="${product.name}"
+                class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
+                onerror="this.src='${PLACEHOLDER_IMG}'">
             </div>
-            <div class="meta-box bg-gray-50 border border-gray-100 text-xs text-gray-600 rounded-md px-3 py-2">
-              ${product.brand || 'Chính hãng'} · ${product.category || 'Điện thoại'}
-            </div>
-            <div class="flex items-center justify-between mt-1">
-              <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating || 4))}
-                ${(product.rating || 4) % 1 !== 0 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+            <div class="mt-auto flex flex-col gap-2">
+              <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">${product.name}</h3>
+              <div class="price-block flex items-end gap-3">
+                <div class="text-lg font-black text-red-600 leading-none">${formatPrice(product.price)}</div>
+                ${product.oldPrice ? `<div class="text-xs text-gray-400 line-through mb-1">${formatPrice(product.oldPrice)}</div>` : ''}
               </div>
-              <div class="text-xs text-gray-500">(${product.reviews || 0})</div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                  ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating || 4))}
+                  ${(product.rating || 4) % 1 !== 0 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                </div>
+                <div class="text-xs text-gray-500">(${product.reviews || 0})</div>
+              </div>
             </div>
+          </a>
+          <!-- Nút Mua ngay và Thêm vào giỏ -->
+          <div class="flex gap-2 mt-3">
+            <a href="product-detail.html?id=${product.id}" 
+               class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+              <i class="fas fa-bolt"></i> Mua ngay
+            </a>
+            <button onclick="event.preventDefault(); event.stopPropagation(); addToCartQuick(${product.id}, '${productName}', ${product.price}, '${productImage}')" 
+                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center"
+                    title="Thêm vào giỏ">
+              <i class="fas fa-cart-plus"></i>
+            </button>
           </div>
-        </a>
+        </div>
       `;
     }
 

@@ -831,10 +831,10 @@ router.get('/news', async (req, res) => {
 // POST /api/admin/news - Thêm tin tức mới
 router.post('/news', async (req, res) => {
     try {
-        const { tieu_de, noi_dung, anh_dai_dien, ma_admin } = req.body;
+        const { tieu_de, noi_dung, anh_dai_dien, video_url, ma_admin } = req.body;
         const [result] = await pool.query(
-            'INSERT INTO tin_tuc (tieu_de, noi_dung, anh_dai_dien, ma_admin) VALUES (?, ?, ?, ?)',
-            [tieu_de, noi_dung, anh_dai_dien, ma_admin || null]
+            'INSERT INTO tin_tuc (tieu_de, noi_dung, anh_dai_dien, video_url, ma_admin) VALUES (?, ?, ?, ?, ?)',
+            [tieu_de, noi_dung, anh_dai_dien, video_url || null, ma_admin || null]
         );
         res.json({ success: true, message: 'Thêm tin tức thành công', data: { id: result.insertId } });
     } catch (error) {
@@ -847,10 +847,10 @@ router.post('/news', async (req, res) => {
 router.put('/news/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { tieu_de, noi_dung, anh_dai_dien } = req.body;
+        const { tieu_de, noi_dung, anh_dai_dien, video_url } = req.body;
         await pool.query(
-            'UPDATE tin_tuc SET tieu_de = ?, noi_dung = ?, anh_dai_dien = ? WHERE ma_tintuc = ?',
-            [tieu_de, noi_dung, anh_dai_dien, id]
+            'UPDATE tin_tuc SET tieu_de = ?, noi_dung = ?, anh_dai_dien = ?, video_url = ? WHERE ma_tintuc = ?',
+            [tieu_de, noi_dung, anh_dai_dien, video_url || null, id]
         );
         res.json({ success: true, message: 'Cập nhật tin tức thành công' });
     } catch (error) {

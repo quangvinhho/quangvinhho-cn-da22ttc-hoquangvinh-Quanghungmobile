@@ -912,6 +912,104 @@ function mapProductToFrontendWithDB(row) {
     return baseProduct;
 }
 
+// ==================== ROUTES CHO TRANG INDEX (ĐẶT TRƯỚC /:id) ====================
+
+// GET /api/products/best-sellers - Lấy top 5 sản phẩm bán chạy nhất (cho trang index)
+router.get('/best-sellers', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 5;
+        
+        const [products] = await pool.query(`
+            SELECT sp.*, hsx.ten_hang, COALESCE(SUM(ct.so_luong), 0) as total_sold,
+                   COALESCE((SELECT AVG(so_sao) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as avg_rating,
+                   COALESCE((SELECT COUNT(*) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as review_count
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+            LEFT JOIN chi_tiet_don_hang ct ON sp.ma_sp = ct.ma_sp
+            LEFT JOIN don_hang dh ON ct.ma_don = dh.ma_don AND dh.trang_thai != 'cancelled'
+            GROUP BY sp.ma_sp
+            ORDER BY total_sold DESC, sp.ma_sp DESC
+            LIMIT ?
+        `, [limit]);
+        
+        // Format dữ liệu cho frontend
+        const formattedProducts = products.map(p => ({
+            id: p.ma_sp,
+            name: p.ten_sp,
+            price: p.gia,
+            oldPrice: Math.round(p.gia * 1.15),
+            image: p.anh_dai_dien || getProductImage(p),
+            brand: p.ten_hang,
+            storage: p.bo_nho,
+            totalSold: p.total_sold || 0,
+            rating: parseFloat(p.avg_rating) || 0,
+            reviewCount: p.review_count || 0,
+            discount: 15
+        }));
+        
+        res.json({ success: true, data: formattedProducts });
+    } catch (error) {
+        console.error('Error getting best sellers:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// GET /api/products/featured - Lấy sản phẩm nổi bật (có bán chạy hoặc mới nhất)
+router.get('/featured', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 5;
+        
+        // Lấy sản phẩm: ưu tiên có bán, sau đó là mới nhất
+        const [products] = await pool.query(`
+            SELECT sp.*, hsx.ten_hang, 
+                   COALESCE(SUM(ct.so_luong), 0) as total_sold,
+                   COALESCE((SELECT AVG(so_sao) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as avg_rating,
+                   COALESCE((SELECT COUNT(*) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as review_count
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+            LEFT JOIN chi_tiet_don_hang ct ON sp.ma_sp = ct.ma_sp
+            LEFT JOIN don_hang dh ON ct.ma_don = dh.ma_don AND dh.trang_thai != 'cancelled'
+            WHERE sp.so_luong_ton > 0
+            GROUP BY sp.ma_sp
+            ORDER BY total_sold DESC, sp.ma_sp DESC
+            LIMIT ?
+        `, [limit]);
+        
+        // Format dữ liệu cho frontend
+        const formattedProducts = products.map((p, idx) => {
+            const badges = ['APPLE VN/A', 'GIẢM 15%', 'ĐỘC QUYỀN', 'SALE SỐC', 'MỚI VỀ'];
+            const badgeColors = [
+                'from-blue-600 to-cyan-500',
+                'from-red-600 to-orange-500', 
+                'from-gray-800 to-black',
+                'from-purple-600 to-pink-500',
+                'from-green-600 to-teal-500'
+            ];
+            
+            return {
+                id: p.ma_sp,
+                name: p.ten_sp,
+                price: p.gia,
+                oldPrice: Math.round(p.gia * 1.15),
+                image: p.anh_dai_dien || getProductImage(p),
+                brand: p.ten_hang,
+                storage: p.bo_nho,
+                totalSold: p.total_sold || 0,
+                rating: parseFloat(p.avg_rating) || 0,
+                reviewCount: p.review_count || 0,
+                discount: Math.floor(Math.random() * 20) + 10,
+                badge: badges[idx % badges.length],
+                badgeColor: badgeColors[idx % badgeColors.length]
+            };
+        });
+        
+        res.json({ success: true, data: formattedProducts });
+    } catch (error) {
+        console.error('Error getting featured products:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // GET /api/products/:id - Lấy chi tiết sản phẩm
 router.get('/:id', async (req, res) => {
     try {

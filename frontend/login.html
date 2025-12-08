@@ -222,10 +222,15 @@
       </div>
 
       <!-- Back to Home -->
-      <div class="mt-6 text-center">
+      <div class="mt-6 text-center space-y-3">
         <a href="index.html" class="text-white hover:text-white/80 transition text-sm inline-flex items-center gap-2">
           <i class="fas fa-arrow-left"></i>
           <span>Quay lại trang chủ</span>
+        </a>
+        <span class="text-white/50 mx-3">|</span>
+        <a href="admin-login.html" class="text-white hover:text-white/80 transition text-sm inline-flex items-center gap-2">
+          <i class="fas fa-shield-halved"></i>
+          <span>Đăng nhập Admin</span>
         </a>
       </div>
     </div>
@@ -407,25 +412,6 @@
               // Chuyển về trang chủ để thấy header đã đăng nhập
               window.location.href = 'index.html';
             }
-            return;
-          }
-
-          // Nếu không phải khách hàng, thử đăng nhập như admin
-          response = await fetch(`${API_URL}/auth/admin/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tai_khoan: email, mat_khau })
-          });
-
-          data = await response.json();
-
-          if (data.success) {
-            localStorage.setItem('user', JSON.stringify(data.data));
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('isAdmin', 'true');
-            
-            alert(`Xin chào Admin ${data.data.ho_ten}!`);
-            window.location.href = 'admin.html';
             return;
           }
 

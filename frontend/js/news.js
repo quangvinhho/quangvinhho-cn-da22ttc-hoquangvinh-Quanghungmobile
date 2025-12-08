@@ -41,19 +41,56 @@ function getCategory(index) {
 // Load và render tin tức
 async function loadNews() {
     try {
-        const response = await fetch(`${API_URL}/news/featured?limit=15`);
+        const response = await fetch(`${API_URL}/news/featured?limit=20`);
         const result = await response.json();
 
         if (result.success && result.data.length > 0) {
-            renderFeaturedMain(result.data[0]);
-            renderFeaturedList(result.data.slice(1, 4));
-            renderPopularNews(result.data.slice(0, 5));
+            // Tin mới nhất (4 tin đầu tiên)
+            renderLatestNews(result.data.slice(0, 4));
+            // Tin nổi bật (tin từ 5-8, hoặc từ đầu nếu không đủ)
+            const featuredData = result.data.length > 4 ? result.data.slice(4) : result.data;
+            renderFeaturedMain(featuredData[0] || result.data[0]);
+            renderFeaturedList(featuredData.slice(1, 4) || result.data.slice(1, 4));
             renderAllNews(result.data);
         }
     } catch (error) {
         console.error('Lỗi load tin tức:', error);
         showError();
     }
+}
+
+// Render tin mới nhất - section riêng
+function renderLatestNews(newsList) {
+    const container = document.getElementById('latest-news');
+    if (!container) return;
+    
+    const badgeColors = ['bg-red-500', 'bg-orange-500', 'bg-blue-500', 'bg-green-500'];
+    
+    container.innerHTML = newsList.map((news, index) => `
+        <article class="group cursor-pointer">
+            <a href="news-detail.html?id=${news.ma_tintuc}" class="block">
+                <div class="relative h-40 rounded-2xl overflow-hidden mb-3">
+                    <img src="${getNewsImage(news.anh_dai_dien)}" 
+                         alt="${news.tieu_de}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                         onerror="this.src='images/inta.webp'">
+                    <!-- Badge Mới -->
+                    <div class="absolute top-2 left-2">
+                        <span class="${badgeColors[index % 4]} text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                            Mới
+                        </span>
+                    </div>
+                    <div class="absolute bottom-3 left-3 right-3">
+                        <span class="text-white text-xs font-medium">${formatDate(news.ngay_dang)}</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>
+                <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-red-600 transition-colors">
+                    ${news.tieu_de}
+                </h4>
+            </a>
+        </article>
+    `).join('');
 }
 
 // Render tin chính (bên trái) - giống style index.html
@@ -74,7 +111,7 @@ function renderFeaturedMain(news) {
                     <div class="flex items-center gap-2 text-white text-sm mb-3">
                         <span class="font-medium">${formatDate(news.ngay_dang)}</span>
                         <span>•</span>
-                        <span class="bg-blue-500 px-3 py-1 rounded-full text-xs font-semibold">Nổi bật</span>
+                        <span class="bg-orange-500 px-3 py-1 rounded-full text-xs font-semibold">Nổi bật</span>
                     </div>
                 </div>
                 
@@ -227,22 +264,75 @@ async function loadNewsDetail() {
     }
 }
 
+// Chuyển đổi URL video thành embed URL
+function getVideoEmbedUrl(url) {
+    if (!url) return null;
+    
+    // YouTube
+    const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (youtubeMatch) {
+        return 'https://www.youtube.com/embed/' + youtubeMatch[1];
+    }
+    
+    // Vimeo
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) {
+        return 'https://player.vimeo.com/video/' + vimeoMatch[1];
+    }
+    
+    // Nếu là link video trực tiếp
+    if (url.match(/\.(mp4|webm|ogg)$/i)) {
+        return url;
+    }
+    
+    return url;
+}
+
 function renderNewsDetail(news) {
     document.title = `${news.tieu_de} - QuangHưng Mobile`;
     
     const breadcrumb = document.getElementById('breadcrumb-title');
     if (breadcrumb) breadcrumb.textContent = news.tieu_de;
 
+    // Tạo phần video nếu có
+    let videoHtml = '';
+    if (news.video_url) {
+        const embedUrl = getVideoEmbedUrl(news.video_url);
+        if (news.video_url.match(/\.(mp4|webm|ogg)$/i)) {
+            // Video file trực tiếp
+            videoHtml = `
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-video text-red-main mr-2"></i>Video
+                    </h3>
+                    <video controls class="w-full rounded-2xl shadow-lg" style="max-height: 500px;">
+                        <source src="${embedUrl}" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ video.
+                    </video>
+                </div>
+            `;
+        } else {
+            // YouTube/Vimeo embed
+            videoHtml = `
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-video text-red-main mr-2"></i>Video
+                    </h3>
+                    <div class="relative w-full rounded-2xl overflow-hidden shadow-lg" style="padding-top: 56.25%;">
+                        <iframe src="${embedUrl}" 
+                                class="absolute inset-0 w-full h-full" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen></iframe>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
     const articleContainer = document.getElementById('news-article');
     if (articleContainer) {
         articleContainer.innerHTML = `
-            <div class="relative h-64 md:h-96 rounded-2xl overflow-hidden mb-6">
-                <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" 
-                     class="w-full h-full object-cover"
-                     onerror="this.src='images/inta.webp'">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            </div>
-            
             <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">${news.tieu_de}</h1>
             
             <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pb-4 border-b border-gray-200">
@@ -253,7 +343,17 @@ function renderNewsDetail(news) {
                     <i class="far fa-calendar text-red-main mr-2"></i>${formatDate(news.ngay_dang)}
                 </span>
                 <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold">Tin công nghệ</span>
+                ${news.video_url ? '<span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center"><i class="fas fa-video mr-1"></i>Có video</span>' : ''}
             </div>
+
+            <div class="relative h-64 md:h-96 rounded-2xl overflow-hidden mb-6">
+                <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" 
+                     class="w-full h-full object-cover"
+                     onerror="this.src='images/inta.webp'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </div>
+
+            ${videoHtml}
 
             <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                 ${news.noi_dung.split('\n').filter(p => p.trim()).map(p => `<p class="mb-4">${p.trim()}</p>`).join('')}

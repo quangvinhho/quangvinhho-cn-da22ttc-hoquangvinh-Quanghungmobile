@@ -73,6 +73,8 @@ module.exports = function(passport) {
                 avt: user.avt || avt,
                 so_dt: user.so_dt,
                 dia_chi: user.dia_chi,
+                gioi_tinh: user.gioi_tinh,
+                ngay_sinh: user.ngay_sinh,
                 quyen: adminData?.quyen || null,
                 role: isAdmin ? 'admin' : 'customer',
                 isAdmin: isAdmin
