@@ -23,6 +23,320 @@
         --red-main: #e41e26;
         --red-dark: #c5111a;
       }
+      
+      /* Christmas Banner Styles */
+      .christmas-banner {
+        background: linear-gradient(180deg, #0c1445 0%, #1a237e 30%, #1565c0 60%, #4fc3f7 100%);
+        position: relative;
+        overflow: hidden;
+        min-height: 180px;
+      }
+      
+      /* Stars twinkling */
+      .stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+      
+      .star {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #fff;
+        border-radius: 50%;
+        animation: twinkleStar 2s ease-in-out infinite;
+      }
+      
+      @keyframes twinkleStar {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.5); }
+      }
+      
+      /* Moon */
+      .moon {
+        position: absolute;
+        top: 15px;
+        right: 10%;
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 30% 30%, #fffde7, #fff9c4, #fff59d);
+        border-radius: 50%;
+        box-shadow: 0 0 40px rgba(255, 249, 196, 0.8), 0 0 80px rgba(255, 249, 196, 0.4);
+        z-index: 1;
+      }
+      
+      /* Snow ground */
+      .snow-ground {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, #fff 100%);
+        border-radius: 100% 100% 0 0;
+        z-index: 2;
+      }
+      
+      .snow-ground::before {
+        content: '';
+        position: absolute;
+        bottom: 30px;
+        left: 5%;
+        width: 90%;
+        height: 20px;
+        background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.5) 100%);
+        border-radius: 100%;
+      }
+      
+      /* Christmas Trees */
+      .trees {
+        position: absolute;
+        bottom: 25px;
+        left: 0;
+        right: 0;
+        height: 80px;
+        z-index: 3;
+        pointer-events: none;
+      }
+      
+      .tree {
+        position: absolute;
+        bottom: 0;
+        font-size: 2.5em;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      }
+      
+      .tree:nth-child(1) { left: 2%; font-size: 2em; }
+      .tree:nth-child(2) { left: 8%; font-size: 3em; }
+      .tree:nth-child(3) { left: 15%; font-size: 2.2em; }
+      .tree:nth-child(4) { right: 3%; font-size: 2.8em; }
+      .tree:nth-child(5) { right: 10%; font-size: 2em; }
+      .tree:nth-child(6) { right: 18%; font-size: 2.5em; }
+      
+      /* Santa Sleigh with Reindeers */
+      .sleigh-container {
+        position: absolute;
+        top: 25%;
+        left: -400px;
+        z-index: 10;
+        animation: flySleigh 12s linear infinite;
+        filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+      }
+      
+      @keyframes flySleigh {
+        0% { 
+          left: -400px; 
+          top: 30%;
+        }
+        25% { 
+          top: 20%;
+        }
+        50% { 
+          top: 35%;
+        }
+        75% { 
+          top: 25%;
+        }
+        100% { 
+          left: 110%; 
+          top: 30%;
+        }
+      }
+      
+      .sleigh-group {
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+      
+      .reindeer {
+        font-size: 2.2em;
+        animation: runReindeer 0.3s ease-in-out infinite alternate;
+        display: inline-block;
+      }
+      
+      .reindeer:nth-child(2) { animation-delay: 0s; }
+      .reindeer:nth-child(3) { animation-delay: 0.1s; }
+      .reindeer:nth-child(4) { animation-delay: 0.2s; }
+      .reindeer:nth-child(5) { animation-delay: 0.15s; }
+      
+      @keyframes runReindeer {
+        0% { transform: scaleX(-1) translateY(0) rotate(-5deg); }
+        100% { transform: scaleX(-1) translateY(-8px) rotate(5deg); }
+      }
+      
+      .sleigh {
+        font-size: 3em;
+        margin-right: -15px;
+        animation: bounceSleigh 0.5s ease-in-out infinite alternate;
+      }
+      
+      @keyframes bounceSleigh {
+        0% { transform: translateY(0) rotate(-2deg); }
+        100% { transform: translateY(-5px) rotate(2deg); }
+      }
+      
+      .magic-trail {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateX(100%);
+        display: flex;
+        gap: 8px;
+      }
+      
+      .sparkle {
+        font-size: 0.8em;
+        animation: sparkleTrail 0.8s ease-out infinite;
+        opacity: 0;
+      }
+      
+      .sparkle:nth-child(1) { animation-delay: 0s; }
+      .sparkle:nth-child(2) { animation-delay: 0.15s; }
+      .sparkle:nth-child(3) { animation-delay: 0.3s; }
+      .sparkle:nth-child(4) { animation-delay: 0.45s; }
+      .sparkle:nth-child(5) { animation-delay: 0.6s; }
+      
+      @keyframes sparkleTrail {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0.3) translateX(20px); }
+      }
+      
+      /* Snowfall Effect - Enhanced */
+      .snowflakes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 5;
+      }
+      
+      .snowflake {
+        position: absolute;
+        top: -10px;
+        color: #fff;
+        font-size: 1em;
+        text-shadow: 0 0 10px rgba(255,255,255,1);
+        animation: snowfall linear infinite;
+        opacity: 0.95;
+      }
+      
+      @keyframes snowfall {
+        0% {
+          transform: translateY(-10px) rotate(0deg) translateX(0);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(75px) rotate(180deg) translateX(20px);
+        }
+        100% {
+          transform: translateY(180px) rotate(360deg) translateX(-10px);
+          opacity: 0.5;
+        }
+      }
+      
+      .snowflake:nth-child(1) { left: 3%; animation-duration: 4s; animation-delay: 0s; font-size: 1.2em; }
+      .snowflake:nth-child(2) { left: 10%; animation-duration: 5s; animation-delay: 0.5s; font-size: 0.8em; }
+      .snowflake:nth-child(3) { left: 17%; animation-duration: 4.5s; animation-delay: 1s; font-size: 1.4em; }
+      .snowflake:nth-child(4) { left: 24%; animation-duration: 5.5s; animation-delay: 0.3s; font-size: 0.6em; }
+      .snowflake:nth-child(5) { left: 31%; animation-duration: 4.2s; animation-delay: 1.5s; font-size: 1.1em; }
+      .snowflake:nth-child(6) { left: 38%; animation-duration: 5.2s; animation-delay: 0.8s; font-size: 0.9em; }
+      .snowflake:nth-child(7) { left: 45%; animation-duration: 4.8s; animation-delay: 2s; font-size: 1.3em; }
+      .snowflake:nth-child(8) { left: 52%; animation-duration: 4.3s; animation-delay: 0.2s; font-size: 0.7em; }
+      .snowflake:nth-child(9) { left: 59%; animation-duration: 5.8s; animation-delay: 1.2s; font-size: 1em; }
+      .snowflake:nth-child(10) { left: 66%; animation-duration: 4.6s; animation-delay: 0.7s; font-size: 1.5em; }
+      .snowflake:nth-child(11) { left: 73%; animation-duration: 5.1s; animation-delay: 1.8s; font-size: 0.8em; }
+      .snowflake:nth-child(12) { left: 80%; animation-duration: 4.4s; animation-delay: 2.2s; font-size: 1.2em; }
+      .snowflake:nth-child(13) { left: 87%; animation-duration: 5.4s; animation-delay: 0.4s; font-size: 0.6em; }
+      .snowflake:nth-child(14) { left: 94%; animation-duration: 4.7s; animation-delay: 1.6s; font-size: 1.1em; }
+      .snowflake:nth-child(15) { left: 7%; animation-duration: 5.6s; animation-delay: 2.5s; font-size: 0.9em; }
+      .snowflake:nth-child(16) { left: 21%; animation-duration: 4.1s; animation-delay: 0.9s; font-size: 1.3em; }
+      .snowflake:nth-child(17) { left: 35%; animation-duration: 5.3s; animation-delay: 1.4s; font-size: 0.7em; }
+      .snowflake:nth-child(18) { left: 49%; animation-duration: 4.9s; animation-delay: 2.1s; font-size: 1em; }
+      .snowflake:nth-child(19) { left: 63%; animation-duration: 5.7s; animation-delay: 0.6s; font-size: 1.4em; }
+      .snowflake:nth-child(20) { left: 77%; animation-duration: 4.5s; animation-delay: 1.9s; font-size: 0.8em; }
+      
+      /* Christmas Lights - Enhanced */
+      .christmas-lights {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 25px;
+        z-index: 15;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+      }
+      
+      .light-string {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, transparent 0%, #333 5%, #333 95%, transparent 100%);
+        border-radius: 0 0 50% 50%;
+      }
+      
+      .light-bulb {
+        width: 14px;
+        height: 18px;
+        border-radius: 50% 50% 50% 50%;
+        margin-top: 6px;
+        animation: glowLight 1s ease-in-out infinite;
+        position: relative;
+      }
+      
+      .light-bulb::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background: #444;
+        border-radius: 2px;
+      }
+      
+      .light-bulb.red { background: radial-gradient(circle at 30% 30%, #ff6b6b, #e41e26); box-shadow: 0 0 15px #ff4444, 0 0 30px rgba(255,68,68,0.5); }
+      .light-bulb.green { background: radial-gradient(circle at 30% 30%, #69f0ae, #00c853); box-shadow: 0 0 15px #44ff44, 0 0 30px rgba(68,255,68,0.5); animation-delay: 0.25s; }
+      .light-bulb.gold { background: radial-gradient(circle at 30% 30%, #ffeb3b, #ffc107); box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255,215,0,0.5); animation-delay: 0.5s; }
+      .light-bulb.blue { background: radial-gradient(circle at 30% 30%, #64b5f6, #1976d2); box-shadow: 0 0 15px #4444ff, 0 0 30px rgba(68,68,255,0.5); animation-delay: 0.75s; }
+      .light-bulb.pink { background: radial-gradient(circle at 30% 30%, #f48fb1, #e91e63); box-shadow: 0 0 15px #ff69b4, 0 0 30px rgba(255,105,180,0.5); animation-delay: 0.33s; }
+      
+      @keyframes glowLight {
+        0%, 100% { opacity: 1; filter: brightness(1.2); }
+        50% { opacity: 0.6; filter: brightness(0.8); }
+      }
+      
+      .banner-content {
+        position: relative;
+        z-index: 20;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+      
+      .christmas-icon {
+        display: inline-block;
+        animation: bounce 2s ease-in-out infinite;
+      }
+      
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+      
+      .title-glow {
+        text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,215,0,0.6), 2px 2px 4px rgba(0,0,0,0.5);
+      }
     </style>
   </head>
   <body class="bg-gray-50">
@@ -33,10 +347,107 @@
     <!-- Spacer for fixed header - Responsive -->
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-    <div class="bg-gradient-to-r from-red-600 to-red-700 text-white py-8">
-      <div class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold">Tài khoản của tôi</h1>
-        <p class="text-red-100 mt-2">Quản lý thông tin và đơn hàng của bạn</p>
+    <!-- Christmas Banner -->
+    <div class="christmas-banner text-white py-8">
+      <!-- Stars -->
+      <div class="stars">
+        <div class="star" style="top: 10%; left: 5%;"></div>
+        <div class="star" style="top: 20%; left: 15%; animation-delay: 0.5s;"></div>
+        <div class="star" style="top: 8%; left: 25%; animation-delay: 1s;"></div>
+        <div class="star" style="top: 25%; left: 35%; animation-delay: 0.3s;"></div>
+        <div class="star" style="top: 12%; left: 45%; animation-delay: 0.8s;"></div>
+        <div class="star" style="top: 18%; left: 55%; animation-delay: 1.2s;"></div>
+        <div class="star" style="top: 5%; left: 65%; animation-delay: 0.6s;"></div>
+        <div class="star" style="top: 22%; left: 75%; animation-delay: 1.5s;"></div>
+        <div class="star" style="top: 15%; left: 40%; animation-delay: 0.2s;"></div>
+        <div class="star" style="top: 28%; left: 20%; animation-delay: 0.9s;"></div>
+      </div>
+      
+      <!-- Moon -->
+      <div class="moon"></div>
+      
+      <!-- Christmas Lights -->
+      <div class="christmas-lights">
+        <div class="light-string"></div>
+        <div class="light-bulb red"></div>
+        <div class="light-bulb green"></div>
+        <div class="light-bulb gold"></div>
+        <div class="light-bulb blue"></div>
+        <div class="light-bulb pink"></div>
+        <div class="light-bulb red"></div>
+        <div class="light-bulb green"></div>
+        <div class="light-bulb gold"></div>
+        <div class="light-bulb blue"></div>
+        <div class="light-bulb pink"></div>
+        <div class="light-bulb red"></div>
+        <div class="light-bulb green"></div>
+        <div class="light-bulb gold"></div>
+        <div class="light-bulb blue"></div>
+        <div class="light-bulb pink"></div>
+      </div>
+      
+      <!-- Santa Sleigh with Reindeers -->
+      <div class="sleigh-container">
+        <div class="sleigh-group">
+          <span class="sleigh">🎅🛷</span>
+          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
+          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
+          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
+          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
+        </div>
+        <div class="magic-trail">
+          <span class="sparkle">✨</span>
+          <span class="sparkle">⭐</span>
+          <span class="sparkle">✨</span>
+          <span class="sparkle">💫</span>
+          <span class="sparkle">✨</span>
+        </div>
+      </div>
+      
+      <!-- Snowflakes -->
+      <div class="snowflakes">
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+      </div>
+      
+      <!-- Christmas Trees -->
+      <div class="trees">
+        <span class="tree">🎄</span>
+        <span class="tree">🌲</span>
+        <span class="tree">🎄</span>
+        <span class="tree">🎄</span>
+        <span class="tree">🌲</span>
+        <span class="tree">🎄</span>
+      </div>
+      
+      <!-- Snow Ground -->
+      <div class="snow-ground"></div>
+      
+      <div class="container mx-auto px-4 banner-content">
+        <h1 class="text-3xl font-bold title-glow">
+          <span class="christmas-icon">🎄</span> Tài khoản của tôi <span class="christmas-icon">🎅</span>
+        </h1>
+        <p class="text-blue-100 mt-2 text-lg">
+          <span class="christmas-icon">🎁</span> Quản lý thông tin và đơn hàng của bạn - Chúc Giáng Sinh An Lành! <span class="christmas-icon">⭐</span>
+        </p>
       </div>
     </div>
 

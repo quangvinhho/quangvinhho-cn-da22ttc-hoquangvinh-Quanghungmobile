@@ -266,15 +266,73 @@
         });
       });
 
-      // Form Handling
-      document.getElementById('contactForm').addEventListener('submit', function(e) {
+      // Form Handling - Gửi liên hệ lên server
+      document.getElementById('contactForm').addEventListener('submit', async function(e) {
         e.preventDefault();
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang gửi...';
+        submitBtn.disabled = true;
+        
         const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-        console.log('Form submitted:', data);
-        alert('Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất có thể!');
-        this.reset();
+        const data = {
+          ho_ten: formData.get('name'),
+          email: formData.get('email'),
+          so_dien_thoai: formData.get('phone'),
+          tieu_de: formData.get('subject'),
+          noi_dung: formData.get('message')
+        };
+        
+        try {
+          const response = await fetch('http://localhost:3000/api/admin/contacts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            // Hiển thị thông báo thành công
+            showNotification('success', 'Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm nhất có thể.');
+            this.reset();
+          } else {
+            showNotification('error', result.message || 'Có lỗi xảy ra, vui lòng thử lại!');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showNotification('error', 'Không thể kết nối đến server. Vui lòng thử lại sau!');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
       });
+      
+      // Hàm hiển thị thông báo
+      function showNotification(type, message) {
+        // Xóa thông báo cũ nếu có
+        const oldNotif = document.querySelector('.contact-notification');
+        if (oldNotif) oldNotif.remove();
+        
+        const notification = document.createElement('div');
+        notification.className = `contact-notification fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transform transition-all duration-300 ${
+          type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        notification.innerHTML = `
+          <div class="flex items-center gap-3">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} text-xl"></i>
+            <span>${message}</span>
+          </div>
+        `;
+        document.body.appendChild(notification);
+        
+        // Tự động ẩn sau 5 giây
+        setTimeout(() => {
+          notification.style.opacity = '0';
+          setTimeout(() => notification.remove(), 300);
+        }, 5000);
+      }
     </script>
 
     <!-- AI Chatbot -->

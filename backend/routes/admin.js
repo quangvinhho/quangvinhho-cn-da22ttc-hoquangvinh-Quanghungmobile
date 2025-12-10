@@ -871,4 +871,218 @@ router.delete('/news/:id', async (req, res) => {
     }
 });
 
+// ==================== CONTACT MANAGEMENT ====================
+
+// GET /api/admin/contacts - Lấy tất cả liên hệ
+router.get('/contacts', async (req, res) => {
+    try {
+        const { status } = req.query;
+        let query = 'SELECT * FROM lien_he';
+        let params = [];
+        
+        if (status) {
+            query += ' WHERE trang_thai = ?';
+            params.push(status);
+        }
+        
+        query += ' ORDER BY ngay_gui DESC';
+        
+        const [contacts] = await pool.query(query, params);
+        res.json({ success: true, data: contacts });
+    } catch (error) {
+        console.error('Error getting contacts:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/contacts/stats - Thống kê liên hệ
+router.get('/contacts/stats', async (req, res) => {
+    try {
+        const [[stats]] = await pool.query(`
+            SELECT 
+                COUNT(*) as total,
+                SUM(CASE WHEN trang_thai = 'new' THEN 1 ELSE 0 END) as new_count,
+                SUM(CASE WHEN trang_thai = 'read' THEN 1 ELSE 0 END) as read_count,
+                SUM(CASE WHEN trang_thai = 'replied' THEN 1 ELSE 0 END) as replied_count
+            FROM lien_he
+        `);
+        res.json({ success: true, data: stats });
+    } catch (error) {
+        console.error('Error getting contact stats:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/contacts/:id - Lấy chi tiết liên hệ
+router.get('/contacts/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [contacts] = await pool.query('SELECT * FROM lien_he WHERE ma_lien_he = ?', [id]);
+        
+        if (contacts.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy liên hệ' });
+        }
+        
+        // Tự động cập nhật trạng thái thành 'read' nếu đang là 'new'
+        if (contacts[0].trang_thai === 'new') {
+            await pool.query("UPDATE lien_he SET trang_thai = 'read' WHERE ma_lien_he = ?", [id]);
+            contacts[0].trang_thai = 'read';
+        }
+        
+        res.json({ success: true, data: contacts[0] });
+    } catch (error) {
+        console.error('Error getting contact:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/contacts/:id/status - Cập nhật trạng thái liên hệ
+router.put('/contacts/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        
+        if (!['new', 'read', 'replied'].includes(status)) {
+            return res.status(400).json({ success: false, message: 'Trạng thái không hợp lệ' });
+        }
+        
+        await pool.query('UPDATE lien_he SET trang_thai = ? WHERE ma_lien_he = ?', [status, id]);
+        res.json({ success: true, message: 'Cập nhật trạng thái thành công' });
+    } catch (error) {
+        console.error('Error updating contact status:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/contacts/:id - Xóa liên hệ
+router.delete('/contacts/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM lien_he WHERE ma_lien_he = ?', [id]);
+        res.json({ success: true, message: 'Xóa liên hệ thành công' });
+    } catch (error) {
+        console.error('Error deleting contact:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/contacts - Tạo liên hệ mới (từ form frontend)
+router.post('/contacts', async (req, res) => {
+    try {
+        const { ho_ten, email, so_dien_thoai, tieu_de, noi_dung } = req.body;
+        
+        if (!ho_ten || !email || !noi_dung) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ thông tin bắt buộc' });
+        }
+        
+        const [result] = await pool.query(
+            `INSERT INTO lien_he (ho_ten, email, so_dien_thoai, tieu_de, noi_dung, trang_thai) 
+             VALUES (?, ?, ?, ?, ?, 'new')`,
+            [ho_ten, email, so_dien_thoai || null, tieu_de || null, noi_dung]
+        );
+        
+        res.json({ success: true, message: 'Gửi liên hệ thành công', data: { id: result.insertId } });
+    } catch (error) {
+        console.error('Error creating contact:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ==================== CONTACT RESPONSE (PHẢN HỒI LIÊN HỆ) ====================
+
+// POST /api/admin/contacts/:id/response - Admin gửi phản hồi cho liên hệ
+router.post('/contacts/:id/response', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { noi_dung_phan_hoi, ma_admin } = req.body;
+        
+        if (!noi_dung_phan_hoi) {
+            return res.status(400).json({ success: false, message: 'Vui lòng nhập nội dung phản hồi' });
+        }
+        
+        // Lấy thông tin liên hệ
+        const [contacts] = await pool.query('SELECT * FROM lien_he WHERE ma_lien_he = ?', [id]);
+        if (contacts.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy liên hệ' });
+        }
+        const contact = contacts[0];
+        
+        // Lưu phản hồi
+        const [result] = await pool.query(
+            `INSERT INTO phan_hoi_lien_he (ma_lien_he, ma_admin, noi_dung_phan_hoi) 
+             VALUES (?, ?, ?)`,
+            [id, ma_admin || null, noi_dung_phan_hoi]
+        );
+        
+        // Cập nhật trạng thái liên hệ thành 'replied'
+        await pool.query("UPDATE lien_he SET trang_thai = 'replied' WHERE ma_lien_he = ?", [id]);
+        
+        // Tìm khách hàng theo email để gửi thông báo
+        const [customers] = await pool.query('SELECT ma_kh FROM khach_hang WHERE email = ?', [contact.email]);
+        
+        // Tạo thông báo cho người dùng
+        const tieuDeThongBao = 'Phản hồi từ QuangHưngShop';
+        const noiDungThongBao = `Liên hệ của bạn về "${contact.tieu_de || 'Hỗ trợ'}" đã được phản hồi: ${noi_dung_phan_hoi.substring(0, 100)}${noi_dung_phan_hoi.length > 100 ? '...' : ''}`;
+        
+        await pool.query(
+            `INSERT INTO thong_bao (ma_kh, email_nguoi_nhan, tieu_de, noi_dung, loai, lien_ket) 
+             VALUES (?, ?, ?, ?, 'contact_response', ?)`,
+            [
+                customers.length > 0 ? customers[0].ma_kh : null,
+                contact.email,
+                tieuDeThongBao,
+                noi_dung_phan_hoi,
+                '/contact.html'
+            ]
+        );
+        
+        res.json({ 
+            success: true, 
+            message: 'Phản hồi đã được gửi thành công',
+            data: { id: result.insertId }
+        });
+    } catch (error) {
+        console.error('Error creating contact response:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/contacts/:id/responses - Lấy lịch sử phản hồi của liên hệ
+router.get('/contacts/:id/responses', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [responses] = await pool.query(`
+            SELECT ph.*, a.ho_ten as admin_name, a.avt as admin_avatar
+            FROM phan_hoi_lien_he ph
+            LEFT JOIN admin a ON ph.ma_admin = a.ma_admin
+            WHERE ph.ma_lien_he = ?
+            ORDER BY ph.ngay_phan_hoi DESC
+        `, [id]);
+        
+        res.json({ success: true, data: responses });
+    } catch (error) {
+        console.error('Error getting contact responses:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ==================== NOTIFICATIONS (THÔNG BÁO) ====================
+
+// GET /api/admin/notifications - Lấy tất cả thông báo (cho admin xem)
+router.get('/notifications', async (req, res) => {
+    try {
+        const { limit = 50 } = req.query;
+        const [notifications] = await pool.query(`
+            SELECT * FROM thong_bao 
+            ORDER BY ngay_tao DESC 
+            LIMIT ?
+        `, [parseInt(limit)]);
+        
+        res.json({ success: true, data: notifications });
+    } catch (error) {
+        console.error('Error getting notifications:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 module.exports = router;

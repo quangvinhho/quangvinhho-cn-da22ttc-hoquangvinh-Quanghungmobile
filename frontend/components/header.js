@@ -13,11 +13,43 @@ const API_BASE_URL = 'http://localhost:3000/api';
     const userAvatar = document.getElementById('user-avatar');
     const userName = document.getElementById('user-name');
     const dropdownUserName = document.getElementById('dropdown-user-name');
+    const notificationBellContainer = document.getElementById('notification-bell-container');
+    const notificationBellContainerMobile = document.getElementById('notification-bell-container-mobile');
     
     if (isLoggedIn && user) {
       // Ẩn nút đăng nhập, hiện thông tin user
       if (loginBtn) loginBtn.classList.add('hidden');
       if (userInfo) userInfo.classList.remove('hidden');
+      
+      // Hiện chuông thông báo
+      if (notificationBellContainer) {
+        notificationBellContainer.classList.remove('hidden');
+      }
+      if (notificationBellContainerMobile) {
+        notificationBellContainerMobile.classList.remove('hidden');
+      }
+      
+      // Lưu userInfo vào localStorage cho notification bell
+      localStorage.setItem('userInfo', JSON.stringify({
+        ma_kh: user.ma_kh,
+        id: user.ma_kh,
+        email: user.email,
+        ho_ten: user.ho_ten
+      }));
+      
+      // Khởi tạo notification bell nếu chưa có
+      if (typeof NotificationBell !== 'undefined') {
+        if (!window.notificationBell) {
+          window.notificationBell = new NotificationBell({
+            apiUrl: API_BASE_URL,
+            containerId: 'notification-bell-container'
+          });
+        } else {
+          window.notificationBell.refresh();
+        }
+      } else if (typeof initNotificationBell === 'function') {
+        initNotificationBell();
+      }
       
       // Cập nhật tên user
       if (userName) userName.textContent = user.ho_ten || 'Người dùng';
@@ -39,6 +71,17 @@ const API_BASE_URL = 'http://localhost:3000/api';
       // Hiện nút đăng nhập, ẩn thông tin user
       if (loginBtn) loginBtn.classList.remove('hidden');
       if (userInfo) userInfo.classList.add('hidden');
+      
+      // Ẩn chuông thông báo
+      if (notificationBellContainer) {
+        notificationBellContainer.classList.add('hidden');
+      }
+      if (notificationBellContainerMobile) {
+        notificationBellContainerMobile.classList.add('hidden');
+      }
+      
+      // Xóa userInfo
+      localStorage.removeItem('userInfo');
     }
   }
   

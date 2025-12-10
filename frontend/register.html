@@ -13,8 +13,31 @@
       body::before {
         content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: linear-gradient(135deg, #e41e26, #c5111a);
-        background-image: url('./images/cuahang.png');
+        background-image: url('./images/anhnen.jpeg');
         background-size: cover; background-position: center; z-index: -2;
+      }
+
+      /* Hiệu ứng tuyết rơi Giáng sinh */
+      .snowflake {
+        position: fixed;
+        top: -10px;
+        color: #fff;
+        font-size: 1em;
+        text-shadow: 0 0 5px #fff;
+        pointer-events: none;
+        z-index: 1000;
+        animation: fall linear forwards;
+      }
+
+      @keyframes fall {
+        0% {
+          opacity: 1;
+          transform: translateY(0) rotate(0deg);
+        }
+        100% {
+          opacity: 0.3;
+          transform: translateY(100vh) rotate(360deg);
+        }
       }
       body::after {
         content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -31,6 +54,33 @@
     </style>
   </head>
   <body class="flex items-center justify-center min-h-screen px-4 py-8">
+    <!-- Container cho hiệu ứng tuyết rơi -->
+    <div id="snow-container"></div>
+    
+    <script>
+      // Tạo hiệu ứng tuyết rơi Giáng sinh
+      function createSnowflake() {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.innerHTML = ['❄', '❅', '❆', '✻', '✼', '❉'][Math.floor(Math.random() * 6)];
+        snowflake.style.left = Math.random() * 100 + 'vw';
+        snowflake.style.fontSize = (Math.random() * 15 + 10) + 'px';
+        snowflake.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+        document.body.appendChild(snowflake);
+        
+        setTimeout(() => {
+          snowflake.remove();
+        }, 7000);
+      }
+      
+      // Tạo tuyết liên tục
+      setInterval(createSnowflake, 150);
+      // Tạo một số bông tuyết ban đầu
+      for(let i = 0; i < 20; i++) {
+        setTimeout(createSnowflake, i * 100);
+      }
+    </script>
     <div class="w-full max-w-md">
       <div class="glass-effect rounded-2xl p-6">
         <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Đăng ký</h2>

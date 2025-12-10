@@ -39,6 +39,9 @@
 
       <!-- Actions - Desktop -->
       <div class="hidden lg:flex items-center gap-5 xl:gap-6">
+        <!-- Notification Bell - Hiển thị khi đã đăng nhập -->
+        <div id="notification-bell-container"></div>
+
         <a
           href="cart.html"
           class="relative flex items-center gap-2 text-white hover:text-yellow-300 transition-colors group no-underline"
@@ -87,6 +90,10 @@
               <i class="fas fa-heart w-5 text-center"></i>
               <span>Yêu thích</span>
             </a>
+            <a href="profile.html#notifications" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
+              <i class="fas fa-bell w-5 text-center"></i>
+              <span>Thông báo</span>
+            </a>
             <div class="border-t border-gray-100 mt-2 pt-2">
               <button onclick="handleLogout()" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors w-full text-left">
                 <i class="fas fa-sign-out-alt w-5 text-center"></i>
@@ -99,6 +106,9 @@
 
       <!-- Mobile Actions -->
       <div class="flex lg:hidden items-center gap-3">
+        <!-- Mobile Notification Bell -->
+        <div id="notification-bell-container-mobile" class="hidden"></div>
+        
         <button
           id="mobile-search-btn"
           class="text-white hover:text-red-100 text-2xl"

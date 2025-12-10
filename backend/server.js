@@ -52,6 +52,7 @@ const newsRoutes = require('./routes/news');
 const adminRoutes = require('./routes/admin');
 const searchRoutes = require('./routes/search');
 const addressRoutes = require('./routes/address');
+const notificationRoutes = require('./routes/notifications');
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
@@ -63,6 +64,7 @@ app.use('/api/news', newsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/address', addressRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

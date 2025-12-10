@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quản trị - QuangHungShop</title>
+  <title>Quản trị - QuangHưngShop</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -271,7 +271,7 @@
                 <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></span>
                 <span class="text-emerald-400 font-medium">Online</span>
               </span>
-              <span class="text-slate-600">•</span>
+              <span class="text-slate-600">Đ</span>
               <span>Admin Dashboard</span>
             </p>
           </div>
@@ -331,6 +331,13 @@
             </div>
             <span class="font-semibold">Đánh giá</span>
           </a>
+                  <a href="#" onclick="showSection('contacts')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-contacts">
+            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
+              <i class="fas fa-envelope text-lg text-slate-400 group-hover:text-primary-400"></i>
+            </div>
+            <span class="font-semibold">Liên hệ</span>
+            <span class="ml-auto bg-emerald-500 text-xs px-2 py-1 rounded-full text-white" id="new-contact-count">0</span>
+          </a>
         </div>
       </nav>
       
@@ -374,7 +381,7 @@
                 <span class="w-2 h-8 bg-gradient-to-b from-primary-500 to-primary-600 rounded-full"></span>
                 Tổng quan
               </h2>
-              <p class="text-sm text-dark-500 mt-0.5" id="welcome-text">Chào mừng trở lại! Đây là tổng quan hoạt động của bạn</p>
+              <p class="text-sm text-dark-500 mt-0.5" id="welcome-text">Chào mừng trở lại! Đây là Tổng quan hoạt động của bạn</p>
             </div>
           </div>
           <div class="flex items-center gap-3">
@@ -400,7 +407,7 @@
       <!-- Main content area with scroll -->
       <main class="flex-1 overflow-y-auto p-4 lg:p-8">
         <div id="section-dashboard" class="section-content active">
-          <!-- Thống kê tổng quan - 4 card với thiết kế mới -->
+          <!-- thống kê Tổng quan - 4 card với thiết kế mới -->
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
             <!-- Tổng doanh thu -->
             <div class="stat-card bg-gradient-to-br from-primary-500 via-primary-600 to-indigo-700 rounded-3xl shadow-xl shadow-primary-500/20 p-6 text-white">
@@ -414,7 +421,7 @@
                   </span>
                 </div>
                 <p class="text-white/70 text-sm font-medium mb-2">Tổng doanh thu</p>
-                <p class="text-3xl font-extrabold tracking-tight" id="stat-revenue">0đ</p>
+                <p class="text-3xl font-extrabold tracking-tight" id="stat-revenue">0d</p>
                 <div class="mt-4 pt-4 border-t border-white/20">
                   <p class="text-white/60 text-xs flex items-center gap-1">
                     <i class="fas fa-chart-line"></i>
@@ -446,7 +453,7 @@
               </div>
             </div>
             
-            <!-- Số khách hàng -->
+            <!-- số Khách hàng -->
             <div class="stat-card bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 rounded-3xl shadow-xl shadow-orange-500/20 p-6 text-white">
               <div class="relative z-10">
                 <div class="flex items-center justify-between mb-6">
@@ -457,18 +464,18 @@
                     <i class="fas fa-arrow-up text-xs"></i>0%
                   </span>
                 </div>
-                <p class="text-white/70 text-sm font-medium mb-2">Số khách hàng</p>
+                <p class="text-white/70 text-sm font-medium mb-2">số Khách hàng</p>
                 <p class="text-3xl font-extrabold tracking-tight" id="stat-customers">0</p>
                 <div class="mt-4 pt-4 border-t border-white/20">
                   <p class="text-white/60 text-xs flex items-center gap-1">
                     <i class="fas fa-user-plus"></i>
-                    Tổng số khách đã đăng ký
+                    têng số khách đã đăng ký
                   </p>
                 </div>
               </div>
             </div>
             
-            <!-- Số lượng bán -->
+            <!-- số lượng bán -->
             <div class="stat-card bg-gradient-to-br from-violet-500 via-purple-600 to-fuchsia-600 rounded-3xl shadow-xl shadow-purple-500/20 p-6 text-white">
               <div class="relative z-10">
                 <div class="flex items-center justify-between mb-6">
@@ -484,14 +491,14 @@
                 <div class="mt-4 pt-4 border-t border-white/20">
                   <p class="text-white/60 text-xs flex items-center gap-1">
                     <i class="fas fa-truck"></i>
-                    Tổng số lượng bán ra
+                    têng số lượng bán ra
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Row 2: Biểu đồ doanh thu + Top sản phẩm bán chạy -->
+          <!-- Row 2: Biểu đồ doanh thu + Top Sản phẩm bán chạy -->
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
             <!-- Biểu đồ doanh thu - chiếm 2 cột -->
             <div class="xl:col-span-2 glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
@@ -501,12 +508,12 @@
                     <span class="w-3 h-3 bg-primary-500 rounded-full"></span>
                     Doanh thu thực tế theo tháng
                   </h3>
-                  <p class="text-sm text-dark-400 mt-1">Năm 2024</p>
+                  <p class="text-sm text-dark-400 mt-1">Nam 2024</p>
                 </div>
                 <div class="flex items-center gap-4 text-sm">
                   <span class="flex items-center gap-2">
                     <span class="w-3 h-3 rounded-full bg-gradient-to-r from-primary-500 to-violet-500"></span>
-                    <span class="text-dark-500">Thực tế</span>
+                    <span class="text-dark-500">thực tế</span>
                   </span>
                   <span class="flex items-center gap-2">
                     <span class="w-3 h-3 rounded-full bg-slate-300"></span>
@@ -519,15 +526,15 @@
               </div>
             </div>
 
-            <!-- Top 5 sản phẩm bán chạy -->
+            <!-- Top 5 Sản phẩm bán chạy -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <div class="flex items-center justify-between mb-6">
                 <div>
                   <h3 class="text-lg font-bold text-dark-800 flex items-center gap-2">
-                    <span class="text-2xl">🔥</span>
-                    Top sản phẩm bán chạy
+                    <span class="text-2xl">📦</span>
+                    Top Sản phẩm bán chạy
                   </h3>
-                  <p class="text-sm text-dark-400 mt-1">Top 5 sản phẩm có doanh số cao nhất</p>
+                  <p class="text-sm text-dark-400 mt-1">Top 5 Sản phẩm có doanh số cao nhất</p>
                 </div>
               </div>
               <div class="space-y-4" id="top-products-list">
@@ -589,11 +596,11 @@
                 <table class="w-full">
                   <thead>
                     <tr class="text-left text-dark-400 text-sm border-b border-slate-200">
-                      <th class="pb-4 font-semibold">Mã đơn</th>
+                      <th class="pb-4 font-semibold">mã don</th>
                       <th class="pb-4 font-semibold">Khách hàng</th>
                       <th class="pb-4 font-semibold">Tổng tiền</th>
-                      <th class="pb-4 font-semibold">Trạng thái</th>
-                      <th class="pb-4 font-semibold">Ngày đặt</th>
+                      <th class="pb-4 font-semibold">trạng thái</th>
+                      <th class="pb-4 font-semibold">ngày đãt</th>
                     </tr>
                   </thead>
                   <tbody id="recent-orders-table">
@@ -612,13 +619,13 @@
           </div>
         </div>
         <div id="section-orders" class="section-content">
-          <!-- Thống kê đơn hàng với biểu đồ -->
+          <!-- thống kê đơn hàng với Biểu đồ -->
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-            <!-- Thống kê nhanh đơn hàng -->
+            <!-- thống kê nhanh đơn hàng -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-primary-500 rounded-full"></span>
-                Thống kê nhanh
+                thống kê nhanh
               </h3>
               <div class="grid grid-cols-2 gap-4">
                 <div class="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-4 text-center border border-amber-100">
@@ -668,7 +675,7 @@
               <div>
                 <h3 class="text-xl font-bold text-dark-800 flex items-center gap-2">
                   <span class="w-3 h-3 bg-primary-500 rounded-full"></span>
-                  Quản lý đơn hàng
+                  quản lý đơn hàng
                 </h3>
                 <p class="text-sm text-dark-400 mt-1">Theo dõi và xử lý tất cả đơn hàng</p>
               </div>
@@ -679,11 +686,11 @@
                 </div>
                 <select id="order-status-filter" class="border border-slate-200 rounded-xl px-4 py-2.5 text-sm bg-white hover:border-primary-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 transition-all cursor-pointer">
                   <option value="">Tất cả trạng thái</option>
-                  <option value="pending">⏳ Chờ xử lý</option>
-                  <option value="confirmed">✅ Đã xác nhận</option>
-                  <option value="shipping">🚚 Đang giao</option>
+                  <option value="pending">🔵 Chờ xử lý</option>
+                  <option value="confirmed">🔵 Đã xác nhận</option>
+                  <option value="shipping">📦 Đang giao</option>
                   <option value="delivered">📦 Đã giao</option>
-                  <option value="cancelled">❌ Đã hủy</option>
+                  <option value="cancelled">🔵 Đã hủy</option>
                 </select>
               </div>
             </div>
@@ -691,12 +698,12 @@
               <table class="w-full">
                 <thead class="bg-gradient-to-r from-slate-50 to-slate-100">
                   <tr class="text-left text-dark-500 text-sm">
-                    <th class="px-6 py-4 font-semibold">Mã đơn</th>
+                    <th class="px-6 py-4 font-semibold">mã don</th>
                     <th class="px-6 py-4 font-semibold">Khách hàng</th>
                     <th class="px-6 py-4 font-semibold">SĐT</th>
                     <th class="px-6 py-4 font-semibold">Tổng tiền</th>
-                    <th class="px-6 py-4 font-semibold">Trạng thái</th>
-                    <th class="px-6 py-4 font-semibold">Ngày đặt</th>
+                    <th class="px-6 py-4 font-semibold">trạng thái</th>
+                    <th class="px-6 py-4 font-semibold">ngày đãt</th>
                     <th class="px-6 py-4 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
@@ -716,13 +723,13 @@
         </div>
         
         <div id="section-products" class="section-content">
-          <!-- Thống kê sản phẩm với biểu đồ -->
+          <!-- thống kê Sản phẩm với Biểu đồ -->
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-            <!-- Thống kê nhanh sản phẩm -->
+            <!-- thống kê nhanh Sản phẩm -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
-                Thống kê sản phẩm
+                thống kê Sản phẩm
               </h3>
               <div class="space-y-4">
                 <div class="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
@@ -730,7 +737,7 @@
                     <div class="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center text-white">
                       <i class="fas fa-box"></i>
                     </div>
-                    <span class="font-medium text-dark-700">Tổng sản phẩm</span>
+                    <span class="font-medium text-dark-700">têng Sản phẩm</span>
                   </div>
                   <span class="text-2xl font-bold text-blue-600" id="products-total-count">0</span>
                 </div>
@@ -755,7 +762,7 @@
               </div>
             </div>
             
-            <!-- Biểu đồ sản phẩm theo hãng -->
+            <!-- Biểu đồ Sản phẩm theo hãng -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-violet-500 rounded-full"></span>
@@ -766,11 +773,11 @@
               </div>
             </div>
             
-            <!-- Biểu đồ giá sản phẩm -->
+            <!-- Biểu đồ giá Sản phẩm -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
-                Phân bố giá sản phẩm
+                Phân bố giá Sản phẩm
               </h3>
               <div class="relative" style="height: 200px;">
                 <canvas id="productsPriceChart"></canvas>
@@ -783,21 +790,21 @@
               <div>
                 <h3 class="text-xl font-bold text-dark-800 flex items-center gap-2">
                   <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
-                  Quản lý sản phẩm
+                  quản lý Sản phẩm
                 </h3>
-                <p class="text-sm text-dark-400 mt-1">Thêm, sửa, xóa sản phẩm trong cửa hàng</p>
+                <p class="text-sm text-dark-400 mt-1">Thêm, sửa, xóa Sản phẩm trong cửa hàng</p>
               </div>
               <div class="flex flex-wrap gap-3">
                 <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5 border border-slate-200 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-400 transition-all">
                   <i class="fas fa-search text-slate-400 mr-2"></i>
-                  <input type="text" id="product-search" placeholder="Tìm sản phẩm..." class="bg-transparent outline-none text-sm w-40 modern-input">
+                  <input type="text" id="product-search" placeholder="Tìm Sản phẩm..." class="bg-transparent outline-none text-sm w-40 modern-input">
                 </div>
                 <select id="product-brand-filter" class="border border-slate-200 rounded-xl px-4 py-2.5 text-sm bg-white hover:border-primary-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 transition-all cursor-pointer">
                   <option value="">Tất cả hãng</option>
                 </select>
                 <button onclick="openProductModal()" class="btn-primary text-white px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2">
                   <i class="fas fa-plus"></i>
-                  <span>Thêm sản phẩm</span>
+                  <span>Thêm Sản phẩm</span>
                 </button>
               </div>
             </div>
@@ -806,10 +813,10 @@
                 <thead class="bg-gradient-to-r from-slate-50 to-slate-100">
                   <tr class="text-left text-dark-500 text-sm">
                     <th class="px-6 py-4 font-semibold">Ảnh</th>
-                    <th class="px-6 py-4 font-semibold">Tên sản phẩm</th>
+                    <th class="px-6 py-4 font-semibold">Tên Sản phẩm</th>
                     <th class="px-6 py-4 font-semibold">Hãng</th>
                     <th class="px-6 py-4 font-semibold">Giá</th>
-                    <th class="px-6 py-4 font-semibold">Tồn kho</th>
+                    <th class="px-6 py-4 font-semibold">tên kho</th>
                     <th class="px-6 py-4 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
@@ -827,22 +834,22 @@
             </div>
           </div>
         </div>
-        <!-- Section Quản lý Danh mục (Hãng sản xuất) -->
+        <!-- Section quản lý Danh mục (Hãng sản xuất) -->
         <div id="section-brands" class="section-content">
-          <!-- Biểu đồ thống kê danh mục -->
+          <!-- Biểu đồ thống kê Danh mục -->
           <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-            <!-- Biểu đồ số sản phẩm theo hãng -->
+            <!-- Biểu đồ số Sản phẩm theo hãng -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-primary-500 rounded-full"></span>
-                Số sản phẩm theo hãng
+                số Sản phẩm theo hãng
               </h3>
               <div class="relative" style="height: 220px;">
                 <canvas id="brandsProductsChart"></canvas>
               </div>
             </div>
             
-            <!-- Biểu đồ hãng theo quốc gia -->
+            <!-- Biểu đồ Hãng theo quốc gia -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
@@ -859,31 +866,31 @@
               <div>
                 <h3 class="text-xl font-bold text-dark-800 flex items-center gap-2">
                   <span class="w-3 h-3 bg-violet-500 rounded-full"></span>
-                  Quản lý danh mục (Hãng sản xuất)
+                  quản lý Danh mục (Hãng sản xuất)
                 </h3>
-                <p class="text-sm text-dark-400 mt-1">Quản lý thương hiệu và hãng sản xuất</p>
+                <p class="text-sm text-dark-400 mt-1">quản lý thương hiệu và Hãng sản xuất</p>
               </div>
               <div class="flex flex-wrap gap-3">
                 <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5 border border-slate-200 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-400 transition-all">
                   <i class="fas fa-search text-slate-400 mr-2"></i>
-                  <input type="text" id="brand-search" placeholder="Tìm hãng..." class="bg-transparent outline-none text-sm w-40 modern-input">
+                  <input type="text" id="brand-search" placeholder="Tìm Hãng..." class="bg-transparent outline-none text-sm w-40 modern-input">
                 </div>
                 <button onclick="openBrandModal()" class="btn-primary text-white px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2">
                   <i class="fas fa-plus"></i>
-                  <span>Thêm hãng mới</span>
+                  <span>Thêm Hãng mới</span>
                 </button>
               </div>
             </div>
             
-            <!-- Thống kê với thiết kế mới -->
+            <!-- thống kê với thiết kế mới -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div class="bg-gradient-to-br from-primary-50 to-violet-50 rounded-2xl p-5 text-center border border-primary-100">
                 <div class="text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-violet-600 bg-clip-text text-transparent" id="total-brands">0</div>
-                <div class="text-sm text-dark-500 mt-1 font-medium">Tổng số hãng</div>
+                <div class="text-sm text-dark-500 mt-1 font-medium">têng số Hãng</div>
               </div>
               <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 text-center border border-emerald-100">
                 <div class="text-4xl font-extrabold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent" id="brands-with-products">0</div>
-                <div class="text-sm text-dark-500 mt-1 font-medium">Có sản phẩm</div>
+                <div class="text-sm text-dark-500 mt-1 font-medium">Có Sản phẩm</div>
               </div>
               <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 text-center border border-amber-100">
                 <div class="text-4xl font-extrabold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent" id="brands-empty">0</div>
@@ -891,7 +898,7 @@
               </div>
               <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-5 text-center border border-blue-100">
                 <div class="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent" id="total-countries">0</div>
-                <div class="text-sm text-dark-500 mt-1 font-medium">Quốc gia</div>
+                <div class="text-sm text-dark-500 mt-1 font-medium">quốc gia</div>
               </div>
             </div>
             
@@ -900,9 +907,9 @@
                 <thead class="bg-gradient-to-r from-slate-50 to-slate-100">
                   <tr class="text-left text-dark-500 text-sm">
                     <th class="px-6 py-4 font-semibold">STT</th>
-                    <th class="px-6 py-4 font-semibold">Tên hãng</th>
-                    <th class="px-6 py-4 font-semibold">Quốc gia</th>
-                    <th class="px-6 py-4 font-semibold">Số sản phẩm</th>
+                    <th class="px-6 py-4 font-semibold">Tên Hãng</th>
+                    <th class="px-6 py-4 font-semibold">quốc gia</th>
+                    <th class="px-6 py-4 font-semibold">số Sản phẩm</th>
                     <th class="px-6 py-4 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
@@ -922,13 +929,13 @@
         </div>
         
         <div id="section-customers" class="section-content">
-          <!-- Thống kê khách hàng với biểu đồ -->
+          <!-- thống kê Khách hàng với Biểu đồ -->
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-            <!-- Thống kê nhanh -->
+            <!-- thống kê nhanh -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
-                Thống kê khách hàng
+                thống kê Khách hàng
               </h3>
               <div class="space-y-4">
                 <div class="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
@@ -936,7 +943,7 @@
                     <div class="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center text-white">
                       <i class="fas fa-users"></i>
                     </div>
-                    <span class="font-medium text-dark-700">Tổng khách hàng</span>
+                    <span class="font-medium text-dark-700">têng Khách hàng</span>
                   </div>
                   <span class="text-2xl font-bold text-blue-600" id="customers-total-stat">0</span>
                 </div>
@@ -961,7 +968,7 @@
               </div>
             </div>
             
-            <!-- Biểu đồ khách hàng theo tháng -->
+            <!-- Biểu đồ Khách hàng theo tháng -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-primary-500 rounded-full"></span>
@@ -972,11 +979,11 @@
               </div>
             </div>
             
-            <!-- Biểu đồ top khách hàng chi tiêu -->
+            <!-- Biểu đồ top Khách hàng chi tiêu -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-violet-500 rounded-full"></span>
-                Top khách hàng chi tiêu
+                Top Khách hàng chi tiêu
               </h3>
               <div class="relative" style="height: 200px;">
                 <canvas id="customersTopSpendingChart"></canvas>
@@ -989,13 +996,13 @@
               <div>
                 <h3 class="text-xl font-bold text-dark-800 flex items-center gap-2">
                   <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
-                  Quản lý khách hàng
+                  quản lý Khách hàng
                 </h3>
-                <p class="text-sm text-dark-400 mt-1">Danh sách và thông tin khách hàng</p>
+                <p class="text-sm text-dark-400 mt-1">Danh sách và thông tin Khách hàng</p>
               </div>
               <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5 border border-slate-200 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-400 transition-all">
                 <i class="fas fa-search text-slate-400 mr-2"></i>
-                <input type="text" id="customer-search" placeholder="Tìm khách hàng..." class="bg-transparent outline-none text-sm w-48 modern-input">
+                <input type="text" id="customer-search" placeholder="Tìm Khách hàng..." class="bg-transparent outline-none text-sm w-48 modern-input">
               </div>
             </div>
             <div class="overflow-x-auto rounded-2xl border border-slate-200">
@@ -1007,7 +1014,7 @@
                     <th class="px-6 py-4 font-semibold">Email</th>
                     <th class="px-6 py-4 font-semibold">SĐT</th>
                     <th class="px-6 py-4 font-semibold">Đơn hàng</th>
-                    <th class="px-6 py-4 font-semibold">Tổng chi tiêu</th>
+                    <th class="px-6 py-4 font-semibold">têng chi tiêu</th>
                     <th class="px-6 py-4 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
@@ -1027,13 +1034,13 @@
         </div>
         
         <div id="section-news" class="section-content">
-          <!-- Thống kê tin tức với biểu đồ -->
+          <!-- thống kê Tin tức với Biểu đồ -->
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-            <!-- Thống kê nhanh -->
+            <!-- thống kê nhanh -->
             <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-cyan-500 rounded-full"></span>
-                Thống kê tin tức
+                thống kê Tin tức
               </h3>
               <div class="space-y-4">
                 <div class="flex items-center justify-between p-3 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border border-cyan-100">
@@ -1041,7 +1048,7 @@
                     <div class="w-10 h-10 rounded-xl bg-cyan-500 flex items-center justify-center text-white">
                       <i class="fas fa-newspaper"></i>
                     </div>
-                    <span class="font-medium text-dark-700">Tổng tin tức</span>
+                    <span class="font-medium text-dark-700">têng Tin tức</span>
                   </div>
                   <span class="text-2xl font-bold text-cyan-600" id="news-total-stat">0</span>
                 </div>
@@ -1066,11 +1073,11 @@
               </div>
             </div>
             
-            <!-- Biểu đồ tin tức theo tháng -->
+            <!-- Biểu đồ Tin tức theo tháng -->
             <div class="xl:col-span-2 glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
               <h3 class="text-lg font-bold text-dark-800 mb-4 flex items-center gap-2">
                 <span class="w-3 h-3 bg-primary-500 rounded-full"></span>
-                Tin tức đăng theo tháng
+                Tin tức dang theo tháng
               </h3>
               <div class="relative" style="height: 180px;">
                 <canvas id="newsMonthlyChart"></canvas>
@@ -1083,18 +1090,18 @@
               <div>
                 <h3 class="text-xl font-bold text-dark-800 flex items-center gap-2">
                   <span class="w-3 h-3 bg-cyan-500 rounded-full"></span>
-                  Quản lý tin tức
+                  quản lý Tin tức
                 </h3>
-                <p class="text-sm text-dark-400 mt-1">Đăng và quản lý bài viết tin tức</p>
+                <p class="text-sm text-dark-400 mt-1">Đăng và quản lý bài viết Tin tức</p>
               </div>
               <div class="flex flex-wrap gap-3">
                 <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5 border border-slate-200 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-400 transition-all">
                   <i class="fas fa-search text-slate-400 mr-2"></i>
-                  <input type="text" id="news-search" placeholder="Tìm tin tức..." class="bg-transparent outline-none text-sm w-40 modern-input">
+                  <input type="text" id="news-search" placeholder="Tìm Tin tức..." class="bg-transparent outline-none text-sm w-40 modern-input">
                 </div>
                 <button onclick="openNewsModal()" class="btn-primary text-white px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2">
                   <i class="fas fa-plus"></i>
-                  <span>Thêm tin tức</span>
+                  <span>Thêm Tin tức</span>
                 </button>
               </div>
             </div>
@@ -1105,7 +1112,7 @@
                     <th class="px-6 py-4 font-semibold">Ảnh</th>
                     <th class="px-6 py-4 font-semibold">Tiêu đề</th>
                     <th class="px-6 py-4 font-semibold">Tác giả</th>
-                    <th class="px-6 py-4 font-semibold">Ngày đăng</th>
+                    <th class="px-6 py-4 font-semibold">ngày dang</th>
                     <th class="px-6 py-4 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
@@ -1155,9 +1162,9 @@
               <div>
                 <h3 class="text-xl font-bold text-dark-800 flex items-center gap-2">
                   <span class="w-3 h-3 bg-rose-500 rounded-full"></span>
-                  Quản lý đánh giá
+                  quản lý đánh giá
                 </h3>
-                <p class="text-sm text-dark-400 mt-1">Xem và quản lý đánh giá sản phẩm</p>
+                <p class="text-sm text-dark-400 mt-1">Xem và quản lý đánh giá Sản phẩm</p>
               </div>
               <div class="flex flex-wrap gap-3">
                 <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5 border border-slate-200 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-400 transition-all">
@@ -1166,16 +1173,16 @@
                 </div>
                 <select id="review-rating-filter" class="border border-slate-200 rounded-xl px-4 py-2.5 text-sm bg-white hover:border-primary-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 transition-all cursor-pointer">
                   <option value="">Tất cả sao</option>
-                  <option value="5">⭐⭐⭐⭐⭐ 5 sao</option>
-                  <option value="4">⭐⭐⭐⭐ 4 sao</option>
+                  <option value="5">📦⭐⭐⭐ 5 sao</option>
+                  <option value="4">📦📦 4 sao</option>
                   <option value="3">⭐⭐⭐ 3 sao</option>
-                  <option value="2">⭐⭐ 2 sao</option>
-                  <option value="1">⭐ 1 sao</option>
+                  <option value="2">📦 2 sao</option>
+                  <option value="1">🔵 1 sao</option>
                 </select>
               </div>
             </div>
             
-            <!-- Thống kê đánh giá -->
+            <!-- thống kê đánh giá -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div class="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-5 text-center border border-amber-100">
                 <div class="text-4xl font-extrabold bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent flex items-center justify-center gap-1" id="avg-rating">
@@ -1186,7 +1193,7 @@
               </div>
               <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 text-center border border-emerald-100">
                 <div class="text-4xl font-extrabold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent" id="total-reviews">0</div>
-                <div class="text-sm text-dark-500 mt-1 font-medium">Tổng đánh giá</div>
+                <div class="text-sm text-dark-500 mt-1 font-medium">têng đánh giá</div>
               </div>
               <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-5 text-center border border-blue-100">
                 <div class="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent" id="positive-reviews">0%</div>
@@ -1206,7 +1213,7 @@
                     <th class="px-6 py-4 font-semibold">Sản phẩm</th>
                     <th class="px-6 py-4 font-semibold">Đánh giá</th>
                     <th class="px-6 py-4 font-semibold">Nội dung</th>
-                    <th class="px-6 py-4 font-semibold">Ngày</th>
+                    <th class="px-6 py-4 font-semibold">ngày</th>
                     <th class="px-6 py-4 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
@@ -1220,6 +1227,31 @@
                     </div>
                   </td></tr>
                 </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Section Liên hệ -->
+        <div id="section-contacts" class="section-content">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-xl p-4 shadow-sm"><div class="flex items-center gap-3"><div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center"><i class="fas fa-envelope text-blue-600 text-xl"></i></div><div><p class="text-2xl font-bold text-slate-800" id="contact-total">0</p><p class="text-sm text-slate-500">Tổng liên hệ</p></div></div></div>
+            <div class="bg-white rounded-xl p-4 shadow-sm"><div class="flex items-center gap-3"><div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center"><i class="fas fa-envelope-open text-emerald-600 text-xl"></i></div><div><p class="text-2xl font-bold text-emerald-600" id="contact-new">0</p><p class="text-sm text-slate-500">Mới</p></div></div></div>
+            <div class="bg-white rounded-xl p-4 shadow-sm"><div class="flex items-center gap-3"><div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center"><i class="fas fa-eye text-amber-600 text-xl"></i></div><div><p class="text-2xl font-bold text-amber-600" id="contact-read">0</p><p class="text-sm text-slate-500">Đã xem</p></div></div></div>
+            <div class="bg-white rounded-xl p-4 shadow-sm"><div class="flex items-center gap-3"><div class="w-12 h-12 rounded-xl bg-violet-100 flex items-center justify-center"><i class="fas fa-reply text-violet-600 text-xl"></i></div><div><p class="text-2xl font-bold text-violet-600" id="contact-replied">0</p><p class="text-sm text-slate-500">Đã phản hồi</p></div></div></div>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <h3 class="text-lg font-bold text-slate-800">Quản lý liên hệ</h3>
+              <div class="flex gap-3">
+                <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2"><i class="fas fa-search text-slate-400 mr-2"></i><input type="text" id="contact-search" placeholder="Tìm liên hệ..." class="bg-transparent outline-none text-sm w-40"></div>
+                <select id="contact-status-filter" class="border border-slate-200 rounded-xl px-4 py-2 text-sm"><option value="">Tất cả</option><option value="new">Mới</option><option value="read">Đã xem</option><option value="replied">Đã phản hồi</option></select>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead><tr class="text-left text-slate-500 text-sm border-b border-slate-100"><th class="pb-4">Họ tên</th><th class="pb-4">Email</th><th class="pb-4">SĐT</th><th class="pb-4">Chủ đề</th><th class="pb-4">Trạng thái</th><th class="pb-4">Ngày gửi</th><th class="pb-4">Thao tác</th></tr></thead>
+                <tbody id="contacts-table"><tr><td colspan="7" class="py-8 text-center text-slate-400">Đang tải...</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -1250,8 +1282,8 @@
       <div class="sticky top-0 bg-white/95 backdrop-blur-sm p-6 border-b border-slate-200 rounded-t-3xl z-10">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-xl font-bold text-dark-800" id="product-modal-title">Thêm sản phẩm mới</h3>
-            <p class="text-sm text-dark-400 mt-1">Điền thông tin sản phẩm bên dưới</p>
+            <h3 class="text-xl font-bold text-dark-800" id="product-modal-title">Thêm Sản phẩm mới</h3>
+            <p class="text-sm text-dark-400 mt-1">Điền thông tin Sản phẩm bên dưới</p>
           </div>
           <div class="flex items-center gap-3">
             <div class="flex items-center gap-2 text-sm bg-primary-50 text-primary-700 px-4 py-2 rounded-full font-medium">
@@ -1271,7 +1303,7 @@
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fas fa-tag text-primary-500 mr-1"></i>
-                Tên sản phẩm <span class="text-rose-500">*</span>
+                Tên Sản phẩm <span class="text-rose-500">*</span>
               </label>
               <input type="text" id="product-name" required class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="VD: iPhone 16 Pro Max 256GB">
             </div>
@@ -1281,7 +1313,7 @@
                 Hãng <span class="text-rose-500">*</span>
               </label>
               <select id="product-brand" required class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn hãng</option>
+                <option value="">Chọn Hãng</option>
               </select>
             </div>
             <div>
@@ -1294,7 +1326,7 @@
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fas fa-warehouse text-amber-500 mr-1"></i>
-                Tồn kho <span class="text-rose-500">*</span>
+                tên kho <span class="text-rose-500">*</span>
               </label>
               <input type="number" id="product-stock" required min="0" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="VD: 50">
             </div>
@@ -1332,8 +1364,8 @@
                 <button type="button" onclick="toggleColor('#FFC0CB', 'Hồng')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FFC0CB" title="Hồng" data-color="#FFC0CB" data-name="Hồng"></button>
                 <button type="button" onclick="toggleColor('#FF6B00', 'Cam')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FF6B00" title="Cam" data-color="#FF6B00" data-name="Cam"></button>
                 <button type="button" onclick="toggleColor('#FF0000', 'Đỏ')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#FF0000" title="Đỏ" data-color="#FF0000" data-name="Đỏ"></button>
-                <!-- Màu xanh -->
-                <button type="button" onclick="toggleColor('#0000FF', 'Xanh Dương')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#0000FF" title="Xanh Dương" data-color="#0000FF" data-name="Xanh Dương"></button>
+                <!-- mãu xanh -->
+                <button type="button" onclick="toggleColor('#0000FF', 'Xanh Duong')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#0000FF" title="Xanh Duong" data-color="#0000FF" data-name="Xanh Duong"></button>
                 <button type="button" onclick="toggleColor('#00BFFF', 'Xanh Da Trời')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#00BFFF" title="Xanh Da Trời" data-color="#00BFFF" data-name="Xanh Da Trời"></button>
                 <button type="button" onclick="toggleColor('#008000', 'Xanh Lá')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#008000" title="Xanh Lá" data-color="#008000" data-name="Xanh Lá"></button>
                 <button type="button" onclick="toggleColor('#90EE90', 'Xanh Mint')" class="color-btn w-8 h-8 rounded-lg border-2 border-slate-300 hover:scale-110 transition" style="background:#90EE90" title="Xanh Mint" data-color="#90EE90" data-name="Xanh Mint"></button>
@@ -1387,20 +1419,20 @@
               <div class="flex-1">
                 <label class="cursor-pointer inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-violet-100 to-purple-100 hover:from-violet-200 hover:to-purple-200 text-violet-700 rounded-xl font-semibold transition-all">
                   <i class="fas fa-upload"></i>
-                  <span>Chọn ảnh</span>
+                  <span>Chọn Ảnh</span>
                   <input type="file" id="product-image-file" accept="image/*" class="hidden" onchange="previewImage(this)">
                 </label>
-                <p class="text-xs text-dark-400 mt-2">Chọn file ảnh từ máy tính (JPG, PNG, WEBP)</p>
+                <p class="text-xs text-dark-400 mt-2">Chọn file Ảnh từ máy tính (JPG, PNG, WEBP)</p>
               </div>
             </div>
           </div>
           
-          <!-- Ảnh mô tả sản phẩm -->
+          <!-- Ảnh mô tả Sản phẩm -->
           <div class="mt-5">
             <label class="block text-sm font-semibold text-dark-700 mb-2">
               <i class="fas fa-images text-blue-500 mr-1"></i>
-              Ảnh mô tả sản phẩm 
-              <span class="text-xs text-dark-400 font-normal">(Tối đa 5 ảnh)</span>
+              Ảnh mô tả Sản phẩm 
+              <span class="text-xs text-dark-400 font-normal">(Tối đa 5 Ảnh)</span>
             </label>
             <div class="border-2 border-dashed border-slate-300 rounded-2xl p-4 bg-slate-50">
               <!-- Preview grid -->
@@ -1411,10 +1443,10 @@
               <div class="flex items-center gap-3">
                 <label id="add-gallery-btn" class="cursor-pointer inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-blue-100 to-cyan-100 hover:from-blue-200 hover:to-cyan-200 text-blue-700 rounded-xl font-semibold transition-all">
                   <i class="fas fa-plus"></i>
-                  <span>Thêm ảnh mô tả</span>
+                  <span>Thêm Ảnh mô tả</span>
                   <input type="file" id="gallery-image-file" accept="image/*" multiple class="hidden" onchange="addGalleryImages(this)">
                 </label>
-                <span class="text-xs text-dark-500 bg-slate-200 px-3 py-1 rounded-full">(<span id="gallery-count">0</span>/5 ảnh)</span>
+                <span class="text-xs text-dark-500 bg-slate-200 px-3 py-1 rounded-full">(<span id="gallery-count">0</span>/5 Ảnh)</span>
                 <button type="button" onclick="clearGalleryImages()" class="text-xs text-rose-500 hover:text-rose-700 ml-auto flex items-center gap-1 px-3 py-1 rounded-full hover:bg-rose-50 transition-all">
                   <i class="fas fa-trash"></i>Xóa tất cả
                 </button>
@@ -1460,8 +1492,8 @@
                 <i class="fas fa-info-circle text-blue-500"></i>
               </div>
               <div class="text-sm text-blue-800">
-                <p class="font-semibold">Nhập thông số kỹ thuật chi tiết</p>
-                <p class="mt-1 text-blue-600">Thông số này sẽ hiển thị ở trang chi tiết sản phẩm. Bạn có thể bỏ qua bước này và thêm sau.</p>
+                <p class="font-semibold">Nhập Thông số kỹ thuật chi tiết</p>
+                <p class="mt-1 text-blue-600">Thông số này sẽ hiển thị ở trang chi tiết Sản phẩm. Bạn có thể bỏ qua bước này và thêm sau.</p>
               </div>
             </div>
           </div>
@@ -1530,7 +1562,7 @@
                 <i class="fas fa-mobile-alt text-violet-500 mr-1"></i>Màn hình
               </label>
               <select id="config-screen" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn màn hình</option>
+                <option value="">Chọn Màn hình</option>
                 <optgroup label="6.1 inch">
                   <option value='6.1" Super Retina XDR, 2556x1179, 120Hz'>6.1" Super Retina XDR, 120Hz (iPhone)</option>
                   <option value='6.1" Dynamic AMOLED 2X, 2340x1080, 120Hz'>6.1" Dynamic AMOLED 2X, 120Hz (Samsung)</option>
@@ -1602,7 +1634,7 @@
                 <i class="fab fa-android text-emerald-500 mr-1"></i>Hệ điều hành
               </label>
               <select id="config-os" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn hệ điều hành</option>
+                <option value="">Chọn Hệ điều hành</option>
                 <optgroup label="iOS">
                   <option value="iOS 18">iOS 18</option>
                   <option value="iOS 17">iOS 17</option>
@@ -1629,7 +1661,7 @@
             </button>
             <div class="flex gap-3">
               <button type="button" onclick="backToProductModal()" class="px-6 py-3 border-2 border-slate-200 rounded-xl text-dark-600 hover:bg-slate-50 font-semibold flex items-center gap-2 transition-all">
-                <i class="fas fa-arrow-left"></i>Quay lại
+                <i class="fas fa-arrow-left"></i>Quay lỗi
               </button>
               <button type="submit" class="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-emerald-500/25 transition-all">
                 <i class="fas fa-check"></i>Hoàn tất
@@ -1646,8 +1678,8 @@
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
       <div class="sticky top-0 bg-white/95 backdrop-blur-sm p-6 border-b border-slate-200 rounded-t-3xl z-10 flex items-center justify-between">
         <div>
-          <h3 class="text-xl font-bold text-dark-800" id="news-modal-title">Thêm tin tức mới</h3>
-          <p class="text-sm text-dark-400 mt-1">Tạo bài viết tin tức mới</p>
+          <h3 class="text-xl font-bold text-dark-800" id="news-modal-title">Thêm Tin tức mới</h3>
+          <p class="text-sm text-dark-400 mt-1">Tạo bài viết Tin tức mới</p>
         </div>
         <button onclick="closeNewsModal()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-dark-400 hover:text-dark-600 transition-colors">
           <i class="fas fa-times"></i>
@@ -1684,10 +1716,10 @@
               <div class="flex-1">
                 <label class="cursor-pointer inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-violet-100 to-purple-100 hover:from-violet-200 hover:to-purple-200 text-violet-700 rounded-xl font-semibold transition-all">
                   <i class="fas fa-upload"></i>
-                  <span>Chọn ảnh</span>
+                  <span>Chọn Ảnh</span>
                   <input type="file" id="news-image-file" accept="image/*" class="hidden" onchange="previewNewsImage(this)">
                 </label>
-                <p class="text-xs text-dark-400 mt-2">Chọn file ảnh từ máy tính (JPG, PNG, WEBP)</p>
+                <p class="text-xs text-dark-400 mt-2">Chọn file Ảnh từ máy tính (JPG, PNG, WEBP)</p>
               </div>
             </div>
           </div>
@@ -1708,12 +1740,12 @@
     </div>
   </div>
   
-  <!-- News Detail Modal - Xem chi tiết tin tức -->
+  <!-- News Detail Modal - Xem chi tiết Tin tức -->
   <div id="news-detail-modal" class="fixed inset-0 bg-dark-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
       <div class="sticky top-0 bg-white/95 backdrop-blur-sm p-6 border-b border-slate-200 rounded-t-3xl z-10 flex items-center justify-between">
         <div>
-          <h3 class="text-xl font-bold text-dark-800">Chi tiết tin tức</h3>
+          <h3 class="text-xl font-bold text-dark-800">Chi tiết Tin tức</h3>
           <p class="text-sm text-dark-400 mt-1">Xem thông tin bài viết</p>
         </div>
         <button onclick="closeNewsDetailModal()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-dark-400 hover:text-dark-600 transition-colors">
@@ -1732,7 +1764,7 @@
       <div class="p-6 border-b border-slate-200 rounded-t-3xl">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-xl font-bold text-dark-800" id="brand-modal-title">Thêm hãng mới</h3>
+            <h3 class="text-xl font-bold text-dark-800" id="brand-modal-title">Thêm Hãng mới</h3>
             <p class="text-sm text-dark-400 mt-1">Thêm thương hiệu sản xuất</p>
           </div>
           <button onclick="closeBrandModal()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-dark-400 hover:text-dark-600 transition-colors">
@@ -1746,7 +1778,7 @@
           <div class="mb-5">
             <label class="block text-sm font-semibold text-dark-700 mb-2">
               <i class="fas fa-tag text-violet-500 mr-1"></i>
-              Tên hãng <span class="text-rose-500">*</span>
+              Tên Hãng <span class="text-rose-500">*</span>
             </label>
             <input type="text" id="brand-name" required 
               class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" 
@@ -1755,7 +1787,7 @@
           <div class="mb-5">
             <label class="block text-sm font-semibold text-dark-700 mb-2">
               <i class="fas fa-globe text-blue-500 mr-1"></i>
-              Quốc gia
+              quốc gia
             </label>
             <select id="brand-country" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
               <option value="">-- Chọn quốc gia --</option>
@@ -1775,7 +1807,7 @@
   <script>
     const API_URL = 'http://localhost:3000/api';
     const PLACEHOLDER_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY0NzQ4YiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';
-    let allOrders = [], allProducts = [], allCustomers = [], allReviews = [];
+    let allOrders = [], allProducts = [], allCustomers = [], allReviews = [], allContacts = [];
     let selectedImageFile = null; // Luu file anh duoc chon
     
     // Cau hinh mac dinh theo hang
@@ -1964,7 +1996,7 @@
     }
     
     // ===== GALLERY IMAGES FUNCTIONS =====
-    var galleryImageFiles = []; // Lưu các file ảnh mô tả
+    var galleryImageFiles = []; // Lưu các file Ảnh mô tả
     
     function addGalleryImages(input) {
       if (input.files && input.files.length > 0) {
@@ -1973,11 +2005,11 @@
         const remainingSlots = maxImages - currentCount;
         
         if (remainingSlots <= 0) {
-          showToast('Đã đạt tối đa 5 ảnh mô tả!', 'error');
+          showToast('Đã đạt Tối đa 5 Ảnh mô tả!', 'error');
           return;
         }
         
-        // Chỉ lấy số ảnh còn được phép thêm
+        // Chỉ lấy số Ảnh còn được phép thêm
         const filesToAdd = Array.from(input.files).slice(0, remainingSlots);
         
         filesToAdd.forEach(file => {
@@ -2004,7 +2036,7 @@
       countEl.textContent = galleryImageFiles.length;
       
       if (galleryImageFiles.length === 0) {
-        container.innerHTML = '<p class="text-slate-400 text-sm col-span-5 text-center py-4">Chưa có ảnh mô tả nào</p>';
+        container.innerHTML = '<p class="text-slate-400 text-sm col-span-5 text-center py-4">Chưa có Ảnh mô tả nào</p>';
         return;
       }
       
@@ -2089,7 +2121,8 @@
       document.getElementById('current-date').textContent = new Date().toLocaleDateString('vi-VN'); 
       loadAdminInfo();
       loadBrands();
-      loadDashboardData(); 
+      loadDashboardData();
+      loadContactStats();
     });
     
     // Load admin info from localStorage and then refresh from database
@@ -2166,7 +2199,7 @@
       document.getElementById('section-' + section).classList.add('active');
       const navItem = document.getElementById('nav-' + section);
       if (navItem) { navItem.classList.add('active', 'text-white'); navItem.classList.remove('text-slate-300'); }
-      const titles = { dashboard: 'Tổng quan', orders: 'Quản lý đơn hàng', products: 'Quản lý sản phẩm', customers: 'Quản lý khách hàng', news: 'Quản lý tin tức', reviews: 'Quản lý đánh giá', brands: 'Quản lý hãng sản xuất' };
+      const titles = { dashboard: 'Tổng quan', orders: 'quản lý đơn hàng', products: 'quản lý Sản phẩm', customers: 'quản lý Khách hàng', news: 'quản lý Tin tức', reviews: 'quản lý đánh giá', brands: 'Quản lý hãng sản xuất', contacts: 'Quản lý liên hệ' };
       document.getElementById('page-title').textContent = titles[section] || 'Tổng quan';
       if (section === 'dashboard') loadDashboardData();
       else if (section === 'orders') loadOrders();
@@ -2175,6 +2208,7 @@
       else if (section === 'news') loadNews();
       else if (section === 'reviews') loadReviews();
       else if (section === 'brands') loadBrandsSection();
+      else if (section === 'contacts') loadContacts();
     }
     async function loadDashboardData() {
       let products = [], ordersData = [], customersData = [], topProducts = [];
@@ -2188,7 +2222,7 @@
       const revenue = validOrders.reduce((sum, o) => sum + parseFloat(o.tong_tien || 0), 0);
       const pendingOrders = ordersData.filter(o => o.trang_thai === 'pending').length;
       
-      // Tính tổng số lượng sản phẩm đã bán
+      // Tính tổng số lượng Sản phẩm đã bán
       const totalSold = topProducts.reduce((sum, p) => sum + parseInt(p.total_sold || 0), 0);
       
       document.getElementById('stat-revenue').textContent = formatCurrency(revenue);
@@ -2203,7 +2237,7 @@
       initOrdersChart(ordersData);
     }
     
-    // Render top sản phẩm bán chạy
+    // Render top Sản phẩm bán chạy
     function renderTopProducts(products) {
       const container = document.getElementById('top-products-list');
       if (!container) return;
@@ -2260,7 +2294,7 @@
           labels: ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'], 
           datasets: [
             { 
-              label: 'Thực tế', 
+              label: 'thực tế', 
               data: monthlyRevenue, 
               backgroundColor: 'rgba(59, 130, 246, 0.8)',
               borderColor: '#3b82f6',
@@ -2513,7 +2547,7 @@
           data: {
             labels: Object.keys(priceRanges),
             datasets: [{
-              label: 'Số sản phẩm',
+              label: 'số Sản phẩm',
               data: Object.values(priceRanges),
               backgroundColor: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'],
               borderRadius: 6,
@@ -2656,7 +2690,7 @@
           data: {
             labels: topCustomers.map(c => (c.ho_ten || 'Khách hàng').split(' ').slice(-2).join(' ')),
             datasets: [{
-              label: 'Chi tiêu',
+              label: 'chi tiêu',
               data: topCustomers.map(c => (c.tong_chi_tieu || 0) / 1000000),
               backgroundColor: ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
               borderRadius: 6,
@@ -2901,11 +2935,11 @@
               <div class="mb-6">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">Chọn trạng thái mới</label>
                 <select id="new-order-status" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all">
-                  <option value="pending" ${currentStatus === 'pending' ? 'selected' : ''}>⏳ Chờ xử lý</option>
-                  <option value="confirmed" ${currentStatus === 'confirmed' ? 'selected' : ''}>✅ Đã xác nhận</option>
-                  <option value="shipping" ${currentStatus === 'shipping' ? 'selected' : ''}>🚚 Đang giao</option>
+                  <option value="pending" ${currentStatus === 'pending' ? 'selected' : ''}>🔵 Chờ xử lý</option>
+                  <option value="confirmed" ${currentStatus === 'confirmed' ? 'selected' : ''}>🔵 Đã xác nhận</option>
+                  <option value="shipping" ${currentStatus === 'shipping' ? 'selected' : ''}>📦 Đang giao</option>
                   <option value="delivered" ${currentStatus === 'delivered' ? 'selected' : ''}>📦 Đã giao</option>
-                  <option value="cancelled" ${currentStatus === 'cancelled' ? 'selected' : ''}>❌ Đã hủy</option>
+                  <option value="cancelled" ${currentStatus === 'cancelled' ? 'selected' : ''}>🔵 Đã hủy</option>
                 </select>
               </div>
               <div class="flex gap-3">
@@ -2944,11 +2978,11 @@
         }
         
         const statusText = {
-          'pending': '⏳ Chờ xử lý',
-          'confirmed': '✅ Đã xác nhận', 
-          'shipping': '🚚 Đang giao',
+          'pending': '? Chờ xử lý',
+          'confirmed': '? Đã xác nhận', 
+          'shipping': '📦 Đang giao',
           'delivered': '📦 Đã giao',
-          'cancelled': '❌ Đã hủy'
+          'cancelled': '? Đã hủy'
         };
         
         const statusColors = {
@@ -2996,9 +3030,9 @@
               </div>
               
               <div class="p-6 overflow-y-auto max-h-[60vh]">
-                <!-- Trạng thái đơn hàng -->
+                <!-- trạng thái đơn hàng -->
                 <div class="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-xl">
-                  <span class="font-semibold text-gray-700">Trạng thái:</span>
+                  <span class="font-semibold text-gray-700">trạng thái:</span>
                   <span class="px-4 py-2 rounded-full text-sm font-semibold ${statusColors[order.trang_thai] || 'bg-gray-100 text-gray-700'}">${statusText[order.trang_thai] || order.trang_thai}</span>
                 </div>
                 
@@ -3025,7 +3059,7 @@
                       <p class="text-sm text-gray-500">Ghi chú</p>
                       <p class="font-semibold text-gray-800">${order.ghi_chu}</p>
                     </div>
-                    ` : ''}
+                    ` : ''}}
                   </div>
                 </div>
                 
@@ -3133,7 +3167,7 @@
         const select = document.getElementById('product-brand');
         const filter = document.getElementById('product-brand-filter');
         if (!select) { console.error('product-brand element not found!'); return; }
-        const options = '<option value="">Chọn hãng</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
+        const options = '<option value="">Chọn Hãng</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
         const filterOptions = '<option value="">Tất cả hãng</option>' + allBrands.map(b => '<option value="' + b.ma_hang + '">' + b.ten_hang + '</option>').join('');
         select.innerHTML = options;
         if (filter) filter.innerHTML = filterOptions;
@@ -3171,7 +3205,7 @@
     }
     function renderProducts(products) {
       const tbody = document.getElementById('products-table');
-      if (!products.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Không có sản phẩm</td></tr>'; return; }
+      if (!products.length) { tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">KHãng Có Sản phẩm</td></tr>'; return; }
       tbody.innerHTML = products.map(p => {
         const productId = p.ma_sp || p.id;
         const productName = p.ten_sp || p.name || 'N/A';
@@ -3189,7 +3223,7 @@
       const modal = document.getElementById('product-modal');
       const form = document.getElementById('product-form');
       form.reset();
-      resetImagePreview(); // Reset preview anh
+      resetImagePreview(); // Reset preview ảnh
       
       // Đảm bảo brands đã được load
       if (allBrands.length === 0) {
@@ -3199,7 +3233,7 @@
       if (productId) {
         const product = allProducts.find(p => (p.ma_sp || p.id) === productId);
         if (product) {
-          document.getElementById('product-modal-title').textContent = 'Chỉnh sửa sản phẩm';
+          document.getElementById('product-modal-title').textContent = 'ChẢnh sốa Sản phẩm';
           document.getElementById('product-submit-text').textContent = 'Tiếp tục';
           document.getElementById('product-id').value = product.ma_sp || product.id;
           document.getElementById('product-name').value = product.ten_sp || product.name || '';
@@ -3210,7 +3244,7 @@
           document.getElementById('product-description').value = product.mo_ta || product.description || '';
           document.getElementById('product-image').value = product.anh_dai_dien || product.image || '';
           
-          // Load màu sắc từ database (JSON format: {colors: [...], colorNames: [...]})
+          // Load Màu sắc t? database (JSON format: {colors: [...], colorNames: [...]})
           resetColorPicker();
           if (product.mau_sac) {
             try {
@@ -3232,7 +3266,7 @@
           }
         }
       } else {
-        document.getElementById('product-modal-title').textContent = 'Thêm sản phẩm mới';
+        document.getElementById('product-modal-title').textContent = 'Thêm Sản phẩm mới';
         document.getElementById('product-submit-text').textContent = 'Tiếp tục';
         resetColorPicker();
       }
@@ -3625,9 +3659,9 @@
       var b = e.target.value; 
       var searchVal = document.getElementById('product-search').value.toLowerCase().trim();
       var filtered = b ? allProducts.filter(function(p) { 
-        // Hỗ trợ cả ma_hang (number) và brand (slug)
+        // H? tr? c? ma_hang (number) v� brand (slug)
         if (p.ma_hang) return p.ma_hang == b;
-        // Nếu không có ma_hang, so sánh brand slug với tên hãng
+        // N?u kHãng c� ma_hang, so s�nh brand slug v?i Tên Hãng
         var brandData = allBrands.find(function(br) { return br.ma_hang == b; });
         return brandData && p.brand && p.brand.toLowerCase() === brandData.ten_hang.toLowerCase();
       }) : allProducts;
@@ -3680,7 +3714,7 @@
     let allNews = [], editingNewsId = null;
     var selectedNewsImageFile = null;
     
-    // Preview ảnh tin tức khi chọn file
+    // Preview Ảnh Tin tức khi ch?n file
     function previewNewsImage(input) {
       if (input.files && input.files[0]) {
         selectedNewsImageFile = input.files[0];
@@ -3694,7 +3728,7 @@
       }
     }
     
-    // Reset ảnh preview tin tức
+    // Reset Ảnh preview Tin tức
     function resetNewsImagePreview() {
       selectedNewsImageFile = null;
       document.getElementById('news-preview-img').src = '';
@@ -3741,7 +3775,7 @@
           }
         }
       } else {
-        document.getElementById('news-modal-title').textContent = 'Thêm tin tức mới';
+        document.getElementById('news-modal-title').textContent = 'Thêm Tin tức mới';
       }
       modal.classList.remove('hidden');
     }
@@ -3765,7 +3799,7 @@
       
       let imageUrl = document.getElementById('news-image').value || null;
       
-      // Nếu có file ảnh được chọn, upload trước
+      // N?u c� file Ảnh du?c ch?n, upload tru?c
       if (selectedNewsImageFile) {
         try {
           const formData = new FormData();
@@ -3780,7 +3814,7 @@
           if (uploadData.success && uploadData.url) {
             imageUrl = uploadData.url;
           } else {
-            // Fallback: Dùng data URL
+            // Fallback: D�ng data URL
             imageUrl = document.getElementById('news-preview-img').src;
           }
         } catch(uploadErr) {
@@ -3818,7 +3852,7 @@
       }));
     });
     
-    // Chuyển đổi URL video thành embed URL
+    // Chuy?n đãi URL video th�nh embed URL
     function getVideoEmbedUrl(url) {
       if (!url) return null;
       
@@ -3834,7 +3868,7 @@
         return 'https://player.vimeo.com/video/' + vimeoMatch[1];
       }
       
-      // Nếu là link video trực tiếp
+      // N?u l� link video tr?c ti?p
       if (url.match(/\.(mp4|webm|ogg)$/i)) {
         return url;
       }
@@ -3849,32 +3883,32 @@
         
         // Ảnh đại diện
         if (news.anh_dai_dien) {
-          html += '<div class="mb-6"><img src="' + news.anh_dai_dien + '" class="w-full h-64 object-cover rounded-2xl shadow-lg" alt="Ảnh tin tức"></div>';
+          html += '<div class="mb-6"><img src="' + news.anh_dai_dien + '" class="w-full h-64 object-cover rounded-2xl shadow-lg" alt="Ảnh Tin tức"></div>';
         }
         
         // Tiêu đề
         html += '<h2 class="text-2xl font-bold text-dark-800 mb-3">' + news.tieu_de + '</h2>';
         
-        // Thông tin meta
+        // tháng tin meta
         html += '<div class="flex flex-wrap items-center gap-4 mb-6 text-sm text-slate-500">';
         html += '<span><i class="fas fa-user mr-1 text-primary-500"></i>' + (news.ten_admin || 'Admin') + '</span>';
         html += '<span><i class="fas fa-calendar mr-1 text-primary-500"></i>' + formatDate(news.ngay_dang) + '</span>';
         if (news.video_url) {
-          html += '<span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium"><i class="fas fa-video mr-1"></i>Có video đính kèm</span>';
+          html += '<span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium"><i class="fas fa-video mr-1"></i>C� video d�nh k�m</span>';
         }
         html += '</div>';
         
-        // Video (nếu có)
+        // Video (n?u c�)
         if (news.video_url) {
           const embedUrl = getVideoEmbedUrl(news.video_url);
           html += '<div class="mb-6">';
           html += '<h4 class="text-sm font-semibold text-dark-700 mb-3 flex items-center gap-2"><i class="fas fa-video text-blue-500"></i>Video</h4>';
           
           if (news.video_url.match(/\.(mp4|webm|ogg)$/i)) {
-            // Video file trực tiếp
+            // Video file tr?c ti?p
             html += '<video controls class="w-full rounded-xl shadow-lg" style="max-height: 400px;">';
             html += '<source src="' + embedUrl + '" type="video/mp4">';
-            html += 'Trình duyệt của bạn không hỗ trợ video.</video>';
+            html += 'Tr�nh duy?t của bạn kHãng h? tr? video.</video>';
           } else {
             // YouTube/Vimeo embed
             html += '<div class="relative w-full" style="padding-top: 56.25%;">';
@@ -3887,7 +3921,7 @@
         // Nội dung
         html += '<div class="prose max-w-none">';
         html += '<h4 class="text-sm font-semibold text-dark-700 mb-3 flex items-center gap-2"><i class="fas fa-file-alt text-primary-500"></i>Nội dung</h4>';
-        html += '<div class="bg-slate-50 rounded-xl p-4 text-dark-600 leading-relaxed whitespace-pre-wrap">' + (news.noi_dung || 'Không có nội dung') + '</div>';
+        html += '<div class="bg-slate-50 rounded-xl p-4 text-dark-600 leading-relaxed whitespace-pre-wrap">' + (news.noi_dung || 'KHãng c� Nội dung') + '</div>';
         html += '</div>';
         
         document.getElementById('news-detail-content').innerHTML = html;
@@ -3927,7 +3961,7 @@
       return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
 
-    // =============== QUẢN LÝ HÃNG SẢN XUẤT ===============
+    // =============== quản lý Hãng sản xuất ===============
     let allBrandsData = [], allCountries = [], editingBrandId = null;
     
     async function loadBrandsSection() {
@@ -3937,13 +3971,13 @@
         const data = await res.json();
         allBrandsData = data.data || data || [];
         renderBrandsTable(allBrandsData);
-        // Cập nhật thống kê
+        // C?p nh?t thống kê
         updateBrandsStats();
-        // Khởi tạo biểu đồ
+        // Kh?i t?o Biểu đồ
         initBrandsSectionCharts(allBrandsData);
       } catch(e) {
         console.error('Error loading brands:', e);
-        showToast('Lỗi tải danh sách hãng', 'error');
+        showToast('lỗi t?i danh s�ch Hãng', 'error');
       }
     }
     
@@ -4006,13 +4040,13 @@
       if (brandId) {
         const brand = allBrandsData.find(b => b.ma_hang === brandId);
         if (brand) {
-          title.textContent = 'Sửa hãng sản xuất';
+          title.textContent = 'sốa Hãng sản xuất';
           document.getElementById('brand-id').value = brand.ma_hang;
           document.getElementById('brand-name').value = brand.ten_hang;
           document.getElementById('brand-country').value = brand.ma_quoc_gia || '';
         }
       } else {
-        title.textContent = 'Thêm hãng mới';
+        title.textContent = 'Thêm Hãng mới';
         form.reset();
         document.getElementById('brand-id').value = '';
       }
@@ -4096,8 +4130,241 @@
       renderBrandsTable(filtered);
     });
     
-    // Event listener cho form hãng
+    // Event listener cho form Hãng
     document.getElementById('brand-form')?.addEventListener('submit', saveBrand);
+
+    // ==================== CONTACTS FUNCTIONS ====================
+    async function loadContactStats() {
+      try {
+        const res = await fetch(API_URL + '/admin/contacts/stats');
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('new-contact-count').textContent = data.data.new_count || 0;
+        }
+      } catch(e) { console.error('Error loading contact stats:', e); }
+    }
+
+    async function loadContacts() {
+      try {
+        const res = await fetch(API_URL + '/admin/contacts');
+        const data = await res.json();
+        allContacts = data.data || [];
+        renderContacts(allContacts);
+        updateContactStats(allContacts);
+      } catch(e) {
+        console.error('Error loading contacts:', e);
+        allContacts = [];
+        renderContacts(allContacts);
+      }
+    }
+
+    function updateContactStats(contacts) {
+      const total = contacts.length;
+      const newCount = contacts.filter(c => c.trang_thai === 'new').length;
+      const readCount = contacts.filter(c => c.trang_thai === 'read').length;
+      const repliedCount = contacts.filter(c => c.trang_thai === 'replied').length;
+      document.getElementById('contact-total').textContent = total;
+      document.getElementById('contact-new').textContent = newCount;
+      document.getElementById('contact-read').textContent = readCount;
+      document.getElementById('contact-replied').textContent = repliedCount;
+      document.getElementById('new-contact-count').textContent = newCount;
+    }
+
+    function renderContacts(contacts) {
+      const tbody = document.getElementById('contacts-table');
+      if (!contacts.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-400">Không có liên hệ nào</td></tr>';
+        return;
+      }
+      tbody.innerHTML = contacts.map(c => '<tr class="border-b border-slate-50 ' + (c.trang_thai === 'new' ? 'bg-emerald-50/50' : '') + '"><td class="py-4 font-medium">' + (c.ho_ten || 'N/A') + '</td><td class="py-4 text-slate-500">' + (c.email || 'N/A') + '</td><td class="py-4 text-slate-500">' + (c.so_dien_thoai || 'N/A') + '</td><td class="py-4 text-slate-600 max-w-[150px] truncate">' + (c.tieu_de || 'Không có chủ đề') + '</td><td class="py-4">' + getContactStatusBadge(c.trang_thai) + '</td><td class="py-4 text-slate-500">' + formatDate(c.ngay_gui) + '</td><td class="py-4"><div class="flex gap-2"><button onclick="viewContact(' + c.ma_lien_he + ')" class="text-blue-600 hover:text-blue-700" title="Xem chi tiết"><i class="fas fa-eye"></i></button><button onclick="updateContactStatus(' + c.ma_lien_he + ', \'replied\')" class="text-emerald-600 hover:text-emerald-700" title="Đã phản hồi"><i class="fas fa-check"></i></button><button onclick="deleteContact(' + c.ma_lien_he + ')" class="text-red-600 hover:text-red-700" title="Xóa"><i class="fas fa-trash"></i></button></div></td></tr>').join('');
+    }
+
+    function getContactStatusBadge(status) {
+      var badges = {
+        'new': '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-medium">Mới</span>',
+        'read': '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-xs font-medium">Đã xem</span>',
+        'replied': '<span class="px-2 py-1 bg-violet-100 text-violet-700 rounded-lg text-xs font-medium">Đã phản hồi</span>'
+      };
+      return badges[status] || badges['new'];
+    }
+
+    async function viewContact(id) {
+      try {
+        const res = await fetch(API_URL + '/admin/contacts/' + id);
+        const data = await res.json();
+        if (data.success) {
+          const c = data.data;
+          
+          // Lấy lịch sử phản hồi
+          let responsesHtml = '';
+          try {
+            const resResponses = await fetch(API_URL + '/admin/contacts/' + id + '/responses');
+            const respData = await resResponses.json();
+            if (respData.success && respData.data.length > 0) {
+              responsesHtml = '<div class="border-t border-slate-100 pt-4 mt-4"><p class="text-sm text-slate-500 mb-3"><i class="fas fa-history mr-1"></i> Lịch sử phản hồi</p><div class="space-y-3 max-h-40 overflow-y-auto">';
+              respData.data.forEach(function(r) {
+                responsesHtml += '<div class="bg-violet-50 rounded-lg p-3"><div class="flex items-center gap-2 mb-1"><span class="text-xs font-medium text-violet-700">' + (r.admin_name || 'Admin') + '</span><span class="text-xs text-slate-400">' + formatDate(r.ngay_phan_hoi) + '</span></div><p class="text-sm text-slate-700">' + r.noi_dung_phan_hoi + '</p></div>';
+              });
+              responsesHtml += '</div></div>';
+            }
+          } catch(e) { console.log('No responses yet'); }
+          
+          const modal = document.createElement('div');
+          modal.id = 'contact-modal';
+          modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+          modal.innerHTML = `
+            <div class="absolute inset-0 bg-black/50" onclick="closeContactModal()"></div>
+            <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+              <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
+                <h3 class="text-lg font-bold text-slate-800">Chi tiết liên hệ</h3>
+                <button onclick="closeContactModal()" class="text-slate-400 hover:text-slate-600">
+                  <i class="fas fa-times text-xl"></i>
+                </button>
+              </div>
+              <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-sm text-slate-500">Họ tên</p>
+                    <p class="font-medium">${c.ho_ten}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">Email</p>
+                    <p class="font-medium">${c.email}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">Số điện thoại</p>
+                    <p class="font-medium">${c.so_dien_thoai || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">Ngày gửi</p>
+                    <p class="font-medium">${formatDate(c.ngay_gui)}</p>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500">Chủ đề</p>
+                  <p class="font-medium">${c.tieu_de || 'Không có chủ đề'}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500 mb-2">Nội dung</p>
+                  <div class="bg-slate-50 rounded-xl p-4 text-slate-700">${c.noi_dung}</div>
+                </div>
+                
+                ${responsesHtml}
+                
+                <!-- Form phản hồi -->
+                <div class="border-t border-slate-100 pt-4">
+                  <p class="text-sm text-slate-500 mb-2"><i class="fas fa-reply mr-1"></i> Phản hồi cho khách hàng</p>
+                  <textarea id="response-content-${c.ma_lien_he}" rows="3" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-violet-500 focus:border-transparent" placeholder="Nhập nội dung phản hồi..."></textarea>
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                  <button onclick="closeContactModal()" class="flex-1 border border-slate-200 text-slate-600 py-3 rounded-xl font-medium hover:bg-slate-50">Đóng</button>
+                  <button onclick="sendContactResponse(${c.ma_lien_he})" class="flex-1 bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-xl font-medium text-center">
+                    <i class="fas fa-paper-plane mr-2"></i>Phản hồi
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(modal);
+          loadContacts();
+        }
+      } catch(e) {
+        console.error('Error viewing contact:', e);
+        showToast('Lỗi tải chi tiết liên hệ', 'error');
+      }
+    }
+
+    // Gửi phản hồi liên hệ
+    async function sendContactResponse(contactId) {
+      const content = document.getElementById('response-content-' + contactId)?.value?.trim();
+      if (!content) {
+        showToast('Vui lòng nhập nội dung phản hồi', 'error');
+        return;
+      }
+      
+      try {
+        // Lấy thông tin admin đang đăng nhập
+        const adminInfo = JSON.parse(localStorage.getItem('adminInfo') || '{}');
+        
+        const res = await fetch(API_URL + '/admin/contacts/' + contactId + '/response', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            noi_dung_phan_hoi: content,
+            ma_admin: adminInfo.ma_admin || null
+          })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          showToast('Phản hồi đã được gửi thành công! Thông báo sẽ được gửi đến người dùng.');
+          closeContactModal();
+          loadContacts();
+        } else {
+          showToast(data.message || 'Lỗi gửi phản hồi', 'error');
+        }
+      } catch(e) {
+        console.error('Error sending response:', e);
+        showToast('Lỗi gửi phản hồi', 'error');
+      }
+    }
+
+    function closeContactModal() {
+      const modal = document.getElementById('contact-modal');
+      if (modal) modal.remove();
+    }
+
+    async function updateContactStatus(id, status) {
+      try {
+        const res = await fetch(API_URL + '/admin/contacts/' + id + '/status', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: status })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Cập nhật trạng thái thành công');
+          loadContacts();
+        } else {
+          showToast(data.message || 'Lỗi cập nhật', 'error');
+        }
+      } catch(e) {
+        console.error('Error updating contact status:', e);
+        showToast('Lỗi cập nhật trạng thái', 'error');
+      }
+    }
+
+    async function deleteContact(id) {
+      if (!confirm('Bạn có chắc muốn xóa liên hệ này?')) return;
+      try {
+        const res = await fetch(API_URL + '/admin/contacts/' + id, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Đã xóa liên hệ');
+          loadContacts();
+        } else {
+          showToast(data.message || 'Lỗi xóa liên hệ', 'error');
+        }
+      } catch(e) {
+        console.error('Error deleting contact:', e);
+        showToast('Lỗi xóa liên hệ', 'error');
+      }
+    }
+
+    document.getElementById('contact-search')?.addEventListener('input', function(e) {
+      const s = e.target.value.toLowerCase();
+      renderContacts(allContacts.filter(function(c) {
+        return (c.ho_ten && c.ho_ten.toLowerCase().includes(s)) || 
+               (c.email && c.email.toLowerCase().includes(s)) ||
+               (c.tieu_de && c.tieu_de.toLowerCase().includes(s));
+      }));
+    });
+
+    document.getElementById('contact-status-filter')?.addEventListener('change', function(e) {
+      const status = e.target.value;
+      renderContacts(status ? allContacts.filter(function(c) { return c.trang_thai === status; }) : allContacts);
+    });
   </script>
 </body>
 </html>
