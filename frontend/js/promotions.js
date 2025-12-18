@@ -51,7 +51,7 @@ function initCountdownTimer() {
 }
 
 // ============================================================
-// LOAD FLASH SALE PRODUCTS
+// LOAD FLASH SALE PRODUCTS - Lấy sản phẩm bán chậm nhất từ DB
 // ============================================================
 async function loadFlashSaleProducts() {
   const container = document.getElementById('flash-products');
@@ -60,51 +60,57 @@ async function loadFlashSaleProducts() {
   container.innerHTML = '<div class="col-span-full text-center py-8"><i class="fas fa-spinner fa-spin text-2xl text-white/50"></i></div>';
 
   try {
-    // Lấy flash sale đang active
-    const response = await fetch(`${API_BASE}/promotions/flash-sales/active`);
+    // Lấy sản phẩm bán chậm nhất từ API slow-movers (dữ liệu thật từ DB)
+    const response = await fetch(`${API_BASE}/promotions/slow-movers`);
     const data = await response.json();
 
-    if (!data.success || data.data.length === 0) {
-      // Nếu không có flash sale, hiển thị sản phẩm giảm giá từ slow-movers
-      await loadSlowMoversAsFlash(container);
-      return;
+    console.log('Flash Sale - Slow movers data:', data);
+
+    if (data.success && data.data && data.data.length > 0) {
+      // Chuyển đổi dữ liệu slow-movers thành format flash sale
+      const discounts = [15, 17, 20, 22, 25];
+      const flashProducts = data.data.map((p, index) => {
+        const discount = discounts[index % discounts.length];
+        return {
+          productId: p.id,
+          name: p.name,
+          image: p.image,
+          originalPrice: p.price,
+          flashPrice: p.price * (1 - discount / 100),
+          discountPercent: discount,
+          soldQuantity: p.sold || 0,
+          totalQuantity: p.stock || 20
+        };
+      });
+      
+      renderFlashProducts(flashProducts, container);
+    } else {
+      // Fallback nếu API slow-movers không có dữ liệu
+      await loadProductsAsFlash(container);
     }
-
-    flashSales = data.data;
-    const activeFlashSale = flashSales[0];
-
-    // Lấy sản phẩm trong flash sale
-    const productsRes = await fetch(`${API_BASE}/promotions/flash-sales/${activeFlashSale.id}/products`);
-    const productsData = await productsRes.json();
-
-    if (!productsData.success || productsData.data.length === 0) {
-      await loadSlowMoversAsFlash(container);
-      return;
-    }
-
-    renderFlashProducts(productsData.data, container);
   } catch (error) {
     console.error('Error loading flash sale:', error);
-    await loadSlowMoversAsFlash(container);
+    await loadProductsAsFlash(container);
   }
 }
 
-async function loadSlowMoversAsFlash(container) {
+async function loadProductsAsFlash(container) {
   try {
-    // Fallback: Lấy sản phẩm từ API products và tạo giảm giá giả
+    // Fallback: Lấy sản phẩm từ API products
     const response = await fetch(`${API_BASE}/products`);
     let products = await response.json();
     
-    if (Array.isArray(products)) {
-      products = products.slice(0, 5).map(p => ({
+    if (Array.isArray(products) && products.length > 0) {
+      const discounts = [15, 17, 20, 22, 25];
+      products = products.slice(0, 4).map((p, index) => ({
         productId: p.ma_sp || p.id,
         name: p.ten_sp || p.name,
-        image: p.anh_dai_dien ? (p.anh_dai_dien.startsWith('images/') ? p.anh_dai_dien : `images/${p.anh_dai_dien}`) : 'images/iphone.jpg',
+        image: p.image || p.anh_dai_dien, // Sẽ được chuẩn hóa trong renderFlashProducts
         originalPrice: parseFloat(p.gia || p.price || 0),
-        flashPrice: parseFloat(p.gia || p.price || 0) * 0.85, // Giảm 15%
-        discountPercent: 15,
-        soldQuantity: Math.floor(Math.random() * 50),
-        totalQuantity: 100
+        flashPrice: parseFloat(p.gia || p.price || 0) * (1 - discounts[index % discounts.length] / 100),
+        discountPercent: discounts[index % discounts.length],
+        soldQuantity: 0,
+        totalQuantity: p.so_luong_ton || 20
       }));
       renderFlashProducts(products, container);
     } else {
@@ -118,11 +124,14 @@ async function loadSlowMoversAsFlash(container) {
 function renderFlashProducts(products, container) {
   container.innerHTML = products.map(product => {
     const soldPercent = Math.round((product.soldQuantity / product.totalQuantity) * 100);
+    // Xử lý ảnh - tránh lặp images/images/
+    const imageUrl = normalizeImageUrl(product.image);
     
     return `
       <a href="product-detail.html?id=${product.productId}" class="product-card block">
         <div class="product-image">
-          <img src="${product.image}" alt="${product.name}" onerror="this.src='images/iphone.jpg'">
+          <img src="${imageUrl}" alt="${product.name}" 
+               onerror="this.onerror=null; this.src='images/iphone17.avif';">
           <div class="discount-tag">-${product.discountPercent}%</div>
         </div>
         <div class="product-info">
@@ -139,6 +148,20 @@ function renderFlashProducts(products, container) {
       </a>
     `;
   }).join('');
+}
+
+// Helper function để chuẩn hóa đường dẫn ảnh
+function normalizeImageUrl(imageUrl) {
+  if (!imageUrl) return 'images/iphone17.avif';
+  
+  // Nếu là URL đầy đủ (http/https), giữ nguyên
+  if (imageUrl.startsWith('http')) return imageUrl;
+  
+  // Loại bỏ prefix images/ nếu bị lặp
+  let normalized = imageUrl.replace(/^(images\/)+/, '');
+  
+  // Thêm prefix images/ một lần duy nhất
+  return 'images/' + normalized;
 }
 
 // ============================================================
@@ -330,14 +353,15 @@ async function loadFeaturedProducts() {
 function renderFeaturedProducts(products, container) {
   container.innerHTML = products.map(p => {
     const price = parseFloat(p.gia || p.price || 0);
-    const image = p.anh_dai_dien ? (p.anh_dai_dien.startsWith('images/') ? p.anh_dai_dien : `images/${p.anh_dai_dien}`) : 'images/iphone.jpg';
+    // Sử dụng helper function để chuẩn hóa ảnh
+    const image = normalizeImageUrl(p.image || p.anh_dai_dien);
     const name = p.ten_sp || p.name || 'Sản phẩm';
     const id = p.ma_sp || p.id;
     
     return `
       <div class="featured-card" onclick="window.location.href='product-detail.html?id=${id}'">
         <div class="featured-image">
-          <img src="${image}" alt="${name}" onerror="this.src='images/iphone.jpg'">
+          <img src="${image}" alt="${name}" onerror="this.onerror=null; this.src='images/iphone17.avif';">
           <div class="featured-badge">HOT</div>
         </div>
         <div class="featured-info">

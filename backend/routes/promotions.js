@@ -429,18 +429,54 @@ router.post('/calculate-total', async (req, res) => {
 
 // ============================================================
 // LẤY SẢN PHẨM BÁN CHẬM NHẤT (SLOW MOVERS)
-// Thay đổi mỗi 12 giờ dựa trên thời gian hiện tại
+// Lấy 4 sản phẩm có lượng bán thấp nhất từ database thực
 // ============================================================
+
+// Map ảnh mặc định theo hãng - sử dụng ảnh thực tế có trong thư mục images
+const brandImageMap = {
+  'Apple': 'images/iphone-17-pro-max-256.jpg',
+  'Samsung': 'images/samsung-galaxy-s24_15__2.webp',
+  'Xiaomi': 'images/Xiaomi.avif',
+  'Oppo': 'images/oppo_reno_13_f_4g_256gb.avif',
+  'Vivo': 'images/oppo_reno_13_f_4g_256gb.avif',
+  'Google': 'images/pixel-9-pro.avif',
+  'Sony': 'images/sony-xperia-1-vi.webp',
+  'Tecno': 'images/TECNO.avif',
+  'Realme': 'images/reno10_5g_-_combo_product_-_blue_-_copy.webp',
+  'Asus': 'images/iphone17.avif',
+  'default': 'images/iphone17.avif'
+};
+
+// Danh sách ảnh thực tế có trong thư mục (để kiểm tra)
+const validImages = [
+  'iphone-17-pro-max-256.jpg', 'iphone17.avif', 'iphone17.jpg', 'iphone.jpg',
+  'iphone-17-pro_1.webp', 'iphone-17-pro-1_1.webp', 'iphone-16-pro-max-titan-den.webp',
+  'samsung-galaxy-s24_15__2.webp', 'samsung-galaxy-s24_17__2.webp', 'samsung_galaxy_a36_5g.avif',
+  'samsung_galaxy_s24_fe_5g.avif', 'galaxy-s24-plus-den.webp', 'galaxy-s24-plus-vang.webp',
+  'Xiaomi.avif', 'home-poco-f8-pro-1125.webp',
+  'oppo_reno_13_f_4g_256gb.avif', 'oppo-reno.avif', 'reno-xanh.avif', 'oppx9.avif',
+  'pixel-9-pro.avif', 'sony-xperia-1-vi.webp', 'TECNO.avif',
+  'reno10_5g_-_combo_product_-_blue_-_copy.webp', '15-256.avif', '15IP.avif'
+];
+
+// Helper function để lấy ảnh phù hợp - ưu tiên ảnh theo hãng vì chắc chắn tồn tại
+function getSlowMoverImage(row) {
+  const brand = row.ten_hang || '';
+  const dbImage = row.anh_dai_dien || '';
+  
+  // Kiểm tra nếu ảnh trong DB nằm trong danh sách ảnh hợp lệ
+  const imageName = dbImage.replace('images/', '');
+  if (validImages.includes(imageName)) {
+    return dbImage.startsWith('images/') ? dbImage : `images/${dbImage}`;
+  }
+  
+  // Fallback: dùng ảnh mặc định theo hãng
+  return brandImageMap[brand] || brandImageMap['default'];
+}
+
 router.get('/slow-movers', async (req, res) => {
   try {
-    // Tính offset dựa trên chu kỳ 12 giờ
-    // Mỗi 12 giờ sẽ lấy 4 sản phẩm khác nhau
-    const now = new Date();
-    const hoursSinceEpoch = Math.floor(now.getTime() / (1000 * 60 * 60));
-    const cycleNumber = Math.floor(hoursSinceEpoch / 12); // Chu kỳ 12 giờ
-    const offset = (cycleNumber % 10) * 4; // Offset thay đổi mỗi 12 giờ, quay vòng sau 10 chu kỳ
-
-    // Lấy 4 sản phẩm bán chậm nhất (ít đơn hàng nhất)
+    // Lấy 4 sản phẩm bán chậm nhất (ít đơn hàng hoàn thành nhất) + thông tin hãng
     const [products] = await pool.query(`
       SELECT 
         sp.ma_sp,
@@ -448,16 +484,36 @@ router.get('/slow-movers', async (req, res) => {
         sp.gia,
         sp.anh_dai_dien,
         sp.so_luong_ton,
-        COALESCE(SUM(ctdh.so_luong), 0) as so_luong_da_ban
+        hsx.ten_hang,
+        COALESCE(sold_data.so_luong_da_ban, 0) as so_luong_da_ban,
+        COALESCE(review_data.so_danh_gia, 0) as so_danh_gia,
+        COALESCE(review_data.diem_trung_binh, 0) as diem_trung_binh
       FROM san_pham sp
-      LEFT JOIN chi_tiet_don_hang ctdh ON sp.ma_sp = ctdh.ma_sp
-      GROUP BY sp.ma_sp, sp.ten_sp, sp.gia, sp.anh_dai_dien, sp.so_luong_ton
+      LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+      LEFT JOIN (
+        SELECT 
+          ctdh.ma_sp,
+          SUM(ctdh.so_luong) as so_luong_da_ban
+        FROM chi_tiet_don_hang ctdh
+        JOIN don_hang dh ON ctdh.ma_don = dh.ma_don
+        WHERE dh.trang_thai IN ('completed', 'shipping', 'confirmed')
+        GROUP BY ctdh.ma_sp
+      ) sold_data ON sp.ma_sp = sold_data.ma_sp
+      LEFT JOIN (
+        SELECT 
+          ma_sp,
+          COUNT(*) as so_danh_gia,
+          AVG(so_sao) as diem_trung_binh
+        FROM danh_gia
+        GROUP BY ma_sp
+      ) review_data ON sp.ma_sp = review_data.ma_sp
+      WHERE sp.so_luong_ton > 0
       ORDER BY so_luong_da_ban ASC, sp.ma_sp ASC
-      LIMIT 4 OFFSET ?
-    `, [offset]);
+      LIMIT 4
+    `);
 
-    // Nếu không đủ sản phẩm với offset, lấy từ đầu
     if (products.length === 0) {
+      // Fallback: lấy bất kỳ 4 sản phẩm nào
       const [fallbackProducts] = await pool.query(`
         SELECT 
           sp.ma_sp,
@@ -465,11 +521,14 @@ router.get('/slow-movers', async (req, res) => {
           sp.gia,
           sp.anh_dai_dien,
           sp.so_luong_ton,
-          COALESCE(SUM(ctdh.so_luong), 0) as so_luong_da_ban
+          hsx.ten_hang,
+          0 as so_luong_da_ban,
+          0 as so_danh_gia,
+          4.5 as diem_trung_binh
         FROM san_pham sp
-        LEFT JOIN chi_tiet_don_hang ctdh ON sp.ma_sp = ctdh.ma_sp
-        GROUP BY sp.ma_sp, sp.ten_sp, sp.gia, sp.anh_dai_dien, sp.so_luong_ton
-        ORDER BY so_luong_da_ban ASC, sp.ma_sp ASC
+        LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+        WHERE sp.so_luong_ton > 0
+        ORDER BY RAND()
         LIMIT 4
       `);
       
@@ -479,14 +538,14 @@ router.get('/slow-movers', async (req, res) => {
           id: p.ma_sp,
           name: p.ten_sp,
           price: parseFloat(p.gia || 0),
-          image: p.anh_dai_dien ? `images/${p.anh_dai_dien}` : 'images/iphone.jpg',
+          image: getSlowMoverImage(p),
           stock: p.so_luong_ton || 0,
-          sold: parseInt(p.so_luong_da_ban) || 0,
+          sold: 0,
           rating: 4.5,
-          reviews: 10
+          reviews: 0,
+          brand: p.ten_hang || ''
         })),
-        cycle: cycleNumber,
-        nextChangeIn: 12 - (now.getHours() % 12) + ' giờ'
+        message: 'Sản phẩm ưu đãi đặc biệt'
       });
     }
 
@@ -496,14 +555,14 @@ router.get('/slow-movers', async (req, res) => {
         id: p.ma_sp,
         name: p.ten_sp,
         price: parseFloat(p.gia || 0),
-        image: p.anh_dai_dien ? `images/${p.anh_dai_dien}` : 'images/iphone.jpg',
+        image: getSlowMoverImage(p),
         stock: p.so_luong_ton || 0,
         sold: parseInt(p.so_luong_da_ban) || 0,
-        rating: 4.5,
-        reviews: 10
+        rating: parseFloat(p.diem_trung_binh) || 4.5,
+        reviews: parseInt(p.so_danh_gia) || 0,
+        brand: p.ten_hang || ''
       })),
-      cycle: cycleNumber,
-      nextChangeIn: 12 - (now.getHours() % 12) + ' giờ'
+      message: 'Sản phẩm có lượng mua thấp nhất - Ưu đãi đặc biệt!'
     });
   } catch (error) {
     console.error('Get slow movers error:', error);
