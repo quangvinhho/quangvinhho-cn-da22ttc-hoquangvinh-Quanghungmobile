@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Hướng dẫn mua hàng Online - QuangHưng Mobile</title>
+    <meta name="description" content="Hướng dẫn chi tiết cách mua hàng online tại QuangHưng Mobile - Đơn giản, nhanh chóng, an toàn.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="hướng dẫn mua hàng, mua hàng online, QuangHưng Mobile, đặt hàng trực tuyến">
+    <meta name="author" content="QuangHưng Mobile">
+    <meta name="robots" content="index, follow">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'red-main': '#d91e23',
+                        'red-dark': '#b01117',
+                        'red-light': '#ffe5e6',
+                    },
+                    fontFamily: {
+                        'roboto': ['Roboto', 'sans-serif'],
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="components/header.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .step-card {
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #d91e23 0%, #b01117 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 4px 15px rgba(217, 30, 35, 0.4);
+        }
+        .step-connector {
+            position: absolute;
+            top: 30px;
+            left: calc(50% + 40px);
+            width: calc(100% - 80px);
+            height: 3px;
+            background: linear-gradient(90deg, #d91e23, #ef4444);
+        }
+        @media (max-width: 1023px) {
+            .step-connector {
+                display: none;
+            }
+        }
+        .payment-method {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .payment-method:hover {
+            border-color: #d91e23;
+            transform: scale(1.05);
+        }
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding-top: 16px;
+        }
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-roboto text-gray-900 leading-relaxed scroll-smooth overflow-x-hidden">
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Spacer for fixed header -->
+    <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-red-600 to-red-500 text-white py-16">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4">
+                    <i class="fas fa-shopping-bag mr-3"></i>Hướng dẫn mua hàng Online
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+                    Mua sắm dễ dàng chỉ với 4 bước đơn giản - Nhanh chóng, tiện lợi, an toàn
+                </p>
+            </div>
+        </div>
+        <!-- Wave decoration -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 50L48 45.7C96 41.3 192 32.7 288 30.2C384 27.7 480 31.3 576 38.5C672 45.7 768 56.3 864 58.8C960 61.3 1056 55.7 1152 48.5C1248 41.3 1344 32.7 1392 28.3L1440 24V100H1392C1344 100 1248 100 1152 100C1056 100 960 100 864 100C768 100 672 100 576 100C480 100 384 100 288 100C192 100 96 100 48 100H0V50Z" fill="#f3f4f6"/>
+            </svg>
+        </div>
+    </section>
+</body>
+</html>
+    <!-- 4
+ Bước mua hàng -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <span class="text-red-600">4 Bước</span> mua hàng đơn giản
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Chỉ cần vài phút để hoàn tất đơn hàng và nhận sản phẩm tại nhà
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+                <!-- Step 1 -->
+                <div class="step-card bg-white rounded-2xl p-8 text-center shadow-lg relative">
+                    <div class="step-connector hidden lg:block"></div>
+                    <div class="step-number mx-auto mb-6">1</div>
+                    <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-search text-4xl text-red-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Tìm sản phẩm</h3>
+                    <p class="text-gray-600">
+                        Truy cập website, sử dụng thanh tìm kiếm hoặc duyệt danh mục để tìm sản phẩm yêu thích
+                    </p>
+                    <a href="products.html" class="inline-block mt-4 text-red-600 font-semibold hover:text-red-700">
+                        Xem sản phẩm <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card bg-white rounded-2xl p-8 text-center shadow-lg relative">
+                    <div class="step-connector hidden lg:block"></div>
+                    <div class="step-number mx-auto mb-6">2</div>
+                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cart-plus text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Thêm vào giỏ hàng</h3>
+                    <p class="text-gray-600">
+                        Chọn màu sắc, dung lượng phù hợp và nhấn "Thêm vào giỏ hàng" hoặc "Mua ngay"
+                    </p>
+                    <a href="cart.html" class="inline-block mt-4 text-blue-600 font-semibold hover:text-blue-700">
+                        Xem giỏ hàng <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card bg-white rounded-2xl p-8 text-center shadow-lg relative">
+                    <div class="step-connector hidden lg:block"></div>
+                    <div class="step-number mx-auto mb-6">3</div>
+                    <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clipboard-list text-4xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Điền thông tin</h3>
+                    <p class="text-gray-600">
+                        Nhập thông tin giao hàng: họ tên, số điện thoại, địa chỉ và chọn phương thức thanh toán
+                    </p>
+                    <a href="checkout.html" class="inline-block mt-4 text-green-600 font-semibold hover:text-green-700">
+                        Thanh toán <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card bg-white rounded-2xl p-8 text-center shadow-lg relative">
+                    <div class="step-number mx-auto mb-6">4</div>
+                    <div class="w-20 h-20 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-box-open text-4xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Nhận hàng</h3>
+                    <p class="text-gray-600">
+                        Đợi nhận hàng tại nhà, kiểm tra sản phẩm và thanh toán (nếu chọn COD)
+                    </p>
+                    <span class="inline-block mt-4 text-purple-600 font-semibold">
+                        <i class="fas fa-check-circle mr-1"></i> Hoàn tất!
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hướng dẫn chi tiết -->
+    <section class="py-16 bg-white">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">Hướng dẫn chi tiết từng bước</h2>
+                <p class="text-lg text-gray-600">Xem hướng dẫn cụ thể để mua hàng dễ dàng hơn</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Bước 1 chi tiết -->
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+                    <div class="flex items-start gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl">1</div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Bước 1: Tìm kiếm và chọn sản phẩm</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-search text-red-600 mr-2"></i>Cách tìm sản phẩm:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Sử dụng <strong>thanh tìm kiếm</strong> ở đầu trang, nhập tên sản phẩm (VD: "iPhone 15", "Samsung S24")</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Duyệt theo <strong>danh mục</strong>: iPhone, Samsung, OPPO, Xiaomi, Phụ kiện...</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Sử dụng <strong>bộ lọc</strong> theo giá, thương hiệu, tính năng</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-info-circle text-blue-600 mr-2"></i>Xem thông tin sản phẩm:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Click vào sản phẩm để xem <strong>chi tiết</strong>: hình ảnh, thông số kỹ thuật</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Đọc <strong>đánh giá</strong> từ khách hàng đã mua</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>So sánh giá và <strong>khuyến mãi</strong> hiện có</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bước 2 chi tiết -->
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+                    <div class="flex items-start gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">2</div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Bước 2: Thêm sản phẩm vào giỏ hàng</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-mouse-pointer text-blue-600 mr-2"></i>Thao tác:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Chọn <strong>màu sắc</strong> yêu thích (nếu có)</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Chọn <strong>dung lượng bộ nhớ</strong> phù hợp</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Nhấn nút <strong>"Thêm vào giỏ hàng"</strong> hoặc <strong>"Mua ngay"</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-shopping-cart text-green-600 mr-2"></i>Quản lý giỏ hàng:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Xem giỏ hàng bằng cách click vào <strong>biểu tượng giỏ hàng</strong></span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Thay đổi <strong>số lượng</strong> hoặc xóa sản phẩm</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Nhập <strong>mã giảm giá</strong> (nếu có)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bước 3 chi tiết -->
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+                    <div class="flex items-start gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl">3</div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Bước 3: Điền thông tin và thanh toán</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-user text-green-600 mr-2"></i>Thông tin cần điền:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Họ và tên</strong> người nhận hàng</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Số điện thoại</strong> liên hệ</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Địa chỉ giao hàng</strong> chi tiết (số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố)</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Ghi chú</strong> (nếu cần)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-credit-card text-purple-600 mr-2"></i>Phương thức thanh toán:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>COD</strong> - Thanh toán khi nhận hàng</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Chuyển khoản</strong> ngân hàng</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Ví điện tử</strong>: MoMo, ZaloPay, VNPay</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Trả góp</strong> 0% qua thẻ tín dụng</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bước 4 chi tiết -->
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+                    <div class="flex items-start gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">4</div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Bước 4: Nhận hàng và kiểm tra</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-truck text-purple-600 mr-2"></i>Thời gian giao hàng:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Nội thành HCM, Hà Nội:</strong> 2-4 giờ</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span><strong>Các tỉnh thành khác:</strong> 1-3 ngày</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Theo dõi đơn hàng qua <strong>mã vận đơn</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-clipboard-check text-orange-600 mr-2"></i>Khi nhận hàng:</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Kiểm tra <strong>nguyên vẹn</strong> kiện hàng</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Mở hộp kiểm tra <strong>sản phẩm và phụ kiện</strong></span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-check text-green-500 mt-1"></i>
+                                            <span>Thanh toán (nếu chọn COD) và <strong>ký nhận</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+  <!-- Phương thức thanh toán -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <i class="fas fa-credit-card text-red-600 mr-3"></i>Phương thức thanh toán
+                </h2>
+                <p class="text-lg text-gray-600">Đa dạng hình thức thanh toán, tiện lợi cho mọi khách hàng</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- COD -->
+                <div class="payment-method bg-white rounded-2xl p-6 text-center shadow-lg cursor-pointer">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-money-bill-wave text-4xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Thanh toán COD</h3>
+                    <p class="text-gray-600 text-sm">Thanh toán tiền mặt khi nhận hàng. An toàn, tiện lợi.</p>
+                    <span class="inline-block mt-3 text-green-600 font-semibold text-sm">
+                        <i class="fas fa-check-circle mr-1"></i> Phổ biến nhất
+                    </span>
+                </div>
+
+                <!-- Chuyển khoản -->
+                <div class="payment-method bg-white rounded-2xl p-6 text-center shadow-lg cursor-pointer">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-university text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Chuyển khoản</h3>
+                    <p class="text-gray-600 text-sm">Chuyển khoản qua ngân hàng nội địa. Xác nhận nhanh chóng.</p>
+                    <span class="inline-block mt-3 text-blue-600 font-semibold text-sm">
+                        <i class="fas fa-bolt mr-1"></i> Xác nhận tự động
+                    </span>
+                </div>
+
+                <!-- Ví điện tử -->
+                <div class="payment-method bg-white rounded-2xl p-6 text-center shadow-lg cursor-pointer">
+                    <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-wallet text-4xl text-pink-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Ví điện tử</h3>
+                    <p class="text-gray-600 text-sm">MoMo, ZaloPay, VNPay... Thanh toán chỉ với 1 chạm.</p>
+                    <span class="inline-block mt-3 text-pink-600 font-semibold text-sm">
+                        <i class="fas fa-gift mr-1"></i> Nhiều ưu đãi
+                    </span>
+                </div>
+
+                <!-- Trả góp -->
+                <div class="payment-method bg-white rounded-2xl p-6 text-center shadow-lg cursor-pointer">
+                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-percent text-4xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Trả góp 0%</h3>
+                    <p class="text-gray-600 text-sm">Trả góp qua thẻ tín dụng hoặc công ty tài chính. Duyệt nhanh 15 phút.</p>
+                    <span class="inline-block mt-3 text-purple-600 font-semibold text-sm">
+                        <i class="fas fa-star mr-1"></i> Lãi suất 0%
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chính sách hỗ trợ -->
+    <section class="py-16 bg-white">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <i class="fas fa-shield-alt text-red-600 mr-3"></i>Chính sách hỗ trợ
+                </h2>
+                <p class="text-lg text-gray-600">Cam kết mang đến trải nghiệm mua sắm tốt nhất</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Giao hàng -->
+                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-shipping-fast text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Giao hàng miễn phí</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Miễn phí giao hàng nội thành</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Giao hàng nhanh 2-4 giờ</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Kiểm tra hàng trước khi nhận</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Đổi trả -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-sync-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Đổi trả dễ dàng</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Đổi trả trong 30 ngày</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Hoàn tiền 100% nếu lỗi NSX</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Hỗ trợ đổi mới trong 1 năm</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Bảo hành -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-tools text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Bảo hành chính hãng</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Bảo hành 12-24 tháng</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Trung tâm bảo hành ủy quyền</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span>Hỗ trợ máy dự phòng</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <i class="fas fa-question-circle text-red-600 mr-3"></i>Câu hỏi thường gặp
+                </h2>
+                <p class="text-lg text-gray-600">Giải đáp những thắc mắc phổ biến khi mua hàng online</p>
+            </div>
+
+            <div class="space-y-4" id="faq-container">
+                <!-- FAQ 1 -->
+                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="faq-question w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-900">Làm sao để biết sản phẩm còn hàng hay không?</span>
+                        <i class="fas fa-chevron-down faq-icon text-red-600 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5 text-gray-600">
+                        Mỗi sản phẩm trên website đều hiển thị trạng thái tồn kho. Nếu sản phẩm "Còn hàng" bạn có thể đặt mua ngay. Nếu "Hết hàng", bạn có thể đăng ký nhận thông báo khi có hàng trở lại.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="faq-question w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-900">Tôi có thể hủy đơn hàng sau khi đặt không?</span>
+                        <i class="fas fa-chevron-down faq-icon text-red-600 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5 text-gray-600">
+                        Có, bạn có thể hủy đơn hàng trước khi đơn được giao cho đơn vị vận chuyển. Vào mục "Đơn hàng của tôi" trong tài khoản hoặc liên hệ hotline <strong>1900 1234</strong> để được hỗ trợ hủy đơn.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="faq-question w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-900">Phí vận chuyển được tính như thế nào?</span>
+                        <i class="fas fa-chevron-down faq-icon text-red-600 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5 text-gray-600">
+                        <strong>Miễn phí giao hàng</strong> cho đơn hàng từ 500.000đ trở lên. Đơn hàng dưới 500.000đ sẽ có phí ship từ 20.000đ - 50.000đ tùy khu vực. Phí ship sẽ được hiển thị rõ ràng trước khi bạn xác nhận đơn hàng.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="faq-question w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-900">Tôi có thể theo dõi đơn hàng ở đâu?</span>
+                        <i class="fas fa-chevron-down faq-icon text-red-600 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5 text-gray-600">
+                        Sau khi đặt hàng thành công, bạn sẽ nhận được email/SMS xác nhận kèm mã đơn hàng. Đăng nhập vào tài khoản, vào mục <strong>"Đơn hàng của tôi"</strong> để theo dõi trạng thái đơn hàng theo thời gian thực.
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="faq-question w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-900">Sản phẩm có được bảo hành không?</span>
+                        <i class="fas fa-chevron-down faq-icon text-red-600 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5 text-gray-600">
+                        Tất cả sản phẩm tại QuangHưng Mobile đều được <strong>bảo hành chính hãng</strong> từ 12-24 tháng tùy loại sản phẩm. Phụ kiện được bảo hành từ 3-12 tháng. Thông tin bảo hành được ghi rõ trên trang chi tiết sản phẩm.
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="faq-question w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-gray-900">Tôi muốn mua trả góp thì cần những gì?</span>
+                        <i class="fas fa-chevron-down faq-icon text-red-600 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5 text-gray-600">
+                        Để mua trả góp, bạn cần chuẩn bị: <strong>CMND/CCCD</strong>, <strong>Bằng lái xe hoặc Hộ khẩu</strong>. Với trả góp qua thẻ tín dụng, bạn chỉ cần thẻ tín dụng còn hạn mức. Thời gian duyệt hồ sơ chỉ từ 15-30 phút.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-red-600 to-red-500 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-black mb-6">Bắt đầu mua sắm ngay!</h2>
+            <p class="text-lg mb-8 opacity-90">Hàng ngàn sản phẩm chính hãng đang chờ bạn khám phá</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="products.html" class="bg-white text-red-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2 no-underline">
+                    <i class="fas fa-shopping-cart"></i>
+                    Xem sản phẩm
+                </a>
+                <a href="contact.html" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-red-600 transition-colors inline-flex items-center justify-center gap-2 no-underline">
+                    <i class="fas fa-headset"></i>
+                    Liên hệ hỗ trợ
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load Header Component -->
+    <script>
+        (function () {
+            function loadHeader() {
+                const headerPlaceholder = document.getElementById('header-placeholder');
+                if (!headerPlaceholder) {
+                    console.warn('Header placeholder not found');
+                    return;
+                }
+
+                fetch('components/header.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        headerPlaceholder.innerHTML = html;
+                        const script = document.createElement('script');
+                        script.src = 'components/header.js';
+                        document.body.appendChild(script);
+                    })
+                    .catch(error => console.error('Error loading header:', error));
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadHeader);
+            } else {
+                loadHeader();
+            }
+        })();
+    </script>
+
+    <!-- Load Footer Component -->
+    <script>
+        (function () {
+            function loadFooter() {
+                const footerPlaceholder = document.getElementById('footer-placeholder');
+                if (!footerPlaceholder) {
+                    console.warn('Footer placeholder not found');
+                    return;
+                }
+
+                fetch('components/footer.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        footerPlaceholder.innerHTML = html;
+                    })
+                    .catch(error => console.error('Error loading footer:', error));
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadFooter);
+            } else {
+                loadFooter();
+            }
+        })();
+    </script>
+
+    <!-- FAQ Toggle Script -->
+    <script>
+        function toggleFaq(button) {
+            const faqItem = button.closest('.faq-item');
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+    </script>
+
+</body>
+</html>
