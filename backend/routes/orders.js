@@ -27,15 +27,28 @@ router.post('/', async (req, res) => {
     let maKm = null;
     if (voucherCode) {
       const [vouchers] = await connection.query(
-        'SELECT ma_km FROM khuyen_mai WHERE code = ? AND ngay_ket_thuc >= NOW() AND so_luong > 0',
+        `SELECT ma_km, so_luong, so_luong_da_dung 
+         FROM khuyen_mai 
+         WHERE code = ? 
+           AND trang_thai = 'active'
+           AND ngay_bat_dau <= NOW()
+           AND ngay_ket_thuc >= NOW() 
+           AND so_luong_da_dung < so_luong`,
         [voucherCode]
       );
       if (vouchers.length > 0) {
         maKm = vouchers[0].ma_km;
-        // Giảm số lượng voucher
-        await connection.query('UPDATE khuyen_mai SET so_luong = so_luong - 1 WHERE ma_km = ?', [maKm]);
+        // Tăng số lượng đã dùng
+        await connection.query(
+          'UPDATE khuyen_mai SET so_luong_da_dung = so_luong_da_dung + 1 WHERE ma_km = ?', 
+          [maKm]
+        );
+        console.log(`Voucher ${voucherCode} used. Updated so_luong_da_dung for ma_km=${maKm}`);
       }
     }
+
+    // Lưu discount amount để ghi lịch sử sau
+    const discountAmount = discount || 0;
 
     // Tạo đơn hàng
     const [orderResult] = await connection.query(
@@ -68,6 +81,21 @@ router.post('/', async (req, res) => {
        VALUES (?, ?, ?, ?)`,
       [orderId, total, paymentMethod.toUpperCase(), paymentStatus]
     );
+
+    // Ghi lịch sử sử dụng voucher nếu có
+    if (maKm && discountAmount > 0) {
+      try {
+        await connection.query(
+          `INSERT INTO lich_su_voucher (ma_km, ma_kh, ma_don, so_tien_giam)
+           VALUES (?, ?, ?, ?)`,
+          [maKm, customerId || null, orderId, discountAmount]
+        );
+        console.log(`Voucher history recorded: ma_km=${maKm}, ma_don=${orderId}, discount=${discountAmount}`);
+      } catch (historyError) {
+        // Không fail nếu bảng lich_su_voucher chưa tồn tại
+        console.log('Could not record voucher history:', historyError.message);
+      }
+    }
 
     await connection.commit();
 
@@ -296,12 +324,13 @@ router.put('/:orderId/cancel', async (req, res) => {
       [orderId]
     );
 
-    // Nếu có sử dụng voucher, hoàn lại số lượng voucher
+    // Nếu có sử dụng voucher, hoàn lại số lượng đã dùng
     if (order.ma_km) {
       await connection.query(
-        'UPDATE khuyen_mai SET so_luong = so_luong + 1 WHERE ma_km = ?',
+        'UPDATE khuyen_mai SET so_luong_da_dung = GREATEST(0, so_luong_da_dung - 1) WHERE ma_km = ?',
         [order.ma_km]
       );
+      console.log(`Voucher refunded for cancelled order. Updated so_luong_da_dung for ma_km=${order.ma_km}`);
     }
 
     await connection.commit();

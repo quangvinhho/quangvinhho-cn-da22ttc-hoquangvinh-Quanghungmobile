@@ -656,3 +656,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     console.log('Products page initialized successfully!');
 });
+

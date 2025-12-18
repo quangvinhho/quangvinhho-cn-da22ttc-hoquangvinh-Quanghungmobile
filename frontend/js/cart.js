@@ -694,3 +694,4 @@ function initCheckoutButton() {
     checkoutBtn.addEventListener('click', handleCheckout);
   }
 }
+

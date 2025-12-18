@@ -86,7 +86,7 @@ class NotificationBell {
           </div>
           
           <div class="notification-footer px-4 py-2 bg-gray-50 border-t text-center">
-            <a href="profile.html#notifications" class="text-xs text-red-600 hover:underline font-medium">
+            <a href="notifications.html" class="text-xs text-red-600 hover:underline font-medium">
               Xem tất cả thông báo
             </a>
           </div>
@@ -348,3 +348,4 @@ bellStyle.textContent = `
   }
 `;
 document.head.appendChild(bellStyle);
+

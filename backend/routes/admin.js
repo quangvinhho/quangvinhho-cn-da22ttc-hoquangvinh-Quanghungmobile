@@ -1085,4 +1085,453 @@ router.get('/notifications', async (req, res) => {
     }
 });
 
+// ==================== KHUYẾN MÃI (PROMOTIONS) ====================
+
+// GET /api/admin/promotions - Lấy tất cả khuyến mãi
+router.get('/promotions', async (req, res) => {
+    try {
+        const [promotions] = await pool.query(`
+            SELECT km.*,
+                   CASE 
+                       WHEN NOW() < km.ngay_bat_dau THEN 'upcoming'
+                       WHEN NOW() > km.ngay_ket_thuc THEN 'expired'
+                       WHEN km.so_luong_da_dung >= km.so_luong THEN 'sold_out'
+                       ELSE km.trang_thai
+                   END as trang_thai_hien_tai,
+                   (km.so_luong - km.so_luong_da_dung) as so_luong_con_lai,
+                   DATEDIFF(km.ngay_ket_thuc, NOW()) as so_ngay_con_lai
+            FROM khuyen_mai km
+            ORDER BY km.ngay_tao DESC
+        `);
+        
+        res.json({ success: true, data: promotions });
+    } catch (error) {
+        console.error('Error getting promotions:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/promotions/stats - Thống kê khuyến mãi
+router.get('/promotions/stats', async (req, res) => {
+    try {
+        // Tổng số khuyến mãi
+        const [[{ total }]] = await pool.query('SELECT COUNT(*) as total FROM khuyen_mai');
+        
+        // Đang hoạt động
+        const [[{ active }]] = await pool.query(`
+            SELECT COUNT(*) as active FROM khuyen_mai 
+            WHERE trang_thai = 'active' 
+            AND ngay_bat_dau <= NOW() 
+            AND ngay_ket_thuc >= NOW()
+            AND so_luong_da_dung < so_luong
+        `);
+        
+        // Sắp diễn ra
+        const [[{ upcoming }]] = await pool.query(`
+            SELECT COUNT(*) as upcoming FROM khuyen_mai 
+            WHERE ngay_bat_dau > NOW()
+        `);
+        
+        // Đã hết hạn
+        const [[{ expired }]] = await pool.query(`
+            SELECT COUNT(*) as expired FROM khuyen_mai 
+            WHERE ngay_ket_thuc < NOW() OR trang_thai = 'expired'
+        `);
+        
+        // Tổng lượt sử dụng
+        const [[{ total_used }]] = await pool.query('SELECT COALESCE(SUM(so_luong_da_dung), 0) as total_used FROM khuyen_mai');
+        
+        res.json({
+            success: true,
+            data: { total, active, upcoming, expired, total_used }
+        });
+    } catch (error) {
+        console.error('Error getting promotion stats:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/promotions/:id - Lấy chi tiết khuyến mãi
+router.get('/promotions/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const [promotions] = await pool.query(`
+            SELECT * FROM khuyen_mai WHERE ma_km = ?
+        `, [id]);
+        
+        if (promotions.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy khuyến mãi' });
+        }
+        
+        // Lấy lịch sử sử dụng
+        const [history] = await pool.query(`
+            SELECT ls.*, kh.ho_ten, dh.ma_don
+            FROM lich_su_voucher ls
+            LEFT JOIN khach_hang kh ON ls.ma_kh = kh.ma_kh
+            LEFT JOIN don_hang dh ON ls.ma_don = dh.ma_don
+            WHERE ls.ma_km = ?
+            ORDER BY ls.ngay_su_dung DESC
+            LIMIT 20
+        `, [id]);
+        
+        res.json({ success: true, data: { ...promotions[0], history } });
+    } catch (error) {
+        console.error('Error getting promotion:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/promotions - Thêm khuyến mãi mới
+router.post('/promotions', async (req, res) => {
+    try {
+        const { 
+            code, loai_km, loai, gia_tri, mo_ta, 
+            dieu_kien_toi_thieu, dieu_kien_toi_da, 
+            so_luong, ngay_bat_dau, ngay_ket_thuc, trang_thai 
+        } = req.body;
+        
+        console.log('Adding promotion:', req.body);
+        
+        if (!code || !gia_tri || !ngay_bat_dau || !ngay_ket_thuc) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Vui lòng điền đầy đủ thông tin bắt buộc' 
+            });
+        }
+        
+        // Kiểm tra code đã tồn tại chưa
+        const [existing] = await pool.query('SELECT ma_km FROM khuyen_mai WHERE code = ?', [code.toUpperCase()]);
+        if (existing.length > 0) {
+            return res.status(400).json({ success: false, message: 'Mã khuyến mãi đã tồn tại' });
+        }
+        
+        // Chuyển đổi datetime-local sang MySQL datetime format
+        const formatDateTime = (dt) => {
+            if (!dt) return null;
+            // Nếu đã có format đúng thì giữ nguyên
+            if (dt.includes(' ')) return dt;
+            // Chuyển từ YYYY-MM-DDTHH:mm sang YYYY-MM-DD HH:mm:ss
+            return dt.replace('T', ' ') + ':00';
+        };
+        
+        const startDate = formatDateTime(ngay_bat_dau);
+        const endDate = formatDateTime(ngay_ket_thuc);
+        
+        console.log('Formatted dates:', { startDate, endDate });
+        
+        const [result] = await pool.query(`
+            INSERT INTO khuyen_mai 
+            (code, loai_km, loai, gia_tri, mo_ta, dieu_kien_toi_thieu, dieu_kien_toi_da, so_luong, ngay_bat_dau, ngay_ket_thuc, trang_thai)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [
+            code.toUpperCase(), 
+            loai_km || 'voucher', 
+            loai || 'percent', 
+            gia_tri, 
+            mo_ta || '', 
+            dieu_kien_toi_thieu || 0, 
+            dieu_kien_toi_da || null, 
+            so_luong || 100, 
+            startDate, 
+            endDate, 
+            trang_thai || 'active'
+        ]);
+        
+        console.log('Promotion added with ID:', result.insertId);
+        
+        res.json({ 
+            success: true, 
+            message: 'Thêm khuyến mãi thành công',
+            data: { id: result.insertId }
+        });
+    } catch (error) {
+        console.error('Error adding promotion:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/promotions/:id - Cập nhật khuyến mãi
+router.put('/promotions/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { 
+            code, loai_km, loai, gia_tri, mo_ta, 
+            dieu_kien_toi_thieu, dieu_kien_toi_da, 
+            so_luong, ngay_bat_dau, ngay_ket_thuc, trang_thai 
+        } = req.body;
+        
+        // Kiểm tra code trùng (trừ chính nó)
+        if (code) {
+            const [existing] = await pool.query(
+                'SELECT ma_km FROM khuyen_mai WHERE code = ? AND ma_km != ?', 
+                [code, id]
+            );
+            if (existing.length > 0) {
+                return res.status(400).json({ success: false, message: 'Mã khuyến mãi đã tồn tại' });
+            }
+        }
+        
+        await pool.query(`
+            UPDATE khuyen_mai SET
+                code = COALESCE(?, code),
+                loai_km = COALESCE(?, loai_km),
+                loai = COALESCE(?, loai),
+                gia_tri = COALESCE(?, gia_tri),
+                mo_ta = COALESCE(?, mo_ta),
+                dieu_kien_toi_thieu = COALESCE(?, dieu_kien_toi_thieu),
+                dieu_kien_toi_da = ?,
+                so_luong = COALESCE(?, so_luong),
+                ngay_bat_dau = COALESCE(?, ngay_bat_dau),
+                ngay_ket_thuc = COALESCE(?, ngay_ket_thuc),
+                trang_thai = COALESCE(?, trang_thai)
+            WHERE ma_km = ?
+        `, [
+            code ? code.toUpperCase() : null, 
+            loai_km, loai, gia_tri, mo_ta, 
+            dieu_kien_toi_thieu, dieu_kien_toi_da, 
+            so_luong, ngay_bat_dau, ngay_ket_thuc, trang_thai, id
+        ]);
+        
+        res.json({ success: true, message: 'Cập nhật khuyến mãi thành công' });
+    } catch (error) {
+        console.error('Error updating promotion:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/promotions/:id - Xóa khuyến mãi
+router.delete('/promotions/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // Kiểm tra đã có lịch sử sử dụng chưa
+        const [history] = await pool.query('SELECT COUNT(*) as count FROM lich_su_voucher WHERE ma_km = ?', [id]);
+        
+        if (history[0].count > 0) {
+            // Chỉ đánh dấu inactive thay vì xóa
+            await pool.query("UPDATE khuyen_mai SET trang_thai = 'inactive' WHERE ma_km = ?", [id]);
+            return res.json({ success: true, message: 'Đã vô hiệu hóa khuyến mãi (có lịch sử sử dụng)' });
+        }
+        
+        // Xóa voucher đã lưu của người dùng
+        await pool.query('DELETE FROM voucher_nguoi_dung WHERE ma_km = ?', [id]);
+        // Xóa khuyến mãi
+        await pool.query('DELETE FROM khuyen_mai WHERE ma_km = ?', [id]);
+        
+        res.json({ success: true, message: 'Xóa khuyến mãi thành công' });
+    } catch (error) {
+        console.error('Error deleting promotion:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/promotions/:id/status - Cập nhật trạng thái khuyến mãi
+router.put('/promotions/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { trang_thai } = req.body;
+        
+        await pool.query('UPDATE khuyen_mai SET trang_thai = ? WHERE ma_km = ?', [trang_thai, id]);
+        
+        res.json({ success: true, message: 'Cập nhật trạng thái thành công' });
+    } catch (error) {
+        console.error('Error updating promotion status:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/promotions/sync-usage - Đồng bộ số lượng đã dùng từ đơn hàng
+router.post('/promotions/sync-usage', async (req, res) => {
+    try {
+        // Cập nhật so_luong_da_dung dựa trên số đơn hàng đã sử dụng voucher (không bị hủy)
+        await pool.query(`
+            UPDATE khuyen_mai km
+            SET so_luong_da_dung = (
+                SELECT COUNT(*)
+                FROM don_hang dh
+                WHERE dh.ma_km = km.ma_km
+                AND dh.trang_thai != 'cancelled'
+            )
+        `);
+        
+        // Lấy kết quả sau khi cập nhật
+        const [result] = await pool.query(`
+            SELECT ma_km, code, so_luong, so_luong_da_dung, 
+                   (so_luong - so_luong_da_dung) as so_luong_con_lai
+            FROM khuyen_mai
+        `);
+        
+        console.log('Synced voucher usage:', result);
+        
+        res.json({ 
+            success: true, 
+            message: 'Đã đồng bộ số lượng đã dùng thành công',
+            data: result
+        });
+    } catch (error) {
+        console.error('Error syncing promotion usage:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ==================== FLASH SALE ====================
+
+// GET /api/admin/flash-sales - Lấy tất cả flash sale
+router.get('/flash-sales', async (req, res) => {
+    try {
+        const [flashSales] = await pool.query(`
+            SELECT fs.*,
+                   COUNT(ctfs.ma_ct_flash) as so_san_pham,
+                   COALESCE(SUM(ctfs.so_luong_da_ban), 0) as tong_da_ban,
+                   CASE 
+                       WHEN NOW() < fs.ngay_bat_dau THEN 'upcoming'
+                       WHEN NOW() > fs.ngay_ket_thuc THEN 'ended'
+                       ELSE fs.trang_thai
+                   END as trang_thai_hien_tai
+            FROM flash_sale fs
+            LEFT JOIN chi_tiet_flash_sale ctfs ON fs.ma_flash_sale = ctfs.ma_flash_sale
+            GROUP BY fs.ma_flash_sale
+            ORDER BY fs.ngay_bat_dau DESC
+        `);
+        
+        res.json({ success: true, data: flashSales });
+    } catch (error) {
+        console.error('Error getting flash sales:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/flash-sales/:id - Lấy chi tiết flash sale
+router.get('/flash-sales/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const [flashSales] = await pool.query('SELECT * FROM flash_sale WHERE ma_flash_sale = ?', [id]);
+        
+        if (flashSales.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy Flash Sale' });
+        }
+        
+        // Lấy sản phẩm trong flash sale
+        const [products] = await pool.query(`
+            SELECT ctfs.*, sp.ten_sp, sp.anh_dai_dien
+            FROM chi_tiet_flash_sale ctfs
+            JOIN san_pham sp ON ctfs.ma_sp = sp.ma_sp
+            WHERE ctfs.ma_flash_sale = ?
+        `, [id]);
+        
+        res.json({ success: true, data: { ...flashSales[0], products } });
+    } catch (error) {
+        console.error('Error getting flash sale:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/flash-sales - Thêm flash sale mới
+router.post('/flash-sales', async (req, res) => {
+    try {
+        const { ten_su_kien, mo_ta, ngay_bat_dau, ngay_ket_thuc, trang_thai, products } = req.body;
+        
+        if (!ten_su_kien || !ngay_bat_dau || !ngay_ket_thuc) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ thông tin' });
+        }
+        
+        const [result] = await pool.query(`
+            INSERT INTO flash_sale (ten_su_kien, mo_ta, ngay_bat_dau, ngay_ket_thuc, trang_thai)
+            VALUES (?, ?, ?, ?, ?)
+        `, [ten_su_kien, mo_ta || '', ngay_bat_dau, ngay_ket_thuc, trang_thai || 'upcoming']);
+        
+        const flashSaleId = result.insertId;
+        
+        // Thêm sản phẩm vào flash sale nếu có
+        if (products && products.length > 0) {
+            for (const p of products) {
+                await pool.query(`
+                    INSERT INTO chi_tiet_flash_sale (ma_flash_sale, ma_sp, gia_goc, gia_flash, so_luong_flash)
+                    VALUES (?, ?, ?, ?, ?)
+                `, [flashSaleId, p.ma_sp, p.gia_goc, p.gia_flash, p.so_luong_flash || 10]);
+            }
+        }
+        
+        res.json({ success: true, message: 'Thêm Flash Sale thành công', data: { id: flashSaleId } });
+    } catch (error) {
+        console.error('Error adding flash sale:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/flash-sales/:id - Cập nhật flash sale
+router.put('/flash-sales/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ten_su_kien, mo_ta, ngay_bat_dau, ngay_ket_thuc, trang_thai } = req.body;
+        
+        await pool.query(`
+            UPDATE flash_sale SET
+                ten_su_kien = COALESCE(?, ten_su_kien),
+                mo_ta = COALESCE(?, mo_ta),
+                ngay_bat_dau = COALESCE(?, ngay_bat_dau),
+                ngay_ket_thuc = COALESCE(?, ngay_ket_thuc),
+                trang_thai = COALESCE(?, trang_thai)
+            WHERE ma_flash_sale = ?
+        `, [ten_su_kien, mo_ta, ngay_bat_dau, ngay_ket_thuc, trang_thai, id]);
+        
+        res.json({ success: true, message: 'Cập nhật Flash Sale thành công' });
+    } catch (error) {
+        console.error('Error updating flash sale:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/flash-sales/:id - Xóa flash sale
+router.delete('/flash-sales/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // Xóa chi tiết flash sale trước
+        await pool.query('DELETE FROM chi_tiet_flash_sale WHERE ma_flash_sale = ?', [id]);
+        // Xóa flash sale
+        await pool.query('DELETE FROM flash_sale WHERE ma_flash_sale = ?', [id]);
+        
+        res.json({ success: true, message: 'Xóa Flash Sale thành công' });
+    } catch (error) {
+        console.error('Error deleting flash sale:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/flash-sales/:id/products - Thêm sản phẩm vào flash sale
+router.post('/flash-sales/:id/products', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ma_sp, gia_goc, gia_flash, so_luong_flash } = req.body;
+        
+        await pool.query(`
+            INSERT INTO chi_tiet_flash_sale (ma_flash_sale, ma_sp, gia_goc, gia_flash, so_luong_flash)
+            VALUES (?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE gia_goc = ?, gia_flash = ?, so_luong_flash = ?
+        `, [id, ma_sp, gia_goc, gia_flash, so_luong_flash || 10, gia_goc, gia_flash, so_luong_flash || 10]);
+        
+        res.json({ success: true, message: 'Thêm sản phẩm vào Flash Sale thành công' });
+    } catch (error) {
+        console.error('Error adding product to flash sale:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/flash-sales/:id/products/:productId - Xóa sản phẩm khỏi flash sale
+router.delete('/flash-sales/:id/products/:productId', async (req, res) => {
+    try {
+        const { id, productId } = req.params;
+        
+        await pool.query('DELETE FROM chi_tiet_flash_sale WHERE ma_flash_sale = ? AND ma_sp = ?', [id, productId]);
+        
+        res.json({ success: true, message: 'Xóa sản phẩm khỏi Flash Sale thành công' });
+    } catch (error) {
+        console.error('Error removing product from flash sale:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 module.exports = router;

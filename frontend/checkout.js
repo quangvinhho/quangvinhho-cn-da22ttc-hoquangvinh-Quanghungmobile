@@ -739,27 +739,6 @@ function generateDemoQR(content, orderData) {
   }
 }
 
-// ===== CONFIRM DEMO PAYMENT =====
-function confirmDemoPayment() {
-  const pendingOrder = JSON.parse(localStorage.getItem('pendingOrder'));
-  if (!pendingOrder) {
-    showToast('Không tìm thấy đơn hàng!', 'error');
-    return;
-  }
-  
-  showToast('Đang xử lý thanh toán...', 'info');
-  
-  setTimeout(() => {
-    pendingOrder.status = 'paid';
-    pendingOrder.paidAt = new Date().toISOString();
-    pendingOrder.transactionId = 'DEMO_' + Date.now();
-    
-    closeQRModal();
-    completeOrder(pendingOrder);
-    showToast('Thanh toán thành công! (Demo)', 'success');
-  }, 1500);
-}
-
 // ===== SHOW QR ERROR =====
 function showQRError(message) {
   const container = document.getElementById('qrCodeContainer');
@@ -1713,6 +1692,142 @@ function saveShippingAddress() {
   localStorage.setItem('savedShippingAddress', JSON.stringify(addressData));
 }
 
+// ===== SAVED VOUCHERS FUNCTIONS =====
+
+// Toggle hiển thị danh sách voucher đã lưu
+function toggleSavedVouchers() {
+  const section = document.getElementById('savedVouchersSection');
+  if (section.classList.contains('hidden')) {
+    section.classList.remove('hidden');
+    loadSavedVouchersForCheckout();
+  } else {
+    section.classList.add('hidden');
+  }
+}
+
+// Load voucher đã lưu từ localStorage và database
+function loadSavedVouchersForCheckout() {
+  const container = document.getElementById('savedVouchersList');
+  if (!container) return;
+  
+  // Chỉ dùng localStorage - không cần database
+  let savedVouchers = JSON.parse(localStorage.getItem('savedVouchers') || '[]');
+  
+  if (savedVouchers.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-4 text-gray-500 text-xs">
+        <i class="fas fa-inbox text-2xl mb-2 block opacity-50"></i>
+        <p>Chưa có mã đã lưu</p>
+        <a href="promotions-new.html" class="text-red-600 hover:underline mt-1 inline-block">Xem khuyến mãi</a>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = savedVouchers.map(voucher => {
+    // Xử lý trường hợp voucher chỉ có code (lưu từ trang promotions)
+    let discountText = 'Mã giảm giá';
+    if (voucher.discountValue !== undefined && voucher.discountValue !== null) {
+      discountText = voucher.discountType === 'percent' 
+        ? `Giảm ${voucher.discountValue}%` 
+        : `Giảm ${formatPrice(voucher.discountValue)}`;
+    }
+    
+    let minOrderText = '';
+    if (voucher.minOrder !== undefined && voucher.minOrder !== null && voucher.minOrder > 0) {
+      minOrderText = `Đơn từ ${formatPrice(voucher.minOrder)}`;
+    }
+    
+    return `
+      <div class="flex items-center gap-2 p-2 bg-white border border-gray-200 rounded-lg hover:border-red-400 cursor-pointer transition" onclick="selectSavedVoucher('${voucher.code}')">
+        <div class="w-10 h-10 bg-red-100 rounded flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-ticket-alt text-red-600 text-sm"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-bold text-gray-800 text-xs">${voucher.code}</p>
+          <p class="text-xs text-gray-500 truncate">${voucher.description || discountText}</p>
+          ${minOrderText ? `<p class="text-xs text-gray-400">${minOrderText}</p>` : ''}
+        </div>
+        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+      </div>
+    `;
+  }).join('');
+}
+
+// Chọn voucher đã lưu
+function selectSavedVoucher(code) {
+  const voucherInput = document.getElementById('voucherCode');
+  if (voucherInput) {
+    voucherInput.value = code;
+  }
+  // Ẩn danh sách
+  document.getElementById('savedVouchersSection').classList.add('hidden');
+  // Tự động áp dụng
+  applyVoucher();
+}
+
+// Xóa voucher đã áp dụng
+function removeAppliedVoucher() {
+  discount = 0;
+  document.getElementById('voucherCode').value = '';
+  document.getElementById('appliedVoucherBadge').classList.add('hidden');
+  calculateTotal();
+  showToast('Đã xóa mã giảm giá', 'info');
+}
+
+// Override applyVoucher để hiển thị badge
+const originalApplyVoucher = typeof applyVoucher === 'function' ? applyVoucher : null;
+
+function applyVoucher() {
+  const voucherCode = document.getElementById('voucherCode').value.trim().toUpperCase();
+  
+  if (!voucherCode) {
+    showToast('Vui lòng nhập mã giảm giá!', 'error');
+    return;
+  }
+  
+  // Demo voucher codes
+  const vouchers = {
+    'GIAM50K': 50000,
+    'GIAM100K': 100000,
+    'GIAM10': subtotal * 0.1,
+    'FREESHIP': shippingFee,
+    'GIAM20': subtotal * 0.2,
+    'GIAM15': subtotal * 0.15
+  };
+  
+  if (vouchers[voucherCode]) {
+    discount = vouchers[voucherCode];
+    calculateTotal();
+    
+    // Hiển thị badge
+    document.getElementById('appliedVoucherBadge').classList.remove('hidden');
+    document.getElementById('appliedVoucherCode').textContent = voucherCode;
+    
+    showToast(`Áp dụng mã giảm giá thành công! Giảm ${formatPrice(discount)}`, 'success');
+  } else {
+    // Kiểm tra trong danh sách voucher đã lưu
+    const savedVouchers = JSON.parse(localStorage.getItem('savedVouchers') || '[]');
+    const savedVoucher = savedVouchers.find(v => v.code === voucherCode);
+    
+    if (savedVoucher && savedVoucher.discountValue) {
+      // Tính giảm giá từ voucher đã lưu
+      if (savedVoucher.discountType === 'percent') {
+        discount = subtotal * savedVoucher.discountValue / 100;
+      } else {
+        discount = savedVoucher.discountValue;
+      }
+      
+      calculateTotal();
+      document.getElementById('appliedVoucherBadge').classList.remove('hidden');
+      document.getElementById('appliedVoucherCode').textContent = voucherCode;
+      showToast(`Áp dụng mã giảm giá thành công! Giảm ${formatPrice(discount)}`, 'success');
+    } else {
+      showToast('Mã giảm giá không hợp lệ!', 'error');
+    }
+  }
+}
+
 // ===== PAGE INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
   // Scroll về đầu trang ngay khi load
@@ -1733,3 +1848,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 600);
   }, 200);
 });
+

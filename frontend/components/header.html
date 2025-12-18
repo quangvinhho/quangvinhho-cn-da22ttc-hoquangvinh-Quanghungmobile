@@ -90,9 +90,10 @@
               <i class="fas fa-heart w-5 text-center"></i>
               <span>Yêu thích</span>
             </a>
-            <a href="profile.html#notifications" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
+            <a href="notifications.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline relative">
               <i class="fas fa-bell w-5 text-center"></i>
               <span>Thông báo</span>
+              <span id="dropdown-notif-badge" class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold hidden">0</span>
             </a>
             <div class="border-t border-gray-100 mt-2 pt-2">
               <button onclick="handleLogout()" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors w-full text-left">
@@ -376,3 +377,6 @@
     </nav>
   </div>
 </header>
+
+<!-- Notification Popup Script - Real-time notifications -->
+<script src="components/notification-popup.js"></script>

@@ -153,3 +153,4 @@ document.addEventListener('DOMContentLoaded', () => {
         loadComponent('profile-sidebar', 'components/profile-sidebar.html');
     }
 });
+

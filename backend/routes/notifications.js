@@ -138,4 +138,62 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// POST /api/notifications - Tạo thông báo mới (Admin gửi cho user)
+router.post('/', async (req, res) => {
+    try {
+        const { ma_kh, email_nguoi_nhan, tieu_de, noi_dung, loai, lien_ket } = req.body;
+        
+        if (!tieu_de || !noi_dung) {
+            return res.status(400).json({ success: false, message: 'Thiếu tiêu đề hoặc nội dung' });
+        }
+        
+        const [result] = await pool.query(
+            `INSERT INTO thong_bao (ma_kh, email_nguoi_nhan, tieu_de, noi_dung, loai, lien_ket, da_doc, ngay_tao) 
+             VALUES (?, ?, ?, ?, ?, ?, 0, NOW())`,
+            [ma_kh || null, email_nguoi_nhan || null, tieu_de, noi_dung, loai || 'system', lien_ket || null]
+        );
+        
+        res.json({ 
+            success: true, 
+            message: 'Đã tạo thông báo',
+            data: { ma_thong_bao: result.insertId }
+        });
+    } catch (error) {
+        console.error('Error creating notification:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/notifications/broadcast - Gửi thông báo cho tất cả user
+router.post('/broadcast', async (req, res) => {
+    try {
+        const { tieu_de, noi_dung, loai, lien_ket } = req.body;
+        
+        if (!tieu_de || !noi_dung) {
+            return res.status(400).json({ success: false, message: 'Thiếu tiêu đề hoặc nội dung' });
+        }
+        
+        // Lấy tất cả user
+        const [users] = await pool.query('SELECT ma_kh FROM khach_hang');
+        
+        // Tạo thông báo cho từng user
+        const values = users.map(u => [u.ma_kh, null, tieu_de, noi_dung, loai || 'system', lien_ket || null, 0]);
+        
+        if (values.length > 0) {
+            await pool.query(
+                `INSERT INTO thong_bao (ma_kh, email_nguoi_nhan, tieu_de, noi_dung, loai, lien_ket, da_doc) VALUES ?`,
+                [values]
+            );
+        }
+        
+        res.json({ 
+            success: true, 
+            message: `Đã gửi thông báo cho ${users.length} người dùng`
+        });
+    } catch (error) {
+        console.error('Error broadcasting notification:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 module.exports = router;

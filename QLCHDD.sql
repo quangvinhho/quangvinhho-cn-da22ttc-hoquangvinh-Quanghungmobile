@@ -107,6 +107,15 @@ CREATE TABLE khach_hang (
 );
 ALTER TABLE khach_hang
 ADD COLUMN avt VARCHAR(255) AFTER ho_ten;
+ALTER TABLE khach_hang
+ADD COLUMN gioi_tinh ENUM('nam', 'nu', 'khac') AFTER ma_kh,
+ADD COLUMN ngay_sinh DATE AFTER gioi_tinh;
+ALTER TABLE lien_he
+ADD CONSTRAINT fk_lienhe_kh
+    FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh)
+    ON DELETE SET NULL 
+    ON UPDATE CASCADE;
+
 -------------------------------------------------------------
 -- 7. ADMIN
 -------------------------------------------------------------
@@ -119,6 +128,11 @@ CREATE TABLE admin (
 );
 ALTER TABLE admin
 ADD COLUMN avt VARCHAR(255) AFTER ho_ten;
+ALTER TABLE lien_he
+ADD CONSTRAINT fk_lienhe_admin
+    FOREIGN KEY (ma_admin) REFERENCES admin(ma_admin)
+    ON DELETE SET NULL 
+    ON UPDATE CASCADE;
 -------------------------------------------------------------
 -- 8. GIỎ HÀNG
 -------------------------------------------------------------
@@ -276,24 +290,9 @@ CREATE TABLE lien_he (
   ngay_gui DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   trang_thai ENUM('new','read','replied') DEFAULT 'new'
 );
-
--------------------------------------------------------------
--- 20. ĐỊA CHỈ NHẬN HÀNG (Giống Shopee - Nhiều địa chỉ)
--------------------------------------------------------------
-CREATE TABLE dia_chi_nhan_hang (
-  ma_dia_chi INT AUTO_INCREMENT PRIMARY KEY,
-  ma_kh INT NOT NULL,
-  ho_ten_nguoi_nhan VARCHAR(150) NOT NULL,
-  so_dien_thoai VARCHAR(20) NOT NULL,
-  tinh_thanh VARCHAR(100) NOT NULL,
-  quan_huyen VARCHAR(100) NOT NULL,
-  phuong_xa VARCHAR(100) NOT NULL,
-  dia_chi_cu_the VARCHAR(300) NOT NULL,
-  loai_dia_chi ENUM('nha_rieng','co_quan') DEFAULT 'nha_rieng',
-  mac_dinh TINYINT DEFAULT 0,
-  ngay_tao DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh) ON DELETE CASCADE
-);
+ALTER TABLE lien_he
+ADD COLUMN ma_kh INT NULL,
+ADD COLUMN ma_admin INT NULL;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -474,6 +473,35 @@ INSERT INTO reset_password (ma_kh, token, expired_at, used) VALUES
 (8,'token8','2025-01-01',0),
 (9,'token9','2025-01-01',0),
 (10,'token10','2025-01-01',0);
+-------------------------------------------------------------
+-- 20. THÔNG BÁO
+-------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS thong_bao (
+  ma_thong_bao INT AUTO_INCREMENT PRIMARY KEY,
+  ma_kh INT,
+  email_nguoi_nhan VARCHAR(255),
+  tieu_de VARCHAR(255) NOT NULL,
+  noi_dung TEXT NOT NULL,
+  loai ENUM('order_update','promotion','contact_response','system') DEFAULT 'system',
+  lien_ket VARCHAR(500),
+  da_doc TINYINT DEFAULT 0,
+  ngay_tao DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh) ON DELETE CASCADE
+);
+
+-- Dữ liệu mẫu thông báo
+INSERT INTO thong_bao (ma_kh, tieu_de, noi_dung, loai, lien_ket, da_doc, ngay_tao) VALUES
+(1, 'Đơn hàng #1 đã được xác nhận', 'Đơn hàng của bạn đã được xác nhận và đang được chuẩn bị. Dự kiến giao hàng trong 2-3 ngày.', 'order_update', 'profile.html#orders', 1, DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(1, 'Đơn hàng #1 đang được giao', 'Đơn hàng của bạn đang trên đường giao đến. Vui lòng giữ điện thoại để nhận hàng.', 'order_update', 'profile.html#orders', 1, DATE_SUB(NOW(), INTERVAL 3 DAY)),
+(1, 'Đơn hàng #1 đã giao thành công', 'Đơn hàng của bạn đã được giao thành công. Cảm ơn bạn đã mua hàng tại QuangHưng Mobile!', 'order_update', 'profile.html#orders', 0, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(1, '🎁 Giảm 20% cho đơn hàng tiếp theo!', 'Chào mừng bạn quay lại! Sử dụng mã SALE20 để được giảm 20% cho đơn hàng tiếp theo. Áp dụng đến hết tháng này.', 'promotion', 'promotions.html', 0, DATE_SUB(NOW(), INTERVAL 2 HOUR)),
+(1, 'Phản hồi liên hệ của bạn', 'Cảm ơn bạn đã liên hệ với chúng tôi. Chúng tôi đã nhận được yêu cầu và sẽ phản hồi trong thời gian sớm nhất.', 'contact_response', NULL, 0, NOW()),
+(2, 'Chào mừng đến QuangHưng Mobile!', 'Cảm ơn bạn đã đăng ký tài khoản. Khám phá ngay các sản phẩm điện thoại chính hãng với giá tốt nhất!', 'system', 'products.html', 0, NOW()),
+(2, '🔥 Flash Sale - Giảm đến 50%!', 'Flash Sale cuối tuần! Giảm đến 50% cho các sản phẩm iPhone, Samsung. Số lượng có hạn!', 'promotion', 'promotions.html', 0, DATE_SUB(NOW(), INTERVAL 1 HOUR)),
+(3, 'Đơn hàng #3 đang được xử lý', 'Đơn hàng của bạn đang được xử lý. Chúng tôi sẽ thông báo khi đơn hàng được giao cho đơn vị vận chuyển.', 'order_update', 'profile.html#orders', 0, NOW()),
+(4, 'Cập nhật bảo mật tài khoản', 'Vì lý do bảo mật, vui lòng cập nhật mật khẩu của bạn định kỳ để bảo vệ tài khoản.', 'system', 'profile.html', 0, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(5, 'Đánh giá sản phẩm để nhận ưu đãi', 'Bạn đã mua iPhone 14 gần đây. Hãy đánh giá sản phẩm để nhận mã giảm giá 5% cho đơn hàng tiếp theo!', 'promotion', 'product-detail.html?id=2', 0, NOW());
+
 INSERT INTO lien_he (ho_ten, email, so_dien_thoai, tieu_de, noi_dung) VALUES
 ('Khách 1','l1@gmail.com','0901','Hỗ trợ','Cần hỗ trợ mua hàng'),
 ('Khách 2','l2@gmail.com','0902','Bảo hành','Thắc mắc bảo hành'),
@@ -488,6 +516,11 @@ INSERT INTO lien_he (ho_ten, email, so_dien_thoai, tieu_de, noi_dung) VALUES
 
 select * from san_pham;
 select * from khach_hang;
-
-
-
+select * from admin;
+select * from danh_gia;
+select * from thanh_toan;
+select * from lien_he;
+select * from reset_password;
+select * from tin_tuc;
+select * from du_lieu_tim_kiem;
+select * from cau_hinh;

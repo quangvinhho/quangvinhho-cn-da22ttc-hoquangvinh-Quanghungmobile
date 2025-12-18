@@ -51,6 +51,9 @@ const API_BASE_URL = 'http://localhost:3000/api';
         initNotificationBell();
       }
       
+      // Load số thông báo chưa đọc cho dropdown menu
+      loadDropdownNotificationCount(user.ma_kh);
+      
       // Cập nhật tên user
       if (userName) userName.textContent = user.ho_ten || 'Người dùng';
       if (dropdownUserName) dropdownUserName.textContent = user.ho_ten || 'Người dùng';
@@ -719,3 +722,43 @@ function handleLogout() {
   // Chuyển về trang chủ
   window.location.href = 'index.html';
 }
+
+// ===== NOTIFICATION COUNT FOR DROPDOWN =====
+// Load số thông báo chưa đọc và hiển thị trong dropdown menu
+async function loadDropdownNotificationCount(userId) {
+  if (!userId) return;
+  
+  try {
+    const res = await fetch(`http://localhost:3000/api/notifications/count/${userId}`);
+    const data = await res.json();
+    
+    if (data.success) {
+      updateDropdownNotificationBadge(data.count || 0);
+    }
+  } catch (error) {
+    console.log('Error loading notification count:', error);
+  }
+}
+
+// Cập nhật badge số thông báo trong dropdown
+function updateDropdownNotificationBadge(count) {
+  const badge = document.getElementById('dropdown-notif-badge');
+  if (badge) {
+    if (count > 0) {
+      badge.textContent = count > 99 ? '99+' : count;
+      badge.classList.remove('hidden');
+    } else {
+      badge.classList.add('hidden');
+    }
+  }
+}
+
+// Tự động refresh số thông báo mỗi 30 giây
+setInterval(() => {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  if (isLoggedIn && user && user.ma_kh) {
+    loadDropdownNotificationCount(user.ma_kh);
+  }
+}, 30000);
+

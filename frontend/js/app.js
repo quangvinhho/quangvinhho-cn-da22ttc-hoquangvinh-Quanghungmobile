@@ -515,3 +515,4 @@ window.toggleMobileSubmenu = toggleMobileSubmenu;
 window.isLoggedIn = isLoggedIn;
 window.showLoginRequiredModal = showLoginRequiredModal;
 window.closeLoginModal = closeLoginModal;
+

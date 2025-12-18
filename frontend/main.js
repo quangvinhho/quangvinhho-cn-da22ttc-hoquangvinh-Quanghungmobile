@@ -190,3 +190,4 @@ if (typeof window !== 'undefined') {
   window.updateCartBadge = updateCartBadge;
   window.addToCart = addToCart;
 }
+
