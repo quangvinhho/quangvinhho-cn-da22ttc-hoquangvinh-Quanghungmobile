@@ -54,6 +54,7 @@ const searchRoutes = require('./routes/search');
 const addressRoutes = require('./routes/address');
 const notificationRoutes = require('./routes/notifications');
 const promotionRoutes = require('./routes/promotions');
+const chatbotRoutes = require('./routes/chatbot');
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
@@ -67,6 +68,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/address', addressRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/promotions', promotionRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

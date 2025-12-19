@@ -7,8 +7,19 @@ let cart = [];
 let subtotal = 0;
 let shippingFee = 0;
 let discount = 0;
+let freeshipDiscount = 0; // Giảm phí ship
+let percentDiscount = 0;  // Giảm theo % hoặc số tiền cố định
 let selectedShipping = 'standard';
 let selectedPayment = 'cod';
+
+// Voucher đã áp dụng
+let appliedFreeshipVoucher = null;
+let appliedDiscountVoucher = null;
+
+// Danh sách tất cả voucher
+let allAvailableVouchers = [];
+let userSavedVouchers = []; // Voucher đã lưu của user
+let currentVoucherFilter = 'all';
 
 // ===== UTILITY FUNCTIONS =====
 function formatPrice(price) {
@@ -145,19 +156,56 @@ function renderCart() {
 function calculateTotal() {
   subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   
+  // Tính lại giảm giá nếu có voucher đã áp dụng
+  if (appliedDiscountVoucher) {
+    if (appliedDiscountVoucher.discountType === 'percent') {
+      percentDiscount = Math.round(subtotal * appliedDiscountVoucher.discountValue / 100);
+    } else {
+      percentDiscount = appliedDiscountVoucher.discountValue;
+    }
+  }
+  
+  // Tính freeship discount
+  if (appliedFreeshipVoucher) {
+    freeshipDiscount = Math.min(appliedFreeshipVoucher.discountValue, shippingFee);
+  }
+  
+  // Tổng giảm giá
+  discount = freeshipDiscount + percentDiscount;
+  
   // Update UI
   document.getElementById('subtotal').textContent = formatPrice(subtotal);
-  document.getElementById('shippingFee').textContent = shippingFee === 0 ? 'Miễn phí' : formatPrice(shippingFee);
   
-  if (discount > 0) {
+  // Hiển thị phí ship (đã trừ freeship nếu có)
+  const actualShippingFee = shippingFee - freeshipDiscount;
+  if (actualShippingFee <= 0) {
+    document.getElementById('shippingFee').textContent = 'Miễn phí';
+    document.getElementById('shippingFee').classList.add('text-green-600');
+  } else {
+    document.getElementById('shippingFee').textContent = formatPrice(actualShippingFee);
+    document.getElementById('shippingFee').classList.remove('text-green-600');
+  }
+  
+  // Hiển thị giảm giá (chỉ hiện phần giảm giá sản phẩm, không tính freeship)
+  if (percentDiscount > 0) {
     document.getElementById('discountRow').classList.remove('hidden');
-    document.getElementById('discount').textContent = '-' + formatPrice(discount);
+    document.getElementById('discount').textContent = '-' + formatPrice(percentDiscount);
   } else {
     document.getElementById('discountRow').classList.add('hidden');
   }
   
-  const total = subtotal + shippingFee - discount;
+  const total = Math.max(0, subtotal + shippingFee - discount);
   document.getElementById('total').textContent = formatPrice(total);
+  
+  // Cập nhật badge nếu có
+  if (appliedFreeshipVoucher) {
+    document.getElementById('appliedFreeshipCode').textContent = 
+      `${appliedFreeshipVoucher.code} (-${formatPrice(freeshipDiscount)} ship)`;
+  }
+  if (appliedDiscountVoucher) {
+    document.getElementById('appliedDiscountCode').textContent = 
+      `${appliedDiscountVoucher.code} (-${formatPrice(percentDiscount)})`;
+  }
 }
 
 // ===== SHIPPING METHOD SELECTION =====
@@ -233,30 +281,516 @@ function getMoMoPaymentType(paymentMethod) {
   return typeMap[paymentMethod] || 'qr';
 }
 
-// ===== APPLY VOUCHER =====
-function applyVoucher() {
-  const voucherCode = document.getElementById('voucherCode').value.trim().toUpperCase();
+// ===== VOUCHER SYSTEM - NEW LOGIC =====
+
+// Toggle hiển thị tất cả voucher
+function toggleAllVouchers() {
+  const section = document.getElementById('allVouchersSection');
+  const toggleText = document.getElementById('voucherToggleText');
   
-  if (!voucherCode) {
-    showToast('Vui lòng nhập mã giảm giá!', 'error');
+  if (section.classList.contains('hidden')) {
+    section.classList.remove('hidden');
+    toggleText.textContent = 'Ẩn bớt';
+    loadAllVouchers();
+  } else {
+    section.classList.add('hidden');
+    toggleText.textContent = 'Xem tất cả mã';
+  }
+}
+
+// Load tất cả voucher từ API
+async function loadAllVouchers() {
+  const loadingEl = document.getElementById('vouchersLoading');
+  const listEl = document.getElementById('allVouchersList');
+  const emptyEl = document.getElementById('vouchersEmpty');
+  
+  loadingEl.classList.remove('hidden');
+  listEl.classList.add('hidden');
+  emptyEl.classList.add('hidden');
+  
+  try {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    
+    // Load voucher có sẵn từ hệ thống
+    const availableRes = await fetch(`${API_URL}/promotions/vouchers/available`);
+    const availableData = await availableRes.json();
+    
+    if (availableData.success) {
+      allAvailableVouchers = availableData.data || [];
+    }
+    
+    // Load voucher đã lưu của user (nếu đã đăng nhập)
+    if (user && user.ma_kh) {
+      const savedRes = await fetch(`${API_URL}/promotions/user/${user.ma_kh}/saved-vouchers`);
+      const savedData = await savedRes.json();
+      
+      if (savedData.success) {
+        userSavedVouchers = savedData.data || [];
+      }
+    }
+    
+    // Cũng load từ localStorage
+    const localSaved = JSON.parse(localStorage.getItem('savedVouchers') || '[]');
+    
+    // Merge voucher đã lưu từ localStorage vào userSavedVouchers
+    localSaved.forEach(lv => {
+      if (!userSavedVouchers.find(uv => uv.code === lv.code)) {
+        userSavedVouchers.push(lv);
+      }
+    });
+    
+    loadingEl.classList.add('hidden');
+    
+    if (allAvailableVouchers.length === 0 && userSavedVouchers.length === 0) {
+      emptyEl.classList.remove('hidden');
+    } else {
+      listEl.classList.remove('hidden');
+      renderVouchersList();
+    }
+  } catch (error) {
+    console.error('Error loading vouchers:', error);
+    loadingEl.classList.add('hidden');
+    
+    // Fallback: dùng voucher demo
+    allAvailableVouchers = getDemoVouchers();
+    listEl.classList.remove('hidden');
+    renderVouchersList();
+  }
+}
+
+// Voucher demo khi không có API
+function getDemoVouchers() {
+  return [
+    { id: 1, code: 'FREESHIP', type: 'freeship', discountType: 'fixed', discountValue: 30000, description: 'Miễn phí vận chuyển', minOrder: 0 },
+    { id: 2, code: 'FREESHIP50', type: 'freeship', discountType: 'fixed', discountValue: 50000, description: 'Giảm 50K phí ship', minOrder: 500000 },
+    { id: 3, code: 'GIAM10', type: 'discount', discountType: 'percent', discountValue: 10, description: 'Giảm 10% đơn hàng', minOrder: 1000000 },
+    { id: 4, code: 'GIAM15', type: 'discount', discountType: 'percent', discountValue: 15, description: 'Giảm 15% đơn hàng', minOrder: 2000000 },
+    { id: 5, code: 'GIAM20', type: 'discount', discountType: 'percent', discountValue: 20, description: 'Giảm 20% đơn hàng', minOrder: 5000000 },
+    { id: 6, code: 'GIAM50K', type: 'discount', discountType: 'fixed', discountValue: 50000, description: 'Giảm 50.000đ', minOrder: 500000 },
+    { id: 7, code: 'GIAM100K', type: 'discount', discountType: 'fixed', discountValue: 100000, description: 'Giảm 100.000đ', minOrder: 1000000 },
+    { id: 8, code: 'GIAM500K', type: 'discount', discountType: 'fixed', discountValue: 500000, description: 'Giảm 500.000đ', minOrder: 5000000 },
+    { id: 9, code: 'PHONE10', type: 'phone', discountType: 'percent', discountValue: 10, description: 'Giảm 10% cho điện thoại (cần lưu mã)', minOrder: 0, requireSaved: true },
+    { id: 10, code: 'PHONE200K', type: 'phone', discountType: 'fixed', discountValue: 200000, description: 'Giảm 200K cho điện thoại (cần lưu mã)', minOrder: 3000000, requireSaved: true }
+  ];
+}
+
+// Phân loại voucher
+function getVoucherCategory(voucher) {
+  const code = voucher.code?.toUpperCase() || '';
+  const type = voucher.type?.toLowerCase() || '';
+  
+  if (type === 'freeship' || code.includes('FREESHIP') || code.includes('SHIP')) {
+    return 'freeship';
+  }
+  if (type === 'phone' || code.includes('PHONE') || code.includes('DT')) {
+    return 'phone';
+  }
+  return 'discount';
+}
+
+// Filter voucher theo loại
+function filterVouchersByType(type) {
+  currentVoucherFilter = type;
+  
+  // Update tab active
+  document.querySelectorAll('.voucher-tab').forEach(tab => {
+    if (tab.dataset.type === type) {
+      tab.classList.remove('bg-gray-200', 'text-gray-700');
+      tab.classList.add('bg-red-600', 'text-white');
+    } else {
+      tab.classList.remove('bg-red-600', 'text-white');
+      tab.classList.add('bg-gray-200', 'text-gray-700');
+    }
+  });
+  
+  renderVouchersList();
+}
+
+// Đếm số mã đã lưu
+function getSavedVouchersCount() {
+  return userSavedVouchers.length;
+}
+
+// Cập nhật badge số mã đã lưu trên tab
+function updateSavedVouchersBadge() {
+  const savedTab = document.querySelector('.voucher-tab[data-type="saved"]');
+  if (savedTab) {
+    const count = getSavedVouchersCount();
+    if (count > 0) {
+      savedTab.innerHTML = `<i class="fas fa-bookmark mr-1 text-yellow-500"></i>Đã lưu (${count})`;
+    } else {
+      savedTab.innerHTML = `<i class="fas fa-bookmark mr-1 text-yellow-500"></i>Đã lưu`;
+    }
+  }
+}
+
+// Render danh sách voucher
+function renderVouchersList() {
+  const container = document.getElementById('allVouchersList');
+  const emptyEl = document.getElementById('vouchersEmpty');
+  if (!container) return;
+  
+  // Gộp tất cả voucher
+  let allVouchers = [...allAvailableVouchers];
+  
+  // Thêm voucher đã lưu (nếu chưa có trong danh sách)
+  userSavedVouchers.forEach(sv => {
+    if (!allVouchers.find(v => v.code === sv.code)) {
+      sv.isSaved = true;
+      allVouchers.push(sv);
+    } else {
+      // Đánh dấu voucher đã lưu
+      const existing = allVouchers.find(v => v.code === sv.code);
+      if (existing) existing.isSaved = true;
+    }
+  });
+  
+  // Filter theo loại
+  let filteredVouchers = allVouchers;
+  if (currentVoucherFilter === 'saved') {
+    // Chỉ hiện mã đã lưu
+    filteredVouchers = allVouchers.filter(v => v.isSaved || userSavedVouchers.some(sv => sv.code === v.code));
+  } else if (currentVoucherFilter !== 'all') {
+    filteredVouchers = allVouchers.filter(v => getVoucherCategory(v) === currentVoucherFilter);
+  }
+  
+  // Cập nhật badge số mã đã lưu trên tab
+  updateSavedVouchersBadge();
+  
+  if (filteredVouchers.length === 0) {
+    container.classList.add('hidden');
+    emptyEl.classList.remove('hidden');
+    
+    let emptyMessage = 'Không có mã khuyến mãi nào';
+    if (currentVoucherFilter === 'saved') {
+      emptyMessage = 'Bạn chưa lưu mã nào. Nhấn "Lưu để dùng" để lưu mã!';
+    } else if (currentVoucherFilter === 'freeship') {
+      emptyMessage = 'Không có mã freeship nào';
+    } else if (currentVoucherFilter === 'discount') {
+      emptyMessage = 'Không có mã giảm giá nào';
+    }
+    
+    emptyEl.innerHTML = `
+      <i class="fas fa-${currentVoucherFilter === 'saved' ? 'bookmark' : 'inbox'} text-2xl mb-2 block opacity-50"></i>
+      <p>${emptyMessage}</p>
+    `;
     return;
   }
   
-  // Demo voucher codes
-  const vouchers = {
-    'GIAM50K': 50000,
-    'GIAM100K': 100000,
-    'GIAM10': subtotal * 0.1, // 10%
-    'FREESHIP': shippingFee
-  };
+  container.classList.remove('hidden');
+  emptyEl.classList.add('hidden');
   
-  if (vouchers[voucherCode]) {
-    discount = vouchers[voucherCode];
-    calculateTotal();
-    showToast(`Áp dụng mã giảm giá thành công! Giảm ${formatPrice(discount)}`, 'success');
-  } else {
-    showToast('Mã giảm giá không hợp lệ!', 'error');
+  container.innerHTML = filteredVouchers.map(voucher => {
+    const category = getVoucherCategory(voucher);
+    const isFreeship = category === 'freeship';
+    const isPhone = category === 'phone';
+    const isSaved = voucher.isSaved || userSavedVouchers.some(sv => sv.code === voucher.code);
+    
+    // Kiểm tra điều kiện áp dụng
+    const minOrder = voucher.minOrder || 0;
+    const canApply = subtotal >= minOrder;
+    
+    // Kiểm tra mã điện thoại phải được lưu
+    const requireSaved = isPhone || voucher.requireSaved;
+    const canUsePhoneVoucher = !requireSaved || isSaved;
+    
+    // Kiểm tra đã áp dụng chưa
+    const isAppliedFreeship = appliedFreeshipVoucher?.code === voucher.code;
+    const isAppliedDiscount = appliedDiscountVoucher?.code === voucher.code;
+    const isApplied = isAppliedFreeship || isAppliedDiscount;
+    
+    // Tính giá trị giảm
+    let discountText = '';
+    if (voucher.discountType === 'percent') {
+      discountText = `Giảm ${voucher.discountValue}%`;
+    } else {
+      discountText = `Giảm ${formatPrice(voucher.discountValue)}`;
+    }
+    
+    // Icon và màu theo loại
+    let iconClass = 'fa-percent';
+    let bgColor = 'bg-green-100';
+    let iconColor = 'text-green-600';
+    let borderColor = 'border-green-200';
+    
+    if (isFreeship) {
+      iconClass = 'fa-shipping-fast';
+      bgColor = 'bg-blue-100';
+      iconColor = 'text-blue-600';
+      borderColor = 'border-blue-200';
+    } else if (isPhone) {
+      iconClass = 'fa-mobile-alt';
+      bgColor = 'bg-purple-100';
+      iconColor = 'text-purple-600';
+      borderColor = 'border-purple-200';
+    }
+    
+    // Trạng thái button
+    let buttonHtml = '';
+    
+    // Kiểm tra xem có mã cùng loại đã được áp dụng chưa (để hiện nút "Thay đổi")
+    const hasSameTypeApplied = isFreeship ? appliedFreeshipVoucher : appliedDiscountVoucher;
+    const canSwitch = hasSameTypeApplied && !isApplied && canApply && canUsePhoneVoucher;
+    
+    if (isApplied) {
+      buttonHtml = `<span class="text-xs text-green-600 font-semibold"><i class="fas fa-check mr-1"></i>Đang dùng</span>`;
+    } else if (!canApply) {
+      buttonHtml = `<span class="text-xs text-gray-400">Đơn từ ${formatPrice(minOrder)}</span>`;
+    } else if (!canUsePhoneVoucher) {
+      buttonHtml = `
+        <button onclick="saveVoucherToUse('${voucher.code}', ${JSON.stringify(voucher).replace(/"/g, '&quot;')})" 
+                class="text-xs bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-full transition">
+          <i class="fas fa-bookmark mr-1"></i>Lưu để dùng
+        </button>
+      `;
+    } else if (canSwitch) {
+      // Có mã cùng loại đã áp dụng -> hiện nút "Đổi mã"
+      buttonHtml = `
+        <button onclick="applyVoucherFromList('${voucher.code}', '${category}')" 
+                class="text-xs bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-full transition">
+          <i class="fas fa-exchange-alt mr-1"></i>Đổi mã
+        </button>
+      `;
+    } else {
+      buttonHtml = `
+        <button onclick="applyVoucherFromList('${voucher.code}', '${category}')" 
+                class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full transition">
+          Áp dụng
+        </button>
+      `;
+    }
+    
+    return `
+      <div class="flex items-center gap-2 p-2 bg-white border ${isApplied ? 'border-green-400 bg-green-50' : borderColor} rounded-lg transition ${canApply && canUsePhoneVoucher && !isApplied ? 'hover:shadow-md' : 'opacity-75'}">
+        <div class="w-10 h-10 ${bgColor} rounded flex items-center justify-center flex-shrink-0">
+          <i class="fas ${iconClass} ${iconColor} text-sm"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-1">
+            <p class="font-bold text-gray-800 text-xs">${voucher.code}</p>
+            ${isSaved ? '<i class="fas fa-bookmark text-yellow-500 text-xs" title="Đã lưu"></i>' : ''}
+            ${isPhone ? '<span class="text-xs bg-purple-100 text-purple-600 px-1 rounded">Điện thoại</span>' : ''}
+          </div>
+          <p class="text-xs text-gray-600">${discountText}</p>
+          <p class="text-xs text-gray-400 truncate">${voucher.description || ''}</p>
+        </div>
+        <div class="flex-shrink-0">
+          ${buttonHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Lưu voucher để sử dụng (cho mã điện thoại)
+function saveVoucherToUse(code, voucherData) {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  
+  // Lưu vào localStorage
+  let savedVouchers = JSON.parse(localStorage.getItem('savedVouchers') || '[]');
+  if (!savedVouchers.find(v => v.code === code)) {
+    savedVouchers.push({
+      code: code,
+      ...voucherData,
+      savedAt: new Date().toISOString()
+    });
+    localStorage.setItem('savedVouchers', JSON.stringify(savedVouchers));
   }
+  
+  // Cập nhật userSavedVouchers
+  if (!userSavedVouchers.find(v => v.code === code)) {
+    userSavedVouchers.push({ code, ...voucherData, isSaved: true });
+  }
+  
+  // Nếu đã đăng nhập, lưu vào database
+  if (user && user.ma_kh && voucherData.id) {
+    fetch(`${API_URL}/promotions/vouchers/${voucherData.id}/save`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.ma_kh })
+    }).catch(err => console.log('Save voucher to DB error:', err));
+  }
+  
+  showToast(`Đã lưu mã ${code}! Bây giờ bạn có thể áp dụng.`, 'success');
+  renderVouchersList();
+}
+
+// Áp dụng voucher từ danh sách
+function applyVoucherFromList(code, category) {
+  const voucher = allAvailableVouchers.find(v => v.code === code) || 
+                  userSavedVouchers.find(v => v.code === code) ||
+                  getDemoVouchers().find(v => v.code === code);
+  
+  if (!voucher) {
+    showToast('Không tìm thấy mã khuyến mãi!', 'error');
+    return;
+  }
+  
+  // Kiểm tra điều kiện tối thiểu
+  if (voucher.minOrder && subtotal < voucher.minOrder) {
+    showToast(`Đơn hàng cần tối thiểu ${formatPrice(voucher.minOrder)} để áp dụng mã này!`, 'error');
+    return;
+  }
+  
+  // Kiểm tra mã điện thoại phải được lưu
+  const isPhone = category === 'phone' || voucher.requireSaved;
+  const isSaved = userSavedVouchers.some(sv => sv.code === code);
+  
+  if (isPhone && !isSaved) {
+    showToast('Mã này cần được lưu trước khi sử dụng!', 'error');
+    return;
+  }
+  
+  // Áp dụng theo loại - TỰ ĐỘNG THAY THẾ MÃ CŨ
+  if (category === 'freeship') {
+    const oldCode = appliedFreeshipVoucher?.code;
+    
+    // Tự động thay thế mã freeship cũ
+    appliedFreeshipVoucher = voucher;
+    freeshipDiscount = Math.min(voucher.discountValue, shippingFee);
+    
+    // Hiển thị badge
+    document.getElementById('appliedFreeshipBadge').classList.remove('hidden');
+    document.getElementById('appliedFreeshipCode').textContent = `${code} (-${formatPrice(freeshipDiscount)} ship)`;
+    
+    if (oldCode && oldCode !== code) {
+      showToast(`Đã thay mã ${oldCode} bằng ${code}! Giảm ${formatPrice(freeshipDiscount)} phí ship`, 'success');
+    } else {
+      showToast(`Áp dụng mã freeship thành công! Giảm ${formatPrice(freeshipDiscount)} phí ship`, 'success');
+    }
+  } else {
+    // Mã giảm giá (percent/fixed/phone)
+    const oldCode = appliedDiscountVoucher?.code;
+    
+    // Tự động thay thế mã giảm giá cũ
+    appliedDiscountVoucher = voucher;
+    
+    if (voucher.discountType === 'percent') {
+      percentDiscount = Math.round(subtotal * voucher.discountValue / 100);
+    } else {
+      percentDiscount = voucher.discountValue;
+    }
+    
+    // Hiển thị badge
+    document.getElementById('appliedDiscountBadge').classList.remove('hidden');
+    document.getElementById('appliedDiscountCode').textContent = `${code} (-${formatPrice(percentDiscount)})`;
+    
+    if (oldCode && oldCode !== code) {
+      showToast(`Đã thay mã ${oldCode} bằng ${code}! Giảm ${formatPrice(percentDiscount)}`, 'success');
+    } else {
+      showToast(`Áp dụng mã giảm giá thành công! Giảm ${formatPrice(percentDiscount)}`, 'success');
+    }
+  }
+  
+  // Tính lại tổng
+  discount = freeshipDiscount + percentDiscount;
+  calculateTotal();
+  renderVouchersList();
+}
+
+// Xóa voucher đã áp dụng
+function removeAppliedVoucher(type) {
+  console.log('removeAppliedVoucher called with type:', type);
+  
+  try {
+    if (type === 'freeship') {
+      const removedCode = appliedFreeshipVoucher?.code;
+      appliedFreeshipVoucher = null;
+      freeshipDiscount = 0;
+      
+      const badge = document.getElementById('appliedFreeshipBadge');
+      if (badge) badge.classList.add('hidden');
+      
+      showToast(`Đã xóa mã ${removedCode || 'freeship'}`, 'info');
+    } else {
+      const removedCode = appliedDiscountVoucher?.code;
+      appliedDiscountVoucher = null;
+      percentDiscount = 0;
+      
+      const badge = document.getElementById('appliedDiscountBadge');
+      if (badge) badge.classList.add('hidden');
+      
+      showToast(`Đã xóa mã ${removedCode || 'giảm giá'}`, 'info');
+    }
+    
+    // Tính lại tổng giảm giá
+    discount = freeshipDiscount + percentDiscount;
+    
+    // Tính lại tổng tiền
+    calculateTotal();
+    
+    // Cập nhật lại danh sách voucher nếu đang mở
+    const section = document.getElementById('allVouchersSection');
+    if (section && !section.classList.contains('hidden')) {
+      renderVouchersList();
+    }
+    
+    console.log('Voucher removed successfully. Current state:', {
+      appliedFreeshipVoucher,
+      appliedDiscountVoucher,
+      freeshipDiscount,
+      percentDiscount,
+      discount
+    });
+  } catch (error) {
+    console.error('Error removing voucher:', error);
+    showToast('Có lỗi khi xóa mã!', 'error');
+  }
+}
+
+// Hiển thị danh sách voucher để đổi mã
+function showChangeVoucherOptions(type) {
+  // Mở section voucher nếu đang đóng
+  const section = document.getElementById('allVouchersSection');
+  const toggleText = document.getElementById('voucherToggleText');
+  
+  if (section.classList.contains('hidden')) {
+    section.classList.remove('hidden');
+    toggleText.textContent = 'Ẩn bớt';
+    loadAllVouchers().then(() => {
+      // Filter theo loại voucher cần đổi
+      filterVouchersByType(type);
+      showToast(`Chọn mã ${type === 'freeship' ? 'freeship' : 'giảm giá'} mới để thay thế`, 'info');
+    });
+  } else {
+    // Đã mở rồi, chỉ cần filter
+    filterVouchersByType(type);
+    showToast(`Chọn mã ${type === 'freeship' ? 'freeship' : 'giảm giá'} mới để thay thế`, 'info');
+  }
+  
+  // Scroll đến phần voucher
+  section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Áp dụng mã nhập thủ công
+function applyManualVoucher() {
+  const code = document.getElementById('voucherCode').value.trim().toUpperCase();
+  
+  if (!code) {
+    showToast('Vui lòng nhập mã khuyến mãi!', 'error');
+    return;
+  }
+  
+  // Tìm voucher trong danh sách
+  let voucher = allAvailableVouchers.find(v => v.code === code) || 
+                userSavedVouchers.find(v => v.code === code) ||
+                getDemoVouchers().find(v => v.code === code);
+  
+  if (!voucher) {
+    showToast('Mã khuyến mãi không hợp lệ!', 'error');
+    return;
+  }
+  
+  const category = getVoucherCategory(voucher);
+  applyVoucherFromList(code, category);
+  
+  // Clear input
+  document.getElementById('voucherCode').value = '';
+}
+
+// Legacy function - giữ lại để tương thích
+function applyVoucher() {
+  applyManualVoucher();
 }
 
 // ===== VALIDATE FORM =====
@@ -1042,6 +1576,21 @@ async function completeOrder(orderData) {
     const wardText = document.getElementById('ward-text')?.textContent || '';
     const fullAddress = `${orderData.address.detail}, ${wardText}, ${districtText}, ${provinceText}`;
     
+    // Chuẩn bị thông tin voucher để gửi lên server
+    const freeshipVoucherData = appliedFreeshipVoucher ? {
+      code: appliedFreeshipVoucher.code,
+      id: appliedFreeshipVoucher.id,
+      discountValue: freeshipDiscount,
+      type: 'freeship'
+    } : null;
+    
+    const discountVoucherData = appliedDiscountVoucher ? {
+      code: appliedDiscountVoucher.code,
+      id: appliedDiscountVoucher.id,
+      discountValue: percentDiscount,
+      type: appliedDiscountVoucher.discountType || 'fixed'
+    } : null;
+    
     const response = await fetch(`${API_URL}/orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1056,7 +1605,10 @@ async function completeOrder(orderData) {
         discount: orderData.pricing.discount,
         total: orderData.pricing.total,
         paymentMethod: orderData.payment.method,
-        voucherCode: null
+        // Gửi thông tin voucher
+        freeshipVoucher: freeshipVoucherData,
+        discountVoucher: discountVoucherData,
+        voucherCode: discountVoucherData?.code || freeshipVoucherData?.code || null
       })
     });
     
@@ -1766,67 +2318,7 @@ function selectSavedVoucher(code) {
   applyVoucher();
 }
 
-// Xóa voucher đã áp dụng
-function removeAppliedVoucher() {
-  discount = 0;
-  document.getElementById('voucherCode').value = '';
-  document.getElementById('appliedVoucherBadge').classList.add('hidden');
-  calculateTotal();
-  showToast('Đã xóa mã giảm giá', 'info');
-}
 
-// Override applyVoucher để hiển thị badge
-const originalApplyVoucher = typeof applyVoucher === 'function' ? applyVoucher : null;
-
-function applyVoucher() {
-  const voucherCode = document.getElementById('voucherCode').value.trim().toUpperCase();
-  
-  if (!voucherCode) {
-    showToast('Vui lòng nhập mã giảm giá!', 'error');
-    return;
-  }
-  
-  // Demo voucher codes
-  const vouchers = {
-    'GIAM50K': 50000,
-    'GIAM100K': 100000,
-    'GIAM10': subtotal * 0.1,
-    'FREESHIP': shippingFee,
-    'GIAM20': subtotal * 0.2,
-    'GIAM15': subtotal * 0.15
-  };
-  
-  if (vouchers[voucherCode]) {
-    discount = vouchers[voucherCode];
-    calculateTotal();
-    
-    // Hiển thị badge
-    document.getElementById('appliedVoucherBadge').classList.remove('hidden');
-    document.getElementById('appliedVoucherCode').textContent = voucherCode;
-    
-    showToast(`Áp dụng mã giảm giá thành công! Giảm ${formatPrice(discount)}`, 'success');
-  } else {
-    // Kiểm tra trong danh sách voucher đã lưu
-    const savedVouchers = JSON.parse(localStorage.getItem('savedVouchers') || '[]');
-    const savedVoucher = savedVouchers.find(v => v.code === voucherCode);
-    
-    if (savedVoucher && savedVoucher.discountValue) {
-      // Tính giảm giá từ voucher đã lưu
-      if (savedVoucher.discountType === 'percent') {
-        discount = subtotal * savedVoucher.discountValue / 100;
-      } else {
-        discount = savedVoucher.discountValue;
-      }
-      
-      calculateTotal();
-      document.getElementById('appliedVoucherBadge').classList.remove('hidden');
-      document.getElementById('appliedVoucherCode').textContent = voucherCode;
-      showToast(`Áp dụng mã giảm giá thành công! Giảm ${formatPrice(discount)}`, 'success');
-    } else {
-      showToast('Mã giảm giá không hợp lệ!', 'error');
-    }
-  }
-}
 
 // ===== PAGE INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {

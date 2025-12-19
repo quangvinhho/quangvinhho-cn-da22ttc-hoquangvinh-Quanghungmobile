@@ -20,12 +20,92 @@ router.post('/', async (req, res) => {
       discount,
       total,
       paymentMethod,
-      voucherCode
+      voucherCode,
+      // Hỗ trợ nhiều mã khuyến mãi
+      freeshipVoucher,
+      discountVoucher
     } = req.body;
 
-    // Tìm mã khuyến mãi nếu có
-    let maKm = null;
-    if (voucherCode) {
+    // Xử lý voucher - hỗ trợ cả cách cũ (voucherCode) và cách mới (freeshipVoucher, discountVoucher)
+    let maKmFreeship = null;
+    let maKmDiscount = null;
+    const usedVouchers = [];
+
+    // Xử lý mã freeship
+    if (freeshipVoucher && freeshipVoucher.code) {
+      console.log('Processing freeship voucher:', freeshipVoucher);
+      
+      // Tìm voucher trong DB (không lọc điều kiện để debug)
+      const [allVouchers] = await connection.query(
+        `SELECT ma_km, code, so_luong, so_luong_da_dung, trang_thai, ngay_bat_dau, ngay_ket_thuc 
+         FROM khuyen_mai WHERE code = ?`,
+        [freeshipVoucher.code]
+      );
+      console.log('Found freeship vouchers in DB:', allVouchers);
+      
+      const [vouchers] = await connection.query(
+        `SELECT ma_km, code, so_luong, so_luong_da_dung 
+         FROM khuyen_mai 
+         WHERE code = ? 
+           AND trang_thai = 'active'
+           AND ngay_bat_dau <= NOW()
+           AND ngay_ket_thuc >= NOW() 
+           AND so_luong_da_dung < so_luong`,
+        [freeshipVoucher.code]
+      );
+      
+      if (vouchers.length > 0) {
+        maKmFreeship = vouchers[0].ma_km;
+        await connection.query(
+          'UPDATE khuyen_mai SET so_luong_da_dung = so_luong_da_dung + 1 WHERE ma_km = ?', 
+          [maKmFreeship]
+        );
+        usedVouchers.push({ code: freeshipVoucher.code, type: 'freeship', maKm: maKmFreeship });
+        console.log(`✅ Freeship voucher ${freeshipVoucher.code} used. Remaining: ${vouchers[0].so_luong - vouchers[0].so_luong_da_dung - 1}`);
+      } else {
+        console.log(`⚠️ Freeship voucher ${freeshipVoucher.code} not found or not valid in DB`);
+      }
+    }
+
+    // Xử lý mã giảm giá
+    if (discountVoucher && discountVoucher.code) {
+      console.log('Processing discount voucher:', discountVoucher);
+      
+      // Tìm voucher trong DB (không lọc điều kiện để debug)
+      const [allVouchers] = await connection.query(
+        `SELECT ma_km, code, so_luong, so_luong_da_dung, trang_thai, ngay_bat_dau, ngay_ket_thuc 
+         FROM khuyen_mai WHERE code = ?`,
+        [discountVoucher.code]
+      );
+      console.log('Found discount vouchers in DB:', allVouchers);
+      
+      const [vouchers] = await connection.query(
+        `SELECT ma_km, code, so_luong, so_luong_da_dung 
+         FROM khuyen_mai 
+         WHERE code = ? 
+           AND trang_thai = 'active'
+           AND ngay_bat_dau <= NOW()
+           AND ngay_ket_thuc >= NOW() 
+           AND so_luong_da_dung < so_luong`,
+        [discountVoucher.code]
+      );
+      
+      if (vouchers.length > 0) {
+        maKmDiscount = vouchers[0].ma_km;
+        await connection.query(
+          'UPDATE khuyen_mai SET so_luong_da_dung = so_luong_da_dung + 1 WHERE ma_km = ?', 
+          [maKmDiscount]
+        );
+        usedVouchers.push({ code: discountVoucher.code, type: 'discount', maKm: maKmDiscount });
+        console.log(`✅ Discount voucher ${discountVoucher.code} used. Remaining: ${vouchers[0].so_luong - vouchers[0].so_luong_da_dung - 1}`);
+      } else {
+        console.log(`⚠️ Discount voucher ${discountVoucher.code} not found or not valid in DB`);
+      }
+    }
+
+    // Fallback: xử lý voucherCode cũ (tương thích ngược)
+    let maKm = maKmDiscount || maKmFreeship; // Ưu tiên mã giảm giá
+    if (!maKm && voucherCode) {
       const [vouchers] = await connection.query(
         `SELECT ma_km, so_luong, so_luong_da_dung 
          FROM khuyen_mai 
@@ -38,12 +118,12 @@ router.post('/', async (req, res) => {
       );
       if (vouchers.length > 0) {
         maKm = vouchers[0].ma_km;
-        // Tăng số lượng đã dùng
         await connection.query(
           'UPDATE khuyen_mai SET so_luong_da_dung = so_luong_da_dung + 1 WHERE ma_km = ?', 
           [maKm]
         );
-        console.log(`Voucher ${voucherCode} used. Updated so_luong_da_dung for ma_km=${maKm}`);
+        usedVouchers.push({ code: voucherCode, type: 'legacy', maKm: maKm });
+        console.log(`Legacy voucher ${voucherCode} used. Updated so_luong_da_dung for ma_km=${maKm}`);
       }
     }
 
@@ -83,14 +163,18 @@ router.post('/', async (req, res) => {
     );
 
     // Ghi lịch sử sử dụng voucher nếu có
-    if (maKm && discountAmount > 0) {
+    for (const usedVoucher of usedVouchers) {
       try {
+        const voucherDiscount = usedVoucher.type === 'freeship' 
+          ? (freeshipVoucher?.discountValue || 0)
+          : (discountVoucher?.discountValue || discountAmount);
+          
         await connection.query(
           `INSERT INTO lich_su_voucher (ma_km, ma_kh, ma_don, so_tien_giam)
            VALUES (?, ?, ?, ?)`,
-          [maKm, customerId || null, orderId, discountAmount]
+          [usedVoucher.maKm, customerId || null, orderId, voucherDiscount]
         );
-        console.log(`Voucher history recorded: ma_km=${maKm}, ma_don=${orderId}, discount=${discountAmount}`);
+        console.log(`Voucher history recorded: code=${usedVoucher.code}, type=${usedVoucher.type}, ma_don=${orderId}, discount=${voucherDiscount}`);
       } catch (historyError) {
         // Không fail nếu bảng lich_su_voucher chưa tồn tại
         console.log('Could not record voucher history:', historyError.message);
@@ -331,6 +415,25 @@ router.put('/:orderId/cancel', async (req, res) => {
         [order.ma_km]
       );
       console.log(`Voucher refunded for cancelled order. Updated so_luong_da_dung for ma_km=${order.ma_km}`);
+    }
+    
+    // Hoàn lại tất cả voucher đã dùng trong đơn hàng (từ bảng lich_su_voucher)
+    try {
+      const [usedVouchers] = await connection.query(
+        'SELECT DISTINCT ma_km FROM lich_su_voucher WHERE ma_don = ?',
+        [orderId]
+      );
+      for (const v of usedVouchers) {
+        if (v.ma_km && v.ma_km !== order.ma_km) {
+          await connection.query(
+            'UPDATE khuyen_mai SET so_luong_da_dung = GREATEST(0, so_luong_da_dung - 1) WHERE ma_km = ?',
+            [v.ma_km]
+          );
+          console.log(`Additional voucher refunded: ma_km=${v.ma_km}`);
+        }
+      }
+    } catch (e) {
+      console.log('Could not refund additional vouchers:', e.message);
     }
 
     await connection.commit();

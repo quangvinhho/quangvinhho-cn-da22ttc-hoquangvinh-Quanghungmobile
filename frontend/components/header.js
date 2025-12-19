@@ -2,7 +2,7 @@
 
 const API_BASE_URL = 'http://localhost:3000/api';
 
-(function initHeader() {
+function initHeader() {
   // ===== USER AUTHENTICATION =====
   function checkUserLogin() {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -539,7 +539,22 @@ const API_BASE_URL = 'http://localhost:3000/api';
       }
     }
   });
-})();
+}
+
+// Tự động chạy initHeader khi DOM đã sẵn sàng (cho các trang có header inline)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Chỉ chạy nếu header đã có trong DOM
+    if (document.getElementById('login-btn') || document.getElementById('user-info')) {
+      initHeader();
+    }
+  });
+} else {
+  // DOM đã sẵn sàng
+  if (document.getElementById('login-btn') || document.getElementById('user-info')) {
+    initHeader();
+  }
+}
 
 // ===== GLOBAL FUNCTIONS FOR SEARCH SUGGESTIONS =====
 

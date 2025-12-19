@@ -1,6 +1,7 @@
-// AI Chatbot - Reindeer Theme
+// AI Chatbot - Reindeer Theme với Groq AI
 (function() {
   const API_URL = 'http://localhost:3000/api';
+  let sessionId = localStorage.getItem('chatbot_session') || Date.now().toString();
   
   // Create chatbot HTML
   function createChatbotHTML() {
@@ -54,7 +55,7 @@
   function addWelcomeMessage() {
     const messagesContainer = document.getElementById('ai-chat-messages');
     if (messagesContainer && messagesContainer.children.length === 0) {
-      addBotMessage('Xin chào! Tôi là trợ lý AI của QuangHưng Mobile. Tôi có thể giúp gì cho bạn?');
+      addBotMessage('Xin chào! Tôi là trợ lý AI của QuangHưng Mobile. Tôi có thể giúp bạn tư vấn điện thoại, thông tin khuyến mãi, bảo hành và nhiều hơn nữa. Bạn cần hỗ trợ gì?');
     }
   }
   
@@ -67,7 +68,8 @@
     if (isHTML) {
       messageDiv.innerHTML = text;
     } else {
-      messageDiv.textContent = text;
+      // Format text với line breaks
+      messageDiv.innerHTML = text.replace(/\n/g, '<br>');
     }
     
     messagesContainer.appendChild(messageDiv);
@@ -101,93 +103,38 @@
     if (typingDiv) typingDiv.remove();
   }
   
-  // Format price
-  function formatPrice(price) {
-    return price.toLocaleString('vi-VN') + '₫';
-  }
-  
-  // Process user message
-  async function processMessage(message) {
-    const lowerMsg = message.toLowerCase();
-    
-    // Check for price queries
-    const priceMatch = lowerMsg.match(/dưới\s*(\d+)\s*(triệu|tr)/);
-    if (priceMatch || lowerMsg.includes('giá') || lowerMsg.includes('rẻ')) {
-      let maxPrice = 50000000;
-      if (priceMatch) {
-        maxPrice = parseInt(priceMatch[1]) * 1000000;
+  // Call AI API
+  async function callAI(message) {
+    try {
+      const response = await fetch(`${API_URL}/chatbot/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: message,
+          sessionId: sessionId
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('API error');
       }
+
+      const data = await response.json();
       
-      try {
-        const response = await fetch(`${API_URL}/products`);
-        const products = await response.json();
-        const filtered = products.filter(p => p.price <= maxPrice).slice(0, 3);
-        
-        if (filtered.length > 0) {
-          let html = `<div>Dưới đây là một số điện thoại phù hợp với ngân sách của bạn:</div>
-            <div class="product-list">`;
-          filtered.forEach(p => {
-            html += `<div class="product-item">• <strong>${p.name}</strong> - ${formatPrice(p.price)}</div>`;
-          });
-          html += '</div>';
-          return { text: html, isHTML: true };
-        }
-      } catch (e) {
-        console.error('Error fetching products:', e);
+      // Lưu sessionId
+      if (data.sessionId) {
+        sessionId = data.sessionId;
+        localStorage.setItem('chatbot_session', sessionId);
       }
-      return { text: 'Xin lỗi, tôi không thể tìm thấy sản phẩm phù hợp. Bạn có thể xem tất cả sản phẩm tại trang Sản phẩm.' };
+
+      return data.response;
+    } catch (error) {
+      console.error('AI API error:', error);
+      // Fallback response
+      return 'Xin lỗi, tôi đang gặp sự cố kết nối. Vui lòng thử lại sau hoặc liên hệ hotline 1900.xxxx để được hỗ trợ.';
     }
-    
-    // Check for brand queries
-    const brands = ['iphone', 'samsung', 'xiaomi', 'oppo', 'vivo', 'realme', 'sony'];
-    for (const brand of brands) {
-      if (lowerMsg.includes(brand)) {
-        try {
-          const response = await fetch(`${API_URL}/products`);
-          const products = await response.json();
-          const filtered = products.filter(p => 
-            p.name.toLowerCase().includes(brand) || 
-            (p.brand && p.brand.toLowerCase().includes(brand))
-          ).slice(0, 3);
-          
-          if (filtered.length > 0) {
-            let html = `<div>Đây là một số sản phẩm ${brand.charAt(0).toUpperCase() + brand.slice(1)} nổi bật:</div>
-              <div class="product-list">`;
-            filtered.forEach(p => {
-              html += `<div class="product-item">• <strong>${p.name}</strong> - ${formatPrice(p.price)}</div>`;
-            });
-            html += '</div>';
-            return { text: html, isHTML: true };
-          }
-        } catch (e) {
-          console.error('Error:', e);
-        }
-        return { text: `Hiện tại chúng tôi có nhiều sản phẩm ${brand.charAt(0).toUpperCase() + brand.slice(1)}. Bạn có thể xem chi tiết tại trang Sản phẩm.` };
-      }
-    }
-    
-    // Promotion queries
-    if (lowerMsg.includes('khuyến mãi') || lowerMsg.includes('giảm giá') || lowerMsg.includes('sale')) {
-      return { text: 'Hiện tại QuangHưng Mobile đang có nhiều chương trình khuyến mãi hấp dẫn:\n• Giảm đến 30% cho iPhone\n• Tặng phụ kiện khi mua Samsung\n• Trả góp 0% lãi suất\n\nBạn có thể xem chi tiết tại trang Khuyến mãi!' };
-    }
-    
-    // Warranty queries
-    if (lowerMsg.includes('bảo hành') || lowerMsg.includes('warranty')) {
-      return { text: 'Chính sách bảo hành tại QuangHưng Mobile:\n• Bảo hành chính hãng 12-24 tháng\n• Đổi mới trong 30 ngày nếu lỗi nhà sản xuất\n• Hỗ trợ kỹ thuật miễn phí trọn đời\n• Trung tâm bảo hành trên toàn quốc' };
-    }
-    
-    // Compare queries
-    if (lowerMsg.includes('so sánh') || lowerMsg.includes('compare')) {
-      return { text: 'Bạn muốn so sánh sản phẩm nào? Hãy cho tôi biết 2 sản phẩm bạn quan tâm, ví dụ: "So sánh iPhone 15 và Samsung S24"' };
-    }
-    
-    // Greeting
-    if (lowerMsg.includes('xin chào') || lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
-      return { text: 'Xin chào! Rất vui được hỗ trợ bạn. Bạn đang tìm kiếm điện thoại nào?' };
-    }
-    
-    // Default response
-    return { text: 'Cảm ơn bạn đã liên hệ! Tôi có thể giúp bạn:\n• Tìm điện thoại theo ngân sách\n• Xem khuyến mãi\n• Thông tin bảo hành\n• So sánh sản phẩm\n\nBạn cần hỗ trợ gì?' };
   }
   
   // Send message
@@ -199,16 +146,18 @@
     
     addUserMessage(message);
     input.value = '';
+    input.disabled = true;
     
     showTyping();
     
-    // Simulate delay
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+    // Gọi AI API
+    const response = await callAI(message);
     
     hideTyping();
+    input.disabled = false;
+    input.focus();
     
-    const response = await processMessage(message);
-    addBotMessage(response.text, response.isHTML || false);
+    addBotMessage(response);
   }
   
   // Initialize chatbot
@@ -241,7 +190,10 @@
     
     // Enter key
     input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendMessage();
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
     });
     
     // Quick action buttons
@@ -252,13 +204,13 @@
         
         switch(action) {
           case 'promo':
-            message = 'Cho tôi xem khuyến mãi';
+            message = 'Cho tôi xem các chương trình khuyến mãi hiện tại';
             break;
           case 'compare':
-            message = 'Tôi muốn so sánh sản phẩm';
+            message = 'Tôi muốn so sánh các dòng điện thoại';
             break;
           case 'warranty':
-            message = 'Chính sách bảo hành';
+            message = 'Chính sách bảo hành như thế nào?';
             break;
         }
         
@@ -277,4 +229,3 @@
     initChatbot();
   }
 })();
-

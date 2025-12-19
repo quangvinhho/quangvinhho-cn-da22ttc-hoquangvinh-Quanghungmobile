@@ -11,36 +11,43 @@ let displayedVoucherCount = 6; // Số voucher hiển thị ban đầu
 const VOUCHERS_PER_PAGE = 6; // Số voucher mỗi lần load thêm
 
 // ============================================================
-// COUNTDOWN TIMER - Đếm ngược Flash Sale
+// COUNTDOWN TIMER - Đếm ngược Hot Sale (cuối tuần)
 // ============================================================
 function initCountdownTimer() {
+  const daysEl = document.getElementById('days');
   const hoursEl = document.getElementById('hours');
   const minutesEl = document.getElementById('minutes');
   const secondsEl = document.getElementById('seconds');
   
   if (!hoursEl || !minutesEl || !secondsEl) return;
 
-  // Tính thời gian kết thúc (cuối ngày hôm nay hoặc flash sale hiện tại)
+  // Tính thời gian kết thúc (Chủ nhật cuối tuần)
   const now = new Date();
-  const endOfDay = new Date(now);
-  endOfDay.setHours(23, 59, 59, 999);
+  const endOfWeek = new Date(now);
+  const dayOfWeek = now.getDay(); // 0 = Sunday
+  const daysUntilSunday = dayOfWeek === 0 ? 0 : 7 - dayOfWeek;
+  endOfWeek.setDate(now.getDate() + daysUntilSunday);
+  endOfWeek.setHours(23, 59, 59, 999);
 
   const updateTimer = () => {
     const current = new Date().getTime();
-    const end = endOfDay.getTime();
+    const end = endOfWeek.getTime();
     const diff = end - current;
 
     if (diff <= 0) {
+      if (daysEl) daysEl.textContent = '00';
       hoursEl.textContent = '00';
       minutesEl.textContent = '00';
       secondsEl.textContent = '00';
       return;
     }
 
-    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+    if (daysEl) daysEl.textContent = days.toString().padStart(2, '0');
     hoursEl.textContent = hours.toString().padStart(2, '0');
     minutesEl.textContent = minutes.toString().padStart(2, '0');
     secondsEl.textContent = seconds.toString().padStart(2, '0');
@@ -48,6 +55,31 @@ function initCountdownTimer() {
 
   updateTimer();
   setInterval(updateTimer, 1000);
+}
+
+// ============================================================
+// HOT SALE SLIDER & TABS
+// ============================================================
+let allFlashProducts = [];
+
+function slideHotSale(direction) {
+  const slider = document.getElementById('flash-products');
+  if (!slider) return;
+  
+  const scrollAmount = 220; // card width + gap
+  slider.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+}
+
+function filterHotSale(category) {
+  // Update active tab
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  // Filter products (for now just reload - can be enhanced with real categories)
+  const container = document.getElementById('flash-products');
+  if (allFlashProducts.length > 0) {
+    renderFlashProducts(allFlashProducts, container);
+  }
 }
 
 // ============================================================
@@ -67,10 +99,11 @@ async function loadFlashSaleProducts() {
     console.log('Flash Sale - Slow movers data:', data);
 
     if (data.success && data.data && data.data.length > 0) {
-      // Chuyển đổi dữ liệu slow-movers thành format flash sale
-      const discounts = [15, 17, 20, 22, 25];
-      const flashProducts = data.data.map((p, index) => {
-        const discount = discounts[index % discounts.length];
+      // Chuyển đổi dữ liệu slow-movers thành format hot sale - chỉ lấy 4 sản phẩm
+      const discounts = [31, 37, 24, 44];
+      const ratings = [5, 5, 4.9, 4.3];
+      const flashProducts = data.data.slice(0, 4).map((p, index) => {
+        const discount = discounts[index];
         return {
           productId: p.id,
           name: p.name,
@@ -78,11 +111,12 @@ async function loadFlashSaleProducts() {
           originalPrice: p.price,
           flashPrice: p.price * (1 - discount / 100),
           discountPercent: discount,
-          soldQuantity: p.sold || 0,
-          totalQuantity: p.stock || 20
+          rating: ratings[index],
+          hasInstallment: index % 2 === 0
         };
       });
       
+      allFlashProducts = flashProducts;
       renderFlashProducts(flashProducts, container);
     } else {
       // Fallback nếu API slow-movers không có dữ liệu
@@ -96,54 +130,61 @@ async function loadFlashSaleProducts() {
 
 async function loadProductsAsFlash(container) {
   try {
-    // Fallback: Lấy sản phẩm từ API products
+    // Fallback: Lấy sản phẩm từ API products - chỉ 4 sản phẩm
     const response = await fetch(`${API_BASE}/products`);
     let products = await response.json();
     
     if (Array.isArray(products) && products.length > 0) {
-      const discounts = [15, 17, 20, 22, 25];
+      const discounts = [31, 37, 24, 44];
+      const ratings = [5, 5, 4.9, 4.3];
       products = products.slice(0, 4).map((p, index) => ({
         productId: p.ma_sp || p.id,
         name: p.ten_sp || p.name,
-        image: p.image || p.anh_dai_dien, // Sẽ được chuẩn hóa trong renderFlashProducts
+        image: p.image || p.anh_dai_dien,
         originalPrice: parseFloat(p.gia || p.price || 0),
-        flashPrice: parseFloat(p.gia || p.price || 0) * (1 - discounts[index % discounts.length] / 100),
-        discountPercent: discounts[index % discounts.length],
-        soldQuantity: 0,
-        totalQuantity: p.so_luong_ton || 20
+        flashPrice: parseFloat(p.gia || p.price || 0) * (1 - discounts[index] / 100),
+        discountPercent: discounts[index],
+        rating: ratings[index],
+        hasInstallment: index % 2 === 0
       }));
+      allFlashProducts = products;
       renderFlashProducts(products, container);
     } else {
-      container.innerHTML = '<div class="col-span-full text-center py-8 text-white/70">Không có sản phẩm Flash Sale</div>';
+      container.innerHTML = '<div class="col-span-4 text-center py-8 text-gray-500">Không có sản phẩm Hot Sale</div>';
     }
   } catch (e) {
-    container.innerHTML = '<div class="col-span-full text-center py-8 text-white/70">Không thể tải sản phẩm</div>';
+    container.innerHTML = '<div class="col-span-4 text-center py-8 text-gray-500">Không thể tải sản phẩm</div>';
   }
 }
 
 function renderFlashProducts(products, container) {
   container.innerHTML = products.map(product => {
-    const soldPercent = Math.round((product.soldQuantity / product.totalQuantity) * 100);
-    // Xử lý ảnh - tránh lặp images/images/
     const imageUrl = normalizeImageUrl(product.image);
+    const rating = product.rating || (4 + Math.random()).toFixed(1);
+    const hasInstallment = product.hasInstallment !== false;
     
     return `
-      <a href="product-detail.html?id=${product.productId}" class="product-card block">
-        <div class="product-image">
+      <a href="product-detail.html?id=${product.productId}" class="flash-product-card block">
+        <div class="flash-product-image">
           <img src="${imageUrl}" alt="${product.name}" 
                onerror="this.onerror=null; this.src='images/iphone17.avif';">
-          <div class="discount-tag">-${product.discountPercent}%</div>
+          <div class="badge-group">
+            <span class="badge-discount">Giảm ${product.discountPercent}%</span>
+            ${hasInstallment ? '<span class="badge-installment">Trả góp 0%</span>' : ''}
+          </div>
         </div>
-        <div class="product-info">
-          <h3 class="product-name">${product.name}</h3>
-          <div class="product-price">
-            <span class="price-sale">${formatPriceVND(product.flashPrice)}</span>
+        <div class="flash-product-info">
+          <h3 class="flash-product-name">${product.name}</h3>
+          <div class="flash-price-row">
+            <span class="flash-price-sale">${formatPriceVND(product.flashPrice)}</span>
+            <span class="flash-price-original">${formatPriceVND(product.originalPrice)}</span>
           </div>
-          <div class="text-xs text-gray-400 line-through mb-2">${formatPriceVND(product.originalPrice)}</div>
-          <div class="w-full bg-gray-200 rounded-full h-1.5">
-            <div class="bg-gradient-to-r from-red-500 to-orange-500 h-1.5 rounded-full" style="width: ${soldPercent}%"></div>
+          <div class="flash-product-footer">
+            <div class="flash-rating">
+              <i class="fas fa-star"></i>
+              <span>${rating}</span>
+            </div>
           </div>
-          <div class="text-xs text-gray-500 mt-1">Đã bán ${product.soldQuantity}/${product.totalQuantity}</div>
         </div>
       </a>
     `;

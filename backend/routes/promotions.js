@@ -570,4 +570,239 @@ router.get('/slow-movers', async (req, res) => {
   }
 });
 
+// ============================================================
+// API CHO ADMIN: THỐNG KÊ VOUCHER
+// ============================================================
+
+// Lấy tất cả voucher với thống kê sử dụng (cho admin)
+router.get('/admin/vouchers/stats', async (req, res) => {
+  try {
+    const [vouchers] = await pool.query(`
+      SELECT 
+        km.ma_km,
+        km.code,
+        km.loai_km,
+        km.loai,
+        km.gia_tri,
+        km.mo_ta,
+        km.dieu_kien_toi_thieu,
+        km.so_luong,
+        km.so_luong_da_dung,
+        (km.so_luong - km.so_luong_da_dung) as so_luong_con_lai,
+        km.trang_thai,
+        km.ngay_bat_dau,
+        km.ngay_ket_thuc,
+        CASE 
+          WHEN km.ngay_ket_thuc < NOW() THEN 'expired'
+          WHEN km.ngay_bat_dau > NOW() THEN 'upcoming'
+          WHEN km.so_luong_da_dung >= km.so_luong THEN 'sold_out'
+          WHEN km.trang_thai = 'active' THEN 'active'
+          ELSE km.trang_thai
+        END as status_display,
+        ROUND((km.so_luong_da_dung / km.so_luong) * 100, 1) as usage_percent
+      FROM khuyen_mai km
+      ORDER BY km.ngay_tao DESC
+    `);
+
+    res.json({
+      success: true,
+      data: vouchers.map(v => ({
+        id: v.ma_km,
+        code: v.code,
+        type: v.loai_km,
+        discountType: v.loai,
+        discountValue: parseFloat(v.gia_tri),
+        description: v.mo_ta,
+        minOrder: parseFloat(v.dieu_kien_toi_thieu || 0),
+        totalQuantity: v.so_luong,
+        usedQuantity: v.so_luong_da_dung,
+        remainingQuantity: v.so_luong_con_lai,
+        status: v.trang_thai,
+        statusDisplay: v.status_display,
+        usagePercent: v.usage_percent,
+        startDate: v.ngay_bat_dau,
+        endDate: v.ngay_ket_thuc
+      }))
+    });
+  } catch (error) {
+    console.error('Get voucher stats error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Lấy lịch sử sử dụng voucher (cho admin)
+router.get('/admin/vouchers/:voucherId/history', async (req, res) => {
+  try {
+    const { voucherId } = req.params;
+    
+    const [history] = await pool.query(`
+      SELECT 
+        lsv.ma_lich_su,
+        lsv.ma_don,
+        lsv.so_tien_giam,
+        lsv.ngay_su_dung,
+        kh.ho_ten as ten_khach_hang,
+        kh.email,
+        dh.tong_tien,
+        dh.trang_thai as trang_thai_don
+      FROM lich_su_voucher lsv
+      LEFT JOIN khach_hang kh ON lsv.ma_kh = kh.ma_kh
+      LEFT JOIN don_hang dh ON lsv.ma_don = dh.ma_don
+      WHERE lsv.ma_km = ?
+      ORDER BY lsv.ngay_su_dung DESC
+      LIMIT 100
+    `, [voucherId]);
+
+    res.json({
+      success: true,
+      data: history.map(h => ({
+        id: h.ma_lich_su,
+        orderId: h.ma_don,
+        discountAmount: parseFloat(h.so_tien_giam || 0),
+        usedAt: h.ngay_su_dung,
+        customerName: h.ten_khach_hang || 'Khách vãng lai',
+        customerEmail: h.email,
+        orderTotal: parseFloat(h.tong_tien || 0),
+        orderStatus: h.trang_thai_don
+      }))
+    });
+  } catch (error) {
+    console.error('Get voucher history error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Cập nhật số lượng voucher (cho admin)
+router.put('/admin/vouchers/:voucherId/quantity', async (req, res) => {
+  try {
+    const { voucherId } = req.params;
+    const { quantity } = req.body;
+
+    if (quantity === undefined || quantity < 0) {
+      return res.status(400).json({ success: false, message: 'Số lượng không hợp lệ' });
+    }
+
+    await pool.query(
+      'UPDATE khuyen_mai SET so_luong = ? WHERE ma_km = ?',
+      [quantity, voucherId]
+    );
+
+    res.json({ success: true, message: 'Cập nhật số lượng thành công' });
+  } catch (error) {
+    console.error('Update voucher quantity error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Reset số lượng đã dùng (cho admin - cẩn thận khi dùng)
+router.put('/admin/vouchers/:voucherId/reset-usage', async (req, res) => {
+  try {
+    const { voucherId } = req.params;
+
+    await pool.query(
+      'UPDATE khuyen_mai SET so_luong_da_dung = 0 WHERE ma_km = ?',
+      [voucherId]
+    );
+
+    res.json({ success: true, message: 'Đã reset số lượng đã dùng về 0' });
+  } catch (error) {
+    console.error('Reset voucher usage error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Gia hạn tất cả voucher hết hạn (cho admin)
+router.put('/admin/vouchers/extend-all', async (req, res) => {
+  try {
+    const { newEndDate } = req.body;
+    const endDate = newEndDate || '2025-12-31';
+    
+    const [result] = await pool.query(
+      'UPDATE khuyen_mai SET ngay_ket_thuc = ? WHERE ngay_ket_thuc < NOW()',
+      [endDate]
+    );
+
+    res.json({ 
+      success: true, 
+      message: `Đã gia hạn ${result.affectedRows} voucher đến ${endDate}` 
+    });
+  } catch (error) {
+    console.error('Extend vouchers error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Cập nhật voucher (cho admin)
+router.put('/admin/vouchers/:voucherId', async (req, res) => {
+  try {
+    const { voucherId } = req.params;
+    const { code, discountType, discountValue, minOrder, quantity, startDate, endDate, status, description, type } = req.body;
+
+    const updates = [];
+    const values = [];
+
+    if (code) { updates.push('code = ?'); values.push(code); }
+    if (discountType) { updates.push('loai = ?'); values.push(discountType); }
+    if (discountValue !== undefined) { updates.push('gia_tri = ?'); values.push(discountValue); }
+    if (minOrder !== undefined) { updates.push('dieu_kien_toi_thieu = ?'); values.push(minOrder); }
+    if (quantity !== undefined) { updates.push('so_luong = ?'); values.push(quantity); }
+    if (startDate) { updates.push('ngay_bat_dau = ?'); values.push(startDate); }
+    if (endDate) { updates.push('ngay_ket_thuc = ?'); values.push(endDate); }
+    if (status) { updates.push('trang_thai = ?'); values.push(status); }
+    if (description) { updates.push('mo_ta = ?'); values.push(description); }
+    if (type) { updates.push('loai_km = ?'); values.push(type); }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ success: false, message: 'Không có dữ liệu cập nhật' });
+    }
+
+    values.push(voucherId);
+    await pool.query(`UPDATE khuyen_mai SET ${updates.join(', ')} WHERE ma_km = ?`, values);
+
+    res.json({ success: true, message: 'Cập nhật voucher thành công' });
+  } catch (error) {
+    console.error('Update voucher error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Tạo voucher mới (cho admin)
+router.post('/admin/vouchers', async (req, res) => {
+  try {
+    const { code, type, discountType, discountValue, minOrder, quantity, startDate, endDate, description } = req.body;
+
+    if (!code || !discountValue || !quantity) {
+      return res.status(400).json({ success: false, message: 'Thiếu thông tin bắt buộc' });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO khuyen_mai (code, loai_km, loai, gia_tri, dieu_kien_toi_thieu, so_luong, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')`,
+      [
+        code.toUpperCase(),
+        type || 'discount',
+        discountType || 'fixed',
+        discountValue,
+        minOrder || 0,
+        quantity,
+        startDate || new Date().toISOString().split('T')[0],
+        endDate || '2025-12-31',
+        description || ''
+      ]
+    );
+
+    res.json({ 
+      success: true, 
+      message: 'Tạo voucher thành công',
+      data: { id: result.insertId }
+    });
+  } catch (error) {
+    console.error('Create voucher error:', error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(400).json({ success: false, message: 'Mã voucher đã tồn tại' });
+    }
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;
