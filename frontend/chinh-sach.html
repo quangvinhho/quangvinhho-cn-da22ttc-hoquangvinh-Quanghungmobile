@@ -37,27 +37,24 @@
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
     <!-- Main Content -->
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Chính sách</h1>
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">Chính sách</h1>
         
-        <div class="flex flex-col lg:flex-row gap-6">
-            <!-- Sidebar -->
-            <div class="lg:w-56 flex-shrink-0">
-                <nav class="bg-white rounded-lg shadow-sm overflow-hidden sticky top-36">
-                    <a href="#ban-hang" class="sidebar-item active block px-4 py-3 text-sm font-medium">
-                        <i class="fas fa-shopping-cart mr-2 w-4"></i>Chính sách bán hàng
-                    </a>
-                    <a href="#bao-mat" class="sidebar-item block px-4 py-3 text-sm font-medium text-gray-700">
-                        <i class="fas fa-shield-alt mr-2 w-4"></i>Chính sách bảo mật
-                    </a>
-                    <a href="#su-dung" class="sidebar-item block px-4 py-3 text-sm font-medium text-gray-700">
-                        <i class="fas fa-file-alt mr-2 w-4"></i>Điều khoản sử dụng
-                    </a>
-                </nav>
-            </div>
+        <!-- Navigation Menu -->
+        <div class="flex flex-wrap justify-center gap-4 mb-8">
+            <a href="#ban-hang" class="sidebar-item bg-white px-4 py-2 rounded-lg shadow-sm text-sm font-medium hover:bg-red-50 transition">
+                <i class="fas fa-shopping-cart mr-2"></i>Chính sách bán hàng
+            </a>
+            <a href="#bao-mat" class="sidebar-item bg-white px-4 py-2 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-blue-50 transition">
+                <i class="fas fa-shield-alt mr-2"></i>Chính sách bảo mật
+            </a>
+            <a href="#su-dung" class="sidebar-item bg-white px-4 py-2 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-purple-50 transition">
+                <i class="fas fa-file-alt mr-2"></i>Điều khoản sử dụng
+            </a>
+        </div>
 
-            <!-- Content -->
-            <div class="flex-1 space-y-8">
+        <!-- Content -->
+        <div class="space-y-8">
                 
                 <!-- Section 1: Chính sách bán hàng -->
                 <section id="ban-hang" class="bg-white rounded-lg shadow-sm p-6">
@@ -265,18 +262,17 @@
                 </section>
 
 
-                <!-- Liên hệ -->
-                <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-5 border border-red-200">
-                    <h3 class="font-bold text-gray-800 mb-3"><i class="fas fa-headset text-red-600 mr-2"></i>Liên hệ hỗ trợ</h3>
-                    <div class="flex flex-wrap gap-6 text-sm">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-phone text-red-600"></i>
-                            <span><strong>Hotline:</strong> 1900 1234 56</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-envelope text-red-600"></i>
-                            <span><strong>Email:</strong> support@quanghungmobile.vn</span>
-                        </div>
+            <!-- Liên hệ -->
+            <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-5 border border-red-200">
+                <h3 class="font-bold text-gray-800 mb-3 text-center"><i class="fas fa-headset text-red-600 mr-2"></i>Liên hệ hỗ trợ</h3>
+                <div class="flex flex-wrap justify-center gap-6 text-sm">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-phone text-red-600"></i>
+                        <span><strong>Hotline:</strong> 1900 1234 56</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-envelope text-red-600"></i>
+                        <span><strong>Email:</strong> support@quanghungmobile.vn</span>
                     </div>
                 </div>
             </div>
