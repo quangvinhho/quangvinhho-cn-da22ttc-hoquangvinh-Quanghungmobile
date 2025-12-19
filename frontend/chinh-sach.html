@@ -65,6 +65,13 @@
                         <i class="fas fa-shopping-cart mr-2"></i>Chính sách bán hàng
                     </h2>
                     
+                    <!-- Banner ảnh -->
+                    <div class="mb-5 rounded-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=300&fit=crop" 
+                             alt="Mua sắm điện thoại" 
+                             class="w-full h-40 object-cover">
+                    </div>
+                    
                     <div class="space-y-5 text-gray-700 text-sm">
                         <div>
                             <h3 class="font-semibold text-gray-800 mb-2">1. Giá cả sản phẩm</h3>
@@ -77,20 +84,54 @@
                         
                         <div>
                             <h3 class="font-semibold text-gray-800 mb-2">2. Đặt hàng & Thanh toán</h3>
-                            <ul class="space-y-1 ml-4">
+                            <ul class="space-y-1 ml-4 mb-3">
                                 <li>• Đặt hàng qua website hoặc hotline <strong class="text-red-600">1900 1234 56</strong></li>
                                 <li>• Xác nhận đơn hàng trong 30 phút (giờ hành chính)</li>
-                                <li>• Thanh toán: COD, chuyển khoản, MoMo, ZaloPay, VNPay, trả góp 0%</li>
                             </ul>
+                            <!-- Payment methods -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 ml-4">
+                                <div class="flex items-center gap-2 bg-green-50 p-2 rounded-lg border border-green-200">
+                                    <i class="fas fa-money-bill-wave text-green-600"></i>
+                                    <span class="text-xs font-medium">COD</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-blue-50 p-2 rounded-lg border border-blue-200">
+                                    <i class="fas fa-university text-blue-600"></i>
+                                    <span class="text-xs font-medium">Chuyển khoản</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-pink-50 p-2 rounded-lg border border-pink-200">
+                                    <i class="fas fa-wallet text-pink-600"></i>
+                                    <span class="text-xs font-medium">Ví điện tử</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-purple-50 p-2 rounded-lg border border-purple-200">
+                                    <i class="fas fa-credit-card text-purple-600"></i>
+                                    <span class="text-xs font-medium">Trả góp 0%</span>
+                                </div>
+                            </div>
                         </div>
                         
                         <div>
                             <h3 class="font-semibold text-gray-800 mb-2">3. Giao hàng</h3>
-                            <ul class="space-y-1 ml-4">
-                                <li>• Nội thành HCM, Hà Nội: <strong>2-4 giờ</strong> - <span class="text-green-600 font-medium">Miễn phí</span></li>
-                                <li>• Các tỉnh khác: <strong>1-3 ngày</strong> - 30.000đ - 50.000đ</li>
-                                <li>• Miễn phí ship đơn từ <strong>5.000.000đ</strong></li>
-                            </ul>
+                            <!-- Delivery info cards -->
+                            <div class="grid sm:grid-cols-3 gap-3 ml-4">
+                                <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-3 rounded-lg border border-green-200 text-center">
+                                    <i class="fas fa-motorcycle text-green-600 text-xl mb-1"></i>
+                                    <p class="text-xs font-bold text-gray-800">Nội thành</p>
+                                    <p class="text-xs text-gray-600">2-4 giờ</p>
+                                    <p class="text-xs text-green-600 font-bold">Miễn phí</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-3 rounded-lg border border-blue-200 text-center">
+                                    <i class="fas fa-truck text-blue-600 text-xl mb-1"></i>
+                                    <p class="text-xs font-bold text-gray-800">Các tỉnh</p>
+                                    <p class="text-xs text-gray-600">1-3 ngày</p>
+                                    <p class="text-xs text-blue-600 font-bold">30-50k</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-orange-50 to-yellow-50 p-3 rounded-lg border border-orange-200 text-center">
+                                    <i class="fas fa-gift text-orange-600 text-xl mb-1"></i>
+                                    <p class="text-xs font-bold text-gray-800">Free ship</p>
+                                    <p class="text-xs text-gray-600">Đơn từ</p>
+                                    <p class="text-xs text-orange-600 font-bold">5 triệu</p>
+                                </div>
+                            </div>
                         </div>
                         
                         <div>
@@ -110,6 +151,13 @@
                         <i class="fas fa-shield-alt mr-2"></i>Chính sách bảo mật
                     </h2>
                     
+                    <!-- Banner ảnh -->
+                    <div class="mb-5 rounded-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=300&fit=crop" 
+                             alt="Bảo mật thông tin" 
+                             class="w-full h-40 object-cover">
+                    </div>
+                    
                     <div class="space-y-5 text-gray-700 text-sm">
                         <div>
                             <h3 class="font-semibold text-gray-800 mb-2">1. Thông tin thu thập</h3>
@@ -128,20 +176,40 @@
                         
                         <div>
                             <h3 class="font-semibold text-gray-800 mb-2">3. Bảo vệ thông tin</h3>
-                            <ul class="space-y-1 ml-4">
-                                <li>• Mã hóa SSL 256-bit</li>
-                                <li>• Lưu trữ trên máy chủ bảo mật cao</li>
-                                <li>• <strong class="text-red-600">Không bán, chia sẻ</strong> thông tin cho bên thứ ba</li>
-                            </ul>
+                            <!-- Security features -->
+                            <div class="grid sm:grid-cols-3 gap-3 ml-4">
+                                <div class="flex items-center gap-2 bg-green-50 p-3 rounded-lg border border-green-200">
+                                    <i class="fas fa-lock text-green-600 text-lg"></i>
+                                    <span class="text-xs font-medium">SSL 256-bit</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-lg border border-blue-200">
+                                    <i class="fas fa-server text-blue-600 text-lg"></i>
+                                    <span class="text-xs font-medium">Server bảo mật</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-red-50 p-3 rounded-lg border border-red-200">
+                                    <i class="fas fa-user-shield text-red-600 text-lg"></i>
+                                    <span class="text-xs font-medium">Không chia sẻ</span>
+                                </div>
+                            </div>
                         </div>
                         
                         <div>
                             <h3 class="font-semibold text-gray-800 mb-2">4. Quyền của khách hàng</h3>
-                            <ul class="space-y-1 ml-4">
-                                <li>• Truy cập, chỉnh sửa thông tin cá nhân</li>
-                                <li>• Yêu cầu xóa tài khoản</li>
-                                <li>• Hủy đăng ký nhận email marketing</li>
-                            </ul>
+                            <!-- Customer rights -->
+                            <div class="grid grid-cols-3 gap-2 ml-4">
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <i class="fas fa-eye text-blue-500 text-lg mb-1"></i>
+                                    <p class="text-xs font-medium">Xem thông tin</p>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <i class="fas fa-edit text-green-500 text-lg mb-1"></i>
+                                    <p class="text-xs font-medium">Chỉnh sửa</p>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <i class="fas fa-trash-alt text-red-500 text-lg mb-1"></i>
+                                    <p class="text-xs font-medium">Xóa tài khoản</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -151,6 +219,13 @@
                     <h2 class="section-title text-xl font-bold text-purple-600 mb-4 pb-2 border-b-2 border-purple-600">
                         <i class="fas fa-file-alt mr-2"></i>Điều khoản sử dụng
                     </h2>
+                    
+                    <!-- Banner ảnh -->
+                    <div class="mb-5 rounded-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=300&fit=crop" 
+                             alt="Điều khoản sử dụng" 
+                             class="w-full h-40 object-cover">
+                    </div>
                     
                     <div class="space-y-5 text-gray-700 text-sm">
                         <div>
