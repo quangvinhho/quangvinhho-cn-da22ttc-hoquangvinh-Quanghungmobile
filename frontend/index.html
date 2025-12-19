@@ -907,9 +907,6 @@
             <button id="nextNewsBtn" class="w-7 h-7 rounded border border-gray-300 text-gray-500 hover:bg-gray-100 transition-all flex items-center justify-center text-xs">
               <i class="fas fa-chevron-right"></i>
             </button>
-            <a href="news.html" class="text-red-600 hover:text-red-700 text-xs md:text-sm font-medium ml-2">
-              Xem tất cả →
-            </a>
           </div>
         </div>
 
@@ -1120,6 +1117,7 @@
       animation-delay: 2s;
     }
   </style>
+
   <script>
     // News Carousel Functionality
     document.addEventListener('DOMContentLoaded', function () {
@@ -1129,39 +1127,31 @@
 
       if (carousel && prevBtn && nextBtn) {
         let currentIndex = 0;
-        const items = carousel.children;
-        const totalItems = items.length;
 
-        // Calculate items per view based on screen size
         function getItemsPerView() {
-          if (window.innerWidth >= 1024) return 3; // lg
-          if (window.innerWidth >= 768) return 2;  // md
-          return 1; // mobile
+          if (window.innerWidth >= 1024) return 3;
+          if (window.innerWidth >= 768) return 2;
+          return 1;
         }
 
         function updateCarousel() {
+          const items = carousel.children;
+          const totalItems = items.length;
+          if (totalItems === 0) return;
+          
           const itemsPerView = getItemsPerView();
           const itemWidth = items[0].offsetWidth;
-          const gap = 24; // 6 * 4px (gap-6 in Tailwind)
+          const gap = 24;
           const offset = currentIndex * (itemWidth + gap);
           carousel.style.transform = `translateX(-${offset}px)`;
 
-          // Disable/enable buttons based on position
           prevBtn.disabled = currentIndex === 0;
           nextBtn.disabled = currentIndex >= totalItems - itemsPerView;
 
-          // Update button styles
-          if (prevBtn.disabled) {
-            prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
-          } else {
-            prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-          }
-
-          if (nextBtn.disabled) {
-            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-          } else {
-            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-          }
+          prevBtn.classList.toggle('opacity-50', prevBtn.disabled);
+          prevBtn.classList.toggle('cursor-not-allowed', prevBtn.disabled);
+          nextBtn.classList.toggle('opacity-50', nextBtn.disabled);
+          nextBtn.classList.toggle('cursor-not-allowed', nextBtn.disabled);
         }
 
         prevBtn.addEventListener('click', () => {
@@ -1172,28 +1162,25 @@
         });
 
         nextBtn.addEventListener('click', () => {
+          const items = carousel.children;
           const itemsPerView = getItemsPerView();
-          if (currentIndex < totalItems - itemsPerView) {
+          if (currentIndex < items.length - itemsPerView) {
             currentIndex++;
             updateCarousel();
           }
         });
 
-        // Update on window resize
-        let resizeTimer;
         window.addEventListener('resize', () => {
-          clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(() => {
-            const itemsPerView = getItemsPerView();
-            if (currentIndex >= totalItems - itemsPerView) {
-              currentIndex = Math.max(0, totalItems - itemsPerView);
-            }
-            updateCarousel();
-          }, 250);
+          const items = carousel.children;
+          const itemsPerView = getItemsPerView();
+          if (currentIndex >= items.length - itemsPerView) {
+            currentIndex = Math.max(0, items.length - itemsPerView);
+          }
+          updateCarousel();
         });
 
-        // Initial update
-        updateCarousel();
+        // Initial update after news loaded
+        setTimeout(updateCarousel, 1000);
       }
     });
 
