@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Chính sách bảo hành - QuangHưng Mobile</title>
+    <meta name="description" content="Chính sách bảo hành tại QuangHưng Mobile - Đổi mới 30 ngày miễn phí, bảo hành tiêu chuẩn và bảo hành mở rộng.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="chính sách bảo hành, đổi mới, bảo hành điện thoại, QuangHưng Mobile">
+    <meta name="author" content="QuangHưng Mobile">
+    <meta name="robots" content="index, follow">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'red-main': '#d91e23',
+                        'red-dark': '#b01117',
+                        'red-light': '#ffe5e6',
+                    },
+                    fontFamily: {
+                        'roboto': ['Roboto', 'sans-serif'],
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="components/header.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .policy-card {
+            transition: all 0.3s ease;
+        }
+        .policy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .warranty-table {
+            min-width: 800px;
+        }
+        .warranty-table th {
+            background: linear-gradient(135deg, #d91e23 0%, #b01117 100%);
+        }
+        .warranty-table tr:nth-child(even) {
+            background-color: #fef2f2;
+        }
+        .warranty-table tr:hover {
+            background-color: #fee2e2;
+        }
+        .condition-item {
+            transition: all 0.3s ease;
+        }
+        .condition-item:hover {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-roboto text-gray-900 leading-relaxed scroll-smooth overflow-x-hidden">
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Spacer for fixed header -->
+    <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-red-600 to-red-500 text-white py-16">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4">
+                    <i class="fas fa-shield-alt mr-3"></i>Chính sách bảo hành
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+                    Cam kết bảo hành chính hãng - Đổi mới miễn phí lên tới 30 ngày
+                </p>
+            </div>
+        </div>
+        <!-- Wave decoration -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 50L48 45.7C96 41.3 192 32.7 288 30.2C384 27.7 480 31.3 576 38.5C672 45.7 768 56.3 864 58.8C960 61.3 1056 55.7 1152 48.5C1248 41.3 1344 32.7 1392 28.3L1440 24V100H1392C1344 100 1248 100 1152 100C1056 100 960 100 864 100C768 100 672 100 576 100C480 100 384 100 288 100C192 100 96 100 48 100H0V50Z" fill="#f3f4f6"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Tổng quan chính sách -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <p class="text-lg text-gray-600 max-w-4xl mx-auto">
+                    Khi mua sản phẩm tại <strong class="text-red-600">QuangHưng Mobile</strong>, khách hàng có quyền hoàn toàn yên tâm với sản phẩm chính hãng, được bảo hành chính thức tại hãng và ngoài ra có thêm chính sách đổi mới miễn phí lên tới 30 ngày tại QuangHưng Mobile.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Đổi mới 30 ngày -->
+                <div class="policy-card bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-sync-alt text-4xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">I. Đổi mới 30 ngày miễn phí</h3>
+                    <p class="text-gray-600">Đổi mới sản phẩm miễn phí trong 30 ngày đầu nếu có lỗi từ nhà sản xuất</p>
+                </div>
+
+                <!-- Bảo hành tiêu chuẩn -->
+                <div class="policy-card bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-certificate text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">II. Bảo hành tiêu chuẩn</h3>
+                    <p class="text-gray-600">Bảo hành chính hãng theo quy định của nhà sản xuất</p>
+                </div>
+
+                <!-- Bảo hành mở rộng -->
+                <div class="policy-card bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-plus-circle text-4xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">III. Bảo hành mở rộng</h3>
+                    <p class="text-gray-600">Gói bảo hành mở rộng thêm thời gian bảo vệ cho thiết bị của bạn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+
+    <!-- Bảng chính sách đổi mới -->
+    <section class="py-16 bg-white">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <i class="fas fa-table text-red-600 mr-3"></i>Bảng chính sách đổi mới & nhập lại
+                </h2>
+                <p class="text-lg text-gray-600">Chi tiết thời gian đổi mới và quy định nhập lại theo từng loại sản phẩm</p>
+            </div>
+
+            <div class="table-container bg-white rounded-2xl shadow-xl overflow-hidden">
+                <table class="warranty-table w-full">
+                    <thead>
+                        <tr class="text-white">
+                            <th class="px-6 py-4 text-left font-bold">Loại sản phẩm</th>
+                            <th class="px-6 py-4 text-center font-bold">Đổi mới miễn phí (*)</th>
+                            <th class="px-6 py-4 text-left font-bold">Quy định nhập lại, trả lại</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-mobile-alt text-red-600 mr-2"></i>
+                                Điện thoại / Máy tính bảng / Macbook / Apple Watch
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">30 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Trong 30 ngày đầu nhập lại máy, trừ phí <strong>20%</strong> trên giá hiện tại (hoặc giá mua nếu giá mua thấp hơn giá hiện tại)</li>
+                                    <li>• Sau 30 ngày nhập lại máy theo giá thoả thuận</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-clock text-blue-600 mr-2"></i>
+                                Samsung Watch
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">30 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Trong 30 ngày đầu nhập lại máy, trừ phí <strong>30%</strong> trên giá hiện tại (hoặc giá mua nếu giá mua thấp hơn giá hiện tại)</li>
+                                    <li>• Sau 30 ngày nhập lại máy theo giá thoả thuận</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-laptop text-purple-600 mr-2"></i>
+                                Laptop
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">30 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Trong 30 ngày đầu nhập lại máy, trừ phí <strong>20%</strong> trên giá hiện tại (hoặc giá mua nếu giá mua thấp hơn giá hiện tại)</li>
+                                    <li>• Sau 30 ngày: Nhập lại theo thoả thuận</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-desktop text-indigo-600 mr-2"></i>
+                                Màn hình máy tính
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-bold">15 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Trong 15 ngày đầu nhập lại máy, trừ phí <strong>20%</strong> trên giá hiện tại (hoặc giá mua nếu giá mua thấp hơn giá hiện tại)</li>
+                                    <li>• Sau 15 ngày nhập lại máy theo giá thoả thuận</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-print text-gray-600 mr-2"></i>
+                                Máy tính All-In-One / PC / Máy in
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-bold">15 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-red-600 font-medium">Không áp dụng nhập lại</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-headphones text-pink-600 mr-2"></i>
+                                Loa - Tai nghe cao cấp
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-bold">15 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Trong 30 ngày đầu: Nhập lại trừ phí <strong>40%</strong> trên giá mua ban đầu</li>
+                                    <li>• Từ 31 - 60 ngày: Nhập lại trừ phí <strong>50%</strong> trên giá mua ban đầu</li>
+                                    <li class="text-orange-600">• <strong>Lưu ý:</strong> Quá 60 ngày tính từ ngày mua ban đầu, không áp dụng chính sách nhập trả</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-plug text-teal-600 mr-2"></i>
+                                Phụ kiện &lt; 1 triệu
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="space-y-1">
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold block">1 năm (Mới)</span>
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold block">1 tháng (Cũ)</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-red-600 font-medium">Không áp dụng nhập lại</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-charging-station text-orange-600 mr-2"></i>
+                                Phụ kiện &gt; 1 triệu
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-bold">15 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Không áp dụng nhập lại</li>
+                                    <li class="text-blue-600">• <strong>Riêng Airpod:</strong> Trong 30 ngày đầu nhập lại máy, trừ phí 20% trên giá hiện tại. Sau 30 ngày nhập lại máy theo giá thoả thuận</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-blender text-cyan-600 mr-2"></i>
+                                Đồ gia dụng
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-bold">15 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-red-600 font-medium">Không áp dụng nhập lại</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-tv text-red-600 mr-2"></i>
+                                Tivi
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">30 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-red-600 font-medium">Không áp dụng nhập lại</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-recycle text-green-600 mr-2"></i>
+                                Hàng cũ
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">30 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Trong 30 ngày đầu nhập lại máy, trừ phí <strong>15%</strong> trên giá hiện tại (hoặc giá mua nếu giá mua thấp hơn giá hiện tại)</li>
+                                    <li>• Sau 30 ngày nhập lại máy theo giá thoả thuận</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold">
+                                <i class="fas fa-shield-alt text-purple-600 mr-2"></i>
+                                Bảo hành mở rộng
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-bold">7 ngày</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm">Trong 7 ngày đầu, máy không lỗi, khách hàng trả lại gói BHMR → Nhập lại trừ phí <strong>50%</strong> gói BHMR</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                <p class="text-yellow-800">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>(*)</strong> Lỗi phần cứng từ phía nhà sản xuất
+                </p>
+            </div>
+        </div>
+    </section>
+
+ 
+   <!-- Điều kiện đổi trả -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <i class="fas fa-clipboard-check text-red-600 mr-3"></i>Điều kiện đổi trả
+                </h2>
+                <p class="text-lg text-gray-600">Các điều kiện cần đáp ứng để được đổi trả sản phẩm</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Máy -->
+                <div class="condition-item bg-white rounded-xl p-6 shadow-lg border-l-4 border-red-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-2xl text-red-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Máy</h3>
+                    </div>
+                    <p class="text-gray-600">Như mới, không xước xát, không dán decal, hình trang trí</p>
+                </div>
+
+                <!-- Máy cũ -->
+                <div class="condition-item bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-recycle text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Máy cũ</h3>
+                    </div>
+                    <p class="text-gray-600">Có tình trạng sản phẩm như lúc mới mua</p>
+                </div>
+
+                <!-- Hộp -->
+                <div class="condition-item bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-box text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Hộp</h3>
+                    </div>
+                    <p class="text-gray-600">Như mới, không móp méo, rách, vỡ, bị viết, vẽ, quấn băng dính, keo; có Serial/IMEI trên hộp trùng với thân máy</p>
+                </div>
+
+                <!-- Phụ kiện và quà tặng -->
+                <div class="condition-item bg-white rounded-xl p-6 shadow-lg border-l-4 border-purple-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-gift text-2xl text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Phụ kiện và quà tặng</h3>
+                    </div>
+                    <p class="text-gray-600">Còn đầy đủ, nguyên vẹn, không móp méo xước xát hoặc bị hư hại trong quá trình sử dụng</p>
+                </div>
+
+                <!-- Tài khoản -->
+                <div class="condition-item bg-white rounded-xl p-6 shadow-lg border-l-4 border-orange-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-lock text-2xl text-orange-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Tài khoản</h3>
+                    </div>
+                    <p class="text-gray-600">Máy đã được đăng xuất khỏi tất cả các tài khoản như: iCloud, Google Account, Mi Account…</p>
+                </div>
+
+                <!-- Xác nhận lỗi -->
+                <div class="condition-item bg-white rounded-xl p-6 shadow-lg border-l-4 border-teal-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check-double text-2xl text-teal-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Xác nhận lỗi</h3>
+                    </div>
+                    <p class="text-gray-600">Các lỗi từ NSX cần được xác định bởi trung tâm bảo hành chính hãng hoặc trung tâm bảo hành uỷ quyền</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lỗi từ nhà sản xuất -->
+    <section class="py-16 bg-white">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>Lỗi từ phía Nhà sản xuất
+                </h2>
+                <p class="text-lg text-gray-600">Các lỗi được xác định là lỗi từ nhà sản xuất</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <i class="fas fa-bug text-red-600"></i>
+                        (*) Lỗi từ phía Nhà sản xuất bao gồm:
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4 bg-white rounded-lg p-4 shadow">
+                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-power-off text-red-600"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Lỗi nguồn, lỗi trên mainboard</strong>
+                                <p class="text-gray-600 text-sm mt-1">Máy không bật được nguồn, tự tắt nguồn, lỗi bo mạch chủ</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4 bg-white rounded-lg p-4 shadow">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-hdd text-blue-600"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Ổ cứng</strong>
+                                <p class="text-gray-600 text-sm mt-1">Lỗi ổ cứng, không nhận ổ cứng, bad sector</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4 bg-white rounded-lg p-4 shadow">
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-tv text-purple-600"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Màn hình và các linh kiện phần cứng bên trong</strong>
+                                <p class="text-gray-600 text-sm mt-1">Lỗi hiển thị, lỗi cảm ứng, lỗi các linh kiện nội bộ</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4 bg-white rounded-lg p-4 shadow">
+                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-circle text-orange-600"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Lỗi điểm chết màn hình</strong>
+                                <ul class="text-gray-600 text-sm mt-1 space-y-1">
+                                    <li>• <strong>Điện thoại:</strong> Màn hình có từ 3 điểm chết trở lên hoặc 1 điểm chết có kích thước lớn hơn 1mm</li>
+                                    <li>• <strong>Laptop, màn hình rời:</strong> Từ 5 điểm chết trở lên</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Lưu ý quan trọng -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Hoá đơn công ty -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-file-invoice text-3xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Đổi/trả sản phẩm xuất hoá đơn Công ty</h3>
+                    </div>
+                    <div class="text-gray-600 space-y-3">
+                        <p>Trường hợp đổi/trả các sản phẩm xuất hoá đơn Công ty, Khách hàng vui lòng cung cấp:</p>
+                        <ul class="space-y-2 ml-4">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                <span>Biên bản trả hàng và thu hồi hóa đơn</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                <span>Hoặc Biên bản điều chỉnh giảm hóa đơn GTGT đầy đủ mộc tròn công ty và chữ ký người đại diện Pháp luật công ty</span>
+                            </li>
+                        </ul>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mt-4">
+                            <p class="text-yellow-800 text-sm">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                <strong>Lưu ý:</strong> Trường hợp Khách hàng không cung cấp đầy đủ các chứng từ trên, QuangHưng Mobile xin phép thu phí dịch vụ theo giá trị thuế suất VAT sản phẩm đổi trả.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lưu ý về dữ liệu -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-database text-3xl text-red-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Lưu ý về dữ liệu trên các thiết bị</h3>
+                    </div>
+                    <div class="text-gray-600 space-y-4">
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                            <p class="text-red-800 font-semibold">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                Quý khách hàng vui lòng chủ động tự sao lưu dữ liệu.
+                            </p>
+                        </div>
+                        <p>Chúng tôi hoàn toàn ý thức được tầm quan trọng của dữ liệu của khách hàng và luôn cố gắng hết sức để hỗ trợ - hướng dẫn khách hàng trong việc sao lưu dữ liệu.</p>
+                        <p class="font-semibold text-red-600">Tuy nhiên, cửa hàng không chịu trách nhiệm về việc mất bất cứ dữ liệu trong mọi trường hợp.</p>
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            <a href="#" class="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-lg hover:bg-green-200 transition">
+                                <i class="fab fa-android"></i>
+                                Hướng dẫn sao lưu Android
+                            </a>
+                            <a href="#" class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fab fa-apple"></i>
+                                Hướng dẫn sao lưu iOS
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-red-600 to-red-500 text-white">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-black mb-4">Cần hỗ trợ thêm?</h2>
+            <p class="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
+                Liên hệ với chúng tôi để được tư vấn và hỗ trợ về chính sách bảo hành
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="tel:18001234" class="inline-flex items-center gap-2 bg-white text-red-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-lg">
+                    <i class="fas fa-phone-alt"></i>
+                    Hotline: 1800.1234
+                </a>
+                <a href="contact.html" class="inline-flex items-center gap-2 bg-red-700 text-white px-8 py-4 rounded-xl font-bold hover:bg-red-800 transition shadow-lg border-2 border-white/30">
+                    <i class="fas fa-headset"></i>
+                    Liên hệ hỗ trợ
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load Components Script -->
+    <script>
+        // Load Header
+        fetch('components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-placeholder').innerHTML = html;
+                // Initialize header scripts
+                if (typeof initHeader === 'function') {
+                    initHeader();
+                }
+            });
+
+        // Load Footer
+        fetch('components/footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer-placeholder').innerHTML = html;
+            });
+    </script>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>
