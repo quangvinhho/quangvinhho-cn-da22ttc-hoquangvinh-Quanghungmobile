@@ -3,725 +3,292 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chính sách - QuangHưng Mobile</title>
-    <meta name="description" content="Chính sách bán hàng, bảo mật và sử dụng tại QuangHưng Mobile.">
-
-    <!-- SEO Meta Tags -->
-    <meta name="keywords" content="chính sách bán hàng, chính sách bảo mật, điều khoản sử dụng, QuangHưng Mobile">
-    <meta name="author" content="QuangHưng Mobile">
-    <meta name="robots" content="index, follow">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'red-main': '#d91e23',
-                        'red-dark': '#b01117',
-                        'red-light': '#ffe5e6',
-                    },
-                    fontFamily: {
-                        'roboto': ['Roboto', 'sans-serif'],
-                        'montserrat': ['Montserrat', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="components/header.css">
+    <link rel="stylesheet" href="components/ai-chatbot.css">
     <link rel="stylesheet" href="style.css">
 
     <style>
-        .policy-nav {
-            position: sticky;
-            top: 140px;
-        }
-        .policy-nav a {
-            transition: all 0.3s ease;
-        }
-        .policy-nav a.active {
-            background: linear-gradient(135deg, #d91e23 0%, #b01117 100%);
-            color: white;
-            transform: translateX(5px);
-        }
-        .policy-section {
-            scroll-margin-top: 160px;
-        }
-        .policy-card {
-            transition: all 0.3s ease;
-        }
-        .policy-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        @media (max-width: 1023px) {
-            .policy-nav {
-                position: relative;
-                top: 0;
-            }
-        }
+        body { font-family: 'Roboto', sans-serif; }
+        .sidebar-item { border-left: 3px solid transparent; transition: all 0.2s; }
+        .sidebar-item.active { border-left-color: #dc2626; color: #dc2626; background: #fef2f2; }
+        .sidebar-item:hover { background: #f5f5f5; }
+        .section-title { scroll-margin-top: 160px; }
     </style>
 </head>
 
-<body class="bg-gray-100 font-roboto text-gray-900 leading-relaxed scroll-smooth overflow-x-hidden">
-    <!-- Header Component -->
+<body class="bg-gray-100">
+    <!-- Header -->
     <div id="header-placeholder"></div>
-
-    <!-- Spacer for fixed header -->
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-    <!-- Hero Section -->
-    <section class="relative bg-gradient-to-r from-red-600 to-red-500 text-white py-12">
-        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-black mb-4">
-                    <i class="fas fa-file-contract mr-3"></i>Chính sách
-                </h1>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
-                    Các chính sách và điều khoản khi mua sắm tại QuangHưng Mobile
-                </p>
-            </div>
-        </div>
-        <div class="absolute bottom-0 left-0 right-0">
-            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 30L60 25C120 20 240 10 360 8.3C480 6.7 600 13.3 720 20C840 26.7 960 33.3 1080 33.3C1200 33.3 1320 26.7 1380 23.3L1440 20V60H1380C1320 60 1200 60 1080 60C960 60 840 60 720 60C600 60 480 60 360 60C240 60 120 60 60 60H0V30Z" fill="#f3f4f6"/>
-            </svg>
-        </div>
-    </section>
-
     <!-- Main Content -->
-    <section class="py-12 bg-gray-100">
-        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
-            <div class="flex flex-col lg:flex-row gap-8">
-                <!-- Sidebar Navigation -->
-                <div class="lg:w-72 flex-shrink-0">
-                    <nav class="policy-nav bg-white rounded-2xl shadow-lg p-4">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4 px-4">
-                            <i class="fas fa-list text-red-600 mr-2"></i>Danh mục
-                        </h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <a href="#chinh-sach-ban-hang" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600">
-                                    <i class="fas fa-shopping-cart w-5 text-center"></i>
-                                    <span>Chính sách bán hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#chinh-sach-bao-mat" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600">
-                                    <i class="fas fa-shield-alt w-5 text-center"></i>
-                                    <span>Chính sách bảo mật</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#chinh-sach-su-dung" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600">
-                                    <i class="fas fa-file-alt w-5 text-center"></i>
-                                    <span>Chính sách sử dụng</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Chính sách</h1>
+        
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Sidebar -->
+            <div class="lg:w-56 flex-shrink-0">
+                <nav class="bg-white rounded-lg shadow-sm overflow-hidden sticky top-36">
+                    <a href="#ban-hang" class="sidebar-item active block px-4 py-3 text-sm font-medium">
+                        <i class="fas fa-shopping-cart mr-2 w-4"></i>Chính sách bán hàng
+                    </a>
+                    <a href="#bao-mat" class="sidebar-item block px-4 py-3 text-sm font-medium text-gray-700">
+                        <i class="fas fa-shield-alt mr-2 w-4"></i>Chính sách bảo mật
+                    </a>
+                    <a href="#su-dung" class="sidebar-item block px-4 py-3 text-sm font-medium text-gray-700">
+                        <i class="fas fa-file-alt mr-2 w-4"></i>Điều khoản sử dụng
+                    </a>
+                </nav>
+            </div>
 
-                <!-- Content -->
-                <div class="flex-1 space-y-12">
-                    <!-- CHÍNH SÁCH BÁN HÀNG -->
-                    <div id="chinh-sach-ban-hang" class="policy-section bg-white rounded-2xl shadow-lg p-8">
-                        <div class="flex items-center gap-4 mb-8 pb-4 border-b-2 border-red-100">
-                            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-shopping-cart text-2xl text-red-600"></i>
-                            </div>
-                            <h2 class="text-3xl font-black text-gray-900">Chính sách bán hàng</h2>
-                        </div>
-
-                        <!-- 1. Giá cả -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                                Giá cả sản phẩm
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Giá sản phẩm được niêm yết công khai trên website và tại cửa hàng</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Giá đã bao gồm thuế VAT (trừ trường hợp có ghi chú khác)</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>QuangHưng Mobile có quyền thay đổi giá mà không cần báo trước</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Giá áp dụng tại thời điểm đặt hàng là giá cuối cùng</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 2. Đặt hàng -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                                Quy trình đặt hàng
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Khách hàng có thể đặt hàng trực tiếp trên website hoặc qua hotline <strong class="text-red-600">1800.1234</strong></span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Đơn hàng được xác nhận qua điện thoại hoặc email trong vòng 30 phút (giờ hành chính)</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Khách hàng có thể hủy đơn hàng trước khi đơn được giao cho đơn vị vận chuyển</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 3. Thanh toán -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                                Phương thức thanh toán
-                            </h3>
-                            <div class="grid sm:grid-cols-2 gap-4">
-                                <div class="policy-card bg-green-50 rounded-xl p-5 border border-green-200">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-money-bill-wave text-green-600 text-xl"></i>
-                                        <strong class="text-gray-900">COD</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">Thanh toán khi nhận hàng</p>
-                                </div>
-                                <div class="policy-card bg-blue-50 rounded-xl p-5 border border-blue-200">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-university text-blue-600 text-xl"></i>
-                                        <strong class="text-gray-900">Chuyển khoản</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">Chuyển khoản ngân hàng</p>
-                                </div>
-                                <div class="policy-card bg-pink-50 rounded-xl p-5 border border-pink-200">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-wallet text-pink-600 text-xl"></i>
-                                        <strong class="text-gray-900">Ví điện tử</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">MoMo, ZaloPay, VNPay</p>
-                                </div>
-                                <div class="policy-card bg-purple-50 rounded-xl p-5 border border-purple-200">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-credit-card text-purple-600 text-xl"></i>
-                                        <strong class="text-gray-900">Trả góp</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">Trả góp 0% qua thẻ tín dụng</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 4. Giao hàng -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
-                                Chính sách giao hàng
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <div class="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <h4 class="font-semibold text-gray-900 mb-3"><i class="fas fa-truck text-red-600 mr-2"></i>Thời gian giao hàng</h4>
-                                        <ul class="space-y-2 text-gray-700 text-sm">
-                                            <li>• Nội thành HCM, Hà Nội: <strong>2-4 giờ</strong></li>
-                                            <li>• Các tỉnh thành khác: <strong>1-3 ngày</strong></li>
-                                            <li>• Vùng sâu, vùng xa: <strong>3-5 ngày</strong></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-900 mb-3"><i class="fas fa-gift text-green-600 mr-2"></i>Phí giao hàng</h4>
-                                        <ul class="space-y-2 text-gray-700 text-sm">
-                                            <li>• <strong class="text-green-600">Miễn phí</strong> nội thành HCM, Hà Nội</li>
-                                            <li>• Các tỉnh thành khác: <strong>30.000đ - 50.000đ</strong></li>
-                                            <li>• Miễn phí đơn hàng từ <strong>5.000.000đ</strong></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 5. Xuất hóa đơn -->
+            <!-- Content -->
+            <div class="flex-1 space-y-8">
+                
+                <!-- Section 1: Chính sách bán hàng -->
+                <section id="ban-hang" class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="section-title text-xl font-bold text-red-600 mb-4 pb-2 border-b-2 border-red-600">
+                        <i class="fas fa-shopping-cart mr-2"></i>Chính sách bán hàng
+                    </h2>
+                    
+                    <div class="space-y-5 text-gray-700 text-sm">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
-                                Xuất hóa đơn VAT
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Khách hàng có nhu cầu xuất hóa đơn VAT vui lòng yêu cầu <strong>trong vòng 7 ngày</strong> kể từ ngày mua hàng</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Cung cấp đầy đủ thông tin: Tên công ty, địa chỉ, mã số thuế, email nhận hóa đơn</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Hóa đơn điện tử được gửi qua email trong vòng <strong>3-5 ngày làm việc</strong></span>
-                                    </li>
+                            <h3 class="font-semibold text-gray-800 mb-2">1. Giá cả sản phẩm</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Giá niêm yết đã bao gồm VAT</li>
+                                <li>• Giá có thể thay đổi mà không báo trước</li>
+                                <li>• Giá tại thời điểm đặt hàng là giá cuối cùng</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">2. Đặt hàng & Thanh toán</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Đặt hàng qua website hoặc hotline <strong class="text-red-600">1900 1234 56</strong></li>
+                                <li>• Xác nhận đơn hàng trong 30 phút (giờ hành chính)</li>
+                                <li>• Thanh toán: COD, chuyển khoản, MoMo, ZaloPay, VNPay, trả góp 0%</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">3. Giao hàng</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Nội thành HCM, Hà Nội: <strong>2-4 giờ</strong> - <span class="text-green-600 font-medium">Miễn phí</span></li>
+                                <li>• Các tỉnh khác: <strong>1-3 ngày</strong> - 30.000đ - 50.000đ</li>
+                                <li>• Miễn phí ship đơn từ <strong>5.000.000đ</strong></li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">4. Xuất hóa đơn VAT</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Yêu cầu trong vòng 7 ngày kể từ ngày mua</li>
+                                <li>• Hóa đơn điện tử gửi qua email trong 3-5 ngày làm việc</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- Section 2: Chính sách bảo mật -->
+                <section id="bao-mat" class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="section-title text-xl font-bold text-blue-600 mb-4 pb-2 border-b-2 border-blue-600">
+                        <i class="fas fa-shield-alt mr-2"></i>Chính sách bảo mật
+                    </h2>
+                    
+                    <div class="space-y-5 text-gray-700 text-sm">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">1. Thông tin thu thập</h3>
+                            <p class="ml-4">Họ tên, số điện thoại, email, địa chỉ giao hàng khi đăng ký hoặc đặt hàng.</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">2. Mục đích sử dụng</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Xử lý đơn hàng và giao hàng</li>
+                                <li>• Liên hệ xác nhận, thông báo tình trạng đơn hàng</li>
+                                <li>• Gửi thông tin khuyến mãi (nếu đồng ý)</li>
+                                <li>• Hỗ trợ khách hàng và giải quyết khiếu nại</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">3. Bảo vệ thông tin</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Mã hóa SSL 256-bit</li>
+                                <li>• Lưu trữ trên máy chủ bảo mật cao</li>
+                                <li>• <strong class="text-red-600">Không bán, chia sẻ</strong> thông tin cho bên thứ ba</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">4. Quyền của khách hàng</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Truy cập, chỉnh sửa thông tin cá nhân</li>
+                                <li>• Yêu cầu xóa tài khoản</li>
+                                <li>• Hủy đăng ký nhận email marketing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: Điều khoản sử dụng -->
+                <section id="su-dung" class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="section-title text-xl font-bold text-purple-600 mb-4 pb-2 border-b-2 border-purple-600">
+                        <i class="fas fa-file-alt mr-2"></i>Điều khoản sử dụng
+                    </h2>
+                    
+                    <div class="space-y-5 text-gray-700 text-sm">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">1. Điều khoản chung</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Sử dụng website đồng nghĩa với việc chấp nhận các điều khoản</li>
+                                <li>• Điều khoản có thể thay đổi mà không báo trước</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">2. Tài khoản người dùng</h3>
+                            <ul class="space-y-1 ml-4">
+                                <li>• Cung cấp thông tin chính xác khi đăng ký</li>
+                                <li>• Chịu trách nhiệm bảo mật mật khẩu</li>
+                                <li>• Thông báo ngay nếu phát hiện truy cập trái phép</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">3. Hành vi bị cấm</h3>
+                            <div class="ml-4 p-3 bg-red-50 rounded-lg border border-red-200">
+                                <ul class="space-y-1 text-red-700">
+                                    <li>• Sử dụng thông tin giả mạo</li>
+                                    <li>• Tấn công, phá hoại hệ thống</li>
+                                    <li>• Thu thập thông tin người dùng trái phép</li>
+                                    <li>• Lợi dụng lỗi hệ thống để trục lợi</li>
                                 </ul>
                             </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">4. Quyền sở hữu trí tuệ</h3>
+                            <p class="ml-4">Toàn bộ nội dung (logo, hình ảnh, văn bản) thuộc quyền sở hữu của QuangHưng Mobile. Nghiêm cấm sao chép mà không có sự đồng ý.</p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- Liên hệ -->
+                <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-5 border border-red-200">
+                    <h3 class="font-bold text-gray-800 mb-3"><i class="fas fa-headset text-red-600 mr-2"></i>Liên hệ hỗ trợ</h3>
+                    <div class="flex flex-wrap gap-6 text-sm">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-phone text-red-600"></i>
+                            <span><strong>Hotline:</strong> 1900 1234 56</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-envelope text-red-600"></i>
+                            <span><strong>Email:</strong> support@quanghungmobile.vn</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-</body>
-</html>
+    </div>
 
-     
-               <!-- CHÍNH SÁCH BẢO MẬT -->
-                    <div id="chinh-sach-bao-mat" class="policy-section bg-white rounded-2xl shadow-lg p-8">
-                        <div class="flex items-center gap-4 mb-8 pb-4 border-b-2 border-blue-100">
-                            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
-                            </div>
-                            <h2 class="text-3xl font-black text-gray-900">Chính sách bảo mật</h2>
-                        </div>
-
-                        <!-- 1. Thu thập thông tin -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                                Thu thập thông tin cá nhân
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <p class="text-gray-700 mb-4">Chúng tôi thu thập các thông tin sau khi bạn đăng ký tài khoản hoặc đặt hàng:</p>
-                                <div class="grid sm:grid-cols-2 gap-4">
-                                    <ul class="space-y-2 text-gray-700">
-                                        <li class="flex items-center gap-2">
-                                            <i class="fas fa-user text-blue-500"></i>
-                                            <span>Họ và tên</span>
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <i class="fas fa-phone text-blue-500"></i>
-                                            <span>Số điện thoại</span>
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <i class="fas fa-envelope text-blue-500"></i>
-                                            <span>Địa chỉ email</span>
-                                        </li>
-                                    </ul>
-                                    <ul class="space-y-2 text-gray-700">
-                                        <li class="flex items-center gap-2">
-                                            <i class="fas fa-map-marker-alt text-blue-500"></i>
-                                            <span>Địa chỉ giao hàng</span>
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <i class="fas fa-birthday-cake text-blue-500"></i>
-                                            <span>Ngày sinh (tùy chọn)</span>
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <i class="fas fa-venus-mars text-blue-500"></i>
-                                            <span>Giới tính (tùy chọn)</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 2. Mục đích sử dụng -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                                Mục đích sử dụng thông tin
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Xử lý đơn hàng và giao hàng đến địa chỉ của bạn</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Liên hệ xác nhận đơn hàng, thông báo tình trạng giao hàng</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Gửi thông tin khuyến mãi, ưu đãi (nếu bạn đồng ý nhận)</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Hỗ trợ khách hàng và giải quyết khiếu nại</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Cải thiện chất lượng dịch vụ và trải nghiệm người dùng</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 3. Bảo vệ thông tin -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                                Bảo vệ thông tin cá nhân
-                            </h3>
-                            <div class="policy-card bg-blue-50 rounded-xl p-6 border border-blue-200">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-lock text-blue-600 mt-1"></i>
-                                        <span>Thông tin được mã hóa bằng công nghệ <strong>SSL 256-bit</strong></span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-server text-blue-600 mt-1"></i>
-                                        <span>Dữ liệu được lưu trữ trên máy chủ bảo mật cao</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-user-shield text-blue-600 mt-1"></i>
-                                        <span>Chỉ nhân viên được ủy quyền mới có quyền truy cập</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-ban text-blue-600 mt-1"></i>
-                                        <span><strong>Không bán, chia sẻ</strong> thông tin cho bên thứ ba vì mục đích thương mại</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 4. Quyền của khách hàng -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
-                                Quyền của khách hàng
-                            </h3>
-                            <div class="grid sm:grid-cols-2 gap-4">
-                                <div class="policy-card bg-gray-50 rounded-xl p-5">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-eye text-blue-600 text-xl"></i>
-                                        <strong class="text-gray-900">Quyền truy cập</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">Xem và kiểm tra thông tin cá nhân của bạn</p>
-                                </div>
-                                <div class="policy-card bg-gray-50 rounded-xl p-5">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-edit text-green-600 text-xl"></i>
-                                        <strong class="text-gray-900">Quyền chỉnh sửa</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">Cập nhật, sửa đổi thông tin khi cần</p>
-                                </div>
-                                <div class="policy-card bg-gray-50 rounded-xl p-5">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-trash-alt text-red-600 text-xl"></i>
-                                        <strong class="text-gray-900">Quyền xóa</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">Yêu cầu xóa tài khoản và dữ liệu cá nhân</p>
-                                </div>
-                                <div class="policy-card bg-gray-50 rounded-xl p-5">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fas fa-bell-slash text-orange-600 text-xl"></i>
-                                        <strong class="text-gray-900">Quyền từ chối</strong>
-                                    </div>
-                                    <p class="text-gray-600 text-sm">Hủy đăng ký nhận email marketing</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 5. Cookie -->
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
-                                Sử dụng Cookie
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <p class="text-gray-700 mb-3">Website sử dụng cookie để:</p>
-                                <ul class="space-y-2 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check text-green-500 mt-1"></i>
-                                        <span>Ghi nhớ thông tin đăng nhập và giỏ hàng</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check text-green-500 mt-1"></i>
-                                        <span>Phân tích hành vi người dùng để cải thiện trải nghiệm</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check text-green-500 mt-1"></i>
-                                        <span>Hiển thị quảng cáo phù hợp với sở thích</span>
-                                    </li>
-                                </ul>
-                                <p class="text-gray-600 text-sm mt-4 italic">Bạn có thể tắt cookie trong cài đặt trình duyệt, tuy nhiên một số tính năng có thể không hoạt động đầy đủ.</p>
-                            </div>
-                        </div>
-                    </div>
-
-    
-                <!-- CHÍNH SÁCH SỬ DỤNG -->
-                    <div id="chinh-sach-su-dung" class="policy-section bg-white rounded-2xl shadow-lg p-8">
-                        <div class="flex items-center gap-4 mb-8 pb-4 border-b-2 border-purple-100">
-                            <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-file-alt text-2xl text-purple-600"></i>
-                            </div>
-                            <h2 class="text-3xl font-black text-gray-900">Chính sách sử dụng</h2>
-                        </div>
-
-                        <!-- 1. Điều khoản chung -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                                Điều khoản chung
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Khi truy cập và sử dụng website QuangHưng Mobile, bạn đồng ý tuân thủ các điều khoản này</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Chúng tôi có quyền thay đổi điều khoản mà không cần thông báo trước</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                        <span>Việc tiếp tục sử dụng website đồng nghĩa với việc chấp nhận các thay đổi</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 2. Tài khoản người dùng -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                                Tài khoản người dùng
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-user-check text-purple-500 mt-1"></i>
-                                        <span>Bạn phải cung cấp thông tin <strong>chính xác, đầy đủ</strong> khi đăng ký tài khoản</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-key text-purple-500 mt-1"></i>
-                                        <span>Bạn chịu trách nhiệm bảo mật <strong>mật khẩu</strong> và mọi hoạt động dưới tài khoản của mình</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-exclamation-triangle text-purple-500 mt-1"></i>
-                                        <span>Thông báo ngay cho chúng tôi nếu phát hiện truy cập trái phép</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-user-times text-purple-500 mt-1"></i>
-                                        <span>Chúng tôi có quyền <strong>khóa tài khoản</strong> nếu phát hiện vi phạm</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 3. Hành vi bị cấm -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                                Hành vi bị cấm
-                            </h3>
-                            <div class="policy-card bg-red-50 rounded-xl p-6 border border-red-200">
-                                <p class="text-gray-700 mb-4">Khi sử dụng website, bạn <strong class="text-red-600">KHÔNG ĐƯỢC</strong>:</p>
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-times-circle text-red-500 mt-1"></i>
-                                        <span>Sử dụng thông tin giả mạo hoặc mạo danh người khác</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-times-circle text-red-500 mt-1"></i>
-                                        <span>Đăng tải nội dung vi phạm pháp luật, đồi trụy, bạo lực</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-times-circle text-red-500 mt-1"></i>
-                                        <span>Tấn công, phá hoại hệ thống website</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-times-circle text-red-500 mt-1"></i>
-                                        <span>Thu thập thông tin người dùng khác trái phép</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-times-circle text-red-500 mt-1"></i>
-                                        <span>Sử dụng bot, script tự động để truy cập website</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-times-circle text-red-500 mt-1"></i>
-                                        <span>Lợi dụng lỗi hệ thống để trục lợi</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 4. Quyền sở hữu trí tuệ -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
-                                Quyền sở hữu trí tuệ
-                            </h3>
-                            <div class="policy-card bg-gray-50 rounded-xl p-6">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-copyright text-purple-500 mt-1"></i>
-                                        <span>Toàn bộ nội dung trên website (logo, hình ảnh, văn bản, thiết kế) thuộc quyền sở hữu của QuangHưng Mobile</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-ban text-purple-500 mt-1"></i>
-                                        <span>Nghiêm cấm sao chép, phân phối, sửa đổi nội dung mà không có sự đồng ý bằng văn bản</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-trademark text-purple-500 mt-1"></i>
-                                        <span>Các thương hiệu sản phẩm thuộc quyền sở hữu của các nhà sản xuất tương ứng</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 5. Giới hạn trách nhiệm -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
-                                Giới hạn trách nhiệm
-                            </h3>
-                            <div class="policy-card bg-yellow-50 rounded-xl p-6 border border-yellow-200">
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-exclamation-triangle text-yellow-600 mt-1"></i>
-                                        <span>Chúng tôi không chịu trách nhiệm về thiệt hại do <strong>lỗi kỹ thuật, gián đoạn dịch vụ</strong></span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-exclamation-triangle text-yellow-600 mt-1"></i>
-                                        <span>Không chịu trách nhiệm về nội dung từ <strong>bên thứ ba</strong> được liên kết trên website</span>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <i class="fas fa-exclamation-triangle text-yellow-600 mt-1"></i>
-                                        <span>Thông tin sản phẩm có thể thay đổi mà không báo trước</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 6. Liên hệ -->
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">6</span>
-                                Liên hệ
-                            </h3>
-                            <div class="policy-card bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 border border-purple-200">
-                                <p class="text-gray-700 mb-4">Nếu có thắc mắc về các chính sách, vui lòng liên hệ:</p>
-                                <div class="grid sm:grid-cols-2 gap-4">
-                                    <div class="flex items-center gap-3">
-                                        <i class="fas fa-phone-alt text-red-600 text-xl"></i>
-                                        <div>
-                                            <p class="text-sm text-gray-500">Hotline</p>
-                                            <p class="font-bold text-gray-900">1800.1234</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i class="fas fa-envelope text-blue-600 text-xl"></i>
-                                        <div>
-                                            <p class="text-sm text-gray-500">Email</p>
-                                            <p class="font-bold text-gray-900">support@quanghungmobile.vn</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer Component -->
+    <!-- Footer -->
     <div id="footer-placeholder"></div>
 
-    <!-- Load Components Script -->
+    <!-- Scripts -->
+    <script src="components/header.js"></script>
+    <script src="components/ai-chatbot.js"></script>
+
+    <!-- Load Header -->
     <script>
-        // Load Header
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-placeholder').innerHTML = html;
-                if (typeof initHeader === 'function') {
-                    initHeader();
-                }
-            });
-
-        // Load Footer
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('footer-placeholder').innerHTML = html;
-            });
-
-        // Active nav link on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.policy-section');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            function setActiveLink() {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (window.scrollY >= sectionTop - 200) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
+        (function () {
+            function loadHeader() {
+                const headerPlaceholder = document.getElementById('header-placeholder');
+                if (!headerPlaceholder) return;
+                fetch('components/header.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        headerPlaceholder.innerHTML = html;
+                        if (typeof initHeader === 'function') initHeader();
+                    })
+                    .catch(error => console.error('Error loading header:', error));
             }
-
-            window.addEventListener('scroll', setActiveLink);
-            setActiveLink();
-
-            // Smooth scroll for nav links
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetSection = document.getElementById(targetId);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-
-            // Check URL hash on load
-            if (window.location.hash) {
-                const targetSection = document.querySelector(window.location.hash);
-                if (targetSection) {
-                    setTimeout(() => {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }, 500);
-                }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadHeader);
+            } else {
+                loadHeader();
             }
-        });
+        })();
     </script>
 
-    <!-- Main JS -->
-    <script src="main.js"></script>
+    <!-- Load Footer -->
+    <script>
+        (function () {
+            function loadFooter() {
+                const footerPlaceholder = document.getElementById('footer-placeholder');
+                if (!footerPlaceholder) return;
+                fetch('components/footer.html')
+                    .then(response => response.text())
+                    .then(html => { footerPlaceholder.innerHTML = html; })
+                    .catch(error => console.error('Error loading footer:', error));
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadFooter);
+            } else {
+                loadFooter();
+            }
+        })();
+    </script>
+
+    <!-- Sidebar & Scroll -->
+    <script>
+        const sections = document.querySelectorAll('section[id]');
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+        function updateActiveSection() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            sidebarItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveSection);
+        
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
