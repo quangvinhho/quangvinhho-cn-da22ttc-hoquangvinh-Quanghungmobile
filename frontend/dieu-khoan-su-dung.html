@@ -24,8 +24,8 @@
 
     <style>
         body { font-family: 'Roboto', sans-serif; }
-        .policy-card { transition: all 0.3s; }
-        .policy-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .content-section h2 { color: #7c3aed; }
+        .content-section p, .content-section li { line-height: 1.8; }
     </style>
 </head>
 
@@ -34,28 +34,11 @@
     <div id="header-placeholder"></div>
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-    <!-- Hero Banner -->
-    <div class="relative bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 text-white overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-10 left-10 w-40 h-40 bg-white rounded-full"></div>
-            <div class="absolute bottom-10 right-10 w-60 h-60 bg-white rounded-full"></div>
-        </div>
-        <div class="relative max-w-6xl mx-auto px-4 py-16 text-center">
-            <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur rounded-2xl mb-6">
-                <i class="fas fa-file-contract text-4xl"></i>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Điều khoản sử dụng</h1>
-            <p class="text-xl text-white/90 max-w-2xl mx-auto">Quy định và điều khoản khi sử dụng website QuangHưng Mobile</p>
-        </div>
-    </div>
-
     <!-- Breadcrumb -->
     <div class="bg-white border-b">
-        <div class="max-w-6xl mx-auto px-4 py-3">
+        <div class="max-w-4xl mx-auto px-4 py-3">
             <nav class="flex items-center gap-2 text-sm">
-                <a href="index.html" class="text-gray-500 hover:text-purple-600"><i class="fas fa-home"></i></a>
-                <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
-                <a href="chinh-sach.html" class="text-gray-500 hover:text-purple-600">Chính sách</a>
+                <a href="index.html" class="text-gray-500 hover:text-purple-600"><i class="fas fa-home"></i> Trang chủ</a>
                 <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
                 <span class="text-purple-600 font-medium">Điều khoản sử dụng</span>
             </nav>
@@ -63,236 +46,172 @@
     </div>
 
     <!-- Main Content -->
-    <div class="max-w-6xl mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto px-4 py-8">
         
+        <!-- Header Image -->
+        <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&h=400&fit=crop" 
+                 alt="Điều khoản sử dụng" 
+                 class="w-full h-64 object-cover">
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">
+            <i class="fas fa-file-contract text-purple-600 mr-3"></i>Điều khoản sử dụng
+        </h1>
+
+        <p class="text-gray-600 text-center mb-10 text-lg">
+            Quy định và điều khoản khi sử dụng website QuangHưng Mobile
+        </p>
+
         <!-- Important Notice -->
-        <div class="bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 rounded-2xl p-6 mb-12">
-            <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-info-circle text-white text-xl"></i>
+        <div class="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-8">
+            <p class="text-purple-800">
+                <i class="fas fa-info-circle mr-2"></i>
+                <strong>Lưu ý:</strong> Việc sử dụng website QuangHưng Mobile đồng nghĩa với việc bạn đã đọc, hiểu và đồng ý với tất cả các điều khoản dưới đây.
+            </p>
+        </div>
+
+        <!-- Content -->
+        <div class="bg-white rounded-xl shadow-sm p-6 md:p-10 content-section">
+            
+            <!-- 1. Điều khoản chung -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold mb-4 pb-2 border-b-2 border-purple-600">
+                    1. Điều khoản chung
+                </h2>
+                <ul class="list-disc list-inside text-gray-700 space-y-3 ml-4">
+                    <li>Website quanghungmobile.vn thuộc quyền sở hữu và quản lý của Công ty TNHH QuangHưng Mobile.</li>
+                    <li>Bằng việc truy cập và sử dụng website, bạn đồng ý tuân thủ các điều khoản và điều kiện được quy định.</li>
+                    <li>QuangHưng Mobile có quyền thay đổi, bổ sung hoặc xóa bỏ bất kỳ điều khoản nào mà không cần thông báo trước.</li>
+                    <li>Người dùng có trách nhiệm kiểm tra và cập nhật các thay đổi thường xuyên.</li>
+                </ul>
+            </section>
+
+            <!-- 2. Tài khoản người dùng -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold mb-4 pb-2 border-b-2 border-purple-600">
+                    2. Tài khoản người dùng
+                </h2>
+                <ul class="list-disc list-inside text-gray-700 space-y-3 ml-4">
+                    <li>Bạn phải cung cấp thông tin chính xác, đầy đủ khi đăng ký tài khoản.</li>
+                    <li>Bạn chịu trách nhiệm bảo mật mật khẩu và tất cả hoạt động diễn ra trên tài khoản của mình.</li>
+                    <li>Thông báo ngay cho chúng tôi nếu phát hiện truy cập trái phép vào tài khoản.</li>
+                    <li>Mỗi người chỉ được đăng ký một tài khoản duy nhất.</li>
+                    <li>QuangHưng Mobile có quyền khóa hoặc xóa tài khoản vi phạm điều khoản.</li>
+                </ul>
+            </section>
+
+            <!-- 3. Hành vi bị cấm -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold mb-4 pb-2 border-b-2 border-purple-600">
+                    3. Hành vi bị cấm
+                </h2>
+                <p class="text-gray-700 mb-4">Khi sử dụng website, bạn <strong>KHÔNG ĐƯỢC</strong>:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-3 ml-4">
+                    <li>Sử dụng thông tin giả mạo hoặc mạo danh người khác.</li>
+                    <li>Tấn công, phá hoại hệ thống website hoặc máy chủ.</li>
+                    <li>Thu thập thông tin người dùng khác một cách trái phép.</li>
+                    <li>Đăng tải nội dung vi phạm pháp luật, đạo đức, thuần phong mỹ tục.</li>
+                    <li>Sử dụng bot, script hoặc công cụ tự động để truy cập website.</li>
+                    <li>Lợi dụng lỗi hệ thống để trục lợi cá nhân.</li>
+                    <li>Sao chép, phân phối nội dung website mà không có sự đồng ý.</li>
+                </ul>
+                <p class="text-red-600 mt-4 font-medium">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Vi phạm các điều khoản trên có thể dẫn đến khóa tài khoản vĩnh viễn và xử lý theo pháp luật.
+                </p>
+            </section>
+
+            <!-- 4. Quyền sở hữu trí tuệ -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold mb-4 pb-2 border-b-2 border-purple-600">
+                    4. Quyền sở hữu trí tuệ
+                </h2>
+                <p class="text-gray-700 mb-4">Toàn bộ nội dung trên website bao gồm nhưng không giới hạn:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-3 ml-4">
+                    <li>Logo, thương hiệu QuangHưng Mobile</li>
+                    <li>Hình ảnh sản phẩm, banner quảng cáo</li>
+                    <li>Văn bản, bài viết, mô tả sản phẩm</li>
+                    <li>Thiết kế giao diện, mã nguồn website</li>
+                </ul>
+                <p class="text-gray-700 mt-4">
+                    đều thuộc quyền sở hữu của <strong>QuangHưng Mobile</strong>. Nghiêm cấm sao chép, phân phối hoặc sử dụng cho mục đích thương mại mà không có sự đồng ý bằng văn bản.
+                </p>
+            </section>
+
+            <!-- 5. Giới hạn trách nhiệm -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold mb-4 pb-2 border-b-2 border-purple-600">
+                    5. Giới hạn trách nhiệm
+                </h2>
+                <ul class="list-disc list-inside text-gray-700 space-y-3 ml-4">
+                    <li>QuangHưng Mobile không chịu trách nhiệm về thiệt hại phát sinh từ việc sử dụng hoặc không thể sử dụng website.</li>
+                    <li>Chúng tôi không đảm bảo website hoạt động liên tục, không có lỗi hoặc virus.</li>
+                    <li>Thông tin sản phẩm có thể thay đổi mà không cần thông báo trước.</li>
+                    <li>Chúng tôi không chịu trách nhiệm về nội dung của các website bên thứ ba được liên kết.</li>
+                </ul>
+            </section>
+
+            <!-- 6. Đánh giá và bình luận -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold mb-4 pb-2 border-b-2 border-purple-600">
+                    6. Đánh giá và bình luận
+                </h2>
+                <ul class="list-disc list-inside text-gray-700 space-y-3 ml-4">
+                    <li>Bạn có quyền đăng đánh giá, bình luận về sản phẩm đã mua.</li>
+                    <li>Nội dung đánh giá phải trung thực, khách quan và không vi phạm pháp luật.</li>
+                    <li>QuangHưng Mobile có quyền xóa các đánh giá spam, quảng cáo hoặc không phù hợp.</li>
+                    <li>Bạn chịu trách nhiệm về nội dung đánh giá của mình.</li>
+                </ul>
+            </section>
+
+            <!-- 7. Luật áp dụng -->
+            <section class="mb-6">
+                <h2 class="text-2xl font-bold mb-4 pb-2 border-b-2 border-purple-600">
+                    7. Luật áp dụng và giải quyết tranh chấp
+                </h2>
+                <ul class="list-disc list-inside text-gray-700 space-y-3 ml-4">
+                    <li>Các điều khoản này được điều chỉnh bởi pháp luật Việt Nam.</li>
+                    <li>Mọi tranh chấp phát sinh sẽ được giải quyết thông qua thương lượng.</li>
+                    <li>Nếu không thể thương lượng, tranh chấp sẽ được đưa ra Tòa án có thẩm quyền tại TP. Hồ Chí Minh.</li>
+                </ul>
+                <p class="text-gray-500 mt-6 text-sm italic">Cập nhật lần cuối: Tháng 12/2025</p>
+            </section>
+
+            <!-- Contact -->
+            <div class="mt-10 p-6 bg-purple-50 rounded-xl border border-purple-200">
+                <h3 class="font-bold text-gray-800 mb-3">
+                    <i class="fas fa-question-circle text-purple-600 mr-2"></i>Cần giải đáp thắc mắc?
+                </h3>
+                <p class="text-gray-700 mb-2">Liên hệ ngay để được hỗ trợ về điều khoản sử dụng:</p>
+                <ul class="text-gray-700 space-y-1">
+                    <li><i class="fas fa-phone text-purple-600 mr-2"></i>Hotline: <strong>1900 1234 56</strong></li>
+                    <li><i class="fas fa-envelope text-purple-600 mr-2"></i>Email: <strong>legal@quanghungmobile.vn</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Related Links -->
+        <div class="mt-8 grid md:grid-cols-2 gap-4">
+            <a href="chinh-sach-ban-hang.html" class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-shopping-cart text-red-600"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 mb-2">Lưu ý quan trọng</h3>
-                    <p class="text-gray-600">Việc sử dụng website QuangHưng Mobile đồng nghĩa với việc bạn đã đọc, hiểu và đồng ý với tất cả các điều khoản dưới đây. Vui lòng đọc kỹ trước khi sử dụng dịch vụ.</p>
+                    <h4 class="font-bold text-gray-800">Chính sách bán hàng</h4>
+                    <p class="text-sm text-gray-500">Giá cả, thanh toán, giao hàng</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Content Sections -->
-        <div class="space-y-8">
-            
-            <!-- Section 1: Điều khoản chung -->
-            <section class="bg-white rounded-2xl shadow-sm overflow-hidden">
-                <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-gavel text-white text-2xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Điều khoản chung</h2>
-                            <p class="text-white/80">Các quy định cơ bản khi sử dụng website</p>
-                        </div>
-                    </div>
+            </a>
+            <a href="chinh-sach-bao-mat.html" class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-shield-alt text-blue-600"></i>
                 </div>
-                <div class="p-6 md:p-8">
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-4 p-4 bg-purple-50 rounded-xl">
-                            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-check text-white"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-800 mb-1">Chấp nhận điều khoản</h3>
-                                <p class="text-gray-600 text-sm">Sử dụng website đồng nghĩa với việc bạn chấp nhận và tuân thủ tất cả các điều khoản được quy định</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 p-4 bg-purple-50 rounded-xl">
-                            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-sync-alt text-white"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-800 mb-1">Quyền thay đổi</h3>
-                                <p class="text-gray-600 text-sm">QuangHưng Mobile có quyền thay đổi, bổ sung điều khoản mà không cần báo trước. Người dùng có trách nhiệm cập nhật thường xuyên</p>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <h4 class="font-bold text-gray-800">Chính sách bảo mật</h4>
+                    <p class="text-sm text-gray-500">Bảo vệ thông tin khách hàng</p>
                 </div>
-            </section>
-
-            <!-- Section 2: Tài khoản người dùng -->
-            <section class="bg-white rounded-2xl shadow-sm overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-user-circle text-white text-2xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Tài khoản người dùng</h2>
-                            <p class="text-white/80">Trách nhiệm khi đăng ký và sử dụng tài khoản</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6 md:p-8">
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="policy-card text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-200">
-                            <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-id-card text-white text-2xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Thông tin chính xác</h3>
-                            <p class="text-gray-600 text-sm">Cung cấp thông tin đầy đủ, chính xác khi đăng ký tài khoản</p>
-                        </div>
-                        <div class="policy-card text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-200">
-                            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-key text-white text-2xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Bảo mật mật khẩu</h3>
-                            <p class="text-gray-600 text-sm">Chịu trách nhiệm bảo mật mật khẩu và các hoạt động trên tài khoản</p>
-                        </div>
-                        <div class="policy-card text-center p-6 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl border border-orange-200">
-                            <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Báo cáo vi phạm</h3>
-                            <p class="text-gray-600 text-sm">Thông báo ngay nếu phát hiện truy cập trái phép vào tài khoản</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section 3: Hành vi bị cấm -->
-            <section class="bg-white rounded-2xl shadow-sm overflow-hidden">
-                <div class="bg-gradient-to-r from-red-500 to-red-600 p-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-ban text-white text-2xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Hành vi bị cấm</h2>
-                            <p class="text-white/80">Các hành vi nghiêm cấm khi sử dụng website</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6 md:p-8">
-                    <div class="bg-red-50 border border-red-200 rounded-xl p-6">
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div class="flex items-center gap-3 p-3 bg-white rounded-lg">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-times text-red-600"></i>
-                                </div>
-                                <span class="text-gray-700 font-medium">Sử dụng thông tin giả mạo</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-white rounded-lg">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-times text-red-600"></i>
-                                </div>
-                                <span class="text-gray-700 font-medium">Tấn công, phá hoại hệ thống</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-white rounded-lg">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-times text-red-600"></i>
-                                </div>
-                                <span class="text-gray-700 font-medium">Thu thập thông tin trái phép</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-white rounded-lg">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-times text-red-600"></i>
-                                </div>
-                                <span class="text-gray-700 font-medium">Lợi dụng lỗi hệ thống</span>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-red-700 text-sm font-medium">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            Vi phạm các điều khoản trên có thể dẫn đến khóa tài khoản vĩnh viễn và xử lý theo pháp luật
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section 4: Quyền sở hữu trí tuệ -->
-            <section class="bg-white rounded-2xl shadow-sm overflow-hidden">
-                <div class="bg-gradient-to-r from-amber-500 to-orange-500 p-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-copyright text-white text-2xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Quyền sở hữu trí tuệ</h2>
-                            <p class="text-white/80">Bản quyền và quyền sở hữu nội dung</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6 md:p-8">
-                    <div class="flex flex-col md:flex-row items-center gap-8">
-                        <div class="w-32 h-32 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-shield-alt text-amber-600 text-5xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-gray-700 mb-4">Toàn bộ nội dung trên website bao gồm nhưng không giới hạn:</p>
-                            <div class="flex flex-wrap gap-3 mb-4">
-                                <span class="px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                                    <i class="fas fa-image mr-1"></i> Logo
-                                </span>
-                                <span class="px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                                    <i class="fas fa-photo-video mr-1"></i> Hình ảnh
-                                </span>
-                                <span class="px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                                    <i class="fas fa-file-alt mr-1"></i> Văn bản
-                                </span>
-                                <span class="px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                                    <i class="fas fa-code mr-1"></i> Mã nguồn
-                                </span>
-                            </div>
-                            <p class="text-gray-700">đều thuộc quyền sở hữu của <strong class="text-amber-600">QuangHưng Mobile</strong>. Nghiêm cấm sao chép, phân phối hoặc sử dụng mà không có sự đồng ý bằng văn bản.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </div>
-
-        <!-- Related Policies -->
-        <div class="mt-12">
-            <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">Chính sách liên quan</h3>
-            <div class="grid md:grid-cols-2 gap-4">
-                <a href="chinh-sach-ban-hang.html" class="policy-card flex items-center gap-4 bg-white p-5 rounded-xl shadow-sm hover:shadow-lg">
-                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-shopping-cart text-red-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800">Chính sách bán hàng</h4>
-                        <p class="text-sm text-gray-500">Giá cả, thanh toán, giao hàng</p>
-                    </div>
-                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
-                </a>
-                <a href="chinh-sach-bao-mat.html" class="policy-card flex items-center gap-4 bg-white p-5 rounded-xl shadow-sm hover:shadow-lg">
-                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800">Chính sách bảo mật</h4>
-                        <p class="text-sm text-gray-500">Bảo vệ thông tin khách hàng</p>
-                    </div>
-                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
-                </a>
-            </div>
-        </div>
-
-        <!-- Contact Support -->
-        <div class="mt-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-8 text-white text-center">
-            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-question-circle text-3xl"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-2">Cần giải đáp thắc mắc?</h3>
-            <p class="text-white/80 mb-6">Liên hệ ngay để được hỗ trợ về điều khoản sử dụng</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="tel:19001234" class="flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
-                    <i class="fas fa-phone"></i>
-                    1900 1234 56
-                </a>
-                <a href="mailto:legal@quanghungmobile.vn" class="flex items-center gap-2 bg-white/20 px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition">
-                    <i class="fas fa-envelope"></i>
-                    legal@quanghungmobile.vn
-                </a>
-            </div>
+            </a>
         </div>
     </div>
 
