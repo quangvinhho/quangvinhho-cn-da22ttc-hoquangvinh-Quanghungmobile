@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chính sách bán hàng - QuangHưng Mobile</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="components/header.css">
+    <link rel="stylesheet" href="components/ai-chatbot.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+        .policy-card { transition: all 0.3s; }
+        .policy-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+
+    <!-- Hero Banner -->
+    <div class="relative bg-gradient-to-br from-red-600 via-red-500 to-orange-500 text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-40 h-40 bg-white rounded-full"></div>
+            <div class="absolute bottom-10 right-10 w-60 h-60 bg-white rounded-full"></div>
+        </div>
+        <div class="relative max-w-6xl mx-auto px-4 py-16 text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur rounded-2xl mb-6">
+                <i class="fas fa-shopping-cart text-4xl"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Chính sách bán hàng</h1>
+            <p class="text-xl text-white/90 max-w-2xl mx-auto">Cam kết mang đến trải nghiệm mua sắm tốt nhất với giá cả minh bạch và dịch vụ chuyên nghiệp</p>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <nav class="flex items-center gap-2 text-sm">
+                <a href="index.html" class="text-gray-500 hover:text-red-600"><i class="fas fa-home"></i></a>
+                <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
+                <a href="chinh-sach.html" class="text-gray-500 hover:text-red-600">Chính sách</a>
+                <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
+                <span class="text-red-600 font-medium">Chính sách bán hàng</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 py-12">
+        
+        <!-- Quick Links -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <a href="#gia-ca" class="policy-card bg-white p-4 rounded-xl shadow-sm text-center hover:shadow-lg">
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-tags text-red-600"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Giá cả</span>
+            </a>
+            <a href="#thanh-toan" class="policy-card bg-white p-4 rounded-xl shadow-sm text-center hover:shadow-lg">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-credit-card text-green-600"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Thanh toán</span>
+            </a>
+            <a href="#giao-hang" class="policy-card bg-white p-4 rounded-xl shadow-sm text-center hover:shadow-lg">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-truck text-blue-600"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Giao hàng</span>
+            </a>
+            <a href="#hoa-don" class="policy-card bg-white p-4 rounded-xl shadow-sm text-center hover:shadow-lg">
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-file-invoice text-purple-600"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Hóa đơn VAT</span>
+            </a>
+        </div>
+
+        <!-- Content Sections -->
+        <div class="space-y-8">
+            
+            <!-- Section 1: Giá cả -->
+            <section id="gia-ca" class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-red-500 to-red-600 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-tags text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Giá cả sản phẩm</h2>
+                            <p class="text-white/80">Minh bạch - Cạnh tranh - Uy tín</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center p-6 bg-gray-50 rounded-xl">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-receipt text-green-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 mb-2">Đã bao gồm VAT</h3>
+                            <p class="text-sm text-gray-600">Giá niêm yết đã bao gồm thuế VAT, không phát sinh thêm chi phí</p>
+                        </div>
+                        <div class="text-center p-6 bg-gray-50 rounded-xl">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-sync-alt text-blue-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 mb-2">Cập nhật liên tục</h3>
+                            <p class="text-sm text-gray-600">Giá có thể thay đổi theo thị trường mà không báo trước</p>
+                        </div>
+                        <div class="text-center p-6 bg-gray-50 rounded-xl">
+                            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-lock text-orange-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 mb-2">Giá cố định khi đặt</h3>
+                            <p class="text-sm text-gray-600">Giá tại thời điểm đặt hàng là giá cuối cùng áp dụng</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Thanh toán -->
+            <section id="thanh-toan" class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-credit-card text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Đặt hàng & Thanh toán</h2>
+                            <p class="text-white/80">Đa dạng phương thức - Nhanh chóng - An toàn</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div class="mb-8">
+                        <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-phone-alt text-green-600"></i>
+                            Cách đặt hàng
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="flex items-center gap-4 p-4 bg-green-50 rounded-xl">
+                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-globe text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Đặt hàng qua Website</p>
+                                    <p class="text-sm text-gray-600">Mua sắm online 24/7</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-red-50 rounded-xl">
+                                <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-phone text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Hotline: <span class="text-red-600">1900 1234 56</span></p>
+                                    <p class="text-sm text-gray-600">Hỗ trợ 8h - 21h hàng ngày</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-sm text-gray-600 bg-yellow-50 p-3 rounded-lg">
+                            <i class="fas fa-clock text-yellow-600 mr-2"></i>
+                            Xác nhận đơn hàng trong <strong>30 phút</strong> (giờ hành chính)
+                        </p>
+                    </div>
+                    
+                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-wallet text-green-600"></i>
+                        Phương thức thanh toán
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="policy-card p-5 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200 text-center">
+                            <i class="fas fa-money-bill-wave text-green-600 text-3xl mb-3"></i>
+                            <p class="font-bold text-gray-800">COD</p>
+                            <p class="text-xs text-gray-500">Thanh toán khi nhận hàng</p>
+                        </div>
+                        <div class="policy-card p-5 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-200 text-center">
+                            <i class="fas fa-university text-blue-600 text-3xl mb-3"></i>
+                            <p class="font-bold text-gray-800">Chuyển khoản</p>
+                            <p class="text-xs text-gray-500">Ngân hàng nội địa</p>
+                        </div>
+                        <div class="policy-card p-5 bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl border border-pink-200 text-center">
+                            <i class="fas fa-wallet text-pink-600 text-3xl mb-3"></i>
+                            <p class="font-bold text-gray-800">Ví điện tử</p>
+                            <p class="text-xs text-gray-500">MoMo, ZaloPay, VNPay</p>
+                        </div>
+                        <div class="policy-card p-5 bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl border border-purple-200 text-center">
+                            <i class="fas fa-credit-card text-purple-600 text-3xl mb-3"></i>
+                            <p class="font-bold text-gray-800">Trả góp 0%</p>
+                            <p class="text-xs text-gray-500">Qua thẻ tín dụng</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Giao hàng -->
+            <section id="giao-hang" class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-truck text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Chính sách giao hàng</h2>
+                            <p class="text-white/80">Nhanh chóng - Đúng hẹn - Miễn phí</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="policy-card bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-2xl border border-green-200 text-center">
+                            <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-motorcycle text-white text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Nội thành</h3>
+                            <p class="text-gray-600 mb-3">Giao hàng siêu tốc</p>
+                            <div class="bg-white rounded-lg p-3">
+                                <p class="text-2xl font-bold text-green-600">2-4 giờ</p>
+                                <p class="text-green-600 font-semibold">MIỄN PHÍ</p>
+                            </div>
+                        </div>
+                        <div class="policy-card bg-gradient-to-br from-blue-50 to-cyan-100 p-6 rounded-2xl border border-blue-200 text-center">
+                            <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-truck text-white text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Các tỉnh</h3>
+                            <p class="text-gray-600 mb-3">Giao hàng toàn quốc</p>
+                            <div class="bg-white rounded-lg p-3">
+                                <p class="text-2xl font-bold text-blue-600">1-3 ngày</p>
+                                <p class="text-blue-600 font-semibold">30.000đ - 50.000đ</p>
+                            </div>
+                        </div>
+                        <div class="policy-card bg-gradient-to-br from-orange-50 to-yellow-100 p-6 rounded-2xl border border-orange-200 text-center">
+                            <div class="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-gift text-white text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Free Ship</h3>
+                            <p class="text-gray-600 mb-3">Ưu đãi đặc biệt</p>
+                            <div class="bg-white rounded-lg p-3">
+                                <p class="text-lg font-bold text-orange-600">Đơn từ 5 triệu</p>
+                                <p class="text-orange-600 font-semibold">MIỄN PHÍ TOÀN QUỐC</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Hóa đơn VAT -->
+            <section id="hoa-don" class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-file-invoice text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Xuất hóa đơn VAT</h2>
+                            <p class="text-white/80">Hóa đơn điện tử - Nhanh chóng - Chính xác</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="flex items-start gap-4 p-5 bg-purple-50 rounded-xl">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-calendar-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Thời hạn yêu cầu</h3>
+                                <p class="text-gray-600">Yêu cầu xuất hóa đơn trong vòng <strong class="text-purple-600">7 ngày</strong> kể từ ngày mua hàng</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-5 bg-purple-50 rounded-xl">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Thời gian xử lý</h3>
+                                <p class="text-gray-600">Hóa đơn điện tử gửi qua email trong <strong class="text-purple-600">3-5 ngày</strong> làm việc</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Related Policies -->
+        <div class="mt-12">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">Chính sách liên quan</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <a href="chinh-sach-bao-mat.html" class="policy-card flex items-center gap-4 bg-white p-5 rounded-xl shadow-sm hover:shadow-lg">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">Chính sách bảo mật</h4>
+                        <p class="text-sm text-gray-500">Bảo vệ thông tin khách hàng</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+                </a>
+                <a href="dieu-khoan-su-dung.html" class="policy-card flex items-center gap-4 bg-white p-5 rounded-xl shadow-sm hover:shadow-lg">
+                    <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-file-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">Điều khoản sử dụng</h4>
+                        <p class="text-sm text-gray-500">Quy định sử dụng website</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+                </a>
+                <a href="chinh-sach-bao-hanh.html" class="policy-card flex items-center gap-4 bg-white p-5 rounded-xl shadow-sm hover:shadow-lg">
+                    <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-tools text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">Chính sách bảo hành</h4>
+                        <p class="text-sm text-gray-500">Bảo hành sản phẩm</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact Support -->
+        <div class="mt-12 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl p-8 text-white text-center">
+            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-headset text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Cần hỗ trợ thêm?</h3>
+            <p class="text-white/80 mb-6">Đội ngũ tư vấn sẵn sàng hỗ trợ bạn 24/7</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="tel:19001234" class="flex items-center gap-2 bg-white text-red-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+                    <i class="fas fa-phone"></i>
+                    1900 1234 56
+                </a>
+                <a href="mailto:support@quanghungmobile.vn" class="flex items-center gap-2 bg-white/20 px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition">
+                    <i class="fas fa-envelope"></i>
+                    support@quanghungmobile.vn
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="components/header.js"></script>
+    <script src="components/ai-chatbot.js"></script>
+
+    <script>
+        // Load Header
+        fetch('components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-placeholder').innerHTML = html;
+                if (typeof initHeader === 'function') initHeader();
+            });
+
+        // Load Footer
+        fetch('components/footer.html')
+            .then(response => response.text())
+            .then(html => { document.getElementById('footer-placeholder').innerHTML = html; });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

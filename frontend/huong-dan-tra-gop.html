@@ -208,11 +208,8 @@
             </div>
         </div>
     </section>
-</body>
-</html>
 
-    
-<!-- Các hình thức trả góp -->
+    <!-- Các hình thức trả góp -->
     <section class="py-16 bg-white">
         <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
             <div class="text-center mb-12">
@@ -509,5 +506,105 @@
         </div>
     </section>
 
-    <!-- 
-Quy trình đăng k
+    <!-- Quy trình đăng ký -->
+    <section class="py-16 bg-white">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    <i class="fas fa-tasks text-red-600 mr-3"></i>Quy trình đăng ký trả góp
+                </h2>
+                <p class="text-lg text-gray-600">Chỉ 4 bước đơn giản để sở hữu sản phẩm</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">1</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Chọn sản phẩm</h3>
+                    <p class="text-gray-600 text-sm">Chọn sản phẩm và hình thức trả góp phù hợp</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">2</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Nộp hồ sơ</h3>
+                    <p class="text-gray-600 text-sm">Cung cấp CCCD và giấy tờ cần thiết</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">3</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Chờ duyệt</h3>
+                    <p class="text-gray-600 text-sm">Xét duyệt nhanh trong 15-30 phút</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">4</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Nhận sản phẩm</h3>
+                    <p class="text-gray-600 text-sm">Ký hợp đồng và nhận máy ngay</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-red-600 to-orange-500 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-black mb-4">Sẵn sàng mua trả góp?</h2>
+            <p class="text-xl opacity-90 mb-8">Liên hệ ngay để được tư vấn miễn phí!</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="products.html" class="bg-white text-red-600 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-all">
+                    <i class="fas fa-shopping-bag mr-2"></i>Xem sản phẩm
+                </a>
+                <a href="contact.html" class="bg-transparent border-2 border-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-red-600 transition-all">
+                    <i class="fas fa-phone mr-2"></i>Liên hệ tư vấn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="components/header.js"></script>
+    <script src="components/ai-chatbot.js"></script>
+
+    <!-- Load Header Component -->
+    <script>
+        (function () {
+            function loadHeader() {
+                const headerPlaceholder = document.getElementById('header-placeholder');
+                if (!headerPlaceholder) return;
+                fetch('components/header.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        headerPlaceholder.innerHTML = html;
+                        if (typeof initHeader === 'function') {
+                            initHeader();
+                        }
+                    })
+                    .catch(error => console.error('Error loading header:', error));
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadHeader);
+            } else {
+                loadHeader();
+            }
+        })();
+    </script>
+
+    <!-- Load Footer Component -->
+    <script>
+        (function () {
+            function loadFooter() {
+                const footerPlaceholder = document.getElementById('footer-placeholder');
+                if (!footerPlaceholder) return;
+                fetch('components/footer.html')
+                    .then(response => response.text())
+                    .then(html => { footerPlaceholder.innerHTML = html; })
+                    .catch(error => console.error('Error loading footer:', error));
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadFooter);
+            } else {
+                loadFooter();
+            }
+        })();
+    </script>
+</body>
+</html>
