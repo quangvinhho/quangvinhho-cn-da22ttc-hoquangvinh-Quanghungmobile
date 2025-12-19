@@ -103,9 +103,10 @@
           </div>
           
           <div class="ai-quick-actions">
-            <button class="ai-quick-btn" data-action="promo">Khuyến mãi</button>
-            <button class="ai-quick-btn" data-action="compare">So sánh sản phẩm</button>
-            <button class="ai-quick-btn" data-action="warranty">Bảo hành</button>
+            <button class="ai-quick-btn" data-action="budget">💰 Tư vấn theo ngân sách</button>
+            <button class="ai-quick-btn" data-action="promo">🎁 Khuyến mãi</button>
+            <button class="ai-quick-btn" data-action="compare">📊 So sánh</button>
+            <button class="ai-quick-btn" data-action="warranty">🛡️ Bảo hành</button>
           </div>
           
           <div class="ai-chat-input-area">
@@ -569,6 +570,9 @@
         let message = '';
         
         switch(action) {
+          case 'budget':
+            message = 'Tôi muốn mua điện thoại tầm 5 triệu, có gợi ý gì không?';
+            break;
           case 'promo':
             message = 'Cho tôi xem các chương trình khuyến mãi hiện tại';
             break;

@@ -5,8 +5,53 @@ const { pool } = require('../config/database');
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
+// Lấy danh sách sản phẩm từ database
+async function getProductsFromDB() {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        sp.ma_sp as id,
+        sp.ten_sp as name,
+        h.ten_hang as brand,
+        sp.gia as price,
+        sp.gia_cu as oldPrice,
+        sp.ram,
+        sp.bo_nho as storage,
+        sp.man_hinh as screen,
+        sp.camera,
+        sp.pin as battery,
+        sp.so_luong as stock
+      FROM san_pham sp
+      LEFT JOIN hang h ON sp.ma_hang = h.ma_hang
+      WHERE sp.trang_thai = 1 AND sp.so_luong > 0
+      ORDER BY sp.gia ASC
+    `);
+    return rows;
+  } catch (error) {
+    console.error('Error getting products:', error);
+    return [];
+  }
+}
+
+// Format giá tiền VND
+function formatPrice(price) {
+  return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+}
+
+// Tạo danh sách sản phẩm cho AI context
+function createProductContext(products) {
+  if (!products || products.length === 0) return '';
+  
+  const productList = products.map(p => {
+    const discount = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+    return `- ${p.name} | Hãng: ${p.brand || 'N/A'} | Giá: ${formatPrice(p.price)}${discount > 0 ? ` (Giảm ${discount}%)` : ''} | RAM: ${p.ram || 'N/A'}GB | Bộ nhớ: ${p.storage || 'N/A'}GB | Màn hình: ${p.screen || 'N/A'} | Camera: ${p.camera || 'N/A'} | Pin: ${p.battery || 'N/A'}`;
+  }).join('\n');
+  
+  return `\n\n📱 DANH SÁCH SẢN PHẨM HIỆN CÓ TẠI CỬA HÀNG:\n${productList}`;
+}
+
 // System prompt cho chatbot
-const SYSTEM_PROMPT = `Bạn là trợ lý AI của QuangHưng Mobile - cửa hàng điện thoại di động uy tín.
+const BASE_SYSTEM_PROMPT = `Bạn là trợ lý AI của QuangHưng Mobile - cửa hàng điện thoại di động uy tín.
 
 Thông tin về cửa hàng:
 - Tên: QuangHưng Mobile
@@ -21,12 +66,17 @@ Chính sách:
 - Trả góp: 0% lãi suất qua thẻ tín dụng
 - Giao hàng: Miễn phí toàn quốc
 
-Quy tắc trả lời:
+🎯 QUY TẮC TƯ VẤN SẢN PHẨM:
+1. Khi khách hỏi về ngân sách (ví dụ: "điện thoại 3 triệu", "tầm 5tr", "dưới 10 triệu"), hãy GỢI Ý CÁC SẢN PHẨM CỤ THỂ từ danh sách sản phẩm bên dưới phù hợp với ngân sách đó
+2. Khi gợi ý sản phẩm, LUÔN đề cập: Tên sản phẩm, Giá, và 1-2 điểm nổi bật (RAM, Camera, Pin...)
+3. Gợi ý 2-3 sản phẩm phù hợp nhất, ưu tiên sản phẩm đang giảm giá
+4. Nếu ngân sách quá thấp hoặc quá cao so với sản phẩm có sẵn, hãy gợi ý sản phẩm gần nhất và giải thích
+
+📝 QUY TẮC TRẢ LỜI:
 1. Trả lời bằng tiếng Việt, thân thiện và chuyên nghiệp
-2. Tập trung vào tư vấn điện thoại và dịch vụ của cửa hàng
-3. Nếu được hỏi về giá, hãy gợi ý khách xem trang sản phẩm để có giá chính xác nhất
-4. Giữ câu trả lời ngắn gọn, dễ hiểu (tối đa 3-4 câu)
-5. Nếu không biết thông tin cụ thể, hãy hướng dẫn khách liên hệ hotline hoặc xem website`;
+2. Giữ câu trả lời ngắn gọn, dễ hiểu
+3. Khi gợi ý sản phẩm, format đẹp với emoji và xuống dòng rõ ràng
+4. Nếu không tìm thấy sản phẩm phù hợp, hướng dẫn khách liên hệ hotline`;
 
 // Tạo tiêu đề tự động từ tin nhắn đầu tiên
 function generateTitle(message) {
@@ -115,6 +165,11 @@ router.post('/chat', async (req, res) => {
     
     history.push({ role: 'user', content: message });
 
+    // Lấy danh sách sản phẩm từ database để AI có thể gợi ý
+    const products = await getProductsFromDB();
+    const productContext = createProductContext(products);
+    const SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + productContext;
+
     const response = await fetch(GROQ_API_URL, {
       method: 'POST',
       headers: {
@@ -128,7 +183,7 @@ router.post('/chat', async (req, res) => {
           ...history
         ],
         temperature: 0.7,
-        max_tokens: 500
+        max_tokens: 800
       })
     });
 
