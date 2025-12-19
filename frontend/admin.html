@@ -55,50 +55,67 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     
-    /* Sidebar styles */
+    /* Sidebar styles - Light & Clean */
     .sidebar-gradient { 
-      background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border-right: 1px solid #e2e8f0;
     }
     
     .sidebar-item { 
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       position: relative;
-      overflow: hidden;
+      border-radius: 10px;
     }
     
     .sidebar-item::before {
       content: '';
       position: absolute;
       left: 0;
-      top: 0;
-      height: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 60%;
       width: 3px;
-      background: linear-gradient(180deg, #818cf8 0%, #6366f1 100%);
-      transform: scaleY(0);
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);
+      border-radius: 0 4px 4px 0;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
     
     .sidebar-item:hover { 
-      background: rgba(99, 102, 241, 0.1);
-      transform: translateX(4px);
+      background: #fef2f2;
     }
     
     .sidebar-item.active { 
-      background: linear-gradient(90deg, rgba(99, 102, 241, 0.2) 0%, transparent 100%);
+      background: #fef2f2;
     }
     
     .sidebar-item.active::before {
-      transform: scaleY(1);
+      opacity: 1;
     }
     
     .sidebar-item.active .sidebar-icon {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
     }
     
-    /* Stat cards */
+    .sidebar-item.active .sidebar-icon i {
+      color: white !important;
+    }
+    
+    .sidebar-item.active span {
+      color: #dc2626;
+      font-weight: 600;
+    }
+    
+    .sidebar-item .sidebar-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+    
+    /* Stat cards - Clean */
     .stat-card { 
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
     }
@@ -106,23 +123,17 @@
     .stat-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      right: 0;
-      width: 150px;
-      height: 150px;
-      background: rgba(255, 255, 255, 0.1);
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 50%;
-      transform: translate(30%, -30%);
-      transition: transform 0.5s ease;
     }
     
     .stat-card:hover { 
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    
-    .stat-card:hover::before {
-      transform: translate(20%, -20%) scale(1.2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
     }
     
     /* Glass effect */
@@ -138,13 +149,13 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    /* Gradient backgrounds */
-    .gradient-primary { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+    /* Gradient backgrounds - Cleaner colors */
+    .gradient-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
     .gradient-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
     .gradient-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
     .gradient-info { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
     .gradient-rose { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); }
-    .gradient-purple { background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); }
+    .gradient-purple { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
     
     /* Section animations */
     .section-content { 
@@ -164,32 +175,21 @@
       }
     }
     
-    /* Button hover effects */
+    /* Button hover effects - Cleaner */
     .btn-primary {
-      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
     }
     
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.4);
     }
     
-    .btn-primary::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-    
-    .btn-primary:hover::after {
-      left: 100%;
+    .btn-primary:active {
+      transform: translateY(0);
     }
     
     /* Table row hover */
@@ -249,134 +249,116 @@
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 min-h-screen">
   <div class="flex h-screen overflow-hidden">
-    <!-- Enhanced Sidebar -->
-    <aside class="hidden lg:flex w-72 sidebar-gradient text-white flex-col flex-shrink-0 shadow-2xl relative z-20">
+    <!-- Light Modern Sidebar -->
+    <aside class="hidden lg:flex w-64 sidebar-gradient flex-col flex-shrink-0 shadow-lg relative z-20">
       <!-- Logo Section -->
-      <div class="p-6 border-b border-white/10">
-        <div class="flex items-center space-x-4">
-          <div class="relative">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 flex items-center justify-center shadow-xl shadow-purple-500/40 float-animation overflow-hidden">
-              <img src="images/Logo.png" alt="QuangHungShop Logo" class="w-10 h-10 object-contain">
-            </div>
-            <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-400 rounded-full border-2 border-dark-900 flex items-center justify-center">
-              <i class="fas fa-check text-[8px] text-white"></i>
-            </div>
+      <div class="px-5 py-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg shadow-red-500/25">
+            <img src="images/Logo.png" alt="Logo" class="w-7 h-7 object-contain" onerror="this.textContent='QH'">
           </div>
           <div>
-            <h1 class="text-xl font-extrabold tracking-tight">
-              <span class="bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">QuangHungShop</span>
-            </h1>
-            <p class="text-xs text-slate-400 flex items-center gap-2 mt-1">
-              <span class="flex items-center gap-1">
-                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></span>
-                <span class="text-emerald-400 font-medium">Online</span>
-              </span>
-              <span class="text-slate-600">Đ</span>
-              <span>Admin Dashboard</span>
-            </p>
+            <h1 class="text-base font-bold text-slate-800">QuangHưng</h1>
+            <p class="text-[10px] text-slate-400 font-medium">Admin Panel</p>
           </div>
         </div>
       </div>
       
       <!-- Navigation -->
-      <nav class="flex-1 overflow-y-auto py-6 px-3">
-        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-4">Menu chính</p>
-        <div class="space-y-1.5">
-          <a href="#" onclick="showSection('dashboard')" class="sidebar-item active flex items-center px-4 py-3.5 rounded-xl text-white group" id="nav-dashboard">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-grid-2 text-lg text-primary-400 group-hover:text-white"></i>
+      <nav class="flex-1 overflow-y-auto py-4 px-3">
+        <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3 px-3">Menu</p>
+        <div class="space-y-1">
+          <a href="#" onclick="showSection('dashboard')" class="sidebar-item active flex items-center px-3 py-2.5 text-slate-700 group" id="nav-dashboard">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-th-large text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Tổng quan</span>
+            <span class="text-sm font-medium">Tổng quan</span>
           </a>
           
-          <a href="#" onclick="showSection('orders')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-orders">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300 relative">
-              <i class="fas fa-bag-shopping text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('orders')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-orders">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-shopping-bag text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Đơn hàng</span>
-            <span class="ml-auto bg-gradient-to-r from-rose-500 to-pink-500 text-xs px-2.5 py-1 rounded-full font-bold badge-pulse shadow-lg shadow-rose-500/30" id="pending-count">0</span>
+            <span class="text-sm font-medium">Đơn hàng</span>
+            <span class="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold" id="pending-count">0</span>
           </a>
           
-          <a href="#" onclick="showSection('products')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-products">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-boxes-stacked text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('products')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-products">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-box text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Sản phẩm</span>
+            <span class="text-sm font-medium">Sản phẩm</span>
           </a>
           
-          <a href="#" onclick="showSection('brands')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-brands">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-layer-group text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('brands')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-brands">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-tags text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Danh mục</span>
+            <span class="text-sm font-medium">Danh mục</span>
           </a>
           
-          <a href="#" onclick="showSection('customers')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-customers">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-user-group text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('customers')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-customers">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-users text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Khách hàng</span>
+            <span class="text-sm font-medium">Khách hàng</span>
           </a>
           
-          <a href="#" onclick="showSection('news')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-news">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-rss text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('news')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-news">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-newspaper text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Tin tức</span>
+            <span class="text-sm font-medium">Tin tức</span>
           </a>
           
-          <a href="#" onclick="showSection('reviews')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-reviews">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-star-half-stroke text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('reviews')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-reviews">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-star text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Đánh giá</span>
+            <span class="text-sm font-medium">Đánh giá</span>
           </a>
           
-          <a href="#" onclick="showSection('promotions')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-promotions">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-tags text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('promotions')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-promotions">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-percent text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Khuyến mãi</span>
-            <span class="ml-auto bg-gradient-to-r from-amber-500 to-orange-500 text-xs px-2 py-1 rounded-full text-white font-bold" id="active-promo-count">0</span>
+            <span class="text-sm font-medium">Khuyến mãi</span>
+            <span class="ml-auto bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold" id="active-promo-count">0</span>
           </a>
           
-          <a href="#" onclick="showSection('contacts')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-contacts">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-envelope text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('contacts')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-contacts">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-envelope text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Liên hệ</span>
-            <span class="ml-auto bg-emerald-500 text-xs px-2 py-1 rounded-full text-white" id="new-contact-count">0</span>
+            <span class="text-sm font-medium">Liên hệ</span>
+            <span class="ml-auto bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold" id="new-contact-count">0</span>
           </a>
           
-          <a href="#" onclick="showSection('notifications')" class="sidebar-item flex items-center px-4 py-3.5 rounded-xl text-slate-300 hover:text-white group" id="nav-notifications">
-            <div class="sidebar-icon w-11 h-11 rounded-xl bg-slate-800/50 flex items-center justify-center mr-3 transition-all duration-300">
-              <i class="fas fa-bell text-lg text-slate-400 group-hover:text-primary-400"></i>
+          <a href="#" onclick="showSection('notifications')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-notifications">
+            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all">
+              <i class="fas fa-bell text-sm text-slate-500 group-hover:text-red-500"></i>
             </div>
-            <span class="font-semibold">Thông báo</span>
+            <span class="text-sm font-medium">Thông báo</span>
           </a>
         </div>
       </nav>
       
-      <!-- User Profile Section -->
-      <div class="p-4 border-t border-white/10">
-        <div class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl p-5 border border-white/5 shadow-xl">
-          <div class="flex items-center space-x-4 mb-5">
+      <!-- User Profile -->
+      <div class="p-3 border-t border-slate-100">
+        <div class="bg-slate-50 rounded-xl p-3">
+          <div class="flex items-center gap-3 mb-3">
             <div class="relative">
-              <div id="admin-avatar" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center font-bold text-xl text-white overflow-hidden ring-2 ring-purple-400/50 ring-offset-2 ring-offset-dark-900 shadow-lg shadow-purple-500/30">AD</div>
-              <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-400 rounded-full border-2 border-dark-900 flex items-center justify-center">
-                <i class="fas fa-circle text-[6px] text-white animate-pulse"></i>
-              </div>
+              <div id="admin-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center font-bold text-sm text-white">AD</div>
+              <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white"></div>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="font-bold text-white text-base truncate" id="admin-name">Admin</p>
-              <p class="text-xs text-purple-300 flex items-center gap-1.5 mt-1" id="admin-role">
-                <i class="fas fa-crown text-amber-400 text-[10px]"></i>
-                <span class="font-medium">Super Admin</span>
-              </p>
+              <p class="font-semibold text-slate-800 text-sm truncate" id="admin-name">Admin</p>
+              <p class="text-[10px] text-slate-400" id="admin-role">Quản trị viên</p>
             </div>
           </div>
-          <button onclick="logout()" class="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-500 hover:from-rose-600 hover:via-pink-600 hover:to-rose-600 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/40 hover:scale-[1.02] active:scale-[0.98]">
-            <i class="fas fa-arrow-right-from-bracket mr-2"></i>Đăng xuất
+          <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600 rounded-lg text-xs font-medium text-slate-600 transition-all">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Đăng xuất</span>
           </button>
         </div>
       </div>
@@ -426,90 +408,70 @@
           <!-- thống kê Tổng quan - 4 card với thiết kế mới -->
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
             <!-- Tổng doanh thu -->
-            <div class="stat-card bg-gradient-to-br from-primary-500 via-primary-600 to-indigo-700 rounded-3xl shadow-xl shadow-primary-500/20 p-6 text-white">
+            <div class="stat-card bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg shadow-blue-500/15 p-5 text-white">
               <div class="relative z-10">
-                <div class="flex items-center justify-between mb-6">
-                  <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <i class="fas fa-wallet text-2xl"></i>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <i class="fas fa-wallet text-xl"></i>
                   </div>
-                  <span class="text-white/90 text-sm font-semibold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1" id="revenue-change">
-                    <i class="fas fa-arrow-up text-xs"></i>0%
+                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="revenue-change">
+                    <i class="fas fa-arrow-up text-[10px]"></i>0%
                   </span>
                 </div>
-                <p class="text-white/70 text-sm font-medium mb-2">Tổng doanh thu</p>
-                <p class="text-3xl font-extrabold tracking-tight" id="stat-revenue">0d</p>
-                <div class="mt-4 pt-4 border-t border-white/20">
-                  <p class="text-white/60 text-xs flex items-center gap-1">
-                    <i class="fas fa-chart-line"></i>
-                    So với cùng kỳ tháng trước
-                  </p>
-                </div>
+                <p class="text-white/70 text-xs font-medium mb-1">Tổng doanh thu</p>
+                <p class="text-2xl font-bold" id="stat-revenue">0đ</p>
+                <p class="text-white/50 text-[10px] mt-2">So với tháng trước</p>
               </div>
             </div>
             
             <!-- Số đơn đặt hàng -->
-            <div class="stat-card bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 rounded-3xl shadow-xl shadow-emerald-500/20 p-6 text-white">
+            <div class="stat-card bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg shadow-emerald-500/15 p-5 text-white">
               <div class="relative z-10">
-                <div class="flex items-center justify-between mb-6">
-                  <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <i class="fas fa-shopping-cart text-2xl"></i>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <i class="fas fa-shopping-cart text-xl"></i>
                   </div>
-                  <span class="text-white/90 text-sm font-semibold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1" id="orders-change">
-                    <i class="fas fa-arrow-up text-xs"></i>0%
+                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="orders-change">
+                    <i class="fas fa-arrow-up text-[10px]"></i>0%
                   </span>
                 </div>
-                <p class="text-white/70 text-sm font-medium mb-2">Số đơn đặt hàng</p>
-                <p class="text-3xl font-extrabold tracking-tight" id="stat-orders">0</p>
-                <div class="mt-4 pt-4 border-t border-white/20">
-                  <p class="text-white/60 text-xs flex items-center gap-1">
-                    <i class="fas fa-calendar-check"></i>
-                    Tổng số đơn trong tháng
-                  </p>
-                </div>
+                <p class="text-white/70 text-xs font-medium mb-1">Đơn hàng</p>
+                <p class="text-2xl font-bold" id="stat-orders">0</p>
+                <p class="text-white/50 text-[10px] mt-2">Tổng đơn trong tháng</p>
               </div>
             </div>
             
-            <!-- số Khách hàng -->
-            <div class="stat-card bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 rounded-3xl shadow-xl shadow-orange-500/20 p-6 text-white">
+            <!-- Khách hàng -->
+            <div class="stat-card bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg shadow-amber-500/15 p-5 text-white">
               <div class="relative z-10">
-                <div class="flex items-center justify-between mb-6">
-                  <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <i class="fas fa-users text-2xl"></i>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <i class="fas fa-users text-xl"></i>
                   </div>
-                  <span class="text-white/90 text-sm font-semibold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1" id="customers-change">
-                    <i class="fas fa-arrow-up text-xs"></i>0%
+                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="customers-change">
+                    <i class="fas fa-arrow-up text-[10px]"></i>0%
                   </span>
                 </div>
-                <p class="text-white/70 text-sm font-medium mb-2">số Khách hàng</p>
-                <p class="text-3xl font-extrabold tracking-tight" id="stat-customers">0</p>
-                <div class="mt-4 pt-4 border-t border-white/20">
-                  <p class="text-white/60 text-xs flex items-center gap-1">
-                    <i class="fas fa-user-plus"></i>
-                    têng số khách đã đăng ký
-                  </p>
-                </div>
+                <p class="text-white/70 text-xs font-medium mb-1">Khách hàng</p>
+                <p class="text-2xl font-bold" id="stat-customers">0</p>
+                <p class="text-white/50 text-[10px] mt-2">Tổng khách đăng ký</p>
               </div>
             </div>
             
-            <!-- số lượng bán -->
-            <div class="stat-card bg-gradient-to-br from-violet-500 via-purple-600 to-fuchsia-600 rounded-3xl shadow-xl shadow-purple-500/20 p-6 text-white">
+            <!-- Sản phẩm đã bán -->
+            <div class="stat-card bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl shadow-lg shadow-violet-500/15 p-5 text-white">
               <div class="relative z-10">
-                <div class="flex items-center justify-between mb-6">
-                  <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <i class="fas fa-box-open text-2xl"></i>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <i class="fas fa-box-open text-xl"></i>
                   </div>
-                  <span class="text-white/90 text-sm font-semibold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1" id="products-change">
-                    <i class="fas fa-arrow-up text-xs"></i>0%
+                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="products-change">
+                    <i class="fas fa-arrow-up text-[10px]"></i>0%
                   </span>
                 </div>
-                <p class="text-white/70 text-sm font-medium mb-2">Sản phẩm đã bán</p>
-                <p class="text-3xl font-extrabold tracking-tight" id="stat-products">0</p>
-                <div class="mt-4 pt-4 border-t border-white/20">
-                  <p class="text-white/60 text-xs flex items-center gap-1">
-                    <i class="fas fa-truck"></i>
-                    têng số lượng bán ra
-                  </p>
-                </div>
+                <p class="text-white/70 text-xs font-medium mb-1">Sản phẩm đã bán</p>
+                <p class="text-2xl font-bold" id="stat-products">0</p>
+                <p class="text-white/50 text-[10px] mt-2">Tổng số lượng bán ra</p>
               </div>
             </div>
           </div>
