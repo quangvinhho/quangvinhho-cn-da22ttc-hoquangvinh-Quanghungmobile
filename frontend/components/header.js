@@ -199,7 +199,7 @@ function initHeader() {
     }
   }
 
-  // Tạo dropdown gợi ý tìm kiếm
+  // Tạo dropdown gợi ý tìm kiếm - YOUTUBE STYLE
   function createSuggestionDropdown(inputElement) {
     // Kiểm tra xem dropdown đã tồn tại chưa
     let existingDropdown = inputElement.parentElement.querySelector('.search-suggestions');
@@ -208,8 +208,32 @@ function initHeader() {
     }
 
     const dropdown = document.createElement('div');
-    dropdown.className = 'search-suggestions absolute top-full left-0 right-0 bg-white rounded-b-lg shadow-xl border border-gray-200 max-h-80 overflow-y-auto z-50 hidden';
-    dropdown.style.marginTop = '2px';
+    dropdown.className = 'search-suggestions absolute top-full left-0 right-0 bg-white rounded-2xl shadow-2xl border border-gray-100 max-h-[480px] overflow-y-auto z-[100] hidden';
+    dropdown.style.marginTop = '8px';
+    dropdown.style.animation = 'slideDown 0.2s ease-out';
+    
+    // Thêm CSS animation
+    if (!document.getElementById('search-dropdown-styles')) {
+      const style = document.createElement('style');
+      style.id = 'search-dropdown-styles';
+      style.textContent = `
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .search-suggestions::-webkit-scrollbar { width: 6px; }
+        .search-suggestions::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+        .search-suggestions::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .search-suggestions::-webkit-scrollbar-thumb:hover { background: #999; }
+        .suggestion-item.selected { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); }
+        .voice-listening { animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.1); opacity: 0.8; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
     
     // Thêm CSS cho container input
     inputElement.parentElement.style.position = 'relative';
@@ -218,7 +242,7 @@ function initHeader() {
     return dropdown;
   }
 
-  // Hiển thị gợi ý tìm kiếm
+  // Hiển thị gợi ý tìm kiếm - YOUTUBE STYLE
   function renderSuggestions(dropdown, suggestions, inputElement) {
     if (!suggestions || suggestions.length === 0) {
       dropdown.classList.add('hidden');
@@ -226,89 +250,102 @@ function initHeader() {
     }
 
     const user = getCurrentUser();
+    const query = inputElement.value.trim();
     
     let html = '';
     
-    // Header nếu có lịch sử tìm kiếm
-    const hasHistory = suggestions.some(s => s.type === 'history');
-    const hasProducts = suggestions.some(s => s.type === 'product' || s.type === 'hot');
+    // Phân loại suggestions
+    const historyItems = suggestions.filter(s => s.type === 'history');
+    const trendingItems = suggestions.filter(s => s.type === 'trending');
+    const autocompleteItems = suggestions.filter(s => s.type === 'autocomplete');
+    const productItems = suggestions.filter(s => s.type === 'product' || s.type === 'hot' || s.type === 'product_suggest');
     
-    if (hasHistory && user && inputElement.value.trim() === '') {
+    // ========== SECTION: Lịch sử tìm kiếm ==========
+    if (historyItems.length > 0 && user) {
       html += `
-        <div class="flex justify-between items-center px-4 py-2 bg-gray-50 border-b">
-          <span class="text-sm text-gray-600 font-medium">
-            <i class="fas fa-history mr-2"></i>Lịch sử tìm kiếm
+        <div class="flex justify-between items-center px-4 py-2.5 bg-gradient-to-r from-gray-50 to-white border-b sticky top-0 z-10">
+          <span class="text-sm text-gray-600 font-semibold flex items-center gap-2">
+            <i class="fas fa-history text-gray-400"></i>Tìm kiếm gần đây
           </span>
-          <button onclick="clearAllSearchHistory()" class="text-xs text-red-500 hover:text-red-700">
+          <button onclick="clearAllSearchHistory()" class="text-xs text-red-500 hover:text-red-700 font-medium hover:underline">
             Xóa tất cả
           </button>
         </div>
       `;
+      
+      historyItems.forEach((item, index) => {
+        html += renderHistoryItem(item, index, inputElement.value);
+      });
+    }
+    
+    // ========== SECTION: Trending ==========
+    if (trendingItems.length > 0 && query === '') {
+      html += `
+        <div class="flex items-center px-4 py-2.5 bg-gradient-to-r from-orange-50 to-yellow-50 border-b">
+          <span class="text-sm text-orange-600 font-semibold flex items-center gap-2">
+            <i class="fas fa-fire text-orange-500"></i>Xu hướng tìm kiếm
+          </span>
+        </div>
+      `;
+      
+      trendingItems.forEach((item, index) => {
+        html += `
+          <div class="suggestion-item flex items-center gap-3 px-4 py-3 hover:bg-orange-50 cursor-pointer transition-all duration-200 border-b border-gray-50" 
+               data-text="${escapeHtml(item.text)}" data-index="${historyItems.length + index}"
+               onclick="selectSuggestion('${escapeJs(item.text)}', null)">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white text-xs font-bold">
+              ${index + 1}
+            </div>
+            <span class="text-gray-800 font-medium flex-1">${escapeHtml(item.text)}</span>
+            <i class="fas fa-trending-up text-orange-400 text-sm"></i>
+          </div>
+        `;
+      });
+    }
+    
+    // ========== SECTION: Autocomplete ==========
+    if (autocompleteItems.length > 0) {
+      autocompleteItems.forEach((item, index) => {
+        html += `
+          <div class="suggestion-item flex items-center gap-3 px-4 py-3 hover:bg-red-50 cursor-pointer transition-all duration-200 border-b border-gray-50" 
+               data-text="${escapeHtml(item.text)}" data-index="${historyItems.length + trendingItems.length + index}"
+               onclick="selectSuggestion('${escapeJs(item.text)}', null)">
+            <i class="fas fa-search text-gray-400 text-sm w-8 text-center"></i>
+            <span class="text-gray-800">${highlightMatch(item.text, query)}</span>
+            <i class="fas fa-arrow-up-left text-gray-300 text-xs ml-auto" title="Điền vào ô tìm kiếm"></i>
+          </div>
+        `;
+      });
+    }
+    
+    // ========== SECTION: Sản phẩm gợi ý ==========
+    if (productItems.length > 0) {
+      const sectionTitle = query ? 'Sản phẩm phù hợp' : 'Sản phẩm nổi bật';
+      const sectionIcon = query ? 'fa-mobile-alt' : 'fa-star';
+      const sectionColor = query ? 'blue' : 'yellow';
+      
+      html += `
+        <div class="flex items-center px-4 py-2.5 bg-gradient-to-r from-${sectionColor}-50 to-white border-b">
+          <span class="text-sm text-${sectionColor === 'yellow' ? 'amber' : sectionColor}-600 font-semibold flex items-center gap-2">
+            <i class="fas ${sectionIcon} text-${sectionColor === 'yellow' ? 'amber' : sectionColor}-500"></i>${sectionTitle}
+          </span>
+        </div>
+      `;
+      
+      productItems.forEach((item, index) => {
+        html += renderProductItem(item, historyItems.length + trendingItems.length + autocompleteItems.length + index, query);
+      });
     }
 
-    let addedProductHeader = false;
-
-    suggestions.forEach((item, index) => {
-      const isHistory = item.type === 'history';
-      const isProduct = item.type === 'product' || item.type === 'hot';
-      
-      // Thêm header cho sản phẩm gợi ý
-      if (isProduct && !addedProductHeader && hasHistory) {
-        addedProductHeader = true;
-        html += `
-          <div class="flex items-center px-4 py-2 bg-blue-50 border-b">
-            <span class="text-sm text-blue-600 font-medium">
-              <i class="fas fa-mobile-alt mr-2"></i>Sản phẩm gợi ý
-            </span>
-          </div>
-        `;
-      }
-
-      if (isHistory) {
-        // Hiển thị lịch sử tìm kiếm
-        html += `
-          <div class="suggestion-item flex items-center justify-between px-4 py-3 hover:bg-red-50 cursor-pointer transition-colors border-b border-gray-100" 
-               data-text="${item.text}" data-index="${index}">
-            <div class="flex items-center gap-3 flex-1" onclick="selectSuggestion('${item.text.replace(/'/g, "\\'")}', null)">
-              <i class="fas fa-history text-gray-400 text-sm"></i>
-              <span class="text-gray-800">${highlightMatch(item.text, inputElement.value)}</span>
-            </div>
-            <button onclick="event.stopPropagation(); removeSearchHistoryItem('${item.text.replace(/'/g, "\\'")}', this)" 
-                    class="text-gray-400 hover:text-red-500 p-1 transition-colors">
-              <i class="fas fa-times text-xs"></i>
-            </button>
-          </div>
-        `;
-      } else if (isProduct) {
-        // Hiển thị sản phẩm với hình ảnh và giá
-        const formattedPrice = item.gia ? new Intl.NumberFormat('vi-VN').format(item.gia) + 'đ' : '';
-        const productImage = item.anh_dai_dien || 'images/default-phone.png';
-        
-        html += `
-          <div class="suggestion-item product-suggestion flex items-center gap-3 px-4 py-3 hover:bg-red-50 cursor-pointer transition-colors border-b border-gray-100" 
-               data-text="${item.text}" data-index="${index}" data-ma-sp="${item.ma_sp}"
-               onclick="goToProductDetail(${item.ma_sp}, '${item.text.replace(/'/g, "\\'")}')">
-            <div class="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-              <img src="${productImage}" alt="${item.text}" class="w-full h-full object-cover"
-                   onerror="this.src='https://via.placeholder.com/48x48?text=📱'">
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="text-gray-800 font-medium truncate">${highlightMatch(item.text, inputElement.value)}</div>
-              <div class="text-red-600 text-sm font-semibold">${formattedPrice}</div>
-            </div>
-            <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
-          </div>
-        `;
-      }
-    });
-
-    // Thêm nút xem tất cả kết quả nếu có từ khóa
-    if (inputElement.value.trim() !== '' && hasProducts) {
+    // ========== FOOTER: Xem tất cả kết quả ==========
+    if (query !== '' && (productItems.length > 0 || autocompleteItems.length > 0)) {
       html += `
-        <div class="px-4 py-3 bg-gray-50 border-t text-center">
-          <button onclick="searchAllProducts('${inputElement.value.trim().replace(/'/g, "\\'")}')" 
-                  class="text-red-600 hover:text-red-700 font-medium text-sm">
-            <i class="fas fa-search mr-2"></i>Xem tất cả kết quả cho "${inputElement.value.trim()}"
+        <div class="px-4 py-3 bg-gradient-to-r from-red-50 to-pink-50 border-t text-center sticky bottom-0">
+          <button onclick="searchAllProducts('${escapeJs(query)}')" 
+                  class="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center justify-center gap-2 w-full py-1 hover:underline">
+            <i class="fas fa-search"></i>
+            Xem tất cả kết quả cho "${escapeHtml(query)}"
+            <i class="fas fa-arrow-right text-xs"></i>
           </button>
         </div>
       `;
@@ -318,12 +355,220 @@ function initHeader() {
     dropdown.classList.remove('hidden');
   }
 
+  // Render item lịch sử
+  function renderHistoryItem(item, index, query) {
+    return `
+      <div class="suggestion-item flex items-center justify-between px-4 py-3 hover:bg-red-50 cursor-pointer transition-all duration-200 border-b border-gray-50" 
+           data-text="${escapeHtml(item.text)}" data-index="${index}">
+        <div class="flex items-center gap-3 flex-1" onclick="selectSuggestion('${escapeJs(item.text)}', null)">
+          <i class="fas fa-history text-gray-400 text-sm w-8 text-center"></i>
+          <span class="text-gray-800">${highlightMatch(item.text, query)}</span>
+        </div>
+        <button onclick="event.stopPropagation(); removeSearchHistoryItem('${escapeJs(item.text)}', this)" 
+                class="text-gray-300 hover:text-red-500 p-2 transition-colors rounded-full hover:bg-red-100">
+          <i class="fas fa-times text-xs"></i>
+        </button>
+      </div>
+    `;
+  }
+
+  // Render item sản phẩm
+  function renderProductItem(item, index, query) {
+    const formattedPrice = item.gia ? new Intl.NumberFormat('vi-VN').format(item.gia) + '₫' : '';
+    const productImage = item.anh_dai_dien || 'images/default-phone.png';
+    const isHot = item.type === 'hot';
+    
+    return `
+      <div class="suggestion-item product-suggestion flex items-center gap-3 px-4 py-3 hover:bg-red-50 cursor-pointer transition-all duration-200 border-b border-gray-50" 
+           data-text="${escapeHtml(item.text)}" data-index="${index}" data-ma-sp="${item.ma_sp}"
+           onclick="goToProductDetail(${item.ma_sp}, '${escapeJs(item.text)}')">
+        <div class="w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 p-1 shadow-sm">
+          <img src="${productImage}" alt="${escapeHtml(item.text)}" class="w-full h-full object-contain"
+               onerror="this.src='https://via.placeholder.com/56x56?text=📱'">
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-gray-800 font-medium truncate text-sm">${highlightMatch(item.text, query)}</div>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-red-600 text-sm font-bold">${formattedPrice}</span>
+            ${isHot ? '<span class="text-[10px] bg-orange-500 text-white px-1.5 py-0.5 rounded-full font-bold">HOT</span>' : ''}
+          </div>
+        </div>
+        <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+      </div>
+    `;
+  }
+
+  // Escape HTML để tránh XSS
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Escape JS string
+  function escapeJs(text) {
+    return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  }
+
   // Highlight từ khóa khớp
   function highlightMatch(text, query) {
-    if (!query) return text;
-    const regex = new RegExp(`(${query})`, 'gi');
-    return text.replace(regex, '<strong class="text-red-600">$1</strong>');
+    if (!query) return escapeHtml(text);
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedQuery})`, 'gi');
+    return escapeHtml(text).replace(regex, '<strong class="text-red-600 font-bold">$1</strong>');
   }
+
+  // ========== VOICE SEARCH - Tìm kiếm bằng giọng nói ==========
+  function initVoiceSearch() {
+    const voiceBtn = document.getElementById('voice-search-btn');
+    const mobileVoiceBtn = document.getElementById('mobile-voice-search-btn');
+    
+    // Kiểm tra trình duyệt có hỗ trợ Speech Recognition không
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      // Ẩn nút voice search nếu không hỗ trợ
+      if (voiceBtn) voiceBtn.style.display = 'none';
+      if (mobileVoiceBtn) mobileVoiceBtn.style.display = 'none';
+      return;
+    }
+    
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'vi-VN';
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    
+    let isListening = false;
+    let currentInput = null;
+    
+    function startListening(inputElement, button) {
+      if (isListening) {
+        recognition.stop();
+        return;
+      }
+      
+      currentInput = inputElement;
+      isListening = true;
+      
+      // UI feedback
+      button.classList.add('voice-listening');
+      button.innerHTML = '<i class="fas fa-microphone text-red-500 text-lg"></i>';
+      inputElement.placeholder = '🎤 Đang nghe...';
+      inputElement.classList.add('bg-red-50');
+      
+      // Hiển thị modal voice
+      showVoiceModal();
+      
+      recognition.start();
+    }
+    
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map(result => result[0].transcript)
+        .join('');
+      
+      if (currentInput) {
+        currentInput.value = transcript;
+        updateVoiceModalText(transcript);
+        
+        // Trigger search suggestions
+        const inputEvent = new Event('input', { bubbles: true });
+        currentInput.dispatchEvent(inputEvent);
+      }
+    };
+    
+    recognition.onend = () => {
+      isListening = false;
+      
+      // Reset UI
+      [voiceBtn, mobileVoiceBtn].forEach(btn => {
+        if (btn) {
+          btn.classList.remove('voice-listening');
+          btn.innerHTML = '<i class="fas fa-microphone text-lg"></i>';
+        }
+      });
+      
+      if (currentInput) {
+        currentInput.placeholder = 'Tìm kiếm điện thoại, phụ kiện...';
+        currentInput.classList.remove('bg-red-50');
+        
+        // Tự động tìm kiếm nếu có kết quả
+        if (currentInput.value.trim()) {
+          setTimeout(() => {
+            hideVoiceModal();
+            handleSearch(currentInput);
+          }, 500);
+        } else {
+          hideVoiceModal();
+        }
+      }
+    };
+    
+    recognition.onerror = (event) => {
+      console.log('Voice recognition error:', event.error);
+      isListening = false;
+      hideVoiceModal();
+      
+      if (event.error === 'not-allowed') {
+        alert('Vui lòng cho phép truy cập microphone để sử dụng tính năng tìm kiếm bằng giọng nói.');
+      }
+    };
+    
+    // Event listeners
+    if (voiceBtn) {
+      voiceBtn.addEventListener('click', () => {
+        const input = document.getElementById('header-search-input');
+        startListening(input, voiceBtn);
+      });
+    }
+    
+    if (mobileVoiceBtn) {
+      mobileVoiceBtn.addEventListener('click', () => {
+        const input = document.getElementById('mobile-search-input');
+        startListening(input, mobileVoiceBtn);
+      });
+    }
+  }
+  
+  // Voice Modal UI
+  function showVoiceModal() {
+    let modal = document.getElementById('voice-search-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'voice-search-modal';
+      modal.className = 'fixed inset-0 bg-black/60 flex items-center justify-center z-[200]';
+      modal.innerHTML = `
+        <div class="bg-white rounded-3xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+          <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 voice-listening">
+            <i class="fas fa-microphone text-white text-3xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Đang nghe...</h3>
+          <p id="voice-transcript" class="text-gray-600 min-h-[24px]">Hãy nói tên sản phẩm bạn muốn tìm</p>
+          <button onclick="hideVoiceModal()" class="mt-4 text-gray-500 hover:text-red-500 text-sm">
+            <i class="fas fa-times mr-1"></i>Hủy
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    modal.classList.remove('hidden');
+  }
+  
+  function hideVoiceModal() {
+    const modal = document.getElementById('voice-search-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+  
+  function updateVoiceModalText(text) {
+    const transcript = document.getElementById('voice-transcript');
+    if (transcript) {
+      transcript.textContent = text || 'Hãy nói tên sản phẩm bạn muốn tìm';
+      transcript.classList.add('text-red-600', 'font-semibold');
+    }
+  }
+  
+  // Khởi tạo Voice Search
+  initVoiceSearch();
 
   // Debounce function
   function debounce(func, wait) {
@@ -411,13 +656,15 @@ function initHeader() {
     });
   }
 
-  // Cập nhật item được chọn
+  // Cập nhật item được chọn - với animation
   function updateSelectedItem(items, index) {
     items.forEach((item, i) => {
       if (i === index) {
-        item.classList.add('bg-red-50');
+        item.classList.add('selected', 'bg-red-50');
+        // Scroll item vào view nếu cần
+        item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       } else {
-        item.classList.remove('bg-red-50');
+        item.classList.remove('selected', 'bg-red-50');
       }
     });
   }
@@ -557,6 +804,12 @@ if (document.readyState === 'loading') {
 }
 
 // ===== GLOBAL FUNCTIONS FOR SEARCH SUGGESTIONS =====
+
+// Hide voice modal (global)
+window.hideVoiceModal = function() {
+  const modal = document.getElementById('voice-search-modal');
+  if (modal) modal.classList.add('hidden');
+};
 
 // Chuyển đến trang chi tiết sản phẩm
 function goToProductDetail(maSp, productName) {

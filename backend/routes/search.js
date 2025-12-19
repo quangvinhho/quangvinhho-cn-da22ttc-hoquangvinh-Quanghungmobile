@@ -3,7 +3,7 @@ const router = express.Router();
 const { pool } = require('../config/database');
 
 // ==========================================
-// API TÌM KIẾM VÀ LỊCH SỬ TÌM KIẾM
+// API TÌM KIẾM KIỂU YOUTUBE - NÂNG CẤP
 // ==========================================
 
 /**
@@ -75,6 +75,145 @@ router.post('/save', async (req, res) => {
         });
     } catch (error) {
         console.error('Lỗi lưu từ khóa tìm kiếm:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+/**
+ * 🔥 TRENDING - Từ khóa tìm kiếm hot nhất (kiểu YouTube)
+ * GET /api/search/trending
+ */
+router.get('/trending', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 8;
+
+        // Lấy từ khóa được tìm nhiều nhất trong 7 ngày gần đây
+        const [trending] = await pool.query(
+            `SELECT tu_khoa as text, COUNT(*) as search_count, 'trending' as type
+             FROM du_lieu_tim_kiem 
+             WHERE thoi_gian >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+             GROUP BY tu_khoa 
+             ORDER BY search_count DESC 
+             LIMIT ?`,
+            [limit]
+        );
+
+        // Nếu không đủ trending, bổ sung từ sản phẩm mới/hot
+        if (trending.length < limit) {
+            const remaining = limit - trending.length;
+            const [hotProducts] = await pool.query(
+                `SELECT ten_sp as text, ma_sp, gia, anh_dai_dien, 'hot_product' as type
+                 FROM san_pham 
+                 WHERE ten_sp NOT IN (?)
+                 ORDER BY ngay_cap_nhat DESC, ma_sp DESC
+                 LIMIT ?`,
+                [trending.length > 0 ? trending.map(t => t.text) : [''], remaining]
+            );
+            trending.push(...hotProducts);
+        }
+
+        res.json({
+            success: true,
+            data: trending
+        });
+    } catch (error) {
+        console.error('Lỗi lấy trending:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+/**
+ * 🎯 AUTOCOMPLETE - Gợi ý hoàn thành từ khóa thông minh (kiểu YouTube)
+ * GET /api/search/autocomplete?q=iphone
+ * Trả về các gợi ý hoàn thành câu: "iphone 15 pro", "iphone giá rẻ"...
+ */
+router.get('/autocomplete', async (req, res) => {
+    try {
+        const { q } = req.query;
+        const limit = parseInt(req.query.limit) || 6;
+
+        if (!q || q.trim().length < 1) {
+            return res.json({ success: true, data: [] });
+        }
+
+        const keyword = q.trim().toLowerCase();
+        const startWith = `${keyword}%`;
+        const contains = `%${keyword}%`;
+
+        // Gợi ý từ tên sản phẩm - ưu tiên bắt đầu bằng từ khóa
+        const [productSuggestions] = await pool.query(
+            `SELECT DISTINCT 
+                LOWER(ten_sp) as suggestion,
+                ma_sp,
+                gia,
+                anh_dai_dien,
+                CASE 
+                    WHEN LOWER(ten_sp) LIKE ? THEN 1
+                    WHEN LOWER(ten_sp) LIKE ? THEN 2
+                    ELSE 3
+                END as priority
+             FROM san_pham 
+             WHERE LOWER(ten_sp) LIKE ? OR LOWER(ten_sp) LIKE ?
+             ORDER BY priority, ten_sp
+             LIMIT ?`,
+            [startWith, contains, startWith, contains, limit]
+        );
+
+        // Gợi ý từ lịch sử tìm kiếm phổ biến
+        const [historySuggestions] = await pool.query(
+            `SELECT tu_khoa as suggestion, COUNT(*) as freq
+             FROM du_lieu_tim_kiem 
+             WHERE LOWER(tu_khoa) LIKE ? OR LOWER(tu_khoa) LIKE ?
+             GROUP BY tu_khoa
+             ORDER BY freq DESC
+             LIMIT ?`,
+            [startWith, contains, 4]
+        );
+
+        // Kết hợp và loại bỏ trùng lặp
+        const seen = new Set();
+        const combined = [];
+
+        // Thêm từ lịch sử trước (phổ biến)
+        historySuggestions.forEach(item => {
+            const key = item.suggestion.toLowerCase();
+            if (!seen.has(key)) {
+                seen.add(key);
+                combined.push({
+                    text: item.suggestion,
+                    type: 'autocomplete',
+                    frequency: item.freq
+                });
+            }
+        });
+
+        // Thêm từ sản phẩm
+        productSuggestions.forEach(item => {
+            const key = item.suggestion.toLowerCase();
+            if (!seen.has(key)) {
+                seen.add(key);
+                combined.push({
+                    text: item.suggestion,
+                    type: 'product_suggest',
+                    ma_sp: item.ma_sp,
+                    gia: item.gia,
+                    anh_dai_dien: item.anh_dai_dien
+                });
+            }
+        });
+
+        res.json({
+            success: true,
+            data: combined.slice(0, limit)
+        });
+    } catch (error) {
+        console.error('Lỗi autocomplete:', error);
         res.status(500).json({
             success: false,
             message: 'Lỗi server'
@@ -174,86 +313,142 @@ router.delete('/history/all/:ma_kh', async (req, res) => {
 });
 
 /**
- * Gợi ý tìm kiếm (autocomplete)
+ * 🎬 GỢI Ý TÌM KIẾM KIỂU YOUTUBE - NÂNG CẤP
  * GET /api/search/suggest?q=keyword&ma_kh=123
- * Trả về: lịch sử tìm kiếm + sản phẩm phù hợp (bao gồm ma_sp để chuyển đến trang chi tiết)
+ * Trả về: trending + lịch sử + autocomplete + sản phẩm phù hợp
  */
 router.get('/suggest', async (req, res) => {
     try {
         const { q, ma_kh } = req.query;
-        const limit = Math.min(parseInt(req.query.limit) || 8, 20); // Giới hạn tối đa 20
+        const limit = Math.min(parseInt(req.query.limit) || 10, 20);
 
         let suggestions = [];
 
-        // Nếu có từ khóa tìm kiếm
+        // ========== TRƯỜNG HỢP 1: Có từ khóa tìm kiếm ==========
         if (q && q.trim() !== '') {
-            const keyword = `%${q.trim()}%`;
-            const startWith = `${q.trim()}%`;
+            const keyword = q.trim();
+            const keywordLower = keyword.toLowerCase();
+            const startWith = `${keyword}%`;
+            const contains = `%${keyword}%`;
 
-            // Tìm sản phẩm phù hợp - bao gồm ma_sp, giá, ảnh để hiển thị
-            const [products] = await pool.query(
-                `SELECT ma_sp, ten_sp as text, gia, anh_dai_dien, 'product' as type 
-                 FROM san_pham 
-                 WHERE ten_sp LIKE ? OR mo_ta LIKE ?
-                 ORDER BY 
-                    CASE WHEN ten_sp LIKE ? THEN 0 ELSE 1 END,
-                    ten_sp 
-                 LIMIT ${limit}`,
-                [keyword, keyword, startWith]
+            // 1. Autocomplete từ lịch sử phổ biến
+            const [autocompleteSuggestions] = await pool.query(
+                `SELECT tu_khoa as text, COUNT(*) as freq, 'autocomplete' as type
+                 FROM du_lieu_tim_kiem 
+                 WHERE LOWER(tu_khoa) LIKE LOWER(?) 
+                 GROUP BY tu_khoa
+                 ORDER BY freq DESC
+                 LIMIT 3`,
+                [startWith]
             );
 
-            // Tìm từ lịch sử của user (nếu có đăng nhập)
+            // 2. Lịch sử cá nhân của user (nếu đăng nhập)
+            let userHistory = [];
             if (ma_kh && parseInt(ma_kh) > 0) {
                 const [history] = await pool.query(
                     `SELECT tu_khoa as text, 'history' as type, MAX(thoi_gian) as last_time
                      FROM du_lieu_tim_kiem 
-                     WHERE ma_kh = ? AND tu_khoa LIKE ? 
+                     WHERE ma_kh = ? AND LOWER(tu_khoa) LIKE LOWER(?)
+                     GROUP BY tu_khoa
+                     ORDER BY last_time DESC 
+                     LIMIT 3`,
+                    [parseInt(ma_kh), contains]
+                );
+                userHistory = history;
+            }
+
+            // 3. Sản phẩm phù hợp với hình ảnh và giá
+            const [products] = await pool.query(
+                `SELECT ma_sp, ten_sp as text, gia, anh_dai_dien, 'product' as type,
+                    CASE 
+                        WHEN LOWER(ten_sp) LIKE LOWER(?) THEN 1
+                        WHEN LOWER(ten_sp) LIKE LOWER(?) THEN 2
+                        ELSE 3
+                    END as priority
+                 FROM san_pham 
+                 WHERE LOWER(ten_sp) LIKE LOWER(?) OR LOWER(mo_ta) LIKE LOWER(?)
+                 ORDER BY priority, ten_sp 
+                 LIMIT 6`,
+                [startWith, contains, contains, contains]
+            );
+
+            // Kết hợp và loại bỏ trùng lặp
+            const seen = new Set();
+            
+            // Thêm lịch sử cá nhân trước
+            userHistory.forEach(item => {
+                const key = item.text.toLowerCase();
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    suggestions.push(item);
+                }
+            });
+
+            // Thêm autocomplete
+            autocompleteSuggestions.forEach(item => {
+                const key = item.text.toLowerCase();
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    suggestions.push(item);
+                }
+            });
+
+            // Thêm sản phẩm
+            products.forEach(item => {
+                const key = item.text.toLowerCase();
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    suggestions.push(item);
+                }
+            });
+
+            suggestions = suggestions.slice(0, limit);
+        } 
+        // ========== TRƯỜNG HỢP 2: Không có từ khóa (click vào ô search) ==========
+        else {
+            // 1. Lịch sử cá nhân (nếu đăng nhập)
+            if (ma_kh && parseInt(ma_kh) > 0) {
+                const [history] = await pool.query(
+                    `SELECT tu_khoa as text, 'history' as type, MAX(thoi_gian) as last_time
+                     FROM du_lieu_tim_kiem 
+                     WHERE ma_kh = ? 
                      GROUP BY tu_khoa
                      ORDER BY last_time DESC 
                      LIMIT 5`,
-                    [parseInt(ma_kh), keyword]
+                    [parseInt(ma_kh)]
                 );
-
-                // Kết hợp: lịch sử trước, sản phẩm sau
-                const historyTexts = history.map(h => h.text.toLowerCase());
-                const uniqueProducts = products.filter(
-                    p => !historyTexts.includes(p.text.toLowerCase())
-                );
-
-                suggestions = [...history, ...uniqueProducts].slice(0, limit);
-            } else {
-                suggestions = products;
+                suggestions.push(...history);
             }
-        } else if (ma_kh && parseInt(ma_kh) > 0) {
-            // Nếu không có từ khóa, hiển thị lịch sử tìm kiếm gần đây + sản phẩm hot
-            const [history] = await pool.query(
-                `SELECT tu_khoa as text, 'history' as type, MAX(thoi_gian) as last_time
+
+            // 2. Trending - từ khóa hot
+            const [trending] = await pool.query(
+                `SELECT tu_khoa as text, COUNT(*) as search_count, 'trending' as type
                  FROM du_lieu_tim_kiem 
-                 WHERE ma_kh = ? 
-                 GROUP BY tu_khoa
-                 ORDER BY last_time DESC 
-                 LIMIT 5`,
-                [parseInt(ma_kh)]
+                 WHERE thoi_gian >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                   AND tu_khoa NOT IN (?)
+                 GROUP BY tu_khoa 
+                 ORDER BY search_count DESC 
+                 LIMIT 4`,
+                [suggestions.length > 0 ? suggestions.map(s => s.text) : ['']]
             );
-            
-            // Thêm một số sản phẩm nổi bật
+            suggestions.push(...trending);
+
+            // 3. Sản phẩm hot/mới
+            const existingTexts = suggestions.map(s => s.text.toLowerCase());
             const [hotProducts] = await pool.query(
                 `SELECT ma_sp, ten_sp as text, gia, anh_dai_dien, 'hot' as type 
                  FROM san_pham 
-                 ORDER BY ngay_cap_nhat DESC 
-                 LIMIT 3`
-            );
-            
-            suggestions = [...history, ...hotProducts];
-        } else {
-            // Không có từ khóa và không đăng nhập - trả về sản phẩm hot
-            const [hotProducts] = await pool.query(
-                `SELECT ma_sp, ten_sp as text, gia, anh_dai_dien, 'hot' as type 
-                 FROM san_pham 
-                 ORDER BY ngay_cap_nhat DESC 
+                 ORDER BY ngay_cap_nhat DESC, ma_sp DESC
                  LIMIT 5`
             );
-            suggestions = hotProducts;
+            
+            hotProducts.forEach(product => {
+                if (!existingTexts.includes(product.text.toLowerCase())) {
+                    suggestions.push(product);
+                }
+            });
+
+            suggestions = suggestions.slice(0, limit);
         }
 
         res.json({

@@ -299,3 +299,161 @@ textarea:focus-visible {
     opacity: 1;
   }
 }
+
+/* ========================================
+   YOUTUBE-STYLE SEARCH - QuangHưng Mobile
+   ======================================== */
+
+/* Search Container */
+.search-container {
+  position: relative;
+}
+
+.search-container:focus-within {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2), 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Search Input Focus Effect */
+#header-search-input:focus,
+#mobile-search-input:focus {
+  outline: none;
+}
+
+/* Search Suggestions Dropdown */
+.search-suggestions {
+  animation: searchDropdownSlide 0.2s ease-out;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+@keyframes searchDropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Suggestion Items */
+.suggestion-item {
+  transition: all 0.15s ease;
+}
+
+.suggestion-item:hover {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  padding-left: 20px;
+}
+
+.suggestion-item.selected {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-left: 3px solid #dc2626;
+}
+
+/* Product Suggestion Image */
+.product-suggestion img {
+  transition: transform 0.2s ease;
+}
+
+.product-suggestion:hover img {
+  transform: scale(1.05);
+}
+
+/* Voice Search Button */
+#voice-search-btn,
+#mobile-voice-search-btn {
+  transition: all 0.2s ease;
+}
+
+#voice-search-btn:hover,
+#mobile-voice-search-btn:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+/* Voice Listening Animation */
+.voice-listening {
+  animation: voicePulse 1.5s infinite;
+}
+
+@keyframes voicePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
+  }
+}
+
+/* Voice Modal */
+#voice-search-modal {
+  animation: fadeIn 0.2s ease;
+}
+
+#voice-search-modal.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Trending Badge */
+.trending-badge {
+  background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+  animation: trendingGlow 2s infinite;
+}
+
+@keyframes trendingGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(249, 115, 22, 0.5); }
+  50% { box-shadow: 0 0 15px rgba(249, 115, 22, 0.8); }
+}
+
+/* Search Highlight */
+.search-suggestions strong {
+  color: #dc2626;
+  font-weight: 700;
+  background: rgba(220, 38, 38, 0.1);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Mobile Search Improvements */
+@media (max-width: 768px) {
+  .search-suggestions {
+    max-height: 70vh;
+    border-radius: 16px;
+  }
+  
+  .suggestion-item {
+    padding: 12px 16px;
+  }
+  
+  .product-suggestion .w-14 {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Scrollbar for Search Dropdown */
+.search-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-suggestions::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);
+  border-radius: 3px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #b91c1c 0%, #991b1b 100%);
+}
