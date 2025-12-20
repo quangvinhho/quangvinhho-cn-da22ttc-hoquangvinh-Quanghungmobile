@@ -1,301 +1,286 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Điều khoản sử dụng - QuangHưng Mobile</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="components/header.css">
     <link rel="stylesheet" href="components/ai-chatbot.css">
     <link rel="stylesheet" href="style.css">
-
     <style>
-        body { font-family: 'Roboto', sans-serif; }
-        .content-section h2 { color: #7c3aed; }
-        .content-section p, .content-section li { line-height: 1.9; }
+        body { font-family: 'Roboto', sans-serif; background: #f8fafc; }
+        .policy-sidebar { position: sticky; top: 160px; }
+        .policy-nav-item { 
+            display: block; padding: 12px 16px; color: #64748b; font-size: 14px;
+            border-left: 3px solid transparent; transition: all 0.2s;
+        }
+        .policy-nav-item:hover { background: #f1f5f9; color: #334155; }
+        .policy-nav-item.active { 
+            background: #faf5ff; color: #7c3aed; border-left-color: #7c3aed; font-weight: 500;
+        }
+        .policy-section { scroll-margin-top: 180px; }
+        .policy-content h2 { 
+            font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem; border-bottom: 2px solid #e2e8f0;
+        }
+        .policy-content h2 .section-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; background: #7c3aed; color: white;
+            border-radius: 50%; font-size: 14px; margin-right: 12px;
+        }
+        .policy-content p { color: #475569; line-height: 1.8; margin-bottom: 1rem; }
+        .policy-content ul { margin: 1rem 0 1rem 1.5rem; }
+        .policy-content li { color: #475569; line-height: 1.8; margin-bottom: 0.5rem; position: relative; padding-left: 1.5rem; }
+        .policy-content li::before { content: "•"; color: #7c3aed; font-weight: bold; position: absolute; left: 0; }
+        .highlight-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; }
+        .highlight-box.info { background: #eff6ff; border-left-color: #3b82f6; }
+        .highlight-box.warning { background: #fef2f2; border-left-color: #ef4444; }
+        .highlight-box.success { background: #f0fdf4; border-left-color: #22c55e; }
+        .highlight-box p { margin: 0; color: #1e293b; }
     </style>
 </head>
-
 <body class="bg-gray-50">
-    <!-- Header -->
     <div id="header-placeholder"></div>
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-    <!-- Hero Banner Full Width -->
-    <div class="w-full h-[300px] md:h-[400px] relative">
-        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&h=600&fit=crop" 
-             alt="Điều khoản sử dụng" 
-             class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-8 md:p-16 text-white">
-            <div class="max-w-7xl mx-auto">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                    <i class="fas fa-file-contract mr-4"></i>Điều khoản sử dụng
-                </h1>
-                <p class="text-xl md:text-2xl opacity-90 max-w-3xl">
-                    Quy định và điều khoản khi sử dụng website QuangHưng Mobile
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <nav class="flex items-center gap-2 text-sm">
+                <a href="index.html" class="text-gray-500 hover:text-purple-600"><i class="fas fa-home"></i></a>
+                <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
+                <span class="text-gray-800 font-medium">Điều khoản sử dụng</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="bg-white border-b shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-file-contract text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Điều khoản sử dụng</h1>
+                    <p class="text-gray-500 mt-1">Cập nhật lần cuối: Tháng 12/2024</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Important Notice -->
+    <div class="bg-purple-50 border-b border-purple-100">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-info-circle text-purple-600 mt-0.5"></i>
+                <p class="text-sm text-purple-800">
+                    <strong>Lưu ý quan trọng:</strong> Việc sử dụng website QuangHưng Mobile đồng nghĩa với việc bạn đã đọc, hiểu và đồng ý với tất cả các điều khoản dưới đây.
                 </p>
             </div>
         </div>
     </div>
 
-    <!-- Breadcrumb -->
-    <div class="bg-white border-b shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <nav class="flex items-center gap-2 text-sm">
-                <a href="index.html" class="text-gray-500 hover:text-purple-600"><i class="fas fa-home"></i> Trang chủ</a>
-                <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
-                <span class="text-purple-600 font-medium">Điều khoản sử dụng</span>
-            </nav>
-        </div>
-    </div>
-
-    <!-- Important Notice -->
-    <div class="w-full bg-purple-50 border-b border-purple-200">
-        <div class="max-w-7xl mx-auto px-6 py-6">
-            <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-info-circle text-white text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-gray-800 text-lg mb-1">Lưu ý quan trọng</h3>
-                    <p class="text-gray-700">Việc sử dụng website QuangHưng Mobile đồng nghĩa với việc bạn đã đọc, hiểu và đồng ý với tất cả các điều khoản dưới đây. Vui lòng đọc kỹ trước khi sử dụng dịch vụ.</p>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Sidebar Navigation -->
+            <div class="lg:w-72 flex-shrink-0">
+                <div class="policy-sidebar bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b">
+                        <h3 class="font-semibold text-gray-800 text-sm uppercase tracking-wide">Mục lục</h3>
+                    </div>
+                    <nav class="py-2">
+                        <a href="#dieu-khoan-chung" class="policy-nav-item active">1. Điều khoản chung</a>
+                        <a href="#tai-khoan" class="policy-nav-item">2. Tài khoản người dùng</a>
+                        <a href="#hanh-vi-cam" class="policy-nav-item">3. Hành vi bị cấm</a>
+                        <a href="#so-huu-tri-tue" class="policy-nav-item">4. Quyền sở hữu trí tuệ</a>
+                        <a href="#gioi-han" class="policy-nav-item">5. Giới hạn trách nhiệm</a>
+                        <a href="#danh-gia" class="policy-nav-item">6. Đánh giá và bình luận</a>
+                        <a href="#dat-hang" class="policy-nav-item">7. Đặt hàng và hủy đơn</a>
+                        <a href="#luat-ap-dung" class="policy-nav-item">8. Luật áp dụng</a>
+                    </nav>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Main Content Full Width -->
-    <div class="w-full bg-white">
-        <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 content-section">
-            
-            <!-- 1. Điều khoản chung -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    1. Điều khoản chung
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Chào mừng bạn đến với website QuangHưng Mobile. Trước khi sử dụng dịch vụ, vui lòng đọc kỹ các điều khoản sau:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Quyền sở hữu:</strong> Website quanghungmobile.vn thuộc quyền sở hữu và quản lý của Công ty TNHH QuangHưng Mobile, được đăng ký kinh doanh hợp pháp tại Việt Nam.</li>
-                        <li><strong>Chấp nhận điều khoản:</strong> Bằng việc truy cập và sử dụng website, bạn đồng ý tuân thủ tất cả các điều khoản và điều kiện được quy định trong tài liệu này.</li>
-                        <li><strong>Quyền thay đổi:</strong> QuangHưng Mobile có quyền thay đổi, bổ sung hoặc xóa bỏ bất kỳ điều khoản nào mà không cần thông báo trước.</li>
-                        <li><strong>Trách nhiệm cập nhật:</strong> Người dùng có trách nhiệm kiểm tra và cập nhật các thay đổi thường xuyên. Việc tiếp tục sử dụng website sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận các điều khoản mới.</li>
-                        <li><strong>Phạm vi áp dụng:</strong> Các điều khoản này áp dụng cho tất cả người dùng truy cập website, bao gồm cả khách vãng lai và thành viên đã đăng ký.</li>
-                    </ul>
+            <!-- Content -->
+            <div class="flex-1 policy-content">
+                <!-- Intro -->
+                <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Chào mừng bạn đến với website <strong class="text-gray-900">QuangHưng Mobile</strong>. Vui lòng đọc kỹ các điều khoản sử dụng dưới đây trước khi sử dụng dịch vụ của chúng tôi.
+                    </p>
                 </div>
-            </section>
 
-            <!-- 2. Tài khoản người dùng -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    2. Tài khoản người dùng
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
+                <!-- Section 1: Điều khoản chung -->
+                <section id="dieu-khoan-chung" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">1</span>Điều khoản chung</h2>
+                    
+                    <ul>
+                        <li><strong>Quyền sở hữu:</strong> Website quanghungmobile.vn thuộc quyền sở hữu và quản lý của Công ty TNHH QuangHưng Mobile, được đăng ký kinh doanh hợp pháp tại Việt Nam</li>
+                        <li><strong>Chấp nhận điều khoản:</strong> Bằng việc truy cập và sử dụng website, bạn đồng ý tuân thủ tất cả các điều khoản và điều kiện được quy định</li>
+                        <li><strong>Quyền thay đổi:</strong> QuangHưng Mobile có quyền thay đổi, bổ sung hoặc xóa bỏ bất kỳ điều khoản nào mà không cần thông báo trước</li>
+                        <li><strong>Trách nhiệm cập nhật:</strong> Người dùng có trách nhiệm kiểm tra và cập nhật các thay đổi thường xuyên</li>
+                        <li><strong>Phạm vi áp dụng:</strong> Các điều khoản này áp dụng cho tất cả người dùng truy cập website, bao gồm cả khách vãng lai và thành viên đã đăng ký</li>
+                    </ul>
+                </section>
+
+                <!-- Section 2: Tài khoản -->
+                <section id="tai-khoan" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">2</span>Tài khoản người dùng</h2>
+                    
                     <p>Khi đăng ký và sử dụng tài khoản tại QuangHưng Mobile, bạn đồng ý với các quy định sau:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Thông tin chính xác:</strong> Bạn phải cung cấp thông tin chính xác, đầy đủ và cập nhật khi đăng ký tài khoản. Thông tin sai lệch có thể dẫn đến việc khóa tài khoản.</li>
-                        <li><strong>Bảo mật mật khẩu:</strong> Bạn chịu trách nhiệm hoàn toàn trong việc bảo mật mật khẩu và tất cả hoạt động diễn ra trên tài khoản của mình.</li>
-                        <li><strong>Thông báo vi phạm:</strong> Thông báo ngay cho chúng tôi nếu phát hiện truy cập trái phép hoặc nghi ngờ tài khoản bị xâm nhập.</li>
-                        <li><strong>Một tài khoản:</strong> Mỗi người chỉ được đăng ký một tài khoản duy nhất. Việc tạo nhiều tài khoản để lợi dụng khuyến mãi là hành vi vi phạm.</li>
-                        <li><strong>Độ tuổi:</strong> Bạn phải từ 18 tuổi trở lên hoặc có sự đồng ý của phụ huynh/người giám hộ để đăng ký tài khoản.</li>
-                        <li><strong>Quyền khóa tài khoản:</strong> QuangHưng Mobile có quyền khóa hoặc xóa tài khoản vi phạm điều khoản mà không cần thông báo trước.</li>
+                    
+                    <ul>
+                        <li><strong>Thông tin chính xác:</strong> Bạn phải cung cấp thông tin chính xác, đầy đủ và cập nhật khi đăng ký. Thông tin sai lệch có thể dẫn đến việc khóa tài khoản</li>
+                        <li><strong>Bảo mật mật khẩu:</strong> Bạn chịu trách nhiệm hoàn toàn trong việc bảo mật mật khẩu và tất cả hoạt động diễn ra trên tài khoản</li>
+                        <li><strong>Thông báo vi phạm:</strong> Thông báo ngay cho chúng tôi nếu phát hiện truy cập trái phép hoặc nghi ngờ tài khoản bị xâm nhập</li>
+                        <li><strong>Một tài khoản:</strong> Mỗi người chỉ được đăng ký một tài khoản duy nhất. Việc tạo nhiều tài khoản để lợi dụng khuyến mãi là hành vi vi phạm</li>
+                        <li><strong>Độ tuổi:</strong> Bạn phải từ 18 tuổi trở lên hoặc có sự đồng ý của phụ huynh/người giám hộ để đăng ký tài khoản</li>
+                        <li><strong>Quyền khóa tài khoản:</strong> QuangHưng Mobile có quyền khóa hoặc xóa tài khoản vi phạm điều khoản mà không cần thông báo trước</li>
                     </ul>
-                </div>
-            </section>
+                </section>
 
-            <!-- 3. Hành vi bị cấm -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    3. Hành vi bị cấm
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Khi sử dụng website QuangHưng Mobile, bạn <strong>TUYỆT ĐỐI KHÔNG ĐƯỢC</strong> thực hiện các hành vi sau:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Giả mạo thông tin:</strong> Sử dụng thông tin giả mạo, mạo danh người khác hoặc tổ chức khác để đăng ký tài khoản hoặc đặt hàng.</li>
-                        <li><strong>Tấn công hệ thống:</strong> Tấn công, phá hoại, can thiệp vào hệ thống website hoặc máy chủ bằng bất kỳ hình thức nào (DDoS, SQL injection, XSS...).</li>
-                        <li><strong>Thu thập trái phép:</strong> Thu thập, sao chép thông tin của người dùng khác hoặc dữ liệu website một cách trái phép.</li>
-                        <li><strong>Nội dung vi phạm:</strong> Đăng tải nội dung vi phạm pháp luật, đạo đức, thuần phong mỹ tục, xúc phạm, phỉ báng người khác.</li>
-                        <li><strong>Spam và quảng cáo:</strong> Gửi tin nhắn rác, quảng cáo trái phép, đường link độc hại trong đánh giá hoặc bình luận.</li>
-                        <li><strong>Sử dụng bot:</strong> Sử dụng bot, script, công cụ tự động để truy cập website, đặt hàng hoặc thu thập dữ liệu.</li>
-                        <li><strong>Lợi dụng lỗi:</strong> Lợi dụng lỗi hệ thống, lỗi giá, lỗi khuyến mãi để trục lợi cá nhân.</li>
-                        <li><strong>Sao chép nội dung:</strong> Sao chép, phân phối, sử dụng nội dung website cho mục đích thương mại mà không có sự đồng ý.</li>
-                        <li><strong>Gian lận:</strong> Thực hiện các hành vi gian lận trong thanh toán, đổi trả, bảo hành.</li>
+                <!-- Section 3: Hành vi bị cấm -->
+                <section id="hanh-vi-cam" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">3</span>Hành vi bị cấm</h2>
+                    
+                    <p>Khi sử dụng website QuangHưng Mobile, bạn <strong class="text-red-600">TUYỆT ĐỐI KHÔNG ĐƯỢC</strong> thực hiện các hành vi sau:</p>
+                    
+                    <ul>
+                        <li><strong>Giả mạo thông tin:</strong> Sử dụng thông tin giả mạo, mạo danh người khác hoặc tổ chức khác</li>
+                        <li><strong>Tấn công hệ thống:</strong> Tấn công, phá hoại, can thiệp vào hệ thống website hoặc máy chủ (DDoS, SQL injection, XSS...)</li>
+                        <li><strong>Thu thập trái phép:</strong> Thu thập, sao chép thông tin của người dùng khác hoặc dữ liệu website một cách trái phép</li>
+                        <li><strong>Nội dung vi phạm:</strong> Đăng tải nội dung vi phạm pháp luật, đạo đức, thuần phong mỹ tục, xúc phạm người khác</li>
+                        <li><strong>Spam và quảng cáo:</strong> Gửi tin nhắn rác, quảng cáo trái phép, đường link độc hại</li>
+                        <li><strong>Sử dụng bot:</strong> Sử dụng bot, script, công cụ tự động để truy cập website hoặc thu thập dữ liệu</li>
+                        <li><strong>Lợi dụng lỗi:</strong> Lợi dụng lỗi hệ thống, lỗi giá, lỗi khuyến mãi để trục lợi cá nhân</li>
+                        <li><strong>Sao chép nội dung:</strong> Sao chép, phân phối nội dung website cho mục đích thương mại mà không có sự đồng ý</li>
+                        <li><strong>Gian lận:</strong> Thực hiện các hành vi gian lận trong thanh toán, đổi trả, bảo hành</li>
                     </ul>
-                    <div class="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-                        <p class="text-red-700 font-medium">
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <strong>Cảnh báo:</strong> Vi phạm các điều khoản trên có thể dẫn đến khóa tài khoản vĩnh viễn, hủy đơn hàng, từ chối bảo hành và xử lý theo quy định của pháp luật Việt Nam.
-                        </p>
+
+                    <div class="highlight-box warning">
+                        <p><i class="fas fa-exclamation-triangle text-red-600 mr-2"></i><strong>Cảnh báo:</strong> Vi phạm các điều khoản trên có thể dẫn đến khóa tài khoản vĩnh viễn, hủy đơn hàng, từ chối bảo hành và xử lý theo quy định pháp luật Việt Nam.</p>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- 4. Quyền sở hữu trí tuệ -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    4. Quyền sở hữu trí tuệ
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
+                <!-- Section 4: Sở hữu trí tuệ -->
+                <section id="so-huu-tri-tue" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">4</span>Quyền sở hữu trí tuệ</h2>
+                    
                     <p>Toàn bộ nội dung trên website QuangHưng Mobile được bảo hộ bởi luật sở hữu trí tuệ:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Thương hiệu:</strong> Logo, tên thương hiệu "QuangHưng Mobile" và các biểu tượng liên quan là tài sản độc quyền của công ty.</li>
-                        <li><strong>Hình ảnh:</strong> Tất cả hình ảnh sản phẩm, banner quảng cáo, hình ảnh minh họa trên website.</li>
-                        <li><strong>Nội dung văn bản:</strong> Bài viết, mô tả sản phẩm, tin tức, hướng dẫn và tất cả nội dung chữ viết.</li>
-                        <li><strong>Thiết kế:</strong> Giao diện website, bố cục, màu sắc, font chữ và các yếu tố thiết kế.</li>
-                        <li><strong>Mã nguồn:</strong> Toàn bộ mã nguồn, cơ sở dữ liệu và hệ thống kỹ thuật của website.</li>
+                    
+                    <ul>
+                        <li><strong>Thương hiệu:</strong> Logo, tên thương hiệu "QuangHưng Mobile" và các biểu tượng liên quan là tài sản độc quyền của công ty</li>
+                        <li><strong>Hình ảnh:</strong> Tất cả hình ảnh sản phẩm, banner quảng cáo, hình ảnh minh họa trên website</li>
+                        <li><strong>Nội dung văn bản:</strong> Bài viết, mô tả sản phẩm, tin tức, hướng dẫn và tất cả nội dung chữ viết</li>
+                        <li><strong>Thiết kế:</strong> Giao diện website, bố cục, màu sắc, font chữ và các yếu tố thiết kế</li>
+                        <li><strong>Mã nguồn:</strong> Toàn bộ mã nguồn, cơ sở dữ liệu và hệ thống kỹ thuật của website</li>
                     </ul>
-                    <p class="mt-4"><strong>Nghiêm cấm</strong> sao chép, tái sản xuất, phân phối, sửa đổi hoặc sử dụng bất kỳ nội dung nào cho mục đích thương mại mà không có sự đồng ý bằng văn bản của QuangHưng Mobile.</p>
-                </div>
-            </section>
 
-            <!-- 5. Giới hạn trách nhiệm -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    5. Giới hạn trách nhiệm
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
+                    <div class="highlight-box info">
+                        <p><i class="fas fa-ban text-blue-600 mr-2"></i><strong>Nghiêm cấm</strong> sao chép, tái sản xuất, phân phối, sửa đổi hoặc sử dụng bất kỳ nội dung nào cho mục đích thương mại mà không có sự đồng ý bằng văn bản.</p>
+                    </div>
+                </section>
+
+                <!-- Section 5: Giới hạn trách nhiệm -->
+                <section id="gioi-han" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">5</span>Giới hạn trách nhiệm</h2>
+                    
                     <p>QuangHưng Mobile cam kết cung cấp dịch vụ tốt nhất, tuy nhiên có một số giới hạn trách nhiệm:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Gián đoạn dịch vụ:</strong> Chúng tôi không chịu trách nhiệm về thiệt hại phát sinh từ việc website tạm ngừng hoạt động do bảo trì, nâng cấp hoặc sự cố kỹ thuật.</li>
-                        <li><strong>Lỗi kỹ thuật:</strong> Không đảm bảo website hoạt động liên tục 100%, không có lỗi hoặc virus.</li>
-                        <li><strong>Thông tin sản phẩm:</strong> Thông tin, hình ảnh, giá cả sản phẩm có thể thay đổi mà không cần thông báo trước.</li>
-                        <li><strong>Liên kết bên ngoài:</strong> Không chịu trách nhiệm về nội dung, chính sách của các website bên thứ ba được liên kết.</li>
-                        <li><strong>Thiệt hại gián tiếp:</strong> Không chịu trách nhiệm về các thiệt hại gián tiếp, ngẫu nhiên phát sinh từ việc sử dụng website.</li>
+                    
+                    <ul>
+                        <li><strong>Gián đoạn dịch vụ:</strong> Chúng tôi không chịu trách nhiệm về thiệt hại phát sinh từ việc website tạm ngừng hoạt động do bảo trì, nâng cấp hoặc sự cố kỹ thuật</li>
+                        <li><strong>Lỗi kỹ thuật:</strong> Không đảm bảo website hoạt động liên tục 100%, không có lỗi hoặc virus</li>
+                        <li><strong>Thông tin sản phẩm:</strong> Thông tin, hình ảnh, giá cả sản phẩm có thể thay đổi mà không cần thông báo trước</li>
+                        <li><strong>Liên kết bên ngoài:</strong> Không chịu trách nhiệm về nội dung, chính sách của các website bên thứ ba được liên kết</li>
+                        <li><strong>Thiệt hại gián tiếp:</strong> Không chịu trách nhiệm về các thiệt hại gián tiếp, ngẫu nhiên phát sinh từ việc sử dụng website</li>
                         <li><strong>Force majeure:</strong> Không chịu trách nhiệm về các sự kiện bất khả kháng như thiên tai, dịch bệnh, chiến tranh...</li>
                     </ul>
-                </div>
-            </section>
+                </section>
 
-            <!-- 6. Đánh giá và bình luận -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    6. Quy định về đánh giá và bình luận
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
+                <!-- Section 6: Đánh giá -->
+                <section id="danh-gia" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">6</span>Quy định về đánh giá và bình luận</h2>
+                    
                     <p>Khi đăng đánh giá hoặc bình luận trên website, bạn đồng ý với các quy định sau:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Quyền đánh giá:</strong> Bạn có quyền đăng đánh giá, bình luận về sản phẩm đã mua tại QuangHưng Mobile.</li>
-                        <li><strong>Nội dung trung thực:</strong> Đánh giá phải trung thực, khách quan, dựa trên trải nghiệm thực tế của bạn.</li>
-                        <li><strong>Không vi phạm:</strong> Nội dung không được vi phạm pháp luật, xúc phạm, phỉ báng, quảng cáo hoặc spam.</li>
-                        <li><strong>Quyền kiểm duyệt:</strong> QuangHưng Mobile có quyền xóa, chỉnh sửa hoặc từ chối đăng các đánh giá không phù hợp.</li>
-                        <li><strong>Trách nhiệm nội dung:</strong> Bạn chịu trách nhiệm hoàn toàn về nội dung đánh giá của mình.</li>
-                        <li><strong>Cấp phép sử dụng:</strong> Bằng việc đăng đánh giá, bạn cấp cho chúng tôi quyền sử dụng nội dung đó cho mục đích marketing.</li>
+                    
+                    <ul>
+                        <li><strong>Quyền đánh giá:</strong> Bạn có quyền đăng đánh giá, bình luận về sản phẩm đã mua tại QuangHưng Mobile</li>
+                        <li><strong>Nội dung trung thực:</strong> Đánh giá phải trung thực, khách quan, dựa trên trải nghiệm thực tế của bạn</li>
+                        <li><strong>Không vi phạm:</strong> Nội dung không được vi phạm pháp luật, xúc phạm, phỉ báng, quảng cáo hoặc spam</li>
+                        <li><strong>Quyền kiểm duyệt:</strong> QuangHưng Mobile có quyền xóa, chỉnh sửa hoặc từ chối đăng các đánh giá không phù hợp</li>
+                        <li><strong>Trách nhiệm nội dung:</strong> Bạn chịu trách nhiệm hoàn toàn về nội dung đánh giá của mình</li>
+                        <li><strong>Cấp phép sử dụng:</strong> Bằng việc đăng đánh giá, bạn cấp cho chúng tôi quyền sử dụng nội dung đó cho mục đích marketing</li>
                     </ul>
-                </div>
-            </section>
+                </section>
 
-            <!-- 7. Chính sách đặt hàng -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    7. Chính sách đặt hàng và hủy đơn
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
+                <!-- Section 7: Đặt hàng -->
+                <section id="dat-hang" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">7</span>Chính sách đặt hàng và hủy đơn</h2>
+                    
                     <p>Khi đặt hàng tại QuangHưng Mobile, bạn đồng ý với các điều khoản sau:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Xác nhận đơn hàng:</strong> Đơn hàng chỉ được xác nhận sau khi nhân viên liên hệ và bạn đồng ý với các thông tin đơn hàng.</li>
-                        <li><strong>Quyền từ chối:</strong> Chúng tôi có quyền từ chối đơn hàng nếu phát hiện gian lận, thông tin sai lệch hoặc hết hàng.</li>
-                        <li><strong>Hủy đơn:</strong> Bạn có thể hủy đơn hàng trước khi đơn được giao cho đơn vị vận chuyển.</li>
-                        <li><strong>Hoàn tiền:</strong> Nếu đã thanh toán, tiền sẽ được hoàn lại trong vòng 3-7 ngày làm việc.</li>
-                        <li><strong>Giá và khuyến mãi:</strong> Giá và khuyến mãi áp dụng tại thời điểm đặt hàng, không hồi tố.</li>
+                    
+                    <ul>
+                        <li><strong>Xác nhận đơn hàng:</strong> Đơn hàng chỉ được xác nhận sau khi nhân viên liên hệ và bạn đồng ý với các thông tin đơn hàng</li>
+                        <li><strong>Quyền từ chối:</strong> Chúng tôi có quyền từ chối đơn hàng nếu phát hiện gian lận, thông tin sai lệch hoặc hết hàng</li>
+                        <li><strong>Hủy đơn:</strong> Bạn có thể hủy đơn hàng trước khi đơn được giao cho đơn vị vận chuyển</li>
+                        <li><strong>Hoàn tiền:</strong> Nếu đã thanh toán, tiền sẽ được hoàn lại trong vòng 3-7 ngày làm việc</li>
+                        <li><strong>Giá và khuyến mãi:</strong> Giá và khuyến mãi áp dụng tại thời điểm đặt hàng, không hồi tố</li>
                     </ul>
-                </div>
-            </section>
+                </section>
 
-            <!-- 8. Luật áp dụng -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-purple-600">
-                    8. Luật áp dụng và giải quyết tranh chấp
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
+                <!-- Section 8: Luật áp dụng -->
+                <section id="luat-ap-dung" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">8</span>Luật áp dụng và giải quyết tranh chấp</h2>
+                    
                     <p>Các điều khoản sử dụng này được điều chỉnh bởi pháp luật Việt Nam:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Luật áp dụng:</strong> Tất cả các điều khoản được điều chỉnh và giải thích theo pháp luật nước Cộng hòa Xã hội Chủ nghĩa Việt Nam.</li>
-                        <li><strong>Thương lượng:</strong> Mọi tranh chấp phát sinh sẽ được ưu tiên giải quyết thông qua thương lượng, hòa giải giữa các bên.</li>
-                        <li><strong>Tòa án:</strong> Nếu không thể thương lượng, tranh chấp sẽ được đưa ra giải quyết tại Tòa án nhân dân có thẩm quyền tại Thành phố Hồ Chí Minh.</li>
-                        <li><strong>Ngôn ngữ:</strong> Trong trường hợp có sự khác biệt giữa các phiên bản ngôn ngữ, bản tiếng Việt sẽ được ưu tiên áp dụng.</li>
+                    
+                    <ul>
+                        <li><strong>Luật áp dụng:</strong> Tất cả các điều khoản được điều chỉnh và giải thích theo pháp luật nước Cộng hòa Xã hội Chủ nghĩa Việt Nam</li>
+                        <li><strong>Thương lượng:</strong> Mọi tranh chấp phát sinh sẽ được ưu tiên giải quyết thông qua thương lượng, hòa giải giữa các bên</li>
+                        <li><strong>Tòa án:</strong> Nếu không thể thương lượng, tranh chấp sẽ được đưa ra giải quyết tại Tòa án nhân dân có thẩm quyền tại Thành phố Hồ Chí Minh</li>
+                        <li><strong>Ngôn ngữ:</strong> Trong trường hợp có sự khác biệt giữa các phiên bản ngôn ngữ, bản tiếng Việt sẽ được ưu tiên áp dụng</li>
                     </ul>
-                    <p class="text-gray-500 mt-6 italic">Cập nhật lần cuối: Tháng 12/2025</p>
-                </div>
-            </section>
 
-            <!-- Contact -->
-            <section class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 md:p-12 text-white">
-                <h3 class="text-2xl md:text-3xl font-bold mb-4">
-                    <i class="fas fa-question-circle mr-3"></i>Cần giải đáp thắc mắc?
-                </h3>
-                <p class="text-lg mb-6 opacity-90">Liên hệ ngay để được hỗ trợ về điều khoản sử dụng:</p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-phone text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="opacity-80">Hotline</p>
-                            <p class="text-xl font-bold">1900 1234 56</p>
-                            <p class="text-sm opacity-70">8:00 - 21:30 hàng ngày</p>
+                    <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-gavel text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Email pháp lý</p>
+                                <p class="text-lg font-bold text-gray-800">legal@quanghungmobile.vn</p>
+                                <p class="text-xs text-gray-400">Phản hồi trong 24h</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-envelope text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="opacity-80">Email pháp lý</p>
-                            <p class="text-xl font-bold">legal@quanghungmobile.vn</p>
-                            <p class="text-sm opacity-70">Phản hồi trong 24h</p>
-                        </div>
+                </section>
+
+                <!-- Related Policies -->
+                <div class="bg-gray-100 rounded-xl p-6">
+                    <h3 class="font-semibold text-gray-800 mb-4">Chính sách liên quan</h3>
+                    <div class="grid md:grid-cols-3 gap-3">
+                        <a href="chinh-sach-ban-hang.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-shopping-cart text-red-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Chính sách bán hàng</span>
+                        </a>
+                        <a href="chinh-sach-bao-hanh.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-shield-alt text-green-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Chính sách bảo hành</span>
+                        </a>
+                        <a href="chinh-sach-bao-mat.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-lock text-blue-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Chính sách bảo mật</span>
+                        </a>
                     </div>
                 </div>
-            </section>
-        </div>
-    </div>
-
-    <!-- Related Links -->
-    <div class="w-full bg-gray-100 py-12">
-        <div class="max-w-7xl mx-auto px-6">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6">Chính sách liên quan</h3>
-            <div class="grid md:grid-cols-3 gap-6">
-                <a href="chinh-sach-ban-hang.html" class="flex items-center gap-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-shopping-cart text-red-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800 text-lg">Chính sách bán hàng</h4>
-                        <p class="text-gray-500">Giá cả, thanh toán, giao hàng</p>
-                    </div>
-                </a>
-                <a href="chinh-sach-bao-mat.html" class="flex items-center gap-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-lock text-blue-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800 text-lg">Chính sách bảo mật</h4>
-                        <p class="text-gray-500">Bảo vệ thông tin khách hàng</p>
-                    </div>
-                </a>
-                <a href="chinh-sach-bao-hanh.html" class="flex items-center gap-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800 text-lg">Chính sách bảo hành</h4>
-                        <p class="text-gray-500">Đổi mới 30 ngày, bảo hành chính hãng</p>
-                    </div>
-                </a>
             </div>
         </div>
     </div>
@@ -306,18 +291,46 @@
     <!-- Scripts -->
     <script src="components/header.js"></script>
     <script src="components/ai-chatbot.js"></script>
-
     <script>
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-placeholder').innerHTML = html;
-                if (typeof initHeader === 'function') initHeader();
-            });
+        // Load Header & Footer
+        fetch('components/header.html').then(r => r.text()).then(html => {
+            document.getElementById('header-placeholder').innerHTML = html;
+            if (typeof initHeader === 'function') initHeader();
+        });
+        fetch('components/footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-placeholder').innerHTML = html;
+        });
 
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(html => { document.getElementById('footer-placeholder').innerHTML = html; });
+        // Sidebar active state on scroll
+        const sections = document.querySelectorAll('.policy-section');
+        const navItems = document.querySelectorAll('.policy-nav-item');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Smooth scroll
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.getElementById(this.getAttribute('href').substring(1));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     </script>
 </body>
 </html>

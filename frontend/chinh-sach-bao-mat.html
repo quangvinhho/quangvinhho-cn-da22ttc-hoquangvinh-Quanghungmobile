@@ -1,277 +1,315 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chính sách bảo mật - QuangHưng Mobile</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="components/header.css">
     <link rel="stylesheet" href="components/ai-chatbot.css">
     <link rel="stylesheet" href="style.css">
-
     <style>
-        body { font-family: 'Roboto', sans-serif; }
-        .content-section h2 { color: #2563eb; }
-        .content-section p, .content-section li { line-height: 1.9; }
+        body { font-family: 'Roboto', sans-serif; background: #f8fafc; }
+        .policy-sidebar { position: sticky; top: 160px; }
+        .policy-nav-item { 
+            display: block; padding: 12px 16px; color: #64748b; font-size: 14px;
+            border-left: 3px solid transparent; transition: all 0.2s;
+        }
+        .policy-nav-item:hover { background: #f1f5f9; color: #334155; }
+        .policy-nav-item.active { 
+            background: #eff6ff; color: #2563eb; border-left-color: #2563eb; font-weight: 500;
+        }
+        .policy-section { scroll-margin-top: 180px; }
+        .policy-content h2 { 
+            font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem; border-bottom: 2px solid #e2e8f0;
+        }
+        .policy-content h2 .section-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; background: #2563eb; color: white;
+            border-radius: 50%; font-size: 14px; margin-right: 12px;
+        }
+        .policy-content p { color: #475569; line-height: 1.8; margin-bottom: 1rem; }
+        .policy-content ul { margin: 1rem 0 1rem 1.5rem; }
+        .policy-content li { color: #475569; line-height: 1.8; margin-bottom: 0.5rem; position: relative; padding-left: 1.5rem; }
+        .policy-content li::before { content: "•"; color: #2563eb; font-weight: bold; position: absolute; left: 0; }
+        .highlight-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; }
+        .highlight-box.info { background: #eff6ff; border-left-color: #3b82f6; }
+        .highlight-box.success { background: #f0fdf4; border-left-color: #22c55e; }
+        .highlight-box p { margin: 0; color: #1e293b; }
     </style>
 </head>
-
 <body class="bg-gray-50">
-    <!-- Header -->
     <div id="header-placeholder"></div>
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-    <!-- Hero Banner Full Width -->
-    <div class="w-full h-[300px] md:h-[400px] relative">
-        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1920&h=600&fit=crop" 
-             alt="Chính sách bảo mật" 
-             class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-8 md:p-16 text-white">
-            <div class="max-w-7xl mx-auto">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                    <i class="fas fa-shield-alt mr-4"></i>Chính sách bảo mật
-                </h1>
-                <p class="text-xl md:text-2xl opacity-90 max-w-3xl">
-                    Bảo vệ thông tin cá nhân của bạn là ưu tiên hàng đầu của chúng tôi
-                </p>
-            </div>
-        </div>
-    </div>
-
     <!-- Breadcrumb -->
-    <div class="bg-white border-b shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-4">
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-3">
             <nav class="flex items-center gap-2 text-sm">
-                <a href="index.html" class="text-gray-500 hover:text-blue-600"><i class="fas fa-home"></i> Trang chủ</a>
+                <a href="index.html" class="text-gray-500 hover:text-blue-600"><i class="fas fa-home"></i></a>
                 <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
-                <span class="text-blue-600 font-medium">Chính sách bảo mật</span>
+                <span class="text-gray-800 font-medium">Chính sách bảo mật</span>
             </nav>
         </div>
     </div>
 
-    <!-- Main Content Full Width -->
-    <div class="w-full bg-white">
-        <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 content-section">
-            
-            <!-- 1. Thu thập thông tin -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    1. Thông tin chúng tôi thu thập
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Khi bạn sử dụng dịch vụ của QuangHưng Mobile, chúng tôi có thể thu thập các loại thông tin sau đây để phục vụ bạn tốt hơn:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Thông tin cá nhân cơ bản:</strong> Họ tên đầy đủ, số điện thoại liên hệ, địa chỉ email, địa chỉ giao hàng. Đây là những thông tin cần thiết để chúng tôi xử lý đơn hàng và liên hệ với bạn.</li>
-                        <li><strong>Thông tin tài khoản:</strong> Tên đăng nhập, mật khẩu (được mã hóa một chiều), ảnh đại diện, ngày sinh, giới tính. Những thông tin này giúp cá nhân hóa trải nghiệm của bạn.</li>
-                        <li><strong>Thông tin giao dịch:</strong> Lịch sử đơn hàng, sản phẩm đã mua, phương thức thanh toán đã sử dụng, địa chỉ giao hàng đã lưu.</li>
-                        <li><strong>Thông tin kỹ thuật:</strong> Địa chỉ IP, loại trình duyệt web, hệ điều hành, thiết bị truy cập, thời gian và tần suất truy cập website.</li>
-                        <li><strong>Thông tin tương tác:</strong> Sản phẩm đã xem, sản phẩm yêu thích, lịch sử tìm kiếm, đánh giá và bình luận sản phẩm.</li>
-                        <li><strong>Thông tin hỗ trợ:</strong> Nội dung tin nhắn, email, cuộc gọi khi bạn liên hệ với bộ phận chăm sóc khách hàng.</li>
-                    </ul>
+    <!-- Page Header -->
+    <div class="bg-white border-b shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-shield-alt text-white text-2xl"></i>
                 </div>
-            </section>
-
-            <!-- 2. Mục đích sử dụng -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    2. Mục đích sử dụng thông tin
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Chúng tôi sử dụng thông tin thu thập được cho các mục đích chính đáng sau:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Xử lý đơn hàng:</strong> Xác nhận đơn hàng, xử lý thanh toán, đóng gói và giao hàng đến địa chỉ của bạn một cách chính xác.</li>
-                        <li><strong>Liên lạc với khách hàng:</strong> Gửi thông báo xác nhận đơn hàng, cập nhật tình trạng giao hàng, thông báo về các vấn đề liên quan đến đơn hàng.</li>
-                        <li><strong>Chăm sóc khách hàng:</strong> Hỗ trợ giải đáp thắc mắc, xử lý khiếu nại, hỗ trợ kỹ thuật và bảo hành sản phẩm.</li>
-                        <li><strong>Marketing (nếu đồng ý):</strong> Gửi thông tin về chương trình khuyến mãi, sản phẩm mới, ưu đãi đặc biệt dành riêng cho bạn.</li>
-                        <li><strong>Cải thiện dịch vụ:</strong> Phân tích hành vi người dùng để nâng cao chất lượng website, tối ưu trải nghiệm mua sắm.</li>
-                        <li><strong>Cá nhân hóa:</strong> Đề xuất sản phẩm phù hợp với sở thích và nhu cầu của bạn dựa trên lịch sử mua hàng.</li>
-                        <li><strong>Bảo mật:</strong> Phát hiện và ngăn chặn các hành vi gian lận, bảo vệ quyền lợi của khách hàng và công ty.</li>
-                        <li><strong>Tuân thủ pháp luật:</strong> Đáp ứng các yêu cầu pháp lý, thuế, kế toán theo quy định của nhà nước.</li>
-                    </ul>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Chính sách bảo mật</h1>
+                    <p class="text-gray-500 mt-1">Cập nhật lần cuối: Tháng 12/2024</p>
                 </div>
-            </section>
-
-            <!-- 3. Bảo vệ thông tin -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    3. Cách chúng tôi bảo vệ thông tin
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>QuangHưng Mobile áp dụng các biện pháp bảo mật tiên tiến nhất để bảo vệ thông tin của bạn:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Mã hóa SSL 256-bit:</strong> Tất cả dữ liệu truyền tải giữa trình duyệt của bạn và máy chủ của chúng tôi đều được mã hóa bằng công nghệ SSL/TLS tiêu chuẩn ngân hàng.</li>
-                        <li><strong>Bảo mật máy chủ:</strong> Hệ thống server được đặt tại data center đạt chuẩn quốc tế, được bảo vệ bởi tường lửa nhiều lớp và giám sát an ninh 24/7.</li>
-                        <li><strong>Mã hóa mật khẩu:</strong> Mật khẩu của bạn được mã hóa một chiều bằng thuật toán bcrypt, ngay cả nhân viên của chúng tôi cũng không thể đọc được.</li>
-                        <li><strong>Xác thực hai yếu tố:</strong> Hỗ trợ xác thực 2 lớp (2FA) qua SMS hoặc email để tăng cường bảo mật tài khoản.</li>
-                        <li><strong>Giới hạn truy cập:</strong> Chỉ những nhân viên được ủy quyền và có nhu cầu công việc mới được phép truy cập vào dữ liệu khách hàng.</li>
-                        <li><strong>Đào tạo nhân viên:</strong> Tất cả nhân viên đều được đào tạo về bảo mật thông tin và ký cam kết bảo mật.</li>
-                        <li><strong>Sao lưu định kỳ:</strong> Dữ liệu được sao lưu tự động hàng ngày và lưu trữ tại nhiều địa điểm khác nhau.</li>
-                        <li><strong>Kiểm tra bảo mật:</strong> Hệ thống được kiểm tra và đánh giá bảo mật định kỳ bởi các chuyên gia độc lập.</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- 4. Chia sẻ thông tin -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    4. Chia sẻ thông tin với bên thứ ba
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Chúng tôi <strong>CAM KẾT KHÔNG</strong> bán, trao đổi hoặc cho thuê thông tin cá nhân của bạn cho bất kỳ bên thứ ba nào vì mục đích thương mại. Thông tin chỉ được chia sẻ trong các trường hợp cần thiết sau:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Đối tác vận chuyển:</strong> Chia sẻ tên, số điện thoại và địa chỉ với các đơn vị vận chuyển (GHN, GHTK, Viettel Post, J&T...) để giao hàng đến bạn.</li>
-                        <li><strong>Cổng thanh toán:</strong> Chia sẻ thông tin cần thiết với các đối tác thanh toán (VNPay, MoMo, ZaloPay, ngân hàng...) để xử lý giao dịch an toàn.</li>
-                        <li><strong>Đối tác trả góp:</strong> Nếu bạn chọn mua trả góp, thông tin sẽ được chia sẻ với công ty tài chính để xét duyệt hồ sơ.</li>
-                        <li><strong>Yêu cầu pháp lý:</strong> Khi có yêu cầu từ cơ quan nhà nước có thẩm quyền theo đúng quy định của pháp luật Việt Nam.</li>
-                        <li><strong>Bảo vệ quyền lợi:</strong> Khi cần thiết để ngăn chặn gian lận, bảo vệ an toàn của người dùng hoặc bảo vệ quyền lợi hợp pháp của công ty.</li>
-                    </ul>
-                    <p class="mt-4">Tất cả các đối tác của chúng tôi đều phải ký cam kết bảo mật và chỉ được sử dụng thông tin cho mục đích đã thỏa thuận.</p>
-                </div>
-            </section>
-
-            <!-- 5. Quyền của khách hàng -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    5. Quyền của khách hàng
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Theo quy định của pháp luật về bảo vệ dữ liệu cá nhân, bạn có các quyền sau đối với thông tin của mình:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Quyền truy cập:</strong> Bạn có quyền yêu cầu xem và nhận bản sao các thông tin cá nhân mà chúng tôi đang lưu trữ về bạn.</li>
-                        <li><strong>Quyền chỉnh sửa:</strong> Bạn có quyền yêu cầu cập nhật, sửa đổi các thông tin không chính xác hoặc không đầy đủ.</li>
-                        <li><strong>Quyền xóa:</strong> Bạn có quyền yêu cầu xóa tài khoản và toàn bộ thông tin cá nhân (trừ các thông tin cần lưu trữ theo quy định pháp luật).</li>
-                        <li><strong>Quyền hạn chế xử lý:</strong> Bạn có quyền yêu cầu hạn chế việc xử lý thông tin trong một số trường hợp nhất định.</li>
-                        <li><strong>Quyền từ chối marketing:</strong> Bạn có quyền hủy đăng ký nhận email, SMS marketing bất cứ lúc nào bằng cách click vào link "Hủy đăng ký" trong email hoặc liên hệ với chúng tôi.</li>
-                        <li><strong>Quyền khiếu nại:</strong> Nếu bạn cho rằng quyền riêng tư của mình bị vi phạm, bạn có quyền khiếu nại với chúng tôi hoặc cơ quan có thẩm quyền.</li>
-                    </ul>
-                    <p class="mt-4">Để thực hiện các quyền trên, vui lòng liên hệ với chúng tôi qua email: <strong>baomat@quanghungmobile.vn</strong></p>
-                </div>
-            </section>
-
-            <!-- 6. Cookie -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    6. Sử dụng Cookie và công nghệ theo dõi
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Website của chúng tôi sử dụng cookie và các công nghệ tương tự để cải thiện trải nghiệm của bạn:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Cookie cần thiết:</strong> Giúp website hoạt động bình thường, ghi nhớ thông tin đăng nhập và giỏ hàng của bạn.</li>
-                        <li><strong>Cookie phân tích:</strong> Thu thập thông tin về cách bạn sử dụng website để chúng tôi cải thiện dịch vụ (Google Analytics).</li>
-                        <li><strong>Cookie cá nhân hóa:</strong> Ghi nhớ sở thích của bạn để đề xuất sản phẩm phù hợp.</li>
-                        <li><strong>Cookie quảng cáo:</strong> Hiển thị quảng cáo phù hợp với sở thích của bạn trên các nền tảng khác (Facebook Pixel, Google Ads).</li>
-                    </ul>
-                    <p class="mt-4">Bạn có thể quản lý hoặc tắt cookie trong cài đặt trình duyệt. Tuy nhiên, việc tắt một số cookie có thể ảnh hưởng đến trải nghiệm sử dụng website.</p>
-                </div>
-            </section>
-
-            <!-- 7. Lưu trữ thông tin -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    7. Thời gian lưu trữ thông tin
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>Chúng tôi chỉ lưu trữ thông tin của bạn trong thời gian cần thiết:</p>
-                    <ul class="list-disc list-inside space-y-3 ml-4">
-                        <li><strong>Thông tin tài khoản:</strong> Được lưu trữ cho đến khi bạn yêu cầu xóa tài khoản.</li>
-                        <li><strong>Thông tin đơn hàng:</strong> Được lưu trữ tối thiểu 10 năm theo quy định về kế toán, thuế.</li>
-                        <li><strong>Thông tin bảo hành:</strong> Được lưu trữ trong suốt thời gian bảo hành sản phẩm.</li>
-                        <li><strong>Thông tin marketing:</strong> Được lưu trữ cho đến khi bạn hủy đăng ký.</li>
-                        <li><strong>Log truy cập:</strong> Được lưu trữ tối đa 12 tháng cho mục đích bảo mật.</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- 8. Thay đổi chính sách -->
-            <section class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 pb-4 border-b-4 border-blue-600">
-                    8. Thay đổi chính sách bảo mật
-                </h2>
-                <div class="text-gray-700 text-lg space-y-4">
-                    <p>QuangHưng Mobile có quyền cập nhật chính sách bảo mật này bất cứ lúc nào để phù hợp với các thay đổi về pháp luật, công nghệ hoặc hoạt động kinh doanh.</p>
-                    <p>Mọi thay đổi quan trọng sẽ được thông báo trên website hoặc qua email. Việc tiếp tục sử dụng dịch vụ sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận chính sách mới.</p>
-                    <p class="text-gray-500 mt-4 italic">Cập nhật lần cuối: Tháng 12/2025</p>
-                </div>
-            </section>
-
-            <!-- Contact -->
-            <section class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-8 md:p-12 text-white">
-                <h3 class="text-2xl md:text-3xl font-bold mb-4">
-                    <i class="fas fa-envelope mr-3"></i>Liên hệ về quyền riêng tư
-                </h3>
-                <p class="text-lg mb-6 opacity-90">Nếu có câu hỏi hoặc lo ngại về chính sách bảo mật, vui lòng liên hệ:</p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-phone text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="opacity-80">Hotline</p>
-                            <p class="text-xl font-bold">1900 1234 56</p>
-                            <p class="text-sm opacity-70">8:00 - 21:30 hàng ngày</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-envelope text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="opacity-80">Email bảo mật</p>
-                            <p class="text-xl font-bold">baomat@quanghungmobile.vn</p>
-                            <p class="text-sm opacity-70">Phản hồi trong 24h</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            </div>
         </div>
     </div>
 
-    <!-- Related Links -->
-    <div class="w-full bg-gray-100 py-12">
-        <div class="max-w-7xl mx-auto px-6">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6">Chính sách liên quan</h3>
-            <div class="grid md:grid-cols-3 gap-6">
-                <a href="chinh-sach-ban-hang.html" class="flex items-center gap-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-shopping-cart text-red-600 text-xl"></i>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Sidebar Navigation -->
+            <div class="lg:w-72 flex-shrink-0">
+                <div class="policy-sidebar bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b">
+                        <h3 class="font-semibold text-gray-800 text-sm uppercase tracking-wide">Mục lục</h3>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800 text-lg">Chính sách bán hàng</h4>
-                        <p class="text-gray-500">Giá cả, thanh toán, giao hàng</p>
+                    <nav class="py-2">
+                        <a href="#thu-thap" class="policy-nav-item active">1. Thông tin thu thập</a>
+                        <a href="#muc-dich" class="policy-nav-item">2. Mục đích sử dụng</a>
+                        <a href="#bao-ve" class="policy-nav-item">3. Bảo vệ thông tin</a>
+                        <a href="#chia-se" class="policy-nav-item">4. Chia sẻ thông tin</a>
+                        <a href="#quyen-khach-hang" class="policy-nav-item">5. Quyền của khách hàng</a>
+                        <a href="#cookie" class="policy-nav-item">6. Cookie và theo dõi</a>
+                        <a href="#luu-tru" class="policy-nav-item">7. Thời gian lưu trữ</a>
+                        <a href="#lien-he" class="policy-nav-item">8. Liên hệ</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 policy-content">
+                <!-- Intro -->
+                <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        <strong class="text-gray-900">QuangHưng Mobile</strong> cam kết bảo vệ quyền riêng tư và thông tin cá nhân của khách hàng. Chính sách này giải thích cách chúng tôi thu thập, sử dụng và bảo vệ dữ liệu của bạn.
+                    </p>
+                </div>
+
+                <!-- Section 1: Thu thập -->
+                <section id="thu-thap" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">1</span>Thông tin chúng tôi thu thập</h2>
+                    
+                    <p>Khi bạn sử dụng dịch vụ của QuangHưng Mobile, chúng tôi có thể thu thập các loại thông tin sau:</p>
+                    
+                    <ul>
+                        <li><strong>Thông tin cá nhân cơ bản:</strong> Họ tên, số điện thoại, địa chỉ email, địa chỉ giao hàng - cần thiết để xử lý đơn hàng</li>
+                        <li><strong>Thông tin tài khoản:</strong> Tên đăng nhập, mật khẩu (được mã hóa), ảnh đại diện, ngày sinh, giới tính</li>
+                        <li><strong>Thông tin giao dịch:</strong> Lịch sử đơn hàng, sản phẩm đã mua, phương thức thanh toán, địa chỉ giao hàng đã lưu</li>
+                        <li><strong>Thông tin kỹ thuật:</strong> Địa chỉ IP, loại trình duyệt, hệ điều hành, thiết bị truy cập, thời gian truy cập</li>
+                        <li><strong>Thông tin tương tác:</strong> Sản phẩm đã xem, sản phẩm yêu thích, lịch sử tìm kiếm, đánh giá sản phẩm</li>
+                        <li><strong>Thông tin hỗ trợ:</strong> Nội dung tin nhắn, email, cuộc gọi khi liên hệ bộ phận chăm sóc khách hàng</li>
+                    </ul>
+                </section>
+
+                <!-- Section 2: Mục đích -->
+                <section id="muc-dich" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">2</span>Mục đích sử dụng thông tin</h2>
+                    
+                    <p>Chúng tôi sử dụng thông tin thu thập được cho các mục đích chính đáng sau:</p>
+                    
+                    <ul>
+                        <li><strong>Xử lý đơn hàng:</strong> Xác nhận đơn hàng, xử lý thanh toán, đóng gói và giao hàng chính xác</li>
+                        <li><strong>Liên lạc:</strong> Gửi thông báo xác nhận, cập nhật tình trạng giao hàng, thông báo về đơn hàng</li>
+                        <li><strong>Chăm sóc khách hàng:</strong> Hỗ trợ giải đáp thắc mắc, xử lý khiếu nại, hỗ trợ bảo hành</li>
+                        <li><strong>Marketing (nếu đồng ý):</strong> Gửi thông tin khuyến mãi, sản phẩm mới, ưu đãi đặc biệt</li>
+                        <li><strong>Cải thiện dịch vụ:</strong> Phân tích hành vi người dùng để nâng cao chất lượng website</li>
+                        <li><strong>Cá nhân hóa:</strong> Đề xuất sản phẩm phù hợp với sở thích và nhu cầu của bạn</li>
+                        <li><strong>Bảo mật:</strong> Phát hiện và ngăn chặn các hành vi gian lận</li>
+                        <li><strong>Tuân thủ pháp luật:</strong> Đáp ứng các yêu cầu pháp lý, thuế, kế toán</li>
+                    </ul>
+                </section>
+
+                <!-- Section 3: Bảo vệ -->
+                <section id="bao-ve" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">3</span>Cách chúng tôi bảo vệ thông tin</h2>
+                    
+                    <p>QuangHưng Mobile áp dụng các biện pháp bảo mật tiên tiến nhất:</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 my-6">
+                        <div class="border rounded-xl p-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-lock text-blue-600"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800">Mã hóa SSL 256-bit</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">Dữ liệu truyền tải được mã hóa bằng công nghệ SSL/TLS tiêu chuẩn ngân hàng</p>
+                        </div>
+                        <div class="border rounded-xl p-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-server text-green-600"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800">Bảo mật máy chủ</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">Server đặt tại data center chuẩn quốc tế, tường lửa nhiều lớp, giám sát 24/7</p>
+                        </div>
+                        <div class="border rounded-xl p-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-key text-purple-600"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800">Mã hóa mật khẩu</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">Mật khẩu được mã hóa một chiều bằng thuật toán bcrypt, không thể đọc được</p>
+                        </div>
+                        <div class="border rounded-xl p-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-mobile-alt text-orange-600"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800">Xác thực 2 lớp</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">Hỗ trợ xác thực 2FA qua SMS hoặc email để tăng cường bảo mật tài khoản</p>
+                        </div>
                     </div>
-                </a>
-                <a href="chinh-sach-bao-hanh.html" class="flex items-center gap-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+
+                    <ul>
+                        <li><strong>Giới hạn truy cập:</strong> Chỉ nhân viên được ủy quyền mới được phép truy cập dữ liệu khách hàng</li>
+                        <li><strong>Đào tạo nhân viên:</strong> Tất cả nhân viên được đào tạo về bảo mật và ký cam kết bảo mật</li>
+                        <li><strong>Sao lưu định kỳ:</strong> Dữ liệu được sao lưu tự động hàng ngày tại nhiều địa điểm</li>
+                        <li><strong>Kiểm tra bảo mật:</strong> Hệ thống được kiểm tra định kỳ bởi chuyên gia độc lập</li>
+                    </ul>
+                </section>
+
+                <!-- Section 4: Chia sẻ -->
+                <section id="chia-se" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">4</span>Chia sẻ thông tin với bên thứ ba</h2>
+                    
+                    <p>Chúng tôi <strong class="text-red-600">CAM KẾT KHÔNG</strong> bán, trao đổi hoặc cho thuê thông tin cá nhân của bạn cho bất kỳ bên thứ ba nào vì mục đích thương mại. Thông tin chỉ được chia sẻ trong các trường hợp cần thiết:</p>
+                    
+                    <ul>
+                        <li><strong>Đối tác vận chuyển:</strong> Chia sẻ tên, số điện thoại và địa chỉ với đơn vị vận chuyển (GHN, GHTK, Viettel Post...) để giao hàng</li>
+                        <li><strong>Cổng thanh toán:</strong> Chia sẻ thông tin cần thiết với đối tác thanh toán (VNPay, MoMo, ZaloPay...) để xử lý giao dịch</li>
+                        <li><strong>Đối tác trả góp:</strong> Nếu bạn chọn mua trả góp, thông tin sẽ được chia sẻ với công ty tài chính để xét duyệt</li>
+                        <li><strong>Yêu cầu pháp lý:</strong> Khi có yêu cầu từ cơ quan nhà nước có thẩm quyền theo quy định pháp luật</li>
+                        <li><strong>Bảo vệ quyền lợi:</strong> Khi cần thiết để ngăn chặn gian lận, bảo vệ an toàn người dùng</li>
+                    </ul>
+
+                    <div class="highlight-box info">
+                        <p><i class="fas fa-info-circle text-blue-600 mr-2"></i>Tất cả đối tác đều phải ký cam kết bảo mật và chỉ được sử dụng thông tin cho mục đích đã thỏa thuận.</p>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800 text-lg">Chính sách bảo hành</h4>
-                        <p class="text-gray-500">Đổi mới 30 ngày, bảo hành chính hãng</p>
+                </section>
+
+                <!-- Section 5: Quyền khách hàng -->
+                <section id="quyen-khach-hang" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">5</span>Quyền của khách hàng</h2>
+                    
+                    <p>Theo quy định pháp luật về bảo vệ dữ liệu cá nhân, bạn có các quyền sau:</p>
+                    
+                    <ul>
+                        <li><strong>Quyền truy cập:</strong> Yêu cầu xem và nhận bản sao các thông tin cá nhân mà chúng tôi đang lưu trữ</li>
+                        <li><strong>Quyền chỉnh sửa:</strong> Yêu cầu cập nhật, sửa đổi các thông tin không chính xác hoặc không đầy đủ</li>
+                        <li><strong>Quyền xóa:</strong> Yêu cầu xóa tài khoản và toàn bộ thông tin cá nhân (trừ thông tin cần lưu theo pháp luật)</li>
+                        <li><strong>Quyền hạn chế xử lý:</strong> Yêu cầu hạn chế việc xử lý thông tin trong một số trường hợp</li>
+                        <li><strong>Quyền từ chối marketing:</strong> Hủy đăng ký nhận email, SMS marketing bất cứ lúc nào</li>
+                        <li><strong>Quyền khiếu nại:</strong> Khiếu nại với chúng tôi hoặc cơ quan có thẩm quyền nếu quyền riêng tư bị vi phạm</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><i class="fas fa-envelope text-amber-600 mr-2"></i>Để thực hiện các quyền trên, vui lòng liên hệ: <strong>baomat@quanghungmobile.vn</strong></p>
                     </div>
-                </a>
-                <a href="dieu-khoan-su-dung.html" class="flex items-center gap-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-file-contract text-purple-600 text-xl"></i>
+                </section>
+
+                <!-- Section 6: Cookie -->
+                <section id="cookie" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">6</span>Cookie và công nghệ theo dõi</h2>
+                    
+                    <p>Website của chúng tôi sử dụng cookie và các công nghệ tương tự để cải thiện trải nghiệm:</p>
+                    
+                    <ul>
+                        <li><strong>Cookie cần thiết:</strong> Giúp website hoạt động bình thường, ghi nhớ đăng nhập và giỏ hàng</li>
+                        <li><strong>Cookie phân tích:</strong> Thu thập thông tin về cách bạn sử dụng website để cải thiện dịch vụ (Google Analytics)</li>
+                        <li><strong>Cookie cá nhân hóa:</strong> Ghi nhớ sở thích của bạn để đề xuất sản phẩm phù hợp</li>
+                        <li><strong>Cookie quảng cáo:</strong> Hiển thị quảng cáo phù hợp với sở thích trên các nền tảng khác</li>
+                    </ul>
+
+                    <p>Bạn có thể quản lý hoặc tắt cookie trong cài đặt trình duyệt. Tuy nhiên, việc tắt một số cookie có thể ảnh hưởng đến trải nghiệm sử dụng website.</p>
+                </section>
+
+                <!-- Section 7: Lưu trữ -->
+                <section id="luu-tru" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">7</span>Thời gian lưu trữ thông tin</h2>
+                    
+                    <p>Chúng tôi chỉ lưu trữ thông tin của bạn trong thời gian cần thiết:</p>
+                    
+                    <ul>
+                        <li><strong>Thông tin tài khoản:</strong> Lưu trữ cho đến khi bạn yêu cầu xóa tài khoản</li>
+                        <li><strong>Thông tin đơn hàng:</strong> Lưu trữ tối thiểu 10 năm theo quy định về kế toán, thuế</li>
+                        <li><strong>Thông tin bảo hành:</strong> Lưu trữ trong suốt thời gian bảo hành sản phẩm</li>
+                        <li><strong>Thông tin marketing:</strong> Lưu trữ cho đến khi bạn hủy đăng ký</li>
+                        <li><strong>Log truy cập:</strong> Lưu trữ tối đa 12 tháng cho mục đích bảo mật</li>
+                    </ul>
+                </section>
+
+                <!-- Section 8: Liên hệ -->
+                <section id="lien-he" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">8</span>Liên hệ về quyền riêng tư</h2>
+                    
+                    <p>Nếu có câu hỏi hoặc lo ngại về chính sách bảo mật, vui lòng liên hệ:</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mt-6">
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-phone text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Hotline hỗ trợ</p>
+                                <p class="text-lg font-bold text-gray-800">1900 1234 56</p>
+                                <p class="text-xs text-gray-400">8:00 - 21:30 hàng ngày</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-envelope text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Email bảo mật</p>
+                                <p class="text-lg font-bold text-gray-800">baomat@quanghungmobile.vn</p>
+                                <p class="text-xs text-gray-400">Phản hồi trong 24h</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-gray-800 text-lg">Điều khoản sử dụng</h4>
-                        <p class="text-gray-500">Quy định khi sử dụng website</p>
+                </section>
+
+                <!-- Related Policies -->
+                <div class="bg-gray-100 rounded-xl p-6">
+                    <h3 class="font-semibold text-gray-800 mb-4">Chính sách liên quan</h3>
+                    <div class="grid md:grid-cols-3 gap-3">
+                        <a href="chinh-sach-ban-hang.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-shopping-cart text-red-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Chính sách bán hàng</span>
+                        </a>
+                        <a href="chinh-sach-bao-hanh.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-shield-alt text-green-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Chính sách bảo hành</span>
+                        </a>
+                        <a href="dieu-khoan-su-dung.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-file-contract text-purple-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Điều khoản sử dụng</span>
+                        </a>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
     </div>
@@ -282,18 +320,46 @@
     <!-- Scripts -->
     <script src="components/header.js"></script>
     <script src="components/ai-chatbot.js"></script>
-
     <script>
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-placeholder').innerHTML = html;
-                if (typeof initHeader === 'function') initHeader();
-            });
+        // Load Header & Footer
+        fetch('components/header.html').then(r => r.text()).then(html => {
+            document.getElementById('header-placeholder').innerHTML = html;
+            if (typeof initHeader === 'function') initHeader();
+        });
+        fetch('components/footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-placeholder').innerHTML = html;
+        });
 
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(html => { document.getElementById('footer-placeholder').innerHTML = html; });
+        // Sidebar active state on scroll
+        const sections = document.querySelectorAll('.policy-section');
+        const navItems = document.querySelectorAll('.policy-nav-item');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Smooth scroll
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.getElementById(this.getAttribute('href').substring(1));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     </script>
 </body>
 </html>

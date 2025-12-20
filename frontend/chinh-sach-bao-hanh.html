@@ -1,339 +1,364 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chính sách bảo hành - QuangHưng Mobile</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="components/header.css">
     <link rel="stylesheet" href="components/ai-chatbot.css">
     <link rel="stylesheet" href="style.css">
-
     <style>
-        body { font-family: 'Roboto', sans-serif; }
-        .sidebar-item { border-left: 3px solid transparent; }
-        .sidebar-item.active { border-left-color: #dc2626; color: #dc2626; background: #fef2f2; }
-        .sidebar-item:hover { background: #f5f5f5; }
-        .section-title { scroll-margin-top: 160px; }
+        body { font-family: 'Roboto', sans-serif; background: #f8fafc; }
+        .policy-sidebar { position: sticky; top: 160px; }
+        .policy-nav-item { 
+            display: block; padding: 12px 16px; color: #64748b; font-size: 14px;
+            border-left: 3px solid transparent; transition: all 0.2s;
+        }
+        .policy-nav-item:hover { background: #f1f5f9; color: #334155; }
+        .policy-nav-item.active { 
+            background: #fef2f2; color: #dc2626; border-left-color: #dc2626; font-weight: 500;
+        }
+        .policy-section { scroll-margin-top: 180px; }
+        .policy-content h2 { 
+            font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem; border-bottom: 2px solid #e2e8f0;
+        }
+        .policy-content h2 .section-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; background: #dc2626; color: white;
+            border-radius: 50%; font-size: 14px; margin-right: 12px;
+        }
+        .policy-content p { color: #475569; line-height: 1.8; margin-bottom: 1rem; }
+        .policy-content ul { margin: 1rem 0 1rem 1.5rem; }
+        .policy-content li { color: #475569; line-height: 1.8; margin-bottom: 0.5rem; position: relative; padding-left: 1.5rem; }
+        .policy-content li::before { content: "•"; color: #dc2626; font-weight: bold; position: absolute; left: 0; }
+        .policy-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 14px; }
+        .policy-table th { background: #1e293b; color: white; padding: 14px 16px; text-align: left; font-weight: 500; }
+        .policy-table td { padding: 14px 16px; border-bottom: 1px solid #e2e8f0; color: #475569; }
+        .policy-table tr:hover td { background: #f8fafc; }
+        .highlight-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; }
+        .highlight-box.info { background: #eff6ff; border-left-color: #3b82f6; }
+        .highlight-box.success { background: #f0fdf4; border-left-color: #22c55e; }
+        .highlight-box p { margin: 0; color: #1e293b; }
     </style>
 </head>
-
-<body class="bg-gray-100">
-    <!-- Header -->
+<body class="bg-gray-50">
     <div id="header-placeholder"></div>
     <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <nav class="flex items-center gap-2 text-sm">
+                <a href="index.html" class="text-gray-500 hover:text-red-600"><i class="fas fa-home"></i></a>
+                <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
+                <span class="text-gray-800 font-medium">Chính sách bảo hành</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="bg-white border-b shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-shield-alt text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Chính sách bảo hành</h1>
+                    <p class="text-gray-500 mt-1">Cập nhật lần cuối: Tháng 12/2024</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 py-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Chính sách bảo hành</h1>
-        
-        <div class="flex flex-col lg:flex-row gap-6">
-            <!-- Sidebar -->
-            <div class="lg:w-64 flex-shrink-0">
-                <nav class="bg-white rounded-lg shadow-sm overflow-hidden sticky top-36">
-                    <a href="#doi-moi" class="sidebar-item active block px-4 py-3 text-sm font-medium">
-                        I. Đổi mới 30 ngày miễn phí
-                    </a>
-                    <a href="#bao-hanh-tieu-chuan" class="sidebar-item block px-4 py-3 text-sm font-medium text-gray-700">
-                        II. Bảo hành tiêu chuẩn
-                    </a>
-                    <a href="#bao-hanh-mo-rong" class="sidebar-item block px-4 py-3 text-sm font-medium text-gray-700">
-                        III. Bảo hành mở rộng
-                    </a>
-                    <a href="#lien-he" class="sidebar-item block px-4 py-3 text-sm font-medium text-gray-700">
-                        IV. Liên hệ bảo hành
-                    </a>
-                </nav>
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Sidebar Navigation -->
+            <div class="lg:w-72 flex-shrink-0">
+                <div class="policy-sidebar bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b">
+                        <h3 class="font-semibold text-gray-800 text-sm uppercase tracking-wide">Mục lục</h3>
+                    </div>
+                    <nav class="py-2">
+                        <a href="#doi-moi" class="policy-nav-item active">1. Đổi mới 30 ngày miễn phí</a>
+                        <a href="#bao-hanh-tieu-chuan" class="policy-nav-item">2. Bảo hành tiêu chuẩn</a>
+                        <a href="#bao-hanh-mo-rong" class="policy-nav-item">3. Bảo hành mở rộng</a>
+                        <a href="#dieu-kien" class="policy-nav-item">4. Điều kiện bảo hành</a>
+                        <a href="#khong-bao-hanh" class="policy-nav-item">5. Trường hợp không bảo hành</a>
+                        <a href="#quy-trinh" class="policy-nav-item">6. Quy trình bảo hành</a>
+                        <a href="#lien-he" class="policy-nav-item">7. Liên hệ hỗ trợ</a>
+                    </nav>
+                </div>
             </div>
 
             <!-- Content -->
-            <div class="flex-1 bg-white rounded-lg shadow-sm p-6">
+            <div class="flex-1 policy-content">
                 <!-- Intro -->
-                <p class="text-gray-600 text-sm mb-6">
-                    Khi mua sản phẩm tại QuangHưng Mobile, khách hàng có quyền hoàn toàn yên tâm với sản phẩm chính hãng, được bảo hành chính thức tại hãng và ngoài ra có thêm chính sách đổi mới miễn phí lên tới 30 ngày tại QuangHưng Mobile.
-                </p>
-
-                <!-- Section I: Đổi mới 30 ngày -->
-                <section id="doi-moi" class="mb-10">
-                    <h2 class="section-title text-xl font-bold text-red-600 mb-4 pb-2 border-b-2 border-red-600">
-                        I. Chính sách đổi mới 30 ngày miễn phí
-                    </h2>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm border-collapse">
-                            <thead>
-                                <tr class="bg-green-600 text-white">
-                                    <th class="px-4 py-3 text-left font-medium border border-green-700">Loại sản phẩm</th>
-                                    <th class="px-4 py-3 text-center font-medium border border-green-700">Đổi mới miễn phí (*)</th>
-                                    <th class="px-4 py-3 text-left font-medium border border-green-700">Quy định nhập lại, trả lại</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-gray-700">
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border">Điện thoại (iPhone, Samsung, Xiaomi, OPPO...)</td>
-                                    <td class="px-4 py-3 text-center border">30 ngày</td>
-                                    <td class="px-4 py-3 border">
-                                        <ul class="list-disc list-inside space-y-1">
-                                            <li>Trong 30 ngày đầu nhập lại máy, trừ phí 20% trên giá hiện tại</li>
-                                            <li>Sau 30 ngày nhập lại máy theo giá thoả thuận</li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                                <tr class="border-b bg-gray-50">
-                                    <td class="px-4 py-3 border">Máy tính bảng (iPad, Samsung Tab...)</td>
-                                    <td class="px-4 py-3 text-center border">30 ngày</td>
-                                    <td class="px-4 py-3 border">
-                                        <ul class="list-disc list-inside space-y-1">
-                                            <li>Trong 30 ngày đầu nhập lại máy, trừ phí 20% trên giá hiện tại</li>
-                                            <li>Sau 30 ngày nhập lại máy theo giá thoả thuận</li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border">Apple Watch / Samsung Watch</td>
-                                    <td class="px-4 py-3 text-center border">30 ngày</td>
-                                    <td class="px-4 py-3 border">
-                                        <ul class="list-disc list-inside space-y-1">
-                                            <li>Trong 30 ngày đầu nhập lại máy, trừ phí 30% trên giá hiện tại</li>
-                                            <li>Sau 30 ngày nhập lại máy theo giá thoả thuận</li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                                <tr class="border-b bg-gray-50">
-                                    <td class="px-4 py-3 border">Tai nghe (AirPods, Galaxy Buds...)</td>
-                                    <td class="px-4 py-3 text-center border">15 ngày</td>
-                                    <td class="px-4 py-3 border">
-                                        <ul class="list-disc list-inside space-y-1">
-                                            <li>Trong 30 ngày đầu: Nhập lại trừ phí 40%</li>
-                                            <li>Từ 31 - 60 ngày: Nhập lại trừ phí 50%</li>
-                                            <li class="text-orange-600">Quá 60 ngày không áp dụng</li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border">Phụ kiện (Sạc, cáp, ốp lưng...)</td>
-                                    <td class="px-4 py-3 text-center border">7 ngày</td>
-                                    <td class="px-4 py-3 border">Không áp dụng nhập lại</td>
-                                </tr>
-                                <tr class="border-b bg-gray-50">
-                                    <td class="px-4 py-3 border">Sạc dự phòng</td>
-                                    <td class="px-4 py-3 text-center border">15 ngày</td>
-                                    <td class="px-4 py-3 border">Không áp dụng nhập lại</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 border">Điện thoại Like New</td>
-                                    <td class="px-4 py-3 text-center border">30 ngày</td>
-                                    <td class="px-4 py-3 border">
-                                        <ul class="list-disc list-inside space-y-1">
-                                            <li>Trong 30 ngày đầu nhập lại máy, trừ phí 15%</li>
-                                            <li>Sau 30 ngày nhập lại theo giá thoả thuận</li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mt-4 text-sm text-gray-600 space-y-3">
-                        <p><strong>(*)</strong>: Lỗi phần cứng từ phía nhà sản xuất</p>
-                        <div>
-                            <p class="font-semibold underline mb-2">Điều kiện đổi trả:</p>
-                            <ul class="space-y-1">
-                                <li>● <strong>Máy:</strong> Như mới, không xước xát, không dán decal</li>
-                                <li>● <strong>Hộp:</strong> Như mới, Serial/IMEI trùng với thân máy</li>
-                                <li>● <strong>Phụ kiện:</strong> Còn đầy đủ, nguyên vẹn</li>
-                                <li>● <strong>Tài khoản:</strong> Đã đăng xuất iCloud, Google Account, Mi Account...</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
- 
-               <!-- Section II: Bảo hành tiêu chuẩn -->
-                <section id="bao-hanh-tieu-chuan" class="mb-10">
-                    <h2 class="section-title text-xl font-bold text-red-600 mb-4 pb-2 border-b-2 border-red-600">
-                        II. Chính sách bảo hành tiêu chuẩn
-                    </h2>
-                    
-                    <p class="text-gray-600 mb-4">
-                        Tất cả sản phẩm tại QuangHưng Mobile đều được bảo hành chính hãng theo quy định của nhà sản xuất.
+                <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Khi mua sản phẩm tại <strong class="text-gray-900">QuangHưng Mobile</strong>, quý khách hoàn toàn yên tâm với sản phẩm chính hãng, được bảo hành chính thức tại hãng và ngoài ra có thêm chính sách đổi mới miễn phí lên tới <strong class="text-red-600">30 ngày</strong> tại QuangHưng Mobile.
                     </p>
+                </div>
 
+                <!-- Section 1: Đổi mới 30 ngày -->
+                <section id="doi-moi" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">1</span>Chính sách đổi mới 30 ngày miễn phí</h2>
+                    
+                    <p>Áp dụng cho sản phẩm gặp lỗi phần cứng từ phía nhà sản xuất trong thời gian quy định:</p>
+                    
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm border-collapse">
+                        <table class="policy-table">
                             <thead>
-                                <tr class="bg-blue-600 text-white">
-                                    <th class="px-4 py-3 text-left font-medium border border-blue-700">Sản phẩm</th>
-                                    <th class="px-4 py-3 text-center font-medium border border-blue-700">Thời gian bảo hành</th>
-                                    <th class="px-4 py-3 text-left font-medium border border-blue-700">Nơi bảo hành</th>
+                                <tr>
+                                    <th style="width:35%">Loại sản phẩm</th>
+                                    <th style="width:20%" class="text-center">Thời gian đổi mới</th>
+                                    <th>Quy định nhập lại / trả lại</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-gray-700">
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border">iPhone</td>
-                                    <td class="px-4 py-3 text-center border">12 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành Apple ủy quyền</td>
+                            <tbody>
+                                <tr>
+                                    <td class="font-medium text-gray-800">Điện thoại (iPhone, Samsung, Xiaomi, OPPO...)</td>
+                                    <td class="text-center"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">30 ngày</span></td>
+                                    <td>Trong 30 ngày: trừ 20% giá hiện tại. Sau 30 ngày: theo thỏa thuận</td>
                                 </tr>
-                                <tr class="border-b bg-gray-50">
-                                    <td class="px-4 py-3 border">Samsung Galaxy</td>
-                                    <td class="px-4 py-3 text-center border">12 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành Samsung</td>
+                                <tr>
+                                    <td class="font-medium text-gray-800">Máy tính bảng (iPad, Samsung Tab...)</td>
+                                    <td class="text-center"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">30 ngày</span></td>
+                                    <td>Trong 30 ngày: trừ 20% giá hiện tại. Sau 30 ngày: theo thỏa thuận</td>
                                 </tr>
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border">Xiaomi / Redmi / POCO</td>
-                                    <td class="px-4 py-3 text-center border">18 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành Xiaomi</td>
+                                <tr>
+                                    <td class="font-medium text-gray-800">Apple Watch / Samsung Watch</td>
+                                    <td class="text-center"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">30 ngày</span></td>
+                                    <td>Trong 30 ngày: trừ 30% giá hiện tại. Sau 30 ngày: theo thỏa thuận</td>
                                 </tr>
-                                <tr class="border-b bg-gray-50">
-                                    <td class="px-4 py-3 border">OPPO / Realme</td>
-                                    <td class="px-4 py-3 text-center border">12 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành OPPO</td>
+                                <tr>
+                                    <td class="font-medium text-gray-800">Tai nghe (AirPods, Galaxy Buds...)</td>
+                                    <td class="text-center"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">15 ngày</span></td>
+                                    <td>Trong 30 ngày: trừ 40%. Từ 31-60 ngày: trừ 50%. Quá 60 ngày: không áp dụng</td>
                                 </tr>
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border">Vivo</td>
-                                    <td class="px-4 py-3 text-center border">12 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành Vivo</td>
+                                <tr>
+                                    <td class="font-medium text-gray-800">Phụ kiện (Sạc, cáp, ốp lưng...)</td>
+                                    <td class="text-center"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">7 ngày</span></td>
+                                    <td>Không áp dụng nhập lại</td>
                                 </tr>
-                                <tr class="border-b bg-gray-50">
-                                    <td class="px-4 py-3 border">iPad / Máy tính bảng</td>
-                                    <td class="px-4 py-3 text-center border">12 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành chính hãng</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border">Apple Watch / Samsung Watch</td>
-                                    <td class="px-4 py-3 text-center border">12 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành chính hãng</td>
-                                </tr>
-                                <tr class="border-b bg-gray-50">
-                                    <td class="px-4 py-3 border">AirPods / Tai nghe chính hãng</td>
-                                    <td class="px-4 py-3 text-center border">12 tháng</td>
-                                    <td class="px-4 py-3 border">Trung tâm bảo hành chính hãng</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 border">Phụ kiện chính hãng</td>
-                                    <td class="px-4 py-3 text-center border">6 - 12 tháng</td>
-                                    <td class="px-4 py-3 border">QuangHưng Mobile hoặc hãng</td>
+                                <tr>
+                                    <td class="font-medium text-gray-800">Sạc dự phòng</td>
+                                    <td class="text-center"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">15 ngày</span></td>
+                                    <td>Không áp dụng nhập lại</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
-                        <p class="text-sm text-yellow-800">
-                            <strong>Lưu ý:</strong> Bảo hành không áp dụng cho các trường hợp: Rơi vỡ, vào nước, tự ý tháo lắp sửa chữa, sử dụng sai cách, hư hỏng do thiên tai.
-                        </p>
-                    </div>
                 </section>
-   
-             <!-- Section III: Bảo hành mở rộng -->
-                <section id="bao-hanh-mo-rong" class="mb-10">
-                    <h2 class="section-title text-xl font-bold text-red-600 mb-4 pb-2 border-b-2 border-red-600">
-                        III. Gói bảo hành mở rộng QuangHưng Care
-                    </h2>
+
+                <!-- Section 2: Bảo hành tiêu chuẩn -->
+                <section id="bao-hanh-tieu-chuan" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">2</span>Chính sách bảo hành tiêu chuẩn</h2>
                     
-                    <p class="text-gray-600 mb-4">
-                        Ngoài bảo hành chính hãng, QuangHưng Mobile cung cấp gói bảo hành mở rộng giúp khách hàng yên tâm hơn khi sử dụng sản phẩm.
-                    </p>
-
-                    <div class="grid md:grid-cols-2 gap-4 mb-6">
-                        <div class="p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
-                            <h3 class="font-bold text-blue-800 mb-2"><i class="fas fa-shield-alt mr-2"></i>QuangHưng Care 12 tháng</h3>
-                            <ul class="text-sm text-gray-700 space-y-1">
-                                <li>✓ Bảo hành thêm 12 tháng sau khi hết hạn hãng</li>
-                                <li>✓ Hỗ trợ sửa chữa ưu tiên</li>
-                                <li>✓ Giảm 50% chi phí sửa chữa ngoài bảo hành</li>
-                            </ul>
-                        </div>
-                        <div class="p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg border border-purple-200">
-                            <h3 class="font-bold text-purple-800 mb-2"><i class="fas fa-gem mr-2"></i>QuangHưng Care 24 tháng</h3>
-                            <ul class="text-sm text-gray-700 space-y-1">
-                                <li>✓ Bảo hành thêm 24 tháng sau khi hết hạn hãng</li>
-                                <li>✓ Hỗ trợ sửa chữa ưu tiên VIP</li>
-                                <li>✓ Miễn phí 1 lần thay pin (nếu chai dưới 80%)</li>
-                                <li>✓ Giảm 70% chi phí sửa chữa ngoài bảo hành</li>
-                            </ul>
-                        </div>
-                    </div>
-
+                    <p>Tất cả sản phẩm tại QuangHưng Mobile đều được bảo hành chính hãng theo quy định của nhà sản xuất:</p>
+                    
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm border-collapse">
+                        <table class="policy-table">
                             <thead>
-                                <tr class="bg-purple-600 text-white">
-                                    <th class="px-4 py-3 text-left font-medium border border-purple-700">Gói bảo hành</th>
-                                    <th class="px-4 py-3 text-center font-medium border border-purple-700">Điện thoại</th>
-                                    <th class="px-4 py-3 text-center font-medium border border-purple-700">Máy tính bảng</th>
-                                    <th class="px-4 py-3 text-center font-medium border border-purple-700">Đồng hồ</th>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th class="text-center">Thời gian</th>
+                                    <th>Nơi bảo hành</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-gray-700">
-                                <tr class="border-b">
-                                    <td class="px-4 py-3 border font-medium">QuangHưng Care 12 tháng</td>
-                                    <td class="px-4 py-3 text-center border">500.000đ</td>
-                                    <td class="px-4 py-3 text-center border">600.000đ</td>
-                                    <td class="px-4 py-3 text-center border">400.000đ</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 border font-medium">QuangHưng Care 24 tháng</td>
-                                    <td class="px-4 py-3 text-center border">900.000đ</td>
-                                    <td class="px-4 py-3 text-center border">1.100.000đ</td>
-                                    <td class="px-4 py-3 text-center border">700.000đ</td>
-                                </tr>
+                            <tbody>
+                                <tr><td class="font-medium text-gray-800">iPhone</td><td class="text-center">12 tháng</td><td>Trung tâm bảo hành Apple ủy quyền</td></tr>
+                                <tr><td class="font-medium text-gray-800">Samsung Galaxy</td><td class="text-center">12 tháng</td><td>Trung tâm bảo hành Samsung</td></tr>
+                                <tr><td class="font-medium text-gray-800">Xiaomi / Redmi / POCO</td><td class="text-center">18 tháng</td><td>Trung tâm bảo hành Xiaomi</td></tr>
+                                <tr><td class="font-medium text-gray-800">OPPO / Realme</td><td class="text-center">12 tháng</td><td>Trung tâm bảo hành OPPO</td></tr>
+                                <tr><td class="font-medium text-gray-800">Vivo</td><td class="text-center">12 tháng</td><td>Trung tâm bảo hành Vivo</td></tr>
+                                <tr><td class="font-medium text-gray-800">iPad / Máy tính bảng</td><td class="text-center">12 tháng</td><td>Trung tâm bảo hành chính hãng</td></tr>
+                                <tr><td class="font-medium text-gray-800">Apple Watch / Samsung Watch</td><td class="text-center">12 tháng</td><td>Trung tâm bảo hành chính hãng</td></tr>
+                                <tr><td class="font-medium text-gray-800">AirPods / Tai nghe chính hãng</td><td class="text-center">12 tháng</td><td>Trung tâm bảo hành chính hãng</td></tr>
+                                <tr><td class="font-medium text-gray-800">Phụ kiện chính hãng</td><td class="text-center">6-12 tháng</td><td>QuangHưng Mobile hoặc hãng</td></tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded">
-                        <p class="text-sm text-green-800">
-                            <strong>Ưu đãi:</strong> Mua gói bảo hành mở rộng cùng lúc với sản phẩm được giảm thêm 10%.
-                        </p>
-                    </div>
                 </section>
- 
-               <!-- Section IV: Liên hệ bảo hành -->
-                <section id="lien-he">
-                    <h2 class="section-title text-xl font-bold text-red-600 mb-4 pb-2 border-b-2 border-red-600">
-                        IV. Liên hệ bảo hành
-                    </h2>
+
+                <!-- Section 3: Bảo hành mở rộng -->
+                <section id="bao-hanh-mo-rong" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">3</span>Gói bảo hành mở rộng QuangHưng Care</h2>
                     
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <h3 class="font-bold text-gray-800 mb-3"><i class="fas fa-store text-red-600 mr-2"></i>Tại cửa hàng</h3>
-                            <p class="text-sm text-gray-600 mb-2">Mang sản phẩm đến trực tiếp cửa hàng QuangHưng Mobile gần nhất để được hỗ trợ bảo hành.</p>
-                            <a href="contact.html" class="text-red-600 text-sm font-medium hover:underline">Xem địa chỉ cửa hàng →</a>
+                    <p>Ngoài bảo hành chính hãng, QuangHưng Mobile cung cấp gói bảo hành mở rộng giúp khách hàng yên tâm hơn:</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 my-6">
+                        <div class="border-2 border-blue-200 rounded-xl p-5 bg-blue-50/50">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-white"></i>
+                                </div>
+                                <h3 class="font-bold text-gray-800">QuangHưng Care 12 tháng</h3>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i>Bảo hành thêm 12 tháng sau khi hết hạn hãng</li>
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i>Hỗ trợ sửa chữa ưu tiên</li>
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i>Giảm 50% chi phí sửa chữa ngoài bảo hành</li>
+                            </ul>
                         </div>
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <h3 class="font-bold text-gray-800 mb-3"><i class="fas fa-phone text-red-600 mr-2"></i>Hotline hỗ trợ</h3>
-                            <p class="text-sm text-gray-600 mb-2">Gọi điện để được tư vấn và hướng dẫn bảo hành:</p>
-                            <p class="text-lg font-bold text-red-600">1900 1234 56</p>
-                            <p class="text-xs text-gray-500">(8:00 - 21:30 hàng ngày)</p>
+                        <div class="border-2 border-purple-200 rounded-xl p-5 bg-purple-50/50">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-gem text-white"></i>
+                                </div>
+                                <h3 class="font-bold text-gray-800">QuangHưng Care 24 tháng</h3>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-purple-500 mt-1"></i>Bảo hành thêm 24 tháng sau khi hết hạn hãng</li>
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-purple-500 mt-1"></i>Hỗ trợ sửa chữa ưu tiên VIP</li>
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-purple-500 mt-1"></i>Miễn phí 1 lần thay pin (nếu chai dưới 80%)</li>
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-purple-500 mt-1"></i>Giảm 70% chi phí sửa chữa ngoài bảo hành</li>
+                            </ul>
                         </div>
                     </div>
 
-                    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
-                        <h3 class="font-bold text-gray-800 mb-2"><i class="fas fa-clipboard-list text-blue-600 mr-2"></i>Quy trình bảo hành</h3>
-                        <div class="flex flex-wrap gap-2 mt-3">
-                            <span class="px-3 py-2 bg-white rounded-full text-sm border">1. Mang máy đến cửa hàng</span>
-                            <span class="text-gray-400">→</span>
-                            <span class="px-3 py-2 bg-white rounded-full text-sm border">2. Kiểm tra & xác nhận lỗi</span>
-                            <span class="text-gray-400">→</span>
-                            <span class="px-3 py-2 bg-white rounded-full text-sm border">3. Gửi bảo hành hãng</span>
-                            <span class="text-gray-400">→</span>
-                            <span class="px-3 py-2 bg-white rounded-full text-sm border">4. Nhận máy sau 7-15 ngày</span>
+                    <div class="highlight-box success">
+                        <p><i class="fas fa-gift text-green-600 mr-2"></i><strong>Ưu đãi:</strong> Mua gói bảo hành mở rộng cùng lúc với sản phẩm được giảm thêm 10%.</p>
+                    </div>
+                </section>
+
+                <!-- Section 4: Điều kiện bảo hành -->
+                <section id="dieu-kien" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">4</span>Điều kiện bảo hành</h2>
+                    
+                    <p>Để được hưởng chính sách bảo hành, sản phẩm cần đáp ứng các điều kiện sau:</p>
+                    
+                    <ul>
+                        <li><strong>Máy:</strong> Còn nguyên vẹn, không có dấu hiệu va đập, trầy xước nặng, không dán decal che phủ thân máy</li>
+                        <li><strong>Hộp:</strong> Còn nguyên vẹn, số Serial/IMEI trên hộp trùng khớp với thân máy</li>
+                        <li><strong>Phụ kiện:</strong> Còn đầy đủ phụ kiện đi kèm theo tiêu chuẩn nhà sản xuất</li>
+                        <li><strong>Tài khoản:</strong> Đã đăng xuất hoàn toàn các tài khoản iCloud, Google Account, Mi Account, Samsung Account...</li>
+                        <li><strong>Phiếu bảo hành:</strong> Còn phiếu bảo hành hoặc hóa đơn mua hàng từ QuangHưng Mobile</li>
+                        <li><strong>Thời hạn:</strong> Sản phẩm còn trong thời hạn bảo hành theo quy định</li>
+                    </ul>
+                </section>
+
+                <!-- Section 5: Không bảo hành -->
+                <section id="khong-bao-hanh" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">5</span>Các trường hợp không được bảo hành</h2>
+                    
+                    <p>Chính sách bảo hành <strong>KHÔNG ÁP DỤNG</strong> cho các trường hợp sau:</p>
+                    
+                    <ul>
+                        <li>Sản phẩm bị hư hỏng do rơi vỡ, va đập mạnh, bị bẻ cong, méo móp</li>
+                        <li>Sản phẩm bị vào nước, tiếp xúc với chất lỏng hoặc môi trường ẩm ướt</li>
+                        <li>Sản phẩm đã bị tự ý tháo lắp, sửa chữa bởi bên thứ ba không được ủy quyền</li>
+                        <li>Sản phẩm bị hư hỏng do sử dụng sai cách, không đúng hướng dẫn của nhà sản xuất</li>
+                        <li>Sản phẩm bị hư hỏng do thiên tai, hỏa hoạn, sét đánh hoặc các nguyên nhân bất khả kháng</li>
+                        <li>Sản phẩm đã hết thời hạn bảo hành</li>
+                        <li>Sản phẩm không có phiếu bảo hành hoặc hóa đơn mua hàng hợp lệ</li>
+                        <li>Số Serial/IMEI trên máy không trùng khớp với phiếu bảo hành</li>
+                        <li>Các linh kiện tiêu hao: Pin (sau 12 tháng), màn hình (nếu do va đập)</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><i class="fas fa-exclamation-triangle text-amber-600 mr-2"></i><strong>Lưu ý:</strong> Trong các trường hợp trên, khách hàng vẫn có thể sử dụng dịch vụ sửa chữa có phí tại QuangHưng Mobile với mức giá ưu đãi.</p>
+                    </div>
+                </section>
+
+                <!-- Section 6: Quy trình -->
+                <section id="quy-trinh" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">6</span>Quy trình bảo hành</h2>
+                    
+                    <p>Quy trình bảo hành tại QuangHưng Mobile được thực hiện theo các bước sau:</p>
+                    
+                    <div class="grid md:grid-cols-4 gap-4 my-6">
+                        <div class="text-center">
+                            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-red-600 font-bold text-xl">1</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-1">Tiếp nhận</h4>
+                            <p class="text-sm text-gray-500">Mang máy đến cửa hàng hoặc liên hệ hotline</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-red-600 font-bold text-xl">2</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-1">Kiểm tra</h4>
+                            <p class="text-sm text-gray-500">Kỹ thuật viên kiểm tra và xác nhận lỗi</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-red-600 font-bold text-xl">3</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-1">Xử lý</h4>
+                            <p class="text-sm text-gray-500">Gửi bảo hành hãng hoặc đổi mới tại chỗ</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-red-600 font-bold text-xl">4</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-1">Hoàn tất</h4>
+                            <p class="text-sm text-gray-500">Nhận máy sau 7-15 ngày làm việc</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box info">
+                        <p><i class="fas fa-info-circle text-blue-600 mr-2"></i><strong>Thời gian xử lý:</strong> Đổi mới tại chỗ: 15-30 phút. Bảo hành hãng: 7-15 ngày làm việc tùy theo tình trạng máy và chính sách của hãng.</p>
+                    </div>
+                </section>
+
+                <!-- Section 7: Liên hệ -->
+                <section id="lien-he" class="policy-section bg-white rounded-xl shadow-sm p-6 md:p-8 mb-6">
+                    <h2><span class="section-number">7</span>Liên hệ hỗ trợ bảo hành</h2>
+                    
+                    <p>Nếu cần hỗ trợ về bảo hành, quý khách vui lòng liên hệ:</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mt-6">
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-phone text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Hotline hỗ trợ</p>
+                                <p class="text-lg font-bold text-gray-800">1900 1234 56</p>
+                                <p class="text-xs text-gray-400">8:00 - 21:30 hàng ngày</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-envelope text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Email hỗ trợ</p>
+                                <p class="text-lg font-bold text-gray-800">baohanh@quanghungmobile.vn</p>
+                                <p class="text-xs text-gray-400">Phản hồi trong 24h</p>
+                            </div>
                         </div>
                     </div>
                 </section>
+
+                <!-- Related Policies -->
+                <div class="bg-gray-100 rounded-xl p-6">
+                    <h3 class="font-semibold text-gray-800 mb-4">Chính sách liên quan</h3>
+                    <div class="grid md:grid-cols-3 gap-3">
+                        <a href="chinh-sach-ban-hang.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-shopping-cart text-red-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Chính sách bán hàng</span>
+                        </a>
+                        <a href="chinh-sach-bao-mat.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-lock text-blue-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Chính sách bảo mật</span>
+                        </a>
+                        <a href="dieu-khoan-su-dung.html" class="flex items-center gap-3 bg-white p-4 rounded-lg hover:shadow-md transition">
+                            <i class="fas fa-file-contract text-purple-500"></i>
+                            <span class="text-sm font-medium text-gray-700">Điều khoản sử dụng</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -344,55 +369,21 @@
     <!-- Scripts -->
     <script src="components/header.js"></script>
     <script src="components/ai-chatbot.js"></script>
-
-    <!-- Load Header -->
     <script>
-        (function () {
-            function loadHeader() {
-                const headerPlaceholder = document.getElementById('header-placeholder');
-                if (!headerPlaceholder) return;
-                fetch('components/header.html')
-                    .then(response => response.text())
-                    .then(html => {
-                        headerPlaceholder.innerHTML = html;
-                        // Khởi tạo header sau khi load xong
-                        if (typeof initHeader === 'function') {
-                            initHeader();
-                        }
-                    })
-                    .catch(error => console.error('Error loading header:', error));
-            }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', loadHeader);
-            } else {
-                loadHeader();
-            }
-        })();
-    </script>
-
-    <!-- Load Footer -->
-    <script>
-        (function () {
-            function loadFooter() {
-                const footerPlaceholder = document.getElementById('footer-placeholder');
-                if (!footerPlaceholder) return;
-                fetch('components/footer.html')
-                    .then(response => response.text())
-                    .then(html => { footerPlaceholder.innerHTML = html; })
-                    .catch(error => console.error('Error loading footer:', error));
-            }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', loadFooter);
-            } else {
-                loadFooter();
-            }
-        })();
+        // Load Header & Footer
+        fetch('components/header.html').then(r => r.text()).then(html => {
+            document.getElementById('header-placeholder').innerHTML = html;
+            if (typeof initHeader === 'function') initHeader();
+        });
+        fetch('components/footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-placeholder').innerHTML = html;
+        });
 
         // Sidebar active state on scroll
-        const sections = document.querySelectorAll('section[id]');
-        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const sections = document.querySelectorAll('.policy-section');
+        const navItems = document.querySelectorAll('.policy-nav-item');
 
-        function updateActiveSection() {
+        function updateActiveNav() {
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop - 200;
@@ -400,7 +391,7 @@
                     current = section.getAttribute('id');
                 }
             });
-            sidebarItems.forEach(item => {
+            navItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.getAttribute('href') === '#' + current) {
                     item.classList.add('active');
@@ -408,17 +399,14 @@
             });
         }
 
-        window.addEventListener('scroll', updateActiveSection);
+        window.addEventListener('scroll', updateActiveNav);
         
-        // Smooth scroll for sidebar links
-        sidebarItems.forEach(item => {
+        // Smooth scroll
+        navItems.forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                }
+                const target = document.getElementById(this.getAttribute('href').substring(1));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
             });
         });
     </script>
