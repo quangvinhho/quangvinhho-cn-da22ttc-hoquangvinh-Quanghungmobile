@@ -56,6 +56,36 @@
             background: linear-gradient(135deg, #d91e23 0%, #b01117 100%);
         }
         
+        .cta-section {
+            background: url('images/ngua.jfif') center center / cover no-repeat;
+            position: relative;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(217, 30, 35, 0.85) 0%, rgba(176, 17, 23, 0.9) 100%);
+        }
+        
+        .cta-section .cta-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .cta-btn-primary {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.4);
+            }
+        }
+        
         .value-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(217, 30, 35, 0.15);
@@ -68,6 +98,74 @@
         .commitment-card:hover {
             border-color: #d91e23;
             background: #fff5f5;
+        }
+        
+        .commitment-section {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fff9f9 0%, #ffffff 50%, #fff9f9 100%);
+        }
+        
+        .commitment-wrapper {
+            display: flex;
+            align-items: stretch;
+            min-height: 420px;
+        }
+        
+        .commitment-left-img,
+        .commitment-right-img {
+            width: 220px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .commitment-left-img img,
+        .commitment-right-img img {
+            max-width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: contain;
+        }
+        
+        .commitment-right-img img {
+            transform: scaleX(-1);
+        }
+        
+        .commitment-content {
+            flex: 1;
+            padding: 40px 30px;
+        }
+        
+        @media (max-width: 1200px) {
+            .commitment-left-img,
+            .commitment-right-img {
+                width: 160px;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .commitment-left-img,
+            .commitment-right-img {
+                width: 120px;
+            }
+            .commitment-content {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .commitment-wrapper {
+                flex-direction: column;
+            }
+            .commitment-left-img,
+            .commitment-right-img {
+                display: none;
+            }
+            .commitment-content {
+                padding: 40px 16px;
+            }
         }
     </style>
 </head>
@@ -269,104 +367,120 @@
     </section>
 
     <!-- Commitments Section -->
-    <section class="py-14 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="text-center mb-10">
-                <span class="inline-block px-4 py-2 bg-red-main text-white rounded-full text-sm font-semibold mb-3">
-                    Cam kết của chúng tôi
-                </span>
-                <h2 class="text-3xl font-black text-red-main">Cam kết với khách hàng</h2>
+    <section class="commitment-section">
+        <div class="commitment-wrapper">
+            <!-- Ảnh Tết bên trái -->
+            <div class="commitment-left-img">
+                <img src="images/anh-tet.jpg" alt="Tết">
             </div>
+            
+            <!-- Nội dung chính -->
+            <div class="commitment-content">
+                <div class="text-center mb-10">
+                    <span class="inline-block px-5 py-2 bg-red-main text-white rounded-full text-base font-semibold mb-4">
+                        Cam kết của chúng tôi
+                    </span>
+                    <h2 class="text-4xl font-black text-red-main">Cam kết với khách hàng</h2>
+                </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <div class="commitment-card bg-gray-50 rounded-xl p-5 border-2 border-gray-100 transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="w-11 h-11 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-box-open text-lg text-white"></i>
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div class="commitment-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg hover:border-red-main transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-box-open text-xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">Sản phẩm chính hãng</h3>
+                                <p class="text-gray-500 text-base">100% chính hãng</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900 mb-1">Sản phẩm chính hãng</h3>
-                            <p class="text-gray-600 text-sm">100% chính hãng, tem nhãn đầy đủ</p>
+                    </div>
+
+                    <div class="commitment-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg hover:border-red-main transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-shipping-fast text-xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">Giao hàng nhanh</h3>
+                                <p class="text-gray-500 text-base">2h nội thành</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="commitment-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg hover:border-red-main transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-sync-alt text-xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">Đổi trả dễ dàng</h3>
+                                <p class="text-gray-500 text-base">30 ngày đổi trả</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="commitment-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg hover:border-red-main transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-tools text-xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">Bảo hành tận tâm</h3>
+                                <p class="text-gray-500 text-base">Sửa chữa nhanh</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="commitment-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg hover:border-red-main transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-credit-card text-xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">Trả góp 0%</h3>
+                                <p class="text-gray-500 text-base">Duyệt 15 phút</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="commitment-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg hover:border-red-main transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-headset text-xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">Hỗ trợ 24/7</h3>
+                                <p class="text-gray-500 text-base">Tư vấn mọi lúc</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="commitment-card bg-gray-50 rounded-xl p-5 border-2 border-gray-100 transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="w-11 h-11 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-shipping-fast text-lg text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900 mb-1">Giao hàng nhanh</h3>
-                            <p class="text-gray-600 text-sm">2 giờ nội thành, 24-48h toàn quốc</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="commitment-card bg-gray-50 rounded-xl p-5 border-2 border-gray-100 transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="w-11 h-11 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-sync-alt text-lg text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900 mb-1">Đổi trả dễ dàng</h3>
-                            <p class="text-gray-600 text-sm">Đổi trả trong 30 ngày nếu lỗi NSX</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="commitment-card bg-gray-50 rounded-xl p-5 border-2 border-gray-100 transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="w-11 h-11 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-tools text-lg text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900 mb-1">Bảo hành tận tâm</h3>
-                            <p class="text-gray-600 text-sm">Trung tâm bảo hành, sửa chữa nhanh</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="commitment-card bg-gray-50 rounded-xl p-5 border-2 border-gray-100 transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="w-11 h-11 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-credit-card text-lg text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900 mb-1">Trả góp 0%</h3>
-                            <p class="text-gray-600 text-sm">Duyệt nhanh trong 15 phút</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="commitment-card bg-gray-50 rounded-xl p-5 border-2 border-gray-100 transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="w-11 h-11 bg-red-main rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-headset text-lg text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900 mb-1">Hỗ trợ 24/7</h3>
-                            <p class="text-gray-600 text-sm">Tư vấn chuyên nghiệp mọi lúc</p>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            
+            <!-- Ảnh Tết bên phải -->
+            <div class="commitment-right-img">
+                <img src="images/anh-tet.jpg" alt="Tết">
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-14 hero-gradient">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-black text-white mb-5">Sẵn sàng trải nghiệm?</h2>
-            <p class="text-lg text-white/90 mb-6">
-                Ghé thăm cửa hàng gần nhất hoặc mua sắm online ngay!
+    <section class="cta-section py-10">
+        <div class="cta-content max-w-3xl mx-auto px-4 text-center">
+            <div class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-semibold mb-3">
+                <i class="fas fa-fire mr-2"></i>Ưu đãi đặc biệt đang chờ bạn
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-white mb-3 drop-shadow-lg">Sẵn sàng trải nghiệm?</h2>
+            <p class="text-base text-white/95 mb-5 max-w-xl mx-auto">
+                Ghé thăm cửa hàng gần nhất hoặc mua sắm online ngay để nhận ngàn ưu đãi hấp dẫn!
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="products.html" class="inline-flex items-center justify-center gap-2 bg-white text-red-main px-7 py-3 rounded-full font-bold hover:bg-yellow-300 transition-all shadow-lg">
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="products.html" class="cta-btn-primary inline-flex items-center justify-center gap-2 bg-yellow-400 text-red-main px-7 py-3 rounded-full font-bold text-base hover:bg-yellow-300 hover:scale-105 transition-all duration-300 shadow-xl">
                     <i class="fas fa-shopping-cart"></i>
                     Mua sắm ngay
                 </a>
-                <a href="contact.html" class="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-7 py-3 rounded-full font-bold hover:bg-white hover:text-red-main transition-all">
+                <a href="contact.html" class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-white text-white px-7 py-3 rounded-full font-bold text-base hover:bg-white hover:text-red-main transition-all duration-300">
                     <i class="fas fa-map-marker-alt"></i>
                     Tìm cửa hàng
                 </a>
