@@ -346,6 +346,41 @@ bellStyle.textContent = `
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  
+  /* Responsive notification dropdown */
+  @media (max-width: 639px) {
+    .notification-dropdown {
+      position: fixed !important;
+      left: 8px !important;
+      right: 8px !important;
+      top: auto !important;
+      bottom: 70px !important;
+      width: auto !important;
+      max-width: none !important;
+      max-height: 70vh !important;
+      border-radius: 16px !important;
+    }
+    
+    .notification-bell-wrapper {
+      position: static !important;
+    }
+    
+    .notification-item {
+      padding: 12px !important;
+    }
+    
+    .notification-header {
+      padding: 12px 16px !important;
+    }
+  }
+  
+  /* iPad / Tablet */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .notification-dropdown {
+      width: 320px !important;
+      right: 0 !important;
+    }
+  }
 `;
 document.head.appendChild(bellStyle);
 

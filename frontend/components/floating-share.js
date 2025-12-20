@@ -19,12 +19,20 @@
         .floating-share-container {
             position: fixed;
             right: 20px;
-            bottom: 100px;
+            bottom: 180px;
             z-index: 9998;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+        
+        /* Ẩn share khi chat mở */
+        .floating-share-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100px);
         }
 
         /* Nút Share chính */
@@ -249,31 +257,81 @@
         /* Responsive */
         @media (max-width: 768px) {
             .floating-share-container {
-                right: 15px;
-                bottom: 80px;
+                right: 12px;
+                bottom: 140px;
             }
 
             .share-toggle-btn {
-                width: 52px;
-                height: 52px;
-                box-shadow: 0 0 0 6px rgba(229, 57, 53, 0.25), 0 0 0 12px rgba(229, 57, 53, 0.15);
+                width: 48px;
+                height: 48px;
+                box-shadow: 0 0 0 5px rgba(229, 57, 53, 0.25), 0 0 0 10px rgba(229, 57, 53, 0.15);
             }
 
             .share-toggle-btn i {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .share-btn {
-                width: 46px;
-                height: 46px;
+                width: 42px;
+                height: 42px;
             }
 
             .share-btn i {
-                font-size: 18px;
+                font-size: 16px;
             }
 
             .share-btn::after {
                 display: none;
+            }
+            
+            /* Smaller ring shadows on mobile */
+            .share-btn.location,
+            .share-btn.email,
+            .share-btn.facebook,
+            .share-btn.messenger,
+            .share-btn.tiktok,
+            .share-btn.zalo {
+                box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(0, 0, 0, 0.08);
+            }
+        }
+        
+        /* Very small screens */
+        @media (max-width: 400px) {
+            .floating-share-container {
+                right: 8px;
+                bottom: 130px;
+            }
+            
+            .share-toggle-btn {
+                width: 44px;
+                height: 44px;
+            }
+            
+            .share-btn {
+                width: 38px;
+                height: 38px;
+            }
+            
+            .share-btn i {
+                font-size: 14px;
+            }
+        }
+        
+        /* iPad / Tablet */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .floating-share-container {
+                right: 16px;
+                bottom: 160px;
+            }
+            
+            .share-toggle-btn {
+                width: 56px;
+                height: 56px;
+            }
+            
+            .share-btn {
+                width: 50px;
+                height: 50px;
             }
         }
     `;
@@ -316,6 +374,12 @@
         toggleBtn.addEventListener('click', function() {
             this.classList.toggle('active');
             buttonsList.classList.toggle('show');
+            
+            // Ẩn chatbot khi mở share
+            const chatWindow = document.getElementById('ai-chat-window');
+            if (chatWindow && buttonsList.classList.contains('show')) {
+                chatWindow.classList.remove('active');
+            }
         });
 
         // Đóng khi click ra ngoài
@@ -324,6 +388,17 @@
                 toggleBtn.classList.remove('active');
                 buttonsList.classList.remove('show');
             }
+        });
+        
+        // Lắng nghe sự kiện từ chatbot
+        window.addEventListener('chatbot-opened', function() {
+            container.classList.add('hidden');
+            toggleBtn.classList.remove('active');
+            buttonsList.classList.remove('show');
+        });
+        
+        window.addEventListener('chatbot-closed', function() {
+            container.classList.remove('hidden');
         });
     }
 

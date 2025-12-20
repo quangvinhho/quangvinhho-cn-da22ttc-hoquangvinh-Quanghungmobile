@@ -522,34 +522,37 @@
 /* Responsive */
 @media (max-width: 480px) {
   .ai-chatbot-btn {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     bottom: 16px;
     right: 16px;
   }
   
   .ai-chatbot-btn img {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
   
   .ai-chat-window {
-    bottom: 80px;
-    right: 8px;
-    left: 8px;
-    width: auto;
-    height: calc(100vh - 100px);
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
     max-height: none;
-    border-radius: 16px;
+    border-radius: 20px 20px 0 0;
+    margin: 0;
   }
   
   .ai-chat-sidebar {
     width: 100%;
-    border-radius: 16px;
+    border-radius: 20px 20px 0 0;
   }
   
   .ai-chat-header {
     padding: 10px 12px;
+    border-radius: 20px 20px 0 0;
   }
   
   .ai-menu-btn {
@@ -564,5 +567,53 @@
   
   .ai-chat-title {
     font-size: 14px;
+  }
+  
+  .ai-chat-messages {
+    padding: 12px;
+  }
+  
+  .ai-message {
+    max-width: 90%;
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+  
+  .ai-chat-input-area {
+    padding: 10px 12px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  
+  .ai-chat-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .ai-quick-actions {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+  
+  .ai-quick-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* iPad / Tablet */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .ai-chatbot-btn {
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .ai-chat-window {
+    width: 380px;
+    max-width: calc(100vw - 40px);
+    height: 520px;
+    max-height: calc(100vh - 120px);
+    bottom: 90px;
+    right: 20px;
   }
 }

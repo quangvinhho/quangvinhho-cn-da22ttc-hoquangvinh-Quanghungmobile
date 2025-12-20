@@ -516,6 +516,9 @@
       chatWindow.classList.toggle('active');
       
       if (chatWindow.classList.contains('active')) {
+        // Phát sự kiện để ẩn floating share
+        window.dispatchEvent(new CustomEvent('chatbot-opened'));
+        
         const userChanged = checkUserChanged();
         
         if (!historyLoaded || userChanged) {
@@ -523,6 +526,9 @@
           historyLoaded = true;
         }
         input.focus();
+      } else {
+        // Phát sự kiện để hiện floating share
+        window.dispatchEvent(new CustomEvent('chatbot-closed'));
       }
     });
     
@@ -530,6 +536,8 @@
     closeBtn.addEventListener('click', () => {
       chatWindow.classList.remove('active');
       closeSidebar();
+      // Phát sự kiện để hiện floating share
+      window.dispatchEvent(new CustomEvent('chatbot-closed'));
     });
     
     // Toggle sidebar

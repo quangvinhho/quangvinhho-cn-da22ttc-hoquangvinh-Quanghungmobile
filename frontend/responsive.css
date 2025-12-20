@@ -14,6 +14,40 @@ html {
 
 body {
   overflow-x: hidden;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+/* Fix cho iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Container responsive */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container { max-width: 640px; }
+}
+@media (min-width: 768px) {
+  .container { max-width: 768px; }
+}
+@media (min-width: 1024px) {
+  .container { max-width: 1024px; }
+}
+@media (min-width: 1280px) {
+  .container { max-width: 1280px; }
+}
+@media (min-width: 1536px) {
+  .container { max-width: 1440px; }
 }
 
 /* ===== MOBILE (< 640px) ===== */
@@ -25,14 +59,14 @@ body {
   
   /* Container */
   .container {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
   
   /* Main content padding */
   main.container {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
   }
   
   /* Product cards - 2 cột */
@@ -113,8 +147,8 @@ body {
     grid-column: span 1 !important;
   }
   
-  /* Checkout form */
-  .grid-cols-2 {
+  /* Checkout form - stack vertically */
+  .grid-cols-2:not(.payment-methods):not(.trust-badges) {
     grid-template-columns: 1fr !important;
   }
   
@@ -134,10 +168,11 @@ body {
   .brand-btn {
     width: 80px !important;
     height: 48px !important;
+    flex-shrink: 0;
   }
   
   /* Modal adjustments */
-  .modal-content, [class*="max-w-"] {
+  .modal-content, [class*="max-w-"]:not(.max-w-full) {
     max-width: 95vw !important;
     margin: 0.5rem;
   }
@@ -151,6 +186,65 @@ body {
   .color-dot {
     width: 16px;
     height: 16px;
+  }
+  
+  /* Header spacer mobile */
+  .h-\[80px\] {
+    height: 70px !important;
+  }
+  
+  /* Cart page responsive */
+  #cart-content {
+    flex-direction: column !important;
+  }
+  
+  #cart-content > div {
+    width: 100% !important;
+  }
+  
+  /* Checkout page responsive */
+  .lg\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Profile sidebar */
+  #profile-sidebar {
+    margin-bottom: 1rem;
+  }
+  
+  /* News grid */
+  .news-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Footer responsive */
+  footer .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  
+  /* AI Chatbot position */
+  .ai-chatbot-btn {
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 52px !important;
+    height: 52px !important;
+  }
+  
+  /* Floating share buttons */
+  .floating-share-container {
+    right: 12px !important;
+    bottom: 140px !important;
+  }
+  
+  .share-toggle-btn {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  
+  .share-btn {
+    width: 42px !important;
+    height: 42px !important;
   }
 }
 
@@ -191,13 +285,29 @@ body {
     padding: 8px 12px;
     font-size: 12px;
   }
+  
+  /* Grid layouts */
+  .lg\:grid-cols-3,
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Cart page */
+  #cart-content {
+    flex-direction: column !important;
+  }
+  
+  /* Footer */
+  footer .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 /* ===== TABLET LANDSCAPE / iPad (768px - 1023px) ===== */
 @media (min-width: 768px) and (max-width: 1023px) {
   .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
   
   /* Product grid - 3 cột */
@@ -249,6 +359,47 @@ body {
   /* Brand buttons horizontal scroll */
   .brand-btn {
     width: 90px !important;
+  }
+  
+  /* Checkout page - 2 columns */
+  .lg\:grid-cols-3 {
+    grid-template-columns: 1.5fr 1fr !important;
+  }
+  
+  /* Cart page */
+  #cart-content {
+    flex-direction: column !important;
+  }
+  
+  #cart-content > .lg\:w-2\/3,
+  #cart-content > .lg\:w-1\/3 {
+    width: 100% !important;
+  }
+  
+  /* News grid */
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Footer */
+  footer .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Header spacer */
+  .h-\[100px\] {
+    height: 90px !important;
+  }
+  
+  /* Product detail page */
+  .product-detail-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* AI Chatbot */
+  .ai-chat-window {
+    width: 380px !important;
+    max-width: calc(100vw - 32px) !important;
   }
 }
 
@@ -422,5 +573,245 @@ body {
   .product-card {
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+}
+
+/* ===== HEADER RESPONSIVE ===== */
+/* Mobile header adjustments */
+@media (max-width: 767px) {
+  .header-wrapper .main-header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  .header-wrapper .main-header .container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* Logo size on mobile */
+  .header-wrapper img[alt="Logo"] {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  /* Hide logo text on very small screens */
+  @media (max-width: 400px) {
+    .header-wrapper .leading-tight {
+      display: none !important;
+    }
+  }
+}
+
+/* ===== NOTIFICATION DROPDOWN RESPONSIVE ===== */
+@media (max-width: 639px) {
+  .notification-dropdown {
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    top: auto !important;
+    bottom: 70px !important;
+    width: auto !important;
+    max-height: 70vh !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* ===== SEARCH SUGGESTIONS RESPONSIVE ===== */
+@media (max-width: 639px) {
+  .search-suggestions {
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    top: 70px !important;
+    max-height: 60vh !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* ===== MODAL RESPONSIVE ===== */
+@media (max-width: 639px) {
+  /* Full screen modals on mobile */
+  #qrPaymentModal > div,
+  #selectAddressModal > div,
+  #addressModal > div {
+    max-width: 100% !important;
+    max-height: 95vh !important;
+    margin: 0.5rem !important;
+    border-radius: 16px !important;
+  }
+  
+  /* Modal content scroll */
+  #qrPaymentModal .max-h-\[70vh\],
+  #selectAddressModal .max-h-\[60vh\],
+  #addressModal .max-h-\[60vh\] {
+    max-height: 50vh !important;
+  }
+}
+
+/* ===== FORM INPUTS RESPONSIVE ===== */
+@media (max-width: 639px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+    padding: 12px !important;
+  }
+  
+  /* Smaller buttons on mobile */
+  button, .btn {
+    min-height: 44px; /* Touch target */
+  }
+}
+
+/* ===== PRODUCT DETAIL RESPONSIVE ===== */
+@media (max-width: 767px) {
+  /* Image gallery */
+  .main-image-container {
+    height: 300px !important;
+  }
+  
+  /* Thumbnails horizontal scroll */
+  .thumbnail-container {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 8px !important;
+  }
+  
+  .thumbnail-item {
+    flex-shrink: 0 !important;
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  /* Price section */
+  .price-current {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Sticky buy bar */
+  .sticky-buy-bar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 40 !important;
+    padding: 12px 16px !important;
+    background: white !important;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1) !important;
+  }
+}
+
+/* ===== CART PAGE RESPONSIVE ===== */
+@media (max-width: 1023px) {
+  /* Stack cart layout */
+  #cart-content {
+    flex-direction: column !important;
+  }
+  
+  #cart-content > div:first-child,
+  #cart-content > div:last-child {
+    width: 100% !important;
+  }
+  
+  /* Order summary sticky on tablet */
+  #cart-content .sticky {
+    position: relative !important;
+    top: auto !important;
+  }
+}
+
+/* ===== CHECKOUT PAGE RESPONSIVE ===== */
+@media (max-width: 1023px) {
+  /* Stack checkout layout */
+  .lg\:col-span-2 {
+    grid-column: span 1 !important;
+  }
+  
+  /* Order summary at bottom on mobile */
+  .lg\:col-span-1 {
+    order: 2 !important;
+  }
+}
+
+/* ===== PROFILE PAGE RESPONSIVE ===== */
+@media (max-width: 1023px) {
+  /* Stack profile layout */
+  .lg\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Sidebar horizontal on tablet */
+  #profile-sidebar {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 16px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  
+  #profile-sidebar > * {
+    flex-shrink: 0 !important;
+  }
+}
+
+/* ===== NEWS PAGE RESPONSIVE ===== */
+@media (max-width: 767px) {
+  .news-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  
+  .news-card img {
+    height: 180px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ===== FOOTER RESPONSIVE ===== */
+@media (max-width: 767px) {
+  footer {
+    padding-bottom: 80px !important; /* Space for floating buttons */
+  }
+  
+  footer .grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  
+  footer h3 {
+    font-size: 1rem !important;
+  }
+  
+  footer p, footer a {
+    font-size: 0.875rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  footer .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ===== ANIMATIONS REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

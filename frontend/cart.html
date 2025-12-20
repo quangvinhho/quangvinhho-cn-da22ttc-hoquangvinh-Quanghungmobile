@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -33,8 +33,28 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/pages/cart.css">
+  <link rel="stylesheet" href="responsive.css">
 </head>
 <body class="bg-gray-50 min-h-screen">
+
+  <!-- ===== PAGE LOADER - Hiệu ứng loading trang ===== -->
+  <div id="page-loader">
+    <div class="loader-logo">
+      <img src="images/logo.png" alt="QuangHưng Mobile" onerror="this.style.display='none'">
+    </div>
+    <div class="loader-spinner"></div>
+    <div class="loader-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="loader-text">
+      <span>Đ</span><span>a</span><span>n</span><span>g</span><span>&nbsp;</span><span>t</span><span>ả</span><span>i</span><span>.</span><span>.</span><span>.</span>
+    </div>
+    <div class="loader-progress">
+      <div class="loader-progress-bar"></div>
+    </div>
+  </div>
 
   <!-- Header -->
   <div id="header-placeholder"></div>
@@ -303,6 +323,9 @@
   
   <!-- Cart Page JS -->
   <script src="js/cart.js"></script>
+
+  <!-- Main JS - Page Loader -->
+  <script src="main.js"></script>
 
   <!-- AI Chatbot -->
   <link rel="stylesheet" href="components/ai-chatbot.css">

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -25,6 +25,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="components/header.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
   
   <style>
     * { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
@@ -33,6 +35,25 @@
   </style>
 </head>
 <body class="bg-gray-100">
+    <!-- ===== PAGE LOADER - Hiệu ứng loading trang ===== -->
+  <div id="page-loader">
+    <div class="loader-logo">
+      <img src="images/logo.png" alt="QuangHưng Mobile" onerror="this.style.display='none'">
+    </div>
+    <div class="loader-spinner"></div>
+    <div class="loader-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="loader-text">
+      <span>Đ</span><span>a</span><span>n</span><span>g</span><span>&nbsp;</span><span>t</span><span>ả</span><span>i</span><span>.</span><span>.</span><span>.</span>
+    </div>
+    <div class="loader-progress">
+      <div class="loader-progress-bar"></div>
+    </div>
+  </div>
+
   
   <div id="header-placeholder"></div>
   <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
@@ -140,6 +161,8 @@
   <link rel="stylesheet" href="components/ai-chatbot.css">
   <script src="components/ai-chatbot.js"></script>
   <script src="components/floating-share.js"></script>
+  <!-- Main JS - Page Loader -->
+  <script src="main.js"></script>
 </body>
 </html>
 

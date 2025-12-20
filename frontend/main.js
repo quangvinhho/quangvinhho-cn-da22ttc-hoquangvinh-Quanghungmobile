@@ -6,6 +6,99 @@
    File này được giữ lại để tương thích với các trang cũ.
    ============================================ */
 
+// ============================================
+// PAGE LOADER - Hiệu ứng loading trang
+// ============================================
+(function() {
+  // Tạo loader HTML nếu chưa có
+  function createPageLoader() {
+    if (document.getElementById('page-loader')) return;
+    
+    const loader = document.createElement('div');
+    loader.id = 'page-loader';
+    loader.innerHTML = `
+      <div class="loader-logo">
+        <img src="images/logo.png" alt="QuangHưng Mobile" onerror="this.style.display='none'">
+      </div>
+      <div class="loader-spinner"></div>
+      <div class="loader-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="loader-text">
+        <span>Đ</span><span>a</span><span>n</span><span>g</span><span>&nbsp;</span><span>t</span><span>ả</span><span>i</span><span>.</span><span>.</span><span>.</span>
+      </div>
+      <div class="loader-progress">
+        <div class="loader-progress-bar"></div>
+      </div>
+    `;
+    
+    // Chèn loader vào đầu body
+    document.body.insertBefore(loader, document.body.firstChild);
+  }
+  
+  // Ẩn loader khi trang đã load xong
+  function hidePageLoader() {
+    const loader = document.getElementById('page-loader');
+    if (loader) {
+      // Thêm hiệu ứng fade out
+      loader.classList.add('hidden');
+      
+      // Thêm hiệu ứng page transition cho body
+      document.body.classList.add('page-transition');
+      
+      // Xóa loader sau khi animation hoàn tất
+      setTimeout(() => {
+        loader.remove();
+      }, 500);
+    }
+  }
+  
+  // Hiển thị loader khi chuyển trang
+  function showPageLoader() {
+    createPageLoader();
+    const loader = document.getElementById('page-loader');
+    if (loader) {
+      loader.classList.remove('hidden');
+    }
+  }
+  
+  // Khởi tạo loader ngay khi script được load
+  if (document.readyState === 'loading') {
+    // DOM chưa sẵn sàng, đợi DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+      createPageLoader();
+    });
+  } else {
+    // DOM đã sẵn sàng
+    createPageLoader();
+  }
+  
+  // Ẩn loader khi trang load xong hoàn toàn
+  window.addEventListener('load', function() {
+    // Đợi thêm một chút để đảm bảo mọi thứ đã render
+    setTimeout(hidePageLoader, 300);
+  });
+  
+  // Xử lý khi click vào link để chuyển trang
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a');
+    if (link && link.href && !link.href.startsWith('#') && !link.href.startsWith('javascript:') && 
+        !link.target && link.hostname === window.location.hostname) {
+      // Chỉ hiển thị loader cho các link nội bộ
+      const href = link.getAttribute('href');
+      if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
+        showPageLoader();
+      }
+    }
+  });
+  
+  // Export functions để có thể sử dụng từ bên ngoài
+  window.showPageLoader = showPageLoader;
+  window.hidePageLoader = hidePageLoader;
+})();
+
 // Format price to Vietnamese currency
 function formatPrice(price) {
   return price.toLocaleString('vi-VN') + '₫';
