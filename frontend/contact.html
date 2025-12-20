@@ -40,8 +40,8 @@
                   </div>
                   <div>
                     <h3 class="font-semibold">Địa chỉ</h3>
-                    <p class="text-gray-600">123 Đường ABC, Quận 1, TP.HCM</p>
-                    <p class="text-gray-600">Việt Nam</p>
+                    <p class="text-gray-600">Nam Kỳ Khởi Nghĩa, Phường 2</p>
+                    <p class="text-gray-600">TP. Trà Vinh, Trà Vinh</p>
                   </div>
                 </li>
                 <li class="flex items-start space-x-3">
@@ -150,15 +150,25 @@
       <div class="mt-8">
         <div class="bg-white rounded-lg shadow-md p-6">
           <h2 class="text-xl font-bold mb-6">Bản đồ cửa hàng</h2>
-          <div class="aspect-w-16 aspect-h-9">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4241674197156!2d106.69135661533407!3d10.777057462124266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3a9d8d1bb3%3A0xc4eca1b17d27e7f5!2sNguyen%20Hue%20Walking%20Street!5e0!3m2!1sen!2s!4v1633498687425!5m2!1sen!2s" 
-                    width="100%" 
-                    height="450" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy">
+          <div class="w-full" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.8415!2d106.3421!3d9.9347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0175b5d5b5b5b%3A0x5b5b5b5b5b5b5b5b!2zTmFtIEvhu7MgS2jhu59pIE5naMSpYSwgUGjGsOG7nW5nIDIsIFRQIFRyw6AgVmluaCwgVHLDoCBWaW5o!5e0!3m2!1svi!2svn!4v1703062800000!5m2!1svi!2svn" 
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;"
+              allowfullscreen="" 
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
             </iframe>
           </div>
+          <div class="mt-4 flex items-center gap-2 text-gray-600">
+            <i class="fas fa-map-marker-alt text-red-600"></i>
+            <span>Nam Kỳ Khởi Nghĩa, Phường 2, TP. Trà Vinh, Trà Vinh</span>
+          </div>
+          <a href="https://www.google.com/maps/search/Nam+K%E1%BB%B3+Kh%E1%BB%9Fi+Ngh%C4%A9a,+Ph%C6%B0%E1%BB%9Dng+2,+Tr%C3%A0+Vinh" 
+             target="_blank" 
+             class="inline-flex items-center gap-2 mt-3 text-red-600 hover:text-red-700 font-medium transition">
+            <i class="fas fa-directions"></i>
+            Xem chỉ đường trên Google Maps
+          </a>
         </div>
       </div>
 
@@ -338,6 +348,7 @@
     <!-- AI Chatbot -->
     <link rel="stylesheet" href="components/ai-chatbot.css">
     <script src="components/ai-chatbot.js"></script>
+    <script src="components/floating-share.js"></script>
   </body>
 </html>
 
