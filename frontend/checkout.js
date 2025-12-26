@@ -72,7 +72,21 @@ async function loadCart() {
   
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   
-  // Nếu user đã đăng nhập, thử load từ database trước
+  // ƯU TIÊN 1: Lấy sản phẩm được chọn từ trang giỏ hàng (checkout_items)
+  const checkoutItems = localStorage.getItem('checkout_items');
+  if (checkoutItems) {
+    const parsedCheckoutItems = JSON.parse(checkoutItems);
+    if (parsedCheckoutItems && parsedCheckoutItems.length > 0) {
+      cart = parsedCheckoutItems;
+      // Xóa checkout_items sau khi đã load để tránh dùng lại lần sau
+      // localStorage.removeItem('checkout_items'); // Giữ lại để reload trang vẫn có
+      renderCart();
+      calculateTotal();
+      return;
+    }
+  }
+  
+  // ƯU TIÊN 2: Nếu user đã đăng nhập, thử load từ database
   if (user && user.ma_kh) {
     try {
       const response = await fetch(`${API_URL}/cart/${user.ma_kh}`);
@@ -89,7 +103,7 @@ async function loadCart() {
     }
   }
   
-  // Fallback: Get cart from localStorage theo user
+  // ƯU TIÊN 3: Fallback - Get cart from localStorage theo user
   const cartKey = getCartKey();
   const savedCart = localStorage.getItem(cartKey);
   
@@ -136,12 +150,39 @@ function renderCart() {
     return;
   }
   
-  cartItemsContainer.innerHTML = cart.map(item => `
+  cartItemsContainer.innerHTML = cart.map(item => {
+    // Xử lý đường dẫn ảnh
+    let itemImage = item.image || item.anh_dai_dien || '';
+    if (!itemImage) {
+      itemImage = 'images/15-256.avif';
+    } else if (!itemImage.startsWith('http') && !itemImage.startsWith('images/')) {
+      itemImage = `images/${itemImage}`;
+    }
+    itemImage = itemImage.replace('images/images/', 'images/');
+    
+    // Xử lý màu sắc - parse JSON nếu cần
+    let itemColor = '';
+    if (item.color) {
+      if (typeof item.color === 'string' && (item.color.startsWith('{') || item.color.startsWith('['))) {
+        try {
+          const colorData = JSON.parse(item.color);
+          if (colorData.colorNames && colorData.colorNames.length > 0) {
+            itemColor = colorData.colorNames[0];
+          }
+        } catch (e) {
+          itemColor = item.color;
+        }
+      } else {
+        itemColor = item.color;
+      }
+    }
+    
+    return `
     <div class="flex gap-3 pb-4 border-b border-gray-100 last:border-0 last:pb-0">
-      <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-contain rounded-lg border border-gray-200">
+      <img src="${itemImage}" alt="${item.name}" class="w-16 h-16 object-contain rounded-lg border border-gray-200" onerror="this.src='images/15-256.avif'">
       <div class="flex-1">
         <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">${item.name}</h4>
-        ${item.color ? `<p class="text-xs text-gray-600">Màu: ${item.color}</p>` : ''}
+        ${itemColor ? `<p class="text-xs text-gray-600">Màu: ${itemColor}</p>` : ''}
         ${item.storage ? `<p class="text-xs text-gray-600">Dung lượng: ${item.storage}</p>` : ''}
         <div class="flex items-center justify-between mt-2">
           <span class="text-xs text-gray-600">SL: ${item.quantity}</span>
@@ -149,7 +190,7 @@ function renderCart() {
         </div>
       </div>
     </div>
-  `).join('');
+  `;}).join('');
 }
 
 // ===== CALCULATE TOTAL =====
@@ -1645,10 +1686,22 @@ async function completeOrder(orderData) {
   // Lưu địa chỉ giao hàng để dùng cho lần sau
   saveShippingAddress();
   
+  // Clear checkout_items (sản phẩm đã chọn để thanh toán)
+  localStorage.removeItem('checkout_items');
+  
   // Clear cart and pending order - dùng đúng cart key
   const cartKey = getCartKey();
   localStorage.removeItem(cartKey);
   localStorage.removeItem('pendingOrder');
+  
+  // Xóa giỏ hàng trong database nếu đã đăng nhập
+  if (user && user.ma_kh) {
+    try {
+      await fetch(`${API_URL}/cart/clear/${user.ma_kh}`, { method: 'DELETE' });
+    } catch (e) {
+      console.log('Clear cart in DB error:', e.message);
+    }
+  }
   
   // Dispatch event để cập nhật cart badge
   window.dispatchEvent(new Event('cartUpdated'));

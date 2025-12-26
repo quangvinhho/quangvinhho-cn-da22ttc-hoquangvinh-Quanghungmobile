@@ -21,7 +21,7 @@ const brandImageMap = {
 function getProductImage(row) {
     // Nếu có ảnh trong DB, dùng nó
     const dbImage = row.anh_dai_dien || row.image;
-    if (dbImage && (dbImage.includes('.avif') || dbImage.includes('.webp') || dbImage.includes('.png') || dbImage.includes('.jpg'))) {
+    if (dbImage && (dbImage.includes('.avif') || dbImage.includes('.webp') || dbImage.includes('.png') || dbImage.includes('.jpg') || dbImage.includes('.jpeg'))) {
         return dbImage.startsWith('images/') ? dbImage : `images/${dbImage}`;
     }
     
@@ -30,66 +30,36 @@ function getProductImage(row) {
     return brandImageMap[brand] || brandImageMap['default'];
 }
 
-// Map ảnh chi tiết theo hãng - sử dụng các ảnh liên quan trong thư mục images
-const brandDetailImages = {
-    'Apple': [
-        'images/iphone-17-pro_1.webp',
-        'images/iphone-17-pro-1_1.webp',
-        'images/iphone-17-pro-2_1_1.webp',
-        'images/iphone-17-pro-5_1.webp'
-    ],
-    'Samsung': [
-        'images/samsung-galaxy-s24_15__2.webp',
-        'images/samsung-galaxy-s24_17__2.webp',
-        'images/samsung-galaxy-s24_20__2.webp',
-        'images/galaxy-s24-plus-vang.webp'
-    ],
-    'Xiaomi': [
-        'images/Xiaomi.avif',
-        'images/home-poco-f8-pro-1125.webp',
-        'images/Xiaomi.avif',
-        'images/home-poco-f8-pro-1125.webp'
-    ],
-    'Oppo': [
-        'images/oppo-reno.avif',
-        'images/reno-xanh.avif',
-        'images/reno10_5g_-_combo_product_-_blue_-_copy.webp',
-        'images/oppo-find-x9-cate-open-sale.webp'
-    ],
-    'Sony': [
-        'images/sony-xperia-1-vi.webp',
-        'images/cate_XPERIA_10VII_1125.webp',
-        'images/sony-xperia-1-vi.webp',
-        'images/cate_XPERIA_10VII_1125.webp'
-    ],
-    'Google': [
-        'images/pixel-9-pro.avif',
-        'images/pixel-9-pro.avif',
-        'images/pixel-9-pro.avif',
-        'images/pixel-9-pro.avif'
-    ],
-    'Tecno': [
-        'images/TECNO.avif',
-        'images/TECNO.avif',
-        'images/TECNO.avif',
-        'images/TECNO.avif'
-    ]
-};
-
 // Helper function để lấy mảng ảnh chi tiết
+// Chỉ trả về ảnh từ DB (admin thêm), không tự động thêm ảnh mặc định
 function getProductImages(row) {
     const mainImage = getProductImage(row);
-    const brand = row.ten_hang || row.brand || '';
     
-    // Nếu có ảnh trong DB, dùng nó
+    // Nếu có ảnh phụ trong DB (admin đã thêm), dùng nó
     if (row.images) {
-        const images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+        let images = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+        // Lọc bỏ ảnh banner - không phải ảnh sản phẩm
+        images = images.filter(img => {
+            if (!img) return false;
+            const imgLower = img.toLowerCase();
+            if (imgLower.includes('h1_1440x242')) return false;
+            if (imgLower.includes('banner')) return false;
+            if (imgLower.includes('1440x242')) return false;
+            if (imgLower.includes('promo')) return false;
+            if (imgLower.includes('khuyen-mai')) return false;
+            if (imgLower.includes('khuyenmai')) return false;
+            if (imgLower.includes('sale')) return false;
+            if (imgLower.includes('_ad')) return false;
+            // Loại bỏ ảnh có kích thước banner (thường là 1440x242, 1200x300, etc.)
+            if (/\d{3,4}x\d{2,3}/.test(imgLower)) return false;
+            return true;
+        });
         if (images.length > 0) return images;
     }
     
-    // Tạo mảng ảnh từ ảnh chính + ảnh theo hãng
-    const brandImages = brandDetailImages[brand] || [];
-    return [mainImage, ...brandImages.slice(0, 3)];
+    // Không có ảnh phụ từ admin -> chỉ trả về ảnh chính
+    // Admin sẽ tự thêm ảnh phụ qua trang quản trị
+    return [mainImage];
 }
 
 // Thông số kỹ thuật và GIÁ chi tiết THỰC TẾ theo thị trường Việt Nam (12/2025)
@@ -1010,6 +980,104 @@ router.get('/featured', async (req, res) => {
     }
 });
 
+// GET /api/products/daily-deals - Lấy 5 sản phẩm bán chậm nhất (GIÁ SỐC MỖI NGÀY)
+// Sản phẩm thay đổi theo ngày dựa trên seed từ ngày hiện tại
+router.get('/daily-deals', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 5;
+        
+        // Tạo seed từ ngày hiện tại để sản phẩm thay đổi mỗi ngày
+        const today = new Date();
+        const daySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+        
+        // Lấy sản phẩm bán chậm nhất - đơn giản hóa query
+        const [products] = await pool.query(`
+            SELECT sp.*, hsx.ten_hang,
+                   COALESCE((SELECT AVG(so_sao) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as avg_rating,
+                   COALESCE((SELECT COUNT(*) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as review_count,
+                   COALESCE((SELECT SUM(so_luong) FROM chi_tiet_don_hang WHERE ma_sp = sp.ma_sp), 0) as total_sold
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+            WHERE sp.so_luong_ton > 0
+            ORDER BY total_sold ASC, MOD(sp.ma_sp * ?, 1000) ASC
+            LIMIT ?
+        `, [daySeed, limit]);
+        
+        // Format dữ liệu cho frontend với giảm giá hấp dẫn
+        const discountLabels = ['Giảm sốc', 'Flash Sale', 'Siêu giảm giá', 'HOT SALE', 'Deal hot'];
+        const discountPercents = [30, 25, 35, 20, 28];
+        
+        const formattedProducts = products.map((p, idx) => {
+            const rating = parseFloat(p.avg_rating) || 4;
+            const discountPercent = discountPercents[idx % discountPercents.length];
+            const originalPrice = Math.round(p.gia / (1 - discountPercent / 100));
+            
+            return {
+                id: p.ma_sp,
+                name: p.ten_sp,
+                price: p.gia,
+                oldPrice: originalPrice,
+                discountPercent: discountPercent,
+                discountLabel: discountLabels[idx % discountLabels.length],
+                image: p.anh_dai_dien || getProductImage(p),
+                brand: p.ten_hang,
+                storage: p.bo_nho,
+                rating: rating,
+                reviewCount: p.review_count || Math.floor(Math.random() * 50) + 10,
+                totalSold: p.total_sold
+            };
+        });
+        
+        res.json({ success: true, data: formattedProducts });
+    } catch (error) {
+        console.error('Error getting daily deals:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// GET /api/products/newest - Lấy sản phẩm mới về (theo ngày cập nhật mới nhất)
+// QUAN TRỌNG: Route này phải đặt TRƯỚC route /:id để không bị match nhầm
+router.get('/newest', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 5;
+        
+        // Lấy sản phẩm mới nhất theo ngay_cap_nhat (ngày cập nhật)
+        const [products] = await pool.query(`
+            SELECT sp.*, hsx.ten_hang,
+                   COALESCE((SELECT AVG(so_sao) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as avg_rating,
+                   COALESCE((SELECT COUNT(*) FROM danh_gia WHERE ma_sp = sp.ma_sp), 0) as review_count
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+            WHERE sp.so_luong_ton > 0
+            ORDER BY sp.ngay_cap_nhat DESC, sp.ma_sp DESC
+            LIMIT ?
+        `, [limit]);
+        
+        // Format dữ liệu cho frontend
+        const formattedProducts = products.map((p, idx) => {
+            const rating = parseFloat(p.avg_rating) || 0;
+            
+            return {
+                id: p.ma_sp,
+                name: p.ten_sp,
+                price: p.gia,
+                oldPrice: Math.round(p.gia * 1.12),
+                image: p.anh_dai_dien || getProductImage(p),
+                brand: p.ten_hang,
+                storage: p.bo_nho,
+                rating: rating,
+                reviewCount: p.review_count || 0,
+                isNew: true
+            };
+        });
+        
+        res.json({ success: true, data: formattedProducts });
+    } catch (error) {
+        console.error('Error getting newest products:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // GET /api/products/:id - Lấy chi tiết sản phẩm
 router.get('/:id', async (req, res) => {
     try {
@@ -1037,9 +1105,27 @@ router.get('/:id', async (req, res) => {
         
         const product = rows[0];
         
-        // Thêm ảnh từ DB vào product
+        // Thêm ảnh từ DB vào product và filter bỏ ảnh banner
         if (imageRows.length > 0) {
-            product.images = imageRows.map(img => img.duong_dan.startsWith('images/') ? img.duong_dan : `images/${img.duong_dan}`);
+            let images = imageRows.map(img => img.duong_dan.startsWith('images/') ? img.duong_dan : `images/${img.duong_dan}`);
+            // Lọc bỏ ảnh banner
+            images = images.filter(img => {
+                if (!img) return false;
+                const imgLower = img.toLowerCase();
+                if (imgLower.includes('h1_1440x242')) return false;
+                if (imgLower.includes('banner')) return false;
+                if (imgLower.includes('1440x242')) return false;
+                if (imgLower.includes('promo')) return false;
+                if (imgLower.includes('khuyen-mai')) return false;
+                if (imgLower.includes('khuyenmai')) return false;
+                if (imgLower.includes('sale')) return false;
+                if (imgLower.includes('_ad')) return false;
+                if (/\d{3,4}x\d{2,3}/.test(imgLower)) return false;
+                return true;
+            });
+            if (images.length > 0) {
+                product.images = images;
+            }
         }
         
         // Map dữ liệu sang format frontend

@@ -101,7 +101,10 @@
 
 // Format price to Vietnamese currency
 function formatPrice(price) {
-  return price.toLocaleString('vi-VN') + '₫';
+  if (price === undefined || price === null || isNaN(price)) {
+    return '0₫';
+  }
+  return Number(price).toLocaleString('vi-VN') + '₫';
 }
 
 // Parse price from string
@@ -173,6 +176,38 @@ function updateCartBadge() {
   });
 }
 
+// Đồng bộ giỏ hàng từ database về localStorage
+// LUÔN ƯU TIÊN DATABASE - không fallback localStorage
+async function syncCartFromDB() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!user || !user.ma_kh) return;
+  
+  const API_URL = 'http://localhost:3000/api';
+  
+  try {
+    const response = await fetch(`${API_URL}/cart/${user.ma_kh}`);
+    const data = await response.json();
+    
+    if (data.success) {
+      // Database là nguồn dữ liệu DUY NHẤT
+      const cartKey = getCartKey();
+      localStorage.setItem(cartKey, JSON.stringify(data.data || []));
+      updateCartBadge();
+    } else {
+      // API lỗi - xóa localStorage để tránh dữ liệu cũ
+      const cartKey = getCartKey();
+      localStorage.setItem(cartKey, JSON.stringify([]));
+      updateCartBadge();
+    }
+  } catch (error) {
+    console.error('Lỗi đồng bộ giỏ hàng:', error);
+    // Lỗi kết nối - xóa localStorage để tránh dữ liệu cũ
+    const cartKey = getCartKey();
+    localStorage.setItem(cartKey, JSON.stringify([]));
+    updateCartBadge();
+  }
+}
+
 // Kiểm tra đăng nhập
 function isLoggedIn() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -211,33 +246,53 @@ function closeLoginModal() {
   if (modal) modal.remove();
 }
 
-// Add to cart
-function addToCart(product) {
+// Add to cart - gọi API backend
+async function addToCart(product) {
   // Kiểm tra đăng nhập trước
   if (!isLoggedIn()) {
     showLoginRequiredModal();
     return;
   }
   
-  const cartKey = getCartKey();
-  const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const API_URL = 'http://localhost:3000/api';
   
-  const existingIndex = cart.findIndex(item => 
-    item.id === product.id && 
-    item.color === product.color && 
-    item.storage === product.storage
-  );
-  
-  if (existingIndex > -1) {
-    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-  } else {
-    cart.push({ ...product, quantity: 1 });
+  // Validate product data
+  if (!product || !product.id) {
+    showToast('Thông tin sản phẩm không hợp lệ', 'error');
+    return;
   }
   
-  localStorage.setItem(cartKey, JSON.stringify(cart));
-  updateCartBadge();
-  window.dispatchEvent(new CustomEvent('cartUpdated'));
-  showToast('Đã thêm vào giỏ hàng!', 'success');
+  try {
+    const response = await fetch(`${API_URL}/cart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: user.ma_kh,
+        productId: product.id,
+        quantity: 1,
+        productInfo: {
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          color: product.color || 'Mặc định',
+          storage: product.storage || '128GB'
+        }
+      })
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      // Đồng bộ lại từ database để có cartItemId chính xác
+      await syncCartFromDB();
+      showToast('Đã thêm vào giỏ hàng!', 'success');
+    } else {
+      showToast(data.message || 'Lỗi thêm giỏ hàng', 'error');
+    }
+  } catch (error) {
+    console.error('Lỗi thêm giỏ hàng:', error);
+    showToast('Lỗi kết nối, vui lòng thử lại', 'error');
+  }
 }
 
 // Initialize scroll reveal
@@ -262,7 +317,9 @@ function initScrollReveal() {
 }
 
 // Initialize on DOM ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+  // Đồng bộ giỏ hàng từ database trước khi cập nhật badge
+  await syncCartFromDB();
   updateCartBadge();
   initScrollReveal();
   
@@ -281,6 +338,7 @@ if (typeof window !== 'undefined') {
   window.showToast = showToast;
   window.debounce = debounce;
   window.updateCartBadge = updateCartBadge;
+  window.syncCartFromDB = syncCartFromDB;
   window.addToCart = addToCart;
 }
 

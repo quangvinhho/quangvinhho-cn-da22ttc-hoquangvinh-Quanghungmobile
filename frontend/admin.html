@@ -246,6 +246,42 @@
       border-radius: 50%;
       animation: pulse 2s infinite;
     }
+    
+    /* Dashboard Chart Cards */
+    .chart-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+    
+    .chart-card:hover {
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Stat Card Hover Effect */
+    .stat-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Report Table Styles */
+    #business-report-table tr:hover {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
+    }
+    
+    /* Gauge Chart Center Text */
+    .gauge-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 min-h-screen">
@@ -425,194 +461,262 @@
       <!-- Main content area with scroll -->
       <main class="flex-1 overflow-y-auto p-4 lg:p-8">
         <div id="section-dashboard" class="section-content active">
-          <!-- thống kê Tổng quan - 4 card với thiết kế mới -->
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+          <!-- Row 1: 4 Stat Cards với thiết kế giống mẫu CFO -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
             <!-- Tổng doanh thu -->
-            <div class="stat-card bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg shadow-blue-500/15 p-5 text-white">
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                    <i class="fas fa-wallet text-xl"></i>
-                  </div>
-                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="revenue-change">
-                    <i class="fas fa-arrow-up text-[10px]"></i>0%
-                  </span>
+            <div class="stat-card bg-white rounded-2xl shadow-lg border border-slate-100 p-5 hover:shadow-xl transition-all">
+              <div class="flex items-start justify-between">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                  <i class="fas fa-wallet text-white text-xl"></i>
                 </div>
-                <p class="text-white/70 text-xs font-medium mb-1">Tổng doanh thu</p>
-                <p class="text-2xl font-bold" id="stat-revenue">0đ</p>
-                <p class="text-white/50 text-[10px] mt-2">So với tháng trước</p>
+                <div class="text-right">
+                  <p class="text-xs text-slate-500 font-medium mb-1">Tổng doanh thu</p>
+                  <p class="text-2xl font-extrabold text-slate-800" id="stat-revenue">0đ</p>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-400">So với cùng kỳ</span>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1" id="revenue-change">
+                  <i class="fas fa-arrow-up text-[10px]"></i>0%
+                </span>
               </div>
             </div>
             
             <!-- Số đơn đặt hàng -->
-            <div class="stat-card bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg shadow-emerald-500/15 p-5 text-white">
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                    <i class="fas fa-shopping-cart text-xl"></i>
-                  </div>
-                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="orders-change">
-                    <i class="fas fa-arrow-up text-[10px]"></i>0%
-                  </span>
+            <div class="stat-card bg-white rounded-2xl shadow-lg border border-slate-100 p-5 hover:shadow-xl transition-all">
+              <div class="flex items-start justify-between">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                  <i class="fas fa-shopping-cart text-white text-xl"></i>
                 </div>
-                <p class="text-white/70 text-xs font-medium mb-1">Đơn hàng</p>
-                <p class="text-2xl font-bold" id="stat-orders">0</p>
-                <p class="text-white/50 text-[10px] mt-2">Tổng đơn trong tháng</p>
+                <div class="text-right">
+                  <p class="text-xs text-slate-500 font-medium mb-1">Số đơn đặt hàng</p>
+                  <p class="text-2xl font-extrabold text-slate-800" id="stat-orders">0</p>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-400">So với cùng kỳ</span>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1" id="orders-change">
+                  <i class="fas fa-arrow-up text-[10px]"></i>0%
+                </span>
               </div>
             </div>
             
             <!-- Khách hàng -->
-            <div class="stat-card bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg shadow-amber-500/15 p-5 text-white">
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                    <i class="fas fa-users text-xl"></i>
-                  </div>
-                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="customers-change">
-                    <i class="fas fa-arrow-up text-[10px]"></i>0%
-                  </span>
+            <div class="stat-card bg-white rounded-2xl shadow-lg border border-slate-100 p-5 hover:shadow-xl transition-all">
+              <div class="flex items-start justify-between">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                  <i class="fas fa-users text-white text-xl"></i>
                 </div>
-                <p class="text-white/70 text-xs font-medium mb-1">Khách hàng</p>
-                <p class="text-2xl font-bold" id="stat-customers">0</p>
-                <p class="text-white/50 text-[10px] mt-2">Tổng khách đăng ký</p>
+                <div class="text-right">
+                  <p class="text-xs text-slate-500 font-medium mb-1">Số khách hàng</p>
+                  <p class="text-2xl font-extrabold text-slate-800" id="stat-customers">0</p>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-400">So với cùng kỳ</span>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1" id="customers-change">
+                  <i class="fas fa-arrow-up text-[10px]"></i>0%
+                </span>
               </div>
             </div>
             
             <!-- Sản phẩm đã bán -->
-            <div class="stat-card bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl shadow-lg shadow-violet-500/15 p-5 text-white">
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                    <i class="fas fa-box-open text-xl"></i>
-                  </div>
-                  <span class="text-white/90 text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full flex items-center gap-1" id="products-change">
-                    <i class="fas fa-arrow-up text-[10px]"></i>0%
-                  </span>
+            <div class="stat-card bg-white rounded-2xl shadow-lg border border-slate-100 p-5 hover:shadow-xl transition-all">
+              <div class="flex items-start justify-between">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
+                  <i class="fas fa-box-open text-white text-xl"></i>
                 </div>
-                <p class="text-white/70 text-xs font-medium mb-1">Sản phẩm đã bán</p>
-                <p class="text-2xl font-bold" id="stat-products">0</p>
-                <p class="text-white/50 text-[10px] mt-2">Tổng số lượng bán ra</p>
+                <div class="text-right">
+                  <p class="text-xs text-slate-500 font-medium mb-1">Số lượng bán</p>
+                  <p class="text-2xl font-extrabold text-slate-800" id="stat-products">0</p>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-400">So với cùng kỳ</span>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1" id="products-change">
+                  <i class="fas fa-arrow-up text-[10px]"></i>0%
+                </span>
               </div>
             </div>
           </div>
 
-          <!-- Row 2: Biểu đồ doanh thu + Top Sản phẩm bán chạy -->
-          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
-            <!-- Biểu đồ doanh thu - chiếm 2 cột -->
-            <div class="xl:col-span-2 glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
-              <div class="flex items-center justify-between mb-6">
-                <div>
-                  <h3 class="text-lg font-bold text-dark-800 flex items-center gap-2">
-                    <span class="w-3 h-3 bg-primary-500 rounded-full"></span>
-                    Doanh thu thực tế theo tháng
-                  </h3>
-                  <p class="text-sm text-dark-400 mt-1">Nam 2024</p>
+          <!-- Row 2: Gauge Chart + Biểu đồ doanh thu -->
+          <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 mb-6">
+            <!-- Gauge Chart - Tỷ lệ hoàn thành kế hoạch -->
+            <div class="glass-effect rounded-2xl shadow-lg p-5 border border-white/50">
+              <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+                Tỷ lệ hoàn thành KH
+              </h3>
+              <div class="relative flex items-center justify-center" style="height: 160px;">
+                <canvas id="gaugeChart"></canvas>
+                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                  <span class="text-3xl font-extrabold text-orange-500" id="gauge-percent">0%</span>
+                  <span class="text-xs text-slate-400">Doanh thu</span>
                 </div>
-                <div class="flex items-center gap-4 text-sm">
-                  <span class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-gradient-to-r from-primary-500 to-violet-500"></span>
-                    <span class="text-dark-500">thực tế</span>
+              </div>
+            </div>
+
+            <!-- Biểu đồ doanh thu thực tế vs kế hoạch - chiếm 3 cột -->
+            <div class="xl:col-span-3 glass-effect rounded-2xl shadow-lg p-5 border border-white/50">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                    Doanh thu thực tế so với kế hoạch
+                  </h3>
+                  <p class="text-xs text-slate-400 mt-1">Năm 2024</p>
+                </div>
+                <div class="flex items-center gap-4 text-xs">
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded bg-blue-500"></span>
+                    <span class="text-slate-500">Thực tế</span>
                   </span>
-                  <span class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-slate-300"></span>
-                    <span class="text-dark-500">Kế hoạch</span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded bg-slate-300"></span>
+                    <span class="text-slate-500">Kế hoạch</span>
                   </span>
                 </div>
               </div>
-              <div class="relative" style="height: 250px;">
+              <div class="relative" style="height: 200px;">
                 <canvas id="revenueChart"></canvas>
               </div>
             </div>
+          </div>
 
-            <!-- Top 5 Sản phẩm bán chạy -->
-            <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
-              <div class="flex items-center justify-between mb-6">
-                <div>
-                  <h3 class="text-lg font-bold text-dark-800 flex items-center gap-2">
-                    <span class="text-2xl">📦</span>
-                    Top Sản phẩm bán chạy
-                  </h3>
-                  <p class="text-sm text-dark-400 mt-1">Top 5 Sản phẩm có doanh số cao nhất</p>
-                </div>
+          <!-- Row 3: Tỷ lệ tăng trưởng + Top sản phẩm bán chạy + Doanh thu theo thương hiệu -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-6">
+            <!-- Tỷ lệ tăng trưởng khách hàng -->
+            <div class="glass-effect rounded-2xl shadow-lg p-5 border border-white/50">
+              <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                Tỷ lệ tăng trưởng KH
+              </h3>
+              <div class="relative" style="height: 200px;">
+                <canvas id="growthChart"></canvas>
               </div>
-              <div class="space-y-4" id="top-products-list">
-                <!-- Skeleton loading với hiệu ứng mới -->
-                <div class="flex items-center gap-4 p-3 rounded-2xl shimmer">
-                  <div class="w-14 h-14 bg-slate-200 rounded-xl"></div>
-                  <div class="flex-1">
-                    <div class="h-4 bg-slate-200 rounded-lg w-3/4 mb-2"></div>
-                    <div class="h-3 bg-slate-100 rounded-lg w-1/2"></div>
-                  </div>
-                  <div class="h-8 w-8 bg-slate-200 rounded-full"></div>
-                </div>
-                <div class="flex items-center gap-4 p-3 rounded-2xl shimmer">
-                  <div class="w-14 h-14 bg-slate-200 rounded-xl"></div>
-                  <div class="flex-1">
-                    <div class="h-4 bg-slate-200 rounded-lg w-3/4 mb-2"></div>
-                    <div class="h-3 bg-slate-100 rounded-lg w-1/2"></div>
-                  </div>
-                  <div class="h-8 w-8 bg-slate-200 rounded-full"></div>
-                </div>
-                <div class="flex items-center gap-4 p-3 rounded-2xl shimmer">
-                  <div class="w-14 h-14 bg-slate-200 rounded-xl"></div>
-                  <div class="flex-1">
-                    <div class="h-4 bg-slate-200 rounded-lg w-3/4 mb-2"></div>
-                    <div class="h-3 bg-slate-100 rounded-lg w-1/2"></div>
-                  </div>
-                  <div class="h-8 w-8 bg-slate-200 rounded-full"></div>
-                </div>
+            </div>
+
+            <!-- Top sản phẩm bán chạy - Horizontal Bar -->
+            <div class="glass-effect rounded-2xl shadow-lg p-5 border border-white/50">
+              <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-violet-500 rounded-full"></span>
+                Top 5 sản phẩm bán chạy
+              </h3>
+              <div class="relative" style="height: 200px;">
+                <canvas id="topProductsChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Doanh thu theo thương hiệu -->
+            <div class="glass-effect rounded-2xl shadow-lg p-5 border border-white/50">
+              <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
+                Doanh thu theo thương hiệu
+              </h3>
+              <div class="relative" style="height: 200px;">
+                <canvas id="brandRevenueChart"></canvas>
               </div>
             </div>
           </div>
 
-          <!-- Row 3: Đơn hàng theo trạng thái + Đơn hàng gần đây -->
-          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+          <!-- Row 4: Đơn hàng theo trạng thái + Đơn hàng gần đây -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-6">
             <!-- Đơn hàng theo trạng thái -->
-            <div class="glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
-              <h3 class="text-lg font-bold text-dark-800 mb-6 flex items-center gap-2">
-                <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
+            <div class="glass-effect rounded-2xl shadow-lg p-5 border border-white/50">
+              <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-rose-500 rounded-full"></span>
                 Đơn hàng theo trạng thái
               </h3>
-              <div class="relative" style="height: 220px;">
+              <div class="relative" style="height: 200px;">
                 <canvas id="ordersChart"></canvas>
               </div>
             </div>
             
             <!-- Đơn hàng gần đây - chiếm 2 cột -->
-            <div class="xl:col-span-2 glass-effect rounded-3xl shadow-xl p-6 border border-white/50">
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold text-dark-800 flex items-center gap-2">
-                  <span class="w-3 h-3 bg-violet-500 rounded-full"></span>
+            <div class="xl:col-span-2 glass-effect rounded-2xl shadow-lg p-5 border border-white/50">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                  <span class="w-2 h-2 bg-indigo-500 rounded-full"></span>
                   Đơn hàng gần đây
                 </h3>
-                <a href="#" onclick="showSection('orders')" class="text-primary-600 text-sm font-medium hover:text-primary-700 flex items-center gap-1 group">
+                <a href="#" onclick="showSection('orders')" class="text-blue-600 text-xs font-medium hover:text-blue-700 flex items-center gap-1 group">
                   Xem tất cả 
-                  <i class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                  <i class="fas fa-arrow-right text-[10px] transition-transform group-hover:translate-x-1"></i>
                 </a>
               </div>
               <div class="overflow-x-auto">
-                <table class="w-full">
+                <table class="w-full text-sm">
                   <thead>
-                    <tr class="text-left text-dark-400 text-sm border-b border-slate-200">
-                      <th class="pb-4 font-semibold">mã don</th>
-                      <th class="pb-4 font-semibold">Khách hàng</th>
-                      <th class="pb-4 font-semibold">Tổng tiền</th>
-                      <th class="pb-4 font-semibold">trạng thái</th>
-                      <th class="pb-4 font-semibold">ngày đãt</th>
+                    <tr class="text-left text-slate-500 text-xs border-b border-slate-200">
+                      <th class="pb-3 font-semibold">Mã đơn</th>
+                      <th class="pb-3 font-semibold">Khách hàng</th>
+                      <th class="pb-3 font-semibold">Tổng tiền</th>
+                      <th class="pb-3 font-semibold">Trạng thái</th>
+                      <th class="pb-3 font-semibold">Ngày đặt</th>
                     </tr>
                   </thead>
                   <tbody id="recent-orders-table">
-                    <tr><td colspan="5" class="py-8 text-center text-dark-400">
+                    <tr><td colspan="5" class="py-8 text-center text-slate-400">
                       <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
                           <i class="fas fa-spinner fa-spin text-slate-400"></i>
                         </div>
-                        <span>Đang tải...</span>
+                        <span class="text-xs">Đang tải...</span>
                       </div>
                     </td></tr>
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+
+          <!-- Row 5: Báo cáo kết quả kinh doanh -->
+          <div class="glass-effect rounded-2xl shadow-lg p-5 border border-white/50 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                <span class="w-2 h-2 bg-cyan-500 rounded-full"></span>
+                Báo cáo kết quả kinh doanh
+              </h3>
+              <span class="text-xs text-slate-400" id="report-period">Tháng 12 - 2024</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="text-left text-slate-500 text-xs border-b border-slate-200 bg-slate-50">
+                    <th class="px-4 py-3 font-semibold">Chỉ tiêu</th>
+                    <th class="px-4 py-3 font-semibold text-right">Thực tế tháng</th>
+                    <th class="px-4 py-3 font-semibold text-right">So với KH</th>
+                    <th class="px-4 py-3 font-semibold text-right">So với cùng kỳ</th>
+                  </tr>
+                </thead>
+                <tbody id="business-report-table">
+                  <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="px-4 py-3 font-medium text-slate-700">Doanh thu thuần</td>
+                    <td class="px-4 py-3 text-right font-bold text-slate-800" id="report-revenue">0đ</td>
+                    <td class="px-4 py-3 text-right" id="report-revenue-plan">-</td>
+                    <td class="px-4 py-3 text-right" id="report-revenue-yoy">-</td>
+                  </tr>
+                  <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="px-4 py-3 font-medium text-slate-700">Số đơn hàng</td>
+                    <td class="px-4 py-3 text-right font-bold text-slate-800" id="report-orders">0</td>
+                    <td class="px-4 py-3 text-right" id="report-orders-plan">-</td>
+                    <td class="px-4 py-3 text-right" id="report-orders-yoy">-</td>
+                  </tr>
+                  <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="px-4 py-3 font-medium text-slate-700">Khách hàng mới</td>
+                    <td class="px-4 py-3 text-right font-bold text-slate-800" id="report-customers">0</td>
+                    <td class="px-4 py-3 text-right" id="report-customers-plan">-</td>
+                    <td class="px-4 py-3 text-right" id="report-customers-yoy">-</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-4 py-3 font-medium text-slate-700">Giá trị đơn TB</td>
+                    <td class="px-4 py-3 text-right font-bold text-slate-800" id="report-avg-order">0đ</td>
+                    <td class="px-4 py-3 text-right" id="report-avg-plan">-</td>
+                    <td class="px-4 py-3 text-right" id="report-avg-yoy">-</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1700,7 +1804,59 @@
               <!-- Thêm màu tùy chỉnh -->
               <div class="flex items-center gap-2 mb-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
                 <input type="color" id="custom-color-picker" value="#FF6B00" class="w-12 h-12 rounded-xl cursor-pointer border-0 shadow-inner">
-                <input type="text" id="custom-color-name" placeholder="Nhập tên màu (VD: Titan Cam)" class="flex-1 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                <div class="flex-1 relative">
+                  <input type="text" id="custom-color-name" list="color-suggestions" autocomplete="off" placeholder="Nhập hoặc chọn tên màu (VD: Titan Cam)" class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                  <datalist id="color-suggestions">
+                    <!-- Màu cơ bản -->
+                    <option value="Đen">
+                    <option value="Trắng">
+                    <option value="Bạc">
+                    <option value="Xám">
+                    <option value="Vàng Gold">
+                    <option value="Hồng">
+                    <option value="Cam">
+                    <option value="Đỏ">
+                    <option value="Đỏ Đô">
+                    <option value="Nâu">
+                    <!-- Màu xanh -->
+                    <option value="Xanh Dương">
+                    <option value="Xanh Da Trời">
+                    <option value="Xanh Lá">
+                    <option value="Xanh Mint">
+                    <option value="Xanh Teal">
+                    <option value="Xanh Navy">
+                    <option value="Xanh Rêu">
+                    <!-- Màu tím -->
+                    <option value="Tím">
+                    <option value="Tím Indigo">
+                    <option value="Lavender">
+                    <option value="Tím Than">
+                    <!-- Màu Titan (iPhone) -->
+                    <option value="Titan Tự Nhiên">
+                    <option value="Titan Trắng">
+                    <option value="Titan Xanh">
+                    <option value="Titan Đen">
+                    <option value="Titan Sa Mạc">
+                    <option value="Titan Cam">
+                    <!-- Màu đặc biệt -->
+                    <option value="Graphite">
+                    <option value="Cream">
+                    <option value="Midnight">
+                    <option value="Starlight">
+                    <option value="Sierra Blue">
+                    <option value="Alpine Green">
+                    <option value="Deep Purple">
+                    <option value="Space Black">
+                    <option value="Rose Gold">
+                    <option value="Pacific Blue">
+                    <option value="Phantom Black">
+                    <option value="Burgundy">
+                    <option value="Green">
+                    <option value="Blue">
+                    <option value="Yellow">
+                    <option value="Pink">
+                  </datalist>
+                </div>
                 <button type="button" onclick="addCustomColor()" class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/25 transition-all">
                   <i class="fas fa-plus"></i> Thêm
                 </button>
@@ -1860,152 +2016,133 @@
             </button>
           </div>
           
+          <!-- Datalist cho các gợi ý -->
+          <datalist id="ram-suggestions">
+            <option value="4GB">
+            <option value="6GB">
+            <option value="8GB">
+            <option value="12GB">
+            <option value="16GB">
+            <option value="18GB">
+            <option value="24GB">
+          </datalist>
+          
+          <datalist id="chip-suggestions">
+            <!-- Apple -->
+            <option value="Apple A18 Pro">
+            <option value="Apple A18">
+            <option value="Apple A17 Pro">
+            <option value="Apple A16 Bionic">
+            <option value="Apple A15 Bionic">
+            <!-- Qualcomm -->
+            <option value="Snapdragon 8 Elite">
+            <option value="Snapdragon 8 Gen 3">
+            <option value="Snapdragon 8 Gen 2">
+            <option value="Snapdragon 7+ Gen 3">
+            <option value="Snapdragon 6 Gen 1">
+            <!-- Samsung -->
+            <option value="Exynos 2400">
+            <option value="Exynos 2200">
+            <option value="Exynos 1480">
+            <!-- MediaTek -->
+            <option value="Dimensity 9300">
+            <option value="Dimensity 8300">
+            <option value="Dimensity 7300">
+            <option value="Helio G99">
+            <!-- Google -->
+            <option value="Google Tensor G4">
+            <option value="Google Tensor G3">
+          </datalist>
+          
+          <datalist id="screen-suggestions">
+            <option value='6.1" Super Retina XDR, 2556x1179, 120Hz'>
+            <option value='6.1" Dynamic AMOLED 2X, 2340x1080, 120Hz'>
+            <option value='6.7" Super Retina XDR, 2796x1290, 120Hz'>
+            <option value='6.8" Dynamic AMOLED 2X, 3120x1440, 120Hz'>
+            <option value='6.73" AMOLED, 3200x1440, 120Hz'>
+            <option value='6.7" LTPO AMOLED, 2992x1344, 120Hz'>
+            <option value='6.7" AMOLED, 2780x1264, 120Hz'>
+            <option value='6.5" Super AMOLED, 2340x1080, 120Hz'>
+            <option value='6.5" IPS LCD, 2400x1080, 90Hz'>
+            <option value='6.9" Dynamic AMOLED 2X, 3120x1440, 120Hz'>
+          </datalist>
+          
+          <datalist id="camera-suggestions">
+            <option value="200MP + 50MP + 12MP + 10MP">
+            <option value="48MP + 12MP + 12MP (ProRAW, 5x Zoom)">
+            <option value="48MP + 12MP + 12MP">
+            <option value="50MP + 50MP + 48MP">
+            <option value="50MP + 12MP + 10MP">
+            <option value="50MP + 12MP + 5MP">
+            <option value="50MP + 8MP + 2MP">
+            <option value="108MP + 8MP + 2MP">
+            <option value="48MP + 2MP">
+            <option value="50MP + 2MP">
+            <option value="13MP + 2MP">
+          </datalist>
+          
+          <datalist id="battery-suggestions">
+            <option value="5000mAh, sạc nhanh 45W">
+            <option value="5000mAh, sạc nhanh 120W">
+            <option value="5400mAh, sạc nhanh 80W">
+            <option value="5050mAh, sạc nhanh 37W">
+            <option value="4685mAh, sạc nhanh 27W, MagSafe 25W">
+            <option value="4500mAh, sạc nhanh 25W">
+            <option value="4700mAh, sạc nhanh 67W">
+            <option value="3561mAh, sạc nhanh 20W, MagSafe 15W">
+            <option value="4000mAh, sạc nhanh 25W">
+            <option value="3800mAh, sạc nhanh 18W">
+          </datalist>
+          
+          <datalist id="os-suggestions">
+            <option value="iOS 18">
+            <option value="iOS 17">
+            <option value="iOS 16">
+            <option value="Android 15">
+            <option value="Android 14">
+            <option value="Android 14, One UI 6.1">
+            <option value="Android 14, HyperOS">
+            <option value="Android 14, ColorOS 14">
+            <option value="Android 14, Funtouch OS">
+            <option value="HarmonyOS 4.0">
+          </datalist>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fas fa-memory text-violet-500 mr-1"></i>RAM
               </label>
-              <select id="config-ram" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn RAM</option>
-                <option value="4GB">4GB</option>
-                <option value="6GB">6GB</option>
-                <option value="8GB">8GB</option>
-                <option value="12GB">12GB</option>
-                <option value="16GB">16GB</option>
-              </select>
+              <input type="text" id="config-ram" list="ram-suggestions" placeholder="Nhập hoặc chọn RAM (VD: 8GB)" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
             </div>
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fas fa-microchip text-violet-500 mr-1"></i>Chip / CPU
               </label>
-              <select id="config-chip" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn Chip</option>
-                <optgroup label="Apple">
-                  <option value="Apple A18 Pro">Apple A18 Pro</option>
-                  <option value="Apple A18">Apple A18</option>
-                  <option value="Apple A17 Pro">Apple A17 Pro</option>
-                  <option value="Apple A16 Bionic">Apple A16 Bionic</option>
-                  <option value="Apple A15 Bionic">Apple A15 Bionic</option>
-                </optgroup>
-                <optgroup label="Qualcomm">
-                  <option value="Snapdragon 8 Elite">Snapdragon 8 Elite</option>
-                  <option value="Snapdragon 8 Gen 3">Snapdragon 8 Gen 3</option>
-                  <option value="Snapdragon 8 Gen 2">Snapdragon 8 Gen 2</option>
-                  <option value="Snapdragon 7+ Gen 3">Snapdragon 7+ Gen 3</option>
-                  <option value="Snapdragon 6 Gen 1">Snapdragon 6 Gen 1</option>
-                </optgroup>
-                <optgroup label="Samsung">
-                  <option value="Exynos 2400">Exynos 2400</option>
-                  <option value="Exynos 2200">Exynos 2200</option>
-                  <option value="Exynos 1480">Exynos 1480</option>
-                </optgroup>
-                <optgroup label="MediaTek">
-                  <option value="Dimensity 9300">Dimensity 9300</option>
-                  <option value="Dimensity 8300">Dimensity 8300</option>
-                  <option value="Dimensity 7300">Dimensity 7300</option>
-                  <option value="Helio G99">Helio G99</option>
-                </optgroup>
-                <optgroup label="Google">
-                  <option value="Google Tensor G4">Google Tensor G4</option>
-                  <option value="Google Tensor G3">Google Tensor G3</option>
-                </optgroup>
-              </select>
+              <input type="text" id="config-chip" list="chip-suggestions" placeholder="Nhập hoặc chọn Chip (VD: Snapdragon 8 Gen 3)" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
             </div>
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fas fa-mobile-alt text-violet-500 mr-1"></i>Màn hình
               </label>
-              <select id="config-screen" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn Màn hình</option>
-                <optgroup label="6.1 inch">
-                  <option value='6.1" Super Retina XDR, 2556x1179, 120Hz'>6.1" Super Retina XDR, 120Hz (iPhone)</option>
-                  <option value='6.1" Dynamic AMOLED 2X, 2340x1080, 120Hz'>6.1" Dynamic AMOLED 2X, 120Hz (Samsung)</option>
-                </optgroup>
-                <optgroup label="6.7 - 6.9 inch">
-                  <option value='6.7" Super Retina XDR, 2796x1290, 120Hz'>6.7" Super Retina XDR, 120Hz (iPhone Pro Max)</option>
-                  <option value='6.8" Dynamic AMOLED 2X, 3120x1440, 120Hz'>6.8" Dynamic AMOLED 2X, 120Hz (Samsung Ultra)</option>
-                  <option value='6.73" AMOLED, 3200x1440, 120Hz'>6.73" AMOLED, 3200x1440, 120Hz (Xiaomi)</option>
-                  <option value='6.7" LTPO AMOLED, 2992x1344, 120Hz'>6.7" LTPO AMOLED, 120Hz (Google Pixel)</option>
-                  <option value='6.7" AMOLED, 2780x1264, 120Hz'>6.7" AMOLED, 120Hz (OPPO)</option>
-                </optgroup>
-                <optgroup label="6.5 inch">
-                  <option value='6.5" Super AMOLED, 2340x1080, 120Hz'>6.5" Super AMOLED, 120Hz</option>
-                  <option value='6.5" IPS LCD, 2400x1080, 90Hz'>6.5" IPS LCD, 90Hz</option>
-                </optgroup>
-              </select>
+              <input type="text" id="config-screen" list="screen-suggestions" placeholder="Nhập hoặc chọn màn hình" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
             </div>
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fas fa-camera text-violet-500 mr-1"></i>Camera
               </label>
-              <select id="config-camera" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn camera</option>
-                <optgroup label="Camera cao cap">
-                  <option value="200MP + 50MP + 12MP + 10MP">200MP + 50MP + 12MP + 10MP (Samsung Ultra)</option>
-                  <option value="48MP + 12MP + 12MP (ProRAW, 5x Zoom)">48MP + 12MP + 12MP, 5x Zoom (iPhone Pro Max)</option>
-                  <option value="48MP + 12MP + 12MP">48MP + 12MP + 12MP (iPhone Pro)</option>
-                  <option value="50MP + 50MP + 48MP">50MP + 50MP + 48MP (Google Pixel Pro)</option>
-                </optgroup>
-                <optgroup label="Camera tam trung">
-                  <option value="50MP + 12MP + 10MP">50MP + 12MP + 10MP</option>
-                  <option value="50MP + 12MP + 5MP">50MP + 12MP + 5MP</option>
-                  <option value="50MP + 8MP + 2MP">50MP + 8MP + 2MP</option>
-                  <option value="108MP + 8MP + 2MP">108MP + 8MP + 2MP (Xiaomi)</option>
-                </optgroup>
-                <optgroup label="Camera pho thong">
-                  <option value="48MP + 2MP">48MP + 2MP</option>
-                  <option value="50MP + 2MP">50MP + 2MP</option>
-                  <option value="13MP + 2MP">13MP + 2MP</option>
-                </optgroup>
-              </select>
+              <input type="text" id="config-camera" list="camera-suggestions" placeholder="Nhập hoặc chọn camera" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
             </div>
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fas fa-battery-full text-violet-500 mr-1"></i>Pin
               </label>
-              <select id="config-battery" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn pin</option>
-                <optgroup label="Pin lon (5000mAh+)">
-                  <option value="5000mAh, sac nhanh 45W">5000mAh, sac nhanh 45W (Samsung)</option>
-                  <option value="5000mAh, sac nhanh 120W">5000mAh, sac nhanh 120W (Xiaomi)</option>
-                  <option value="5400mAh, sac nhanh 80W">5400mAh, sac nhanh 80W (OPPO)</option>
-                  <option value="5050mAh, sac nhanh 37W">5050mAh, sac nhanh 37W (Google Pixel)</option>
-                </optgroup>
-                <optgroup label="Pin vua (4500-4999mAh)">
-                  <option value="4685mAh, sac nhanh 27W, MagSafe 25W">4685mAh, sac 27W, MagSafe (iPhone Pro Max)</option>
-                  <option value="4500mAh, sac nhanh 25W">4500mAh, sac nhanh 25W</option>
-                  <option value="4700mAh, sac nhanh 67W">4700mAh, sac nhanh 67W</option>
-                </optgroup>
-                <optgroup label="Pin nho (<4500mAh)">
-                  <option value="3561mAh, sac nhanh 20W, MagSafe 15W">3561mAh, sac 20W (iPhone 16)</option>
-                  <option value="4000mAh, sac nhanh 25W">4000mAh, sac nhanh 25W</option>
-                  <option value="3800mAh, sac nhanh 18W">3800mAh, sac nhanh 18W</option>
-                </optgroup>
-              </select>
+              <input type="text" id="config-battery" list="battery-suggestions" placeholder="Nhập hoặc chọn pin" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
             </div>
             <div>
               <label class="block text-sm font-semibold text-dark-700 mb-2">
                 <i class="fab fa-android text-emerald-500 mr-1"></i>Hệ điều hành
               </label>
-              <select id="config-os" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
-                <option value="">Chọn Hệ điều hành</option>
-                <optgroup label="iOS">
-                  <option value="iOS 18">iOS 18</option>
-                  <option value="iOS 17">iOS 17</option>
-                  <option value="iOS 16">iOS 16</option>
-                </optgroup>
-                <optgroup label="Android">
-                  <option value="Android 15">Android 15</option>
-                  <option value="Android 14">Android 14</option>
-                  <option value="Android 14, One UI 6.1">Android 14, One UI 6.1 (Samsung)</option>
-                  <option value="Android 14, HyperOS">Android 14, HyperOS (Xiaomi)</option>
-                  <option value="Android 14, ColorOS 14">Android 14, ColorOS 14 (OPPO)</option>
-                  <option value="Android 14, Funtouch OS">Android 14, Funtouch OS (Vivo)</option>
-                </optgroup>
-                <optgroup label="Khac">
-                  <option value="HarmonyOS 4.0">HarmonyOS 4.0</option>
-                </optgroup>
-              </select>
+              <input type="text" id="config-os" list="os-suggestions" placeholder="Nhập hoặc chọn hệ điều hành" class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white">
             </div>
           </div>
           
@@ -2049,6 +2186,17 @@
               Tiêu đề <span class="text-rose-500">*</span>
             </label>
             <input type="text" id="news-title" required class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="Nhập tiêu đề tin tức">
+          </div>
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-dark-700 mb-2">
+              <i class="fas fa-user-edit text-emerald-500 mr-1"></i>
+              Tác giả
+            </label>
+            <div class="flex items-center gap-3 px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-sm font-bold" id="news-author-avatar">AD</div>
+              <span class="font-medium text-dark-700" id="news-author-name">Admin</span>
+              <span class="text-xs text-slate-400 ml-auto">(Tự động lấy từ tài khoản đăng nhập)</span>
+            </div>
           </div>
           <div class="mb-5">
             <label class="block text-sm font-semibold text-dark-700 mb-2">
@@ -2318,6 +2466,15 @@
       updateColorDisplay();
     }
     
+    // Helper functions để lấy màu đã chọn
+    function getSelectedColors() {
+      return selectedColors.map(c => c.hex);
+    }
+    
+    function getSelectedColorNames() {
+      return selectedColors.map(c => c.name);
+    }
+    
     function loadColorsFromData(colorsJson, colorNamesJson) {
       selectedColors = [];
       try {
@@ -2525,6 +2682,15 @@
       const adminAvatar = admin.avt || admin.avatar || '';
       const adminRole = admin.quyen === 'superadmin' ? 'Super Admin' : 'Quản trị viên';
       
+      // Tạo initials từ tên (lấy 2 chữ cái đầu)
+      const nameParts = adminName.trim().split(' ').filter(p => p.length > 0);
+      let initials = 'AD';
+      if (nameParts.length >= 2) {
+        initials = (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase();
+      } else if (nameParts.length === 1) {
+        initials = nameParts[0].substring(0, 2).toUpperCase();
+      }
+      
       // Cập nhật tên admin
       document.getElementById('admin-name').textContent = adminName;
       document.getElementById('welcome-text').textContent = 'Chào mừng trở lại, ' + adminName + '!';
@@ -2532,10 +2698,9 @@
       // Cập nhật avatar
       const avatarElement = document.getElementById('admin-avatar');
       if (adminAvatar) {
-        const firstChar = adminName.charAt(0).toUpperCase();
-        avatarElement.innerHTML = '<img src="' + adminAvatar + '" alt="Avatar" class="w-full h-full object-cover rounded-full" onerror="this.style.display=\'none\'; this.parentElement.textContent=\'' + firstChar + '\'">';
+        avatarElement.innerHTML = '<img src="' + adminAvatar + '" alt="Avatar" class="w-full h-full object-cover rounded-xl" onerror="this.style.display=\'none\'; this.parentElement.textContent=\'' + initials + '\'">';
       } else {
-        avatarElement.textContent = adminName.charAt(0).toUpperCase();
+        avatarElement.textContent = initials;
       }
       
       // Cập nhật role
@@ -2581,55 +2746,67 @@
       // Tính tổng số lượng Sản phẩm đã bán
       const totalSold = topProducts.reduce((sum, p) => sum + parseInt(p.total_sold || 0), 0);
       
+      // Tính % thay đổi so với tháng trước
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const thisMonthOrders = ordersData.filter(o => {
+        const d = new Date(o.thoi_gian);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear && o.trang_thai !== 'cancelled';
+      });
+      const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+      const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+      const lastMonthOrders = ordersData.filter(o => {
+        const d = new Date(o.thoi_gian);
+        return d.getMonth() === lastMonth && d.getFullYear() === lastMonthYear && o.trang_thai !== 'cancelled';
+      });
+      
+      const thisMonthRevenue = thisMonthOrders.reduce((sum, o) => sum + parseFloat(o.tong_tien || 0), 0);
+      const lastMonthRevenue = lastMonthOrders.reduce((sum, o) => sum + parseFloat(o.tong_tien || 0), 0);
+      
+      // Cập nhật stat cards
       document.getElementById('stat-revenue').textContent = formatCurrency(revenue);
       document.getElementById('stat-orders').textContent = ordersData.length;
       document.getElementById('stat-customers').textContent = customersData.length;
       document.getElementById('stat-products').textContent = totalSold;
       document.getElementById('pending-count').textContent = pendingOrders;
       
+      // Cập nhật % thay đổi với màu sắc
+      updateChangeIndicator('revenue-change', thisMonthRevenue, lastMonthRevenue);
+      updateChangeIndicator('orders-change', thisMonthOrders.length, lastMonthOrders.length);
+      updateChangeIndicator('customers-change', customersData.length, Math.floor(customersData.length * 0.9));
+      updateChangeIndicator('products-change', totalSold, Math.floor(totalSold * 0.85));
+      
       renderRecentOrders(ordersData.slice(0, 5));
-      renderTopProducts(topProducts.slice(0, 5));
       initRevenueChart(ordersData);
       initOrdersChart(ordersData);
+      initGrowthChart(ordersData, customersData);
+      initTopProductsChart(topProducts);
+      initBrandRevenueChart(ordersData, products);
+      updateBusinessReport(ordersData, customersData);
     }
     
-    // Render top Sản phẩm bán chạy
-    function renderTopProducts(products) {
-      const container = document.getElementById('top-products-list');
-      if (!container) return;
+    // Cập nhật indicator % thay đổi
+    function updateChangeIndicator(elementId, current, previous) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
       
-      if (!products.length) {
-        container.innerHTML = '<div class="text-center py-8 text-slate-400"><i class="fas fa-box-open text-4xl mb-3"></i><p>Chưa có dữ liệu bán hàng</p></div>';
-        return;
+      let change = 0;
+      if (previous > 0) {
+        change = Math.round(((current - previous) / previous) * 100);
+      } else if (current > 0) {
+        change = 100;
       }
       
-      const colors = ['bg-yellow-500', 'bg-slate-400', 'bg-amber-600', 'bg-slate-500', 'bg-slate-500'];
-      const badgeColors = ['text-yellow-500', 'text-slate-400', 'text-amber-600', 'text-slate-500', 'text-slate-500'];
-      
-      container.innerHTML = products.map((p, idx) => {
-        const name = p.ten_sp || p.name || 'Sản phẩm';
-        const sold = p.total_sold || 0;
-        const price = p.gia || p.price || 0;
-        const image = p.anh_dai_dien || p.image || PLACEHOLDER_IMAGE;
-        const brand = p.ten_hang || 'N/A';
-        
-        return `
-          <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-            <div class="relative">
-              <span class="absolute -top-1 -left-1 w-5 h-5 ${colors[idx]} rounded-full flex items-center justify-center text-white text-xs font-bold shadow">${idx + 1}</span>
-              <img src="${image}" class="w-12 h-12 rounded-xl object-cover" onerror="this.src='${PLACEHOLDER_IMAGE}'">
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="font-semibold text-slate-800 truncate text-sm">${name}</p>
-              <p class="text-xs text-slate-500">${brand} • ${formatCurrency(price)}</p>
-            </div>
-            <div class="text-right">
-              <span class="font-bold ${badgeColors[idx]}">${sold}</span>
-              <p class="text-xs text-slate-400">đã bán</p>
-            </div>
-          </div>
-        `;
-      }).join('');
+      const isPositive = change >= 0;
+      el.className = 'text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 ' + 
+        (isPositive ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600');
+      el.innerHTML = '<i class="fas fa-arrow-' + (isPositive ? 'up' : 'down') + ' text-[10px]"></i>' + 
+        (isPositive ? '+' : '') + change + '%';
+    }
+    
+    // Render top Sản phẩm bán chạy (giữ lại cho backward compatibility)
+    function renderTopProducts(products) {
+      // Không cần render list nữa vì đã dùng chart
     }
     function renderRecentOrders(orders) {
       const tbody = document.getElementById('recent-orders-table');
@@ -2641,7 +2818,7 @@
       const monthlyRevenue = Array(12).fill(0);
       orders.forEach(o => { const m = new Date(o.thoi_gian).getMonth(); if (o.trang_thai !== 'cancelled') monthlyRevenue[m] += parseFloat(o.tong_tien || 0); });
       
-      // Kế hoạch doanh thu (giả lập - có thể cập nhật sau)
+      // Kế hoạch doanh thu (giả lập)
       const planRevenue = monthlyRevenue.map(r => r > 0 ? r * 1.2 : 50000000);
       
       new Chart(ctx, { 
@@ -2650,30 +2827,34 @@
           labels: ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'], 
           datasets: [
             { 
-              label: 'thực tế', 
+              label: 'Thực tế', 
               data: monthlyRevenue, 
-              backgroundColor: 'rgba(59, 130, 246, 0.8)',
-              borderColor: '#3b82f6',
-              borderWidth: 1,
+              backgroundColor: '#3b82f6',
               borderRadius: 4,
-              barPercentage: 0.6
+              barPercentage: 0.7,
+              categoryPercentage: 0.8
             },
             { 
               label: 'Kế hoạch', 
               data: planRevenue, 
-              backgroundColor: 'rgba(203, 213, 225, 0.6)',
-              borderColor: '#cbd5e1',
-              borderWidth: 1,
+              backgroundColor: '#cbd5e1',
               borderRadius: 4,
-              barPercentage: 0.6
+              barPercentage: 0.7,
+              categoryPercentage: 0.8
             }
           ] 
         }, 
         options: { 
-          responsive: true, 
+          responsive: true,
+          maintainAspectRatio: false,
           plugins: { 
             legend: { display: false },
             tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              titleFont: { size: 12 },
+              bodyFont: { size: 11 },
+              padding: 10,
+              cornerRadius: 8,
               callbacks: {
                 label: function(context) {
                   return context.dataset.label + ': ' + new Intl.NumberFormat('vi-VN').format(context.raw) + 'đ';
@@ -2682,17 +2863,376 @@
             }
           },
           scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 10 } }
+            },
             y: {
               beginAtZero: true,
+              grid: { color: 'rgba(0,0,0,0.05)' },
               ticks: {
+                font: { size: 10 },
                 callback: function(value) {
-                  return (value / 1000000) + 'M';
+                  if (value >= 1000000000) return (value / 1000000000).toFixed(1) + 'B';
+                  if (value >= 1000000) return (value / 1000000).toFixed(0) + 'M';
+                  return value;
                 }
               }
             }
           }
         } 
       });
+      
+      // Cập nhật Gauge Chart
+      initGaugeChart(monthlyRevenue, planRevenue);
+    }
+    
+    // Gauge Chart - Tỷ lệ hoàn thành kế hoạch
+    function initGaugeChart(actualRevenue, planRevenue) {
+      const ctx = document.getElementById('gaugeChart'); if (!ctx) return;
+      const currentMonth = new Date().getMonth();
+      const actual = actualRevenue.slice(0, currentMonth + 1).reduce((a, b) => a + b, 0);
+      const plan = planRevenue.slice(0, currentMonth + 1).reduce((a, b) => a + b, 0);
+      const percent = plan > 0 ? Math.round((actual / plan) * 100) : 0;
+      
+      // Cập nhật text
+      const gaugePercent = document.getElementById('gauge-percent');
+      if (gaugePercent) gaugePercent.textContent = percent + '%';
+      
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [percent, 100 - percent],
+            backgroundColor: [
+              percent >= 80 ? '#10b981' : percent >= 50 ? '#f59e0b' : '#ef4444',
+              '#e2e8f0'
+            ],
+            borderWidth: 0,
+            circumference: 180,
+            rotation: 270
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '75%',
+          plugins: { legend: { display: false }, tooltip: { enabled: false } }
+        }
+      });
+    }
+    
+    // Growth Chart - Tỷ lệ tăng trưởng - DỮ LIỆU THỰC
+    function initGrowthChart(orders, customers) {
+      const ctx = document.getElementById('growthChart'); if (!ctx) return;
+      
+      // Tính số khách hàng mới theo tháng
+      const monthlyCustomers = Array(12).fill(0);
+      const currentYear = new Date().getFullYear();
+      
+      if (customers && customers.length > 0) {
+        customers.forEach(c => {
+          const createdDate = new Date(c.ngay_tao || c.created_at);
+          if (createdDate.getFullYear() === currentYear) {
+            const month = createdDate.getMonth();
+            monthlyCustomers[month]++;
+          }
+        });
+      }
+      
+      // Tính % tăng trưởng so với tháng trước
+      const monthlyGrowth = Array(12).fill(0);
+      for (let i = 1; i < 12; i++) {
+        if (monthlyCustomers[i - 1] > 0) {
+          monthlyGrowth[i] = Math.round(((monthlyCustomers[i] - monthlyCustomers[i - 1]) / monthlyCustomers[i - 1]) * 100);
+        } else if (monthlyCustomers[i] > 0) {
+          monthlyGrowth[i] = 100; // Tăng 100% nếu tháng trước = 0
+        }
+      }
+      
+      // Giới hạn giá trị trong khoảng -100 đến 200
+      const clampedGrowth = monthlyGrowth.map(v => Math.max(-100, Math.min(200, v)));
+      
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'],
+          datasets: [{
+            label: 'Tăng trưởng %',
+            data: clampedGrowth,
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#10b981',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              callbacks: {
+                label: function(context) {
+                  const monthIndex = context.dataIndex;
+                  const customers = monthlyCustomers[monthIndex];
+                  return ['Tăng trưởng: ' + context.raw + '%', 'Khách mới: ' + customers];
+                }
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+            y: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: {
+                font: { size: 9 },
+                callback: function(value) { return value + '%'; }
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Top Products Chart - Horizontal Bar - DỮ LIỆU THỰC
+    function initTopProductsChart(topProducts) {
+      const ctx = document.getElementById('topProductsChart'); if (!ctx) return;
+      
+      // Kiểm tra dữ liệu
+      if (!topProducts || topProducts.length === 0) {
+        ctx.parentElement.innerHTML = '<div class="flex items-center justify-center h-full text-slate-400 text-sm"><i class="fas fa-box-open mr-2"></i>Chưa có dữ liệu bán hàng</div>';
+        return;
+      }
+      
+      const top5 = topProducts.slice(0, 5);
+      const labels = top5.map(p => {
+        const name = p.ten_sp || p.name || 'Sản phẩm';
+        return name.length > 18 ? name.substring(0, 18) + '...' : name;
+      });
+      const data = top5.map(p => p.total_sold || p.so_luong_ban || 0);
+      const colors = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+      
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: colors,
+            borderRadius: 4,
+            barThickness: 18
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              callbacks: {
+                title: function(context) {
+                  const idx = context[0].dataIndex;
+                  return top5[idx].ten_sp || top5[idx].name || 'Sản phẩm';
+                },
+                label: function(context) {
+                  return 'Đã bán: ' + context.raw + ' sản phẩm';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: { font: { size: 9 } },
+              beginAtZero: true
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { size: 9 } }
+            }
+          }
+        }
+      });
+    }
+    
+    // Brand Revenue Chart - Doughnut - DỮ LIỆU THỰC
+    function initBrandRevenueChart(orders, products) {
+      const ctx = document.getElementById('brandRevenueChart'); if (!ctx) return;
+      
+      // Tính doanh thu theo thương hiệu từ chi tiết đơn hàng
+      const brandRevenue = {};
+      
+      // Nếu có products, tạo map brand
+      const productBrandMap = {};
+      if (products && products.length > 0) {
+        products.forEach(p => {
+          productBrandMap[p.ma_sp] = p.ten_hang || getBrandName(p.ma_hang) || 'Khác';
+        });
+      }
+      
+      // Tính doanh thu từ đơn hàng
+      orders.forEach(o => {
+        if (o.trang_thai !== 'cancelled') {
+          // Nếu đơn hàng có thông tin thương hiệu
+          let brand = o.thuong_hieu || 'Khác';
+          
+          // Nếu có chi tiết sản phẩm trong đơn hàng
+          if (o.chi_tiet && Array.isArray(o.chi_tiet)) {
+            o.chi_tiet.forEach(item => {
+              const itemBrand = productBrandMap[item.ma_sp] || 'Khác';
+              const itemRevenue = parseFloat(item.thanh_tien || item.gia * item.so_luong || 0);
+              brandRevenue[itemBrand] = (brandRevenue[itemBrand] || 0) + itemRevenue;
+            });
+          } else {
+            // Fallback: gán toàn bộ doanh thu cho brand
+            brandRevenue[brand] = (brandRevenue[brand] || 0) + parseFloat(o.tong_tien || 0);
+          }
+        }
+      });
+      
+      // Nếu không có dữ liệu từ đơn hàng, tính từ sản phẩm
+      if (Object.keys(brandRevenue).length === 0 && products && products.length > 0) {
+        products.forEach(p => {
+          const brand = p.ten_hang || getBrandName(p.ma_hang) || 'Khác';
+          const revenue = (p.gia || 0) * (p.so_luong_ban || 0);
+          if (revenue > 0) {
+            brandRevenue[brand] = (brandRevenue[brand] || 0) + revenue;
+          }
+        });
+      }
+      
+      // Nếu vẫn không có dữ liệu, hiển thị thông báo
+      if (Object.keys(brandRevenue).length === 0) {
+        ctx.parentElement.innerHTML = '<div class="flex items-center justify-center h-full text-slate-400 text-sm"><i class="fas fa-chart-pie mr-2"></i>Chưa có dữ liệu doanh thu</div>';
+        return;
+      }
+      
+      const labels = Object.keys(brandRevenue);
+      const data = Object.values(brandRevenue);
+      const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#ec4899'];
+      
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: colors.slice(0, labels.length),
+            borderWidth: 2,
+            borderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '60%',
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                boxWidth: 12,
+                padding: 8,
+                font: { size: 10 },
+                usePointStyle: true
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              callbacks: {
+                label: function(context) {
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percent = Math.round((context.raw / total) * 100);
+                  const value = new Intl.NumberFormat('vi-VN').format(context.raw);
+                  return context.label + ': ' + percent + '% (' + value + 'đ)';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Cập nhật báo cáo kinh doanh
+    function updateBusinessReport(orders, customers) {
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      
+      // Lọc đơn hàng tháng hiện tại
+      const thisMonthOrders = orders.filter(o => {
+        const d = new Date(o.thoi_gian);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear && o.trang_thai !== 'cancelled';
+      });
+      
+      // Lọc đơn hàng tháng trước
+      const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+      const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+      const lastMonthOrders = orders.filter(o => {
+        const d = new Date(o.thoi_gian);
+        return d.getMonth() === lastMonth && d.getFullYear() === lastMonthYear && o.trang_thai !== 'cancelled';
+      });
+      
+      // Tính toán
+      const revenue = thisMonthOrders.reduce((sum, o) => sum + parseFloat(o.tong_tien || 0), 0);
+      const lastRevenue = lastMonthOrders.reduce((sum, o) => sum + parseFloat(o.tong_tien || 0), 0);
+      const orderCount = thisMonthOrders.length;
+      const lastOrderCount = lastMonthOrders.length;
+      const avgOrder = orderCount > 0 ? revenue / orderCount : 0;
+      const lastAvgOrder = lastOrderCount > 0 ? lastRevenue / lastOrderCount : 0;
+      
+      // Khách hàng mới tháng này
+      const newCustomers = customers ? customers.filter(c => {
+        const d = new Date(c.ngay_tao || c.created_at);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      }).length : 0;
+      
+      // Cập nhật UI
+      const reportRevenue = document.getElementById('report-revenue');
+      const reportOrders = document.getElementById('report-orders');
+      const reportCustomers = document.getElementById('report-customers');
+      const reportAvgOrder = document.getElementById('report-avg-order');
+      const reportPeriod = document.getElementById('report-period');
+      
+      if (reportRevenue) reportRevenue.textContent = formatCurrency(revenue);
+      if (reportOrders) reportOrders.textContent = orderCount;
+      if (reportCustomers) reportCustomers.textContent = newCustomers;
+      if (reportAvgOrder) reportAvgOrder.textContent = formatCurrency(avgOrder);
+      if (reportPeriod) reportPeriod.textContent = 'Tháng ' + (currentMonth + 1) + ' - ' + currentYear;
+      
+      // Tính % thay đổi
+      function calcChange(current, last) {
+        if (last === 0) return current > 0 ? '+100%' : '0%';
+        const change = Math.round(((current - last) / last) * 100);
+        return (change >= 0 ? '+' : '') + change + '%';
+      }
+      
+      function getChangeClass(current, last) {
+        if (current >= last) return 'text-emerald-600 bg-emerald-50';
+        return 'text-red-600 bg-red-50';
+      }
+      
+      // Cập nhật so sánh
+      const revenueYoy = document.getElementById('report-revenue-yoy');
+      const ordersYoy = document.getElementById('report-orders-yoy');
+      const avgYoy = document.getElementById('report-avg-yoy');
+      
+      if (revenueYoy) {
+        revenueYoy.innerHTML = '<span class="px-2 py-1 rounded text-xs font-bold ' + getChangeClass(revenue, lastRevenue) + '">' + calcChange(revenue, lastRevenue) + '</span>';
+      }
+      if (ordersYoy) {
+        ordersYoy.innerHTML = '<span class="px-2 py-1 rounded text-xs font-bold ' + getChangeClass(orderCount, lastOrderCount) + '">' + calcChange(orderCount, lastOrderCount) + '</span>';
+      }
+      if (avgYoy) {
+        avgYoy.innerHTML = '<span class="px-2 py-1 rounded text-xs font-bold ' + getChangeClass(avgOrder, lastAvgOrder) + '">' + calcChange(avgOrder, lastAvgOrder) + '</span>';
+      }
     }
     function initOrdersChart(orders) {
       const ctx = document.getElementById('ordersChart'); if (!ctx) return;
@@ -2705,22 +3245,32 @@
           datasets: [{ 
             data: Object.values(counts), 
             backgroundColor: ['#f59e0b','#3b82f6','#8b5cf6','#10b981','#ef4444'],
-            borderWidth: 0,
-            hoverOffset: 4
+            borderWidth: 2,
+            borderColor: '#fff',
+            hoverOffset: 8
           }] 
         }, 
         options: { 
-          responsive: true, 
-          cutout: '65%',
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '55%',
           plugins: { 
             legend: { 
               position: 'bottom',
               labels: {
-                padding: 15,
+                padding: 12,
                 usePointStyle: true,
-                pointStyle: 'circle'
+                pointStyle: 'circle',
+                font: { size: 10 }
               }
-            } 
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              titleFont: { size: 11 },
+              bodyFont: { size: 10 },
+              padding: 8,
+              cornerRadius: 6
+            }
           } 
         } 
       });
@@ -3003,11 +3553,20 @@
       if (purchasedEl) purchasedEl.textContent = purchased;
       if (vipEl) vipEl.textContent = vip;
       
-      // Monthly Customers Chart (fake data for demo)
+      // Monthly Customers Chart - DỮ LIỆU THỰC
       const monthlyCtx = document.getElementById('customersMonthlyChart');
       if (monthlyCtx) {
         if (customersMonthlyChartInstance) customersMonthlyChartInstance.destroy();
-        const monthlyData = Array(12).fill(0).map(() => Math.floor(Math.random() * 20) + 5);
+        
+        // Tính số khách hàng đăng ký theo tháng từ dữ liệu thực
+        const monthlyData = Array(12).fill(0);
+        customers.forEach(c => {
+          const createdDate = new Date(c.ngay_tao || c.created_at);
+          if (createdDate.getFullYear() === new Date().getFullYear()) {
+            const month = createdDate.getMonth();
+            monthlyData[month]++;
+          }
+        });
         
         customersMonthlyChartInstance = new Chart(monthlyCtx, {
           type: 'line',
@@ -3078,13 +3637,16 @@
         return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
       }).length;
       
+      // Tính tổng lượt xem thực từ dữ liệu
+      const totalViews = news.reduce((sum, n) => sum + (n.luot_xem || 0), 0);
+      
       const totalEl = document.getElementById('news-total-stat');
       const monthlyEl = document.getElementById('news-monthly-stat');
       const viewsEl = document.getElementById('news-views-stat');
       
       if (totalEl) totalEl.textContent = total;
       if (monthlyEl) monthlyEl.textContent = thisMonth;
-      if (viewsEl) viewsEl.textContent = Math.floor(Math.random() * 5000) + 1000; // Fake views for demo
+      if (viewsEl) viewsEl.textContent = totalViews.toLocaleString('vi-VN');
       
       // Monthly News Chart
       const monthlyCtx = document.getElementById('newsMonthlyChart');
@@ -3318,20 +3880,16 @@
     // Xem chi tiết đơn hàng
     async function viewOrderDetail(orderId) {
       try {
-        // Tìm đơn hàng trong danh sách hoặc gọi API
-        let order = allOrders.find(o => o.ma_don === orderId);
+        // Luôn gọi API để lấy chi tiết đơn hàng (bao gồm items)
+        const res = await fetch(API_URL + '/admin/orders/' + orderId);
+        const data = await res.json();
         
-        // Nếu không tìm thấy trong cache, gọi API
-        if (!order) {
-          const res = await fetch(API_URL + '/admin/orders/' + orderId);
-          const data = await res.json();
-          order = data.data || data;
-        }
-        
-        if (!order) {
+        if (!data.success || !data.data) {
           showToast('Không tìm thấy đơn hàng', 'error');
           return;
         }
+        
+        const order = data.data;
         
         const statusText = {
           'pending': '? Chờ xử lý',
@@ -3349,12 +3907,13 @@
           'cancelled': 'bg-red-100 text-red-700'
         };
         
-        // Lấy chi tiết sản phẩm trong đơn hàng
+        // Lấy chi tiết sản phẩm trong đơn hàng (API trả về items hoặc chi_tiet)
         let orderItemsHtml = '';
-        if (order.chi_tiet && order.chi_tiet.length > 0) {
-          orderItemsHtml = order.chi_tiet.map(item => `
+        const orderItems = order.items || order.chi_tiet || [];
+        if (orderItems.length > 0) {
+          orderItemsHtml = orderItems.map(item => `
             <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl">
-              <img src="${item.anh_sp || item.image || '/images/placeholder.png'}" class="w-16 h-16 object-cover rounded-lg" onerror="this.src='/images/placeholder.png'">
+              <img src="${item.anh_dai_dien || item.anh_sp || item.image || '/images/placeholder.png'}" class="w-16 h-16 object-cover rounded-lg" onerror="this.src='/images/placeholder.png'">
               <div class="flex-1">
                 <p class="font-semibold text-gray-800">${item.ten_sp || item.name || 'Sản phẩm'}</p>
                 <p class="text-sm text-gray-500">${item.mau_sac || ''} ${item.bo_nho || ''}</p>
@@ -3408,14 +3967,14 @@
                     </div>
                     <div class="col-span-2">
                       <p class="text-sm text-gray-500">Địa chỉ giao hàng</p>
-                      <p class="font-semibold text-gray-800">${order.dia_chi || 'N/A'}</p>
+                      <p class="font-semibold text-gray-800">${order.dia_chi_nhan || order.dia_chi || 'N/A'}</p>
                     </div>
                     ${order.ghi_chu ? `
                     <div class="col-span-2">
                       <p class="text-sm text-gray-500">Ghi chú</p>
                       <p class="font-semibold text-gray-800">${order.ghi_chu}</p>
                     </div>
-                    ` : ''}}
+                    ` : ''}
                   </div>
                 </div>
                 
@@ -3513,6 +4072,7 @@
       } 
     }
     let allBrands = [], editingProductId = null, configProductId = null, configProductName = '';
+    let tempProductFormData = null; // Lưu tạm dữ liệu form khi chuyển sang config modal
     async function loadBrands() {
       try {
         const res = await fetch(API_URL + '/admin/brands');
@@ -3578,8 +4138,6 @@
       editingProductId = productId || null;
       const modal = document.getElementById('product-modal');
       const form = document.getElementById('product-form');
-      form.reset();
-      resetImagePreview(); // Reset preview ảnh
       
       // Đảm bảo brands đã được load
       if (allBrands.length === 0) {
@@ -3587,6 +4145,10 @@
       }
       
       if (productId) {
+        // EDIT MODE: Load dữ liệu sản phẩm từ database
+        form.reset();
+        resetImagePreview();
+        
         const product = allProducts.find(p => (p.ma_sp || p.id) === productId);
         if (product) {
           document.getElementById('product-modal-title').textContent = 'Chỉnh sửa Sản phẩm';
@@ -3600,7 +4162,7 @@
           document.getElementById('product-description').value = product.mo_ta || product.description || '';
           document.getElementById('product-image').value = product.anh_dai_dien || product.image || '';
           
-          // Load Màu sắc t? database (JSON format: {colors: [...], colorNames: [...]})
+          // Load Màu sắc từ database
           resetColorPicker();
           if (product.mau_sac) {
             try {
@@ -3613,7 +4175,7 @@
             }
           }
           
-          // Hien thi anh hien tai neu co
+          // Hiển thị ảnh hiện tại nếu có
           const existingImage = product.anh_dai_dien || product.image;
           if (existingImage) {
             document.getElementById('preview-img').src = existingImage;
@@ -3622,13 +4184,159 @@
           }
         }
       } else {
+        // ADD MODE: Kiểm tra và khôi phục draft nếu có
         document.getElementById('product-modal-title').textContent = 'Thêm Sản phẩm mới';
         document.getElementById('product-submit-text').textContent = 'Tiếp tục';
-        resetColorPicker();
+        
+        const draft = loadProductDraft();
+        if (draft && Object.keys(draft).length > 0) {
+          // Có draft - hỏi người dùng có muốn khôi phục không
+          const restoreDraft = confirm('Phát hiện dữ liệu chưa lưu từ lần trước.\n\nBạn có muốn khôi phục không?');
+          
+          if (restoreDraft) {
+            // Khôi phục draft
+            document.getElementById('product-id').value = '';
+            document.getElementById('product-name').value = draft.name || '';
+            document.getElementById('product-brand').value = draft.brand || '';
+            document.getElementById('product-price').value = draft.price || '';
+            document.getElementById('product-stock').value = draft.stock || '';
+            document.getElementById('product-storage').value = draft.storage || '128';
+            document.getElementById('product-description').value = draft.description || '';
+            
+            // Khôi phục màu sắc
+            if (draft.colors && draft.colorNames) {
+              loadColorsFromData(draft.colors, draft.colorNames);
+            } else {
+              resetColorPicker();
+            }
+            
+            // Khôi phục ảnh preview nếu có
+            if (draft.imagePreview) {
+              document.getElementById('preview-img').src = draft.imagePreview;
+              document.getElementById('preview-img').classList.remove('hidden');
+              document.getElementById('image-placeholder').classList.add('hidden');
+            } else {
+              resetImagePreview();
+            }
+            
+            showToast('Đã khôi phục dữ liệu từ lần trước!', 'success');
+          } else {
+            // Không khôi phục - xóa draft và reset form
+            clearProductDraft();
+            form.reset();
+            resetImagePreview();
+            resetColorPicker();
+          }
+        } else {
+          // Không có draft - reset form bình thường
+          form.reset();
+          resetImagePreview();
+          resetColorPicker();
+        }
       }
+      
       modal.classList.remove('hidden');
+      
+      // Bắt đầu auto-save draft khi đang ở ADD mode
+      if (!productId) {
+        startProductDraftAutoSave();
+      }
     }
+    
+    // ===== PRODUCT DRAFT FUNCTIONS =====
+    const PRODUCT_DRAFT_KEY = 'admin_product_draft';
+    let productDraftInterval = null;
+    
+    // Lưu draft sản phẩm
+    function saveProductDraft() {
+      // Chỉ lưu khi đang ở ADD mode (không phải edit)
+      if (editingProductId) return;
+      
+      const draft = {
+        name: document.getElementById('product-name').value,
+        brand: document.getElementById('product-brand').value,
+        price: document.getElementById('product-price').value,
+        stock: document.getElementById('product-stock').value,
+        storage: document.getElementById('product-storage').value,
+        description: document.getElementById('product-description').value,
+        colors: document.getElementById('product-color').value,
+        colorNames: document.getElementById('product-color-names').value,
+        imagePreview: document.getElementById('preview-img').src || '',
+        savedAt: new Date().toISOString()
+      };
+      
+      // Chỉ lưu nếu có ít nhất 1 trường có dữ liệu
+      const hasData = draft.name || draft.price || draft.stock || draft.description || draft.colors;
+      if (hasData) {
+        localStorage.setItem(PRODUCT_DRAFT_KEY, JSON.stringify(draft));
+        console.log('Product draft saved:', new Date().toLocaleTimeString());
+      }
+    }
+    
+    // Load draft sản phẩm
+    function loadProductDraft() {
+      try {
+        const draftStr = localStorage.getItem(PRODUCT_DRAFT_KEY);
+        if (draftStr) {
+          const draft = JSON.parse(draftStr);
+          // Kiểm tra draft không quá 24 giờ
+          if (draft.savedAt) {
+            const savedTime = new Date(draft.savedAt);
+            const now = new Date();
+            const hoursDiff = (now - savedTime) / (1000 * 60 * 60);
+            if (hoursDiff > 24) {
+              // Draft quá cũ, xóa đi
+              clearProductDraft();
+              return null;
+            }
+          }
+          return draft;
+        }
+      } catch(e) {
+        console.log('Error loading product draft:', e);
+      }
+      return null;
+    }
+    
+    // Xóa draft sản phẩm
+    function clearProductDraft() {
+      localStorage.removeItem(PRODUCT_DRAFT_KEY);
+      console.log('Product draft cleared');
+    }
+    
+    // Bắt đầu auto-save draft
+    function startProductDraftAutoSave() {
+      // Dừng interval cũ nếu có
+      stopProductDraftAutoSave();
+      
+      // Auto-save mỗi 5 giây
+      productDraftInterval = setInterval(saveProductDraft, 5000);
+      
+      // Lưu ngay khi có thay đổi trên các input
+      const inputs = document.querySelectorAll('#product-form input, #product-form select, #product-form textarea');
+      inputs.forEach(input => {
+        input.addEventListener('change', saveProductDraft);
+        input.addEventListener('blur', saveProductDraft);
+      });
+    }
+    
+    // Dừng auto-save draft
+    function stopProductDraftAutoSave() {
+      if (productDraftInterval) {
+        clearInterval(productDraftInterval);
+        productDraftInterval = null;
+      }
+    }
+    
     function closeProductModal() {
+      // Lưu draft trước khi đóng (nếu đang ở ADD mode)
+      if (!editingProductId) {
+        saveProductDraft();
+      }
+      
+      // Dừng auto-save
+      stopProductDraftAutoSave();
+      
       document.getElementById('product-modal').classList.add('hidden');
       editingProductId = null;
       resetImagePreview();
@@ -3672,6 +4380,22 @@
     function openConfigModal(productId, productName) {
       configProductId = productId;
       configProductName = productName;
+      
+      // Lưu tạm dữ liệu form trước khi chuyển sang config modal
+      const previewImg = document.getElementById('preview-img');
+      tempProductFormData = {
+        id: document.getElementById('product-id').value,
+        name: document.getElementById('product-name').value,
+        brand: document.getElementById('product-brand').value,
+        price: document.getElementById('product-price').value,
+        stock: document.getElementById('product-stock').value,
+        storage: document.getElementById('product-storage').value,
+        description: document.getElementById('product-description').value,
+        colors: getSelectedColors(),
+        colorNames: getSelectedColorNames(),
+        imagePreview: previewImg && !previewImg.classList.contains('hidden') ? previewImg.src : null
+      };
+      
       document.getElementById('product-modal').classList.add('hidden');
       document.getElementById('config-product-id').value = productId;
       document.getElementById('config-product-name').textContent = 'Sản phẩm: ' + productName;
@@ -3697,6 +4421,7 @@
     function closeConfigModal() {
       document.getElementById('config-modal').classList.add('hidden');
       configProductId = null;
+      tempProductFormData = null; // Xóa dữ liệu tạm khi hoàn thành
       loadProducts();
       loadDashboardData();
     }
@@ -3706,7 +4431,43 @@
     }
     function backToProductModal() {
       document.getElementById('config-modal').classList.add('hidden');
-      if (configProductId) {
+      
+      // Khôi phục dữ liệu form từ biến tạm (không load lại từ DB)
+      if (tempProductFormData) {
+        const modal = document.getElementById('product-modal');
+        
+        // Khôi phục các field
+        document.getElementById('product-id').value = tempProductFormData.id || '';
+        document.getElementById('product-name').value = tempProductFormData.name || '';
+        document.getElementById('product-brand').value = tempProductFormData.brand || '';
+        document.getElementById('product-price').value = tempProductFormData.price || '';
+        document.getElementById('product-stock').value = tempProductFormData.stock || '';
+        document.getElementById('product-storage').value = tempProductFormData.storage || '128';
+        document.getElementById('product-description').value = tempProductFormData.description || '';
+        
+        // Khôi phục màu sắc
+        if (tempProductFormData.colors && tempProductFormData.colorNames) {
+          loadColorsFromData(tempProductFormData.colors, tempProductFormData.colorNames);
+        }
+        
+        // Khôi phục ảnh preview
+        if (tempProductFormData.imagePreview) {
+          document.getElementById('preview-img').src = tempProductFormData.imagePreview;
+          document.getElementById('preview-img').classList.remove('hidden');
+          document.getElementById('image-placeholder').classList.add('hidden');
+        }
+        
+        // Cập nhật title
+        if (configProductId) {
+          document.getElementById('product-modal-title').textContent = 'Chỉnh sửa Sản phẩm';
+          editingProductId = configProductId;
+        } else {
+          document.getElementById('product-modal-title').textContent = 'Thêm Sản phẩm mới';
+        }
+        
+        modal.classList.remove('hidden');
+      } else if (configProductId) {
+        // Fallback: nếu không có temp data thì load từ DB
         editingProductId = configProductId;
         openProductModal(configProductId);
       }
@@ -3743,6 +4504,33 @@
     // Product form submit - Buoc 1
     document.getElementById('product-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      // Validation giá và số lượng
+      const price = parseFloat(document.getElementById('product-price').value);
+      const stock = parseInt(document.getElementById('product-stock').value);
+      
+      // Kiểm tra giá phải > 0
+      if (!price || price <= 0) {
+        showToast('Giá sản phẩm phải lớn hơn 0!', 'error');
+        document.getElementById('product-price').focus();
+        return;
+      }
+      
+      // Cảnh báo nếu số lượng = 0 (nhưng vẫn cho phép)
+      if (stock === 0) {
+        const confirmZeroStock = confirm('Số lượng tồn kho là 0. Sản phẩm sẽ hiển thị "Hết hàng". Bạn có muốn tiếp tục?');
+        if (!confirmZeroStock) {
+          document.getElementById('product-stock').focus();
+          return;
+        }
+      }
+      
+      // Kiểm tra số lượng không được âm
+      if (stock < 0) {
+        showToast('Số lượng tồn kho không được âm!', 'error');
+        document.getElementById('product-stock').focus();
+        return;
+      }
       
       let imageUrl = document.getElementById('product-image').value || null;
       
@@ -3805,6 +4593,10 @@
           });
           const data = await res.json();
           if (data.success) {
+            // Xóa draft khi lưu thành công
+            clearProductDraft();
+            stopProductDraftAutoSave();
+            
             showToast('Thêm sản phẩm thành công! Tiếp tục thêm cấu hình...');
             // Upload gallery images
             await uploadGalleryImages(data.data.id);
@@ -4102,7 +4894,9 @@
       if (!news.length) { tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">Không có tin tức</td></tr>'; return; }
       tbody.innerHTML = news.map(n => {
         const hasVideo = n.video_url ? '<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700"><i class="fas fa-video mr-1"></i>Video</span>' : '';
-        return '<tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors"><td class="py-4 px-2">' + (n.anh_dai_dien ? '<img src="' + n.anh_dai_dien + '" class="w-16 h-16 object-cover rounded-xl">' : '<div class="w-16 h-16 bg-slate-200 rounded-xl flex items-center justify-center"><i class="fas fa-newspaper text-slate-400"></i></div>') + '</td><td class="py-4"><p class="font-medium max-w-md">' + n.tieu_de + hasVideo + '</p><p class="text-xs text-slate-500 mt-1">' + truncateText(n.noi_dung, 80) + '</p></td><td class="py-4 text-slate-600">' + (n.ten_admin || 'N/A') + '</td><td class="py-4 text-slate-500">' + formatDate(n.ngay_dang) + '</td><td class="py-4 space-x-2"><button onclick="viewNews(' + n.ma_tintuc + ')" class="text-violet-600 hover:text-violet-800 p-1" title="Xem chi tiết"><i class="fas fa-eye"></i></button><button onclick="editNews(' + n.ma_tintuc + ')" class="text-blue-600 hover:text-blue-800 p-1" title="Chỉnh sửa"><i class="fas fa-edit"></i></button><button onclick="deleteNews(' + n.ma_tintuc + ')" class="text-red-600 hover:text-red-800 p-1" title="Xóa"><i class="fas fa-trash"></i></button></td></tr>';
+        const authorName = n.ten_admin || 'Admin';
+        const authorInitials = authorName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+        return '<tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors"><td class="py-4 px-2">' + (n.anh_dai_dien ? '<img src="' + n.anh_dai_dien + '" class="w-16 h-16 object-cover rounded-xl">' : '<div class="w-16 h-16 bg-slate-200 rounded-xl flex items-center justify-center"><i class="fas fa-newspaper text-slate-400"></i></div>') + '</td><td class="py-4"><p class="font-medium max-w-md">' + n.tieu_de + hasVideo + '</p><p class="text-xs text-slate-500 mt-1">' + truncateText(n.noi_dung, 80) + '</p></td><td class="py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-xs font-bold">' + authorInitials + '</div><span class="text-slate-600">' + authorName + '</span></div></td><td class="py-4 text-slate-500">' + formatDate(n.ngay_dang) + '</td><td class="py-4 space-x-2"><button onclick="viewNews(' + n.ma_tintuc + ')" class="text-violet-600 hover:text-violet-800 p-1" title="Xem chi tiết"><i class="fas fa-eye"></i></button><button onclick="editNews(' + n.ma_tintuc + ')" class="text-blue-600 hover:text-blue-800 p-1" title="Chỉnh sửa"><i class="fas fa-edit"></i></button><button onclick="deleteNews(' + n.ma_tintuc + ')" class="text-red-600 hover:text-red-800 p-1" title="Xóa"><i class="fas fa-trash"></i></button></td></tr>';
       }).join('');
     }
     function openNewsModal(newsId) {
@@ -4113,6 +4907,13 @@
       resetNewsImagePreview();
       document.getElementById('news-video').value = '';
       
+      // Hiển thị tên admin đang đăng nhập
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const adminName = user.ho_ten || user.ten_admin || 'Admin';
+      const adminInitials = adminName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('news-author-name').textContent = adminName;
+      document.getElementById('news-author-avatar').textContent = adminInitials;
+      
       if (newsId) {
         const news = allNews.find(n => n.ma_tintuc === newsId);
         if (news) {
@@ -4122,6 +4923,13 @@
           document.getElementById('news-content').value = news.noi_dung;
           document.getElementById('news-image').value = news.anh_dai_dien || '';
           document.getElementById('news-video').value = news.video_url || '';
+          
+          // Hiển thị tên tác giả của tin tức đang sửa
+          if (news.ten_admin) {
+            const authorInitials = news.ten_admin.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('news-author-name').textContent = news.ten_admin;
+            document.getElementById('news-author-avatar').textContent = authorInitials;
+          }
           
           // Hiển thị ảnh đại diện nếu có
           if (news.anh_dai_dien) {
@@ -4170,7 +4978,7 @@
           if (uploadData.success && uploadData.url) {
             imageUrl = uploadData.url;
           } else {
-            // Fallback: D�ng data URL
+            // Fallback: Dùng data URL
             imageUrl = document.getElementById('news-preview-img').src;
           }
         } catch(uploadErr) {
@@ -4179,12 +4987,16 @@
         }
       }
       
+      // Lấy ma_admin từ localStorage
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const adminId = user.ma_admin || null;
+      
       const newsData = {
         tieu_de: document.getElementById('news-title').value,
         noi_dung: document.getElementById('news-content').value,
         anh_dai_dien: imageUrl,
         video_url: document.getElementById('news-video').value || null,
-        ma_admin: 1
+        ma_admin: adminId
       };
       try {
         const url = editingNewsId ? API_URL + '/admin/news/' + editingNewsId : API_URL + '/admin/news';

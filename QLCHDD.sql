@@ -106,6 +106,7 @@ CREATE TABLE khach_hang (
   so_dt VARCHAR(20),
   dia_chi VARCHAR(300),
   mat_khau VARCHAR(255) NOT NULL,
+  google_id VARCHAR(255) UNIQUE,
   ngay_tao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 ALTER TABLE khach_hang
@@ -127,6 +128,8 @@ CREATE TABLE admin (
   tai_khoan VARCHAR(100) UNIQUE,
   mat_khau VARCHAR(255),
   ho_ten VARCHAR(150),
+  email VARCHAR(255) UNIQUE,
+  google_id VARCHAR(255) UNIQUE,
   quyen ENUM('superadmin','nhanvien') DEFAULT 'nhanvien'
 );
 ALTER TABLE admin
@@ -136,6 +139,16 @@ ADD CONSTRAINT fk_lienhe_admin
     FOREIGN KEY (ma_admin) REFERENCES admin(ma_admin)
     ON DELETE SET NULL 
     ON UPDATE CASCADE;
+    USE QHUNG;
+
+-- 1. Thêm cột email và google_id vào bảng admin
+ALTER TABLE admin ADD COLUMN email VARCHAR(255) UNIQUE AFTER ho_ten;
+ALTER TABLE admin ADD COLUMN google_id VARCHAR(255) UNIQUE AFTER email;
+
+-- 2. Thêm tài khoản admin cho email Google của bạn
+INSERT INTO admin (tai_khoan, mat_khau, ho_ten, email, quyen) 
+VALUES ('quangvinhho000@gmail.com', 'google_oauth_admin', 'Hồ Quang Vinh', 'quangvinhho000@gmail.com', 'superadmin');
+
 -------------------------------------------------------------
 -- 8. GIỎ HÀNG
 -------------------------------------------------------------
@@ -360,9 +373,10 @@ INSERT INTO khach_hang (ho_ten, email, so_dt, dia_chi, mat_khau) VALUES
 ('Phan Thị H','h@gmail.com','0988888888','Vũng Tàu','123'),
 ('Hoàng Văn I','i@gmail.com','0999999999','Long An','123'),
 ('Lý Thị K','k@gmail.com','0900000000','An Giang','123');
-INSERT INTO admin (tai_khoan, mat_khau, ho_ten, quyen) VALUES
-('admin1','123','Nguyễn Admin','superadmin'),
-('admin2','123','Trần Admin','nhanvien');
+INSERT INTO admin (tai_khoan, mat_khau, ho_ten, email, quyen) VALUES
+('admin1','123','Nguyễn Admin', NULL, 'superadmin'),
+('admin2','123','Trần Admin', NULL, 'nhanvien'),
+('quangvinhho000@gmail.com','google_oauth_admin','Hồ Quang Vinh', 'quangvinhho000@gmail.com', 'superadmin');
 INSERT INTO gio_hang (ma_kh) VALUES
 (1),(2),(3),(4),(5),(6),(7),(8),(9),(10);
 INSERT INTO chi_tiet_gio_hang (ma_gio_hang, ma_sp, so_luong, gia_tai_thoi_diem) VALUES

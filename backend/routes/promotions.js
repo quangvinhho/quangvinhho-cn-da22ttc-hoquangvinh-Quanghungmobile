@@ -430,54 +430,164 @@ router.post('/calculate-total', async (req, res) => {
 // ============================================================
 // LẤY SẢN PHẨM BÁN CHẬM NHẤT (SLOW MOVERS)
 // Lấy 4 sản phẩm có lượng bán thấp nhất từ database thực
+// Tự động refresh mỗi 12 tiếng
 // ============================================================
 
-// Map ảnh mặc định theo hãng - sử dụng ảnh thực tế có trong thư mục images
+// Cache để lưu sản phẩm bán chậm và thời gian cập nhật
+let slowMoversCache = {
+  products: [],
+  lastUpdated: null,
+  REFRESH_INTERVAL: 12 * 60 * 60 * 1000 // 12 tiếng (milliseconds)
+};
+
+// Kiểm tra xem cache có cần refresh không
+function shouldRefreshSlowMovers() {
+  if (!slowMoversCache.lastUpdated || slowMoversCache.products.length === 0) {
+    return true;
+  }
+  const now = Date.now();
+  const timeSinceLastUpdate = now - slowMoversCache.lastUpdated;
+  return timeSinceLastUpdate >= slowMoversCache.REFRESH_INTERVAL;
+}
+
+// Tính thời gian còn lại đến lần refresh tiếp theo
+function getTimeUntilNextRefresh() {
+  if (!slowMoversCache.lastUpdated) return 0;
+  const nextRefresh = slowMoversCache.lastUpdated + slowMoversCache.REFRESH_INTERVAL;
+  const remaining = nextRefresh - Date.now();
+  return Math.max(0, remaining);
+}
+
+// Map tên file ngắn trong DB sang tên file thực tế trong thư mục images
+const dbImageToRealImage = {
+  // iPhone
+  'iphone15.jpg': 'images/15-256.avif',
+  'iphone14.jpg': 'images/iphone-14-pro_2__5.webp',
+  'iphone16.jpg': 'images/iphone-16-pro-max-titan-den.webp',
+  'iphone17.jpg': 'images/iphone-17-pro-max-256.jpg',
+  // Samsung
+  's24u.jpg': 'images/samsung-galaxy-s24_15__2.webp',
+  'a54.jpg': 'images/a54.webp',
+  'a05.jpg': 'images/A05.webp',
+  'a07.jpg': 'images/samsung_galaxy_a07.webp',
+  // Xiaomi
+  'rn13.jpg': 'images/Xiaomi%20Redmi%20Note%2013.webp',
+  'xiaomi.jpg': 'images/Xiaomi.avif',
+  // Oppo
+  'reno10.jpg': 'images/oppo_reno_13_f_4g_256gb.avif',
+  'oppo_findx.jpg': 'images/OPPX9.avif',
+  // Vivo
+  'v25.jpg': 'images/vivo.webp',
+  'vivo.jpg': 'images/vivo.webp',
+  // Asus
+  'rog7.jpg': 'images/asus-rog-phone-7.webp',
+  'asus.jpg': 'images/asus-rog-phone-7.webp',
+  // Vsmart
+  'joy4.jpg': 'images/vsmart-joy-4_1__2.webp',
+  'vsmart.jpg': 'images/vsmart-joy-4_1__2.webp',
+  // Sony
+  'xperia5.jpg': 'images/sony-xperia-1-vi.webp',
+  'sony.jpg': 'images/sony-xperia-1-vi.webp',
+  // Google
+  'pixel.jpg': 'images/pixel-9-pro.avif',
+  // Tecno
+  'tecno.jpg': 'images/TECNO.avif',
+  // Realme
+  'realme.jpg': 'images/reno10_5g_-_combo_product_-_blue_-_copy.webp'
+};
+
+// Map ảnh mặc định theo hãng (chỉ dùng khi DB không có ảnh)
 const brandImageMap = {
   'Apple': 'images/iphone-17-pro-max-256.jpg',
   'Samsung': 'images/samsung-galaxy-s24_15__2.webp',
   'Xiaomi': 'images/Xiaomi.avif',
   'Oppo': 'images/oppo_reno_13_f_4g_256gb.avif',
-  'Vivo': 'images/oppo_reno_13_f_4g_256gb.avif',
+  'Vivo': 'images/vivo.webp',
   'Google': 'images/pixel-9-pro.avif',
   'Sony': 'images/sony-xperia-1-vi.webp',
   'Tecno': 'images/TECNO.avif',
   'Realme': 'images/reno10_5g_-_combo_product_-_blue_-_copy.webp',
-  'Asus': 'images/iphone17.avif',
-  'default': 'images/iphone17.avif'
+  'Asus': 'images/asus-rog-phone-7.webp',
+  'Vsmart': 'images/vsmart-joy-4_1__2.webp',
+  'default': 'images/IPHONE17.avif'
 };
 
-// Danh sách ảnh thực tế có trong thư mục (để kiểm tra)
-const validImages = [
-  'iphone-17-pro-max-256.jpg', 'iphone17.avif', 'iphone17.jpg', 'iphone.jpg',
-  'iphone-17-pro_1.webp', 'iphone-17-pro-1_1.webp', 'iphone-16-pro-max-titan-den.webp',
-  'samsung-galaxy-s24_15__2.webp', 'samsung-galaxy-s24_17__2.webp', 'samsung_galaxy_a36_5g.avif',
-  'samsung_galaxy_s24_fe_5g.avif', 'galaxy-s24-plus-den.webp', 'galaxy-s24-plus-vang.webp',
-  'Xiaomi.avif', 'home-poco-f8-pro-1125.webp',
-  'oppo_reno_13_f_4g_256gb.avif', 'oppo-reno.avif', 'reno-xanh.avif', 'oppx9.avif',
-  'pixel-9-pro.avif', 'sony-xperia-1-vi.webp', 'TECNO.avif',
-  'reno10_5g_-_combo_product_-_blue_-_copy.webp', '15-256.avif', '15IP.avif'
-];
-
-// Helper function để lấy ảnh phù hợp - ưu tiên ảnh theo hãng vì chắc chắn tồn tại
+// Helper function để lấy ảnh - TRỰC TIẾP TỪ DATABASE
 function getSlowMoverImage(row) {
-  const brand = row.ten_hang || '';
   const dbImage = row.anh_dai_dien || '';
+  const brand = row.ten_hang || '';
   
-  // Kiểm tra nếu ảnh trong DB nằm trong danh sách ảnh hợp lệ
-  const imageName = dbImage.replace('images/', '');
-  if (validImages.includes(imageName)) {
-    return dbImage.startsWith('images/') ? dbImage : `images/${dbImage}`;
+  // Dùng ảnh từ DB nếu có
+  if (dbImage) {
+    // Kiểm tra xem có trong map chuyển đổi không (tên file ngắn -> tên file thực)
+    if (dbImageToRealImage[dbImage]) {
+      console.log(`[getSlowMoverImage] Mapped ${dbImage} -> ${dbImageToRealImage[dbImage]}`);
+      return dbImageToRealImage[dbImage];
+    }
+    
+    let imagePath = dbImage;
+    // Thêm prefix images/ nếu chưa có
+    if (!imagePath.startsWith('images/') && !imagePath.startsWith('http')) {
+      imagePath = 'images/' + imagePath;
+    }
+    // Encode khoảng trắng
+    if (imagePath.includes(' ') && !imagePath.includes('%20')) {
+      imagePath = imagePath.replace(/ /g, '%20');
+    }
+    return imagePath;
   }
   
-  // Fallback: dùng ảnh mặc định theo hãng
+  // Fallback nếu DB không có ảnh - dùng ảnh theo hãng
   return brandImageMap[brand] || brandImageMap['default'];
 }
 
-router.get('/slow-movers', async (req, res) => {
-  try {
-    // Lấy 4 sản phẩm bán chậm nhất (ít đơn hàng hoàn thành nhất) + thông tin hãng
-    const [products] = await pool.query(`
+// Hàm lấy sản phẩm bán chậm từ DB
+async function fetchSlowMoversFromDB() {
+  // Lấy 4 sản phẩm bán chậm nhất (ít đơn hàng hoàn thành nhất) + thông tin hãng
+  const [products] = await pool.query(`
+    SELECT 
+      sp.ma_sp,
+      sp.ten_sp,
+      sp.gia,
+      sp.anh_dai_dien,
+      sp.so_luong_ton,
+      hsx.ten_hang,
+      COALESCE(sold_data.so_luong_da_ban, 0) as so_luong_da_ban,
+      COALESCE(review_data.so_danh_gia, 0) as so_danh_gia,
+      COALESCE(review_data.diem_trung_binh, 0) as diem_trung_binh
+    FROM san_pham sp
+    LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+    LEFT JOIN (
+      SELECT 
+        ctdh.ma_sp,
+        SUM(ctdh.so_luong) as so_luong_da_ban
+      FROM chi_tiet_don_hang ctdh
+      JOIN don_hang dh ON ctdh.ma_don = dh.ma_don
+      WHERE dh.trang_thai IN ('completed', 'shipping', 'confirmed')
+      GROUP BY ctdh.ma_sp
+    ) sold_data ON sp.ma_sp = sold_data.ma_sp
+    LEFT JOIN (
+      SELECT 
+        ma_sp,
+        COUNT(*) as so_danh_gia,
+        AVG(so_sao) as diem_trung_binh
+      FROM danh_gia
+      GROUP BY ma_sp
+    ) review_data ON sp.ma_sp = review_data.ma_sp
+    WHERE sp.so_luong_ton > 0
+    ORDER BY so_luong_da_ban ASC, sp.ma_sp ASC
+    LIMIT 4
+  `);
+
+  // Log chi tiết để debug
+  console.log('[Slow Movers] Raw products from DB:');
+  products.forEach(p => {
+    console.log(`  - ID: ${p.ma_sp}, Name: ${p.ten_sp}, Image: ${p.anh_dai_dien}, Brand: ${p.ten_hang}`);
+  });
+
+  if (products.length === 0) {
+    // Fallback: lấy bất kỳ 4 sản phẩm nào
+    const [fallbackProducts] = await pool.query(`
       SELECT 
         sp.ma_sp,
         sp.ten_sp,
@@ -485,89 +595,96 @@ router.get('/slow-movers', async (req, res) => {
         sp.anh_dai_dien,
         sp.so_luong_ton,
         hsx.ten_hang,
-        COALESCE(sold_data.so_luong_da_ban, 0) as so_luong_da_ban,
-        COALESCE(review_data.so_danh_gia, 0) as so_danh_gia,
-        COALESCE(review_data.diem_trung_binh, 0) as diem_trung_binh
+        0 as so_luong_da_ban,
+        0 as so_danh_gia,
+        4.5 as diem_trung_binh
       FROM san_pham sp
       LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
-      LEFT JOIN (
-        SELECT 
-          ctdh.ma_sp,
-          SUM(ctdh.so_luong) as so_luong_da_ban
-        FROM chi_tiet_don_hang ctdh
-        JOIN don_hang dh ON ctdh.ma_don = dh.ma_don
-        WHERE dh.trang_thai IN ('completed', 'shipping', 'confirmed')
-        GROUP BY ctdh.ma_sp
-      ) sold_data ON sp.ma_sp = sold_data.ma_sp
-      LEFT JOIN (
-        SELECT 
-          ma_sp,
-          COUNT(*) as so_danh_gia,
-          AVG(so_sao) as diem_trung_binh
-        FROM danh_gia
-        GROUP BY ma_sp
-      ) review_data ON sp.ma_sp = review_data.ma_sp
       WHERE sp.so_luong_ton > 0
-      ORDER BY so_luong_da_ban ASC, sp.ma_sp ASC
+      ORDER BY RAND()
       LIMIT 4
     `);
+    return fallbackProducts;
+  }
 
-    if (products.length === 0) {
-      // Fallback: lấy bất kỳ 4 sản phẩm nào
-      const [fallbackProducts] = await pool.query(`
-        SELECT 
-          sp.ma_sp,
-          sp.ten_sp,
-          sp.gia,
-          sp.anh_dai_dien,
-          sp.so_luong_ton,
-          hsx.ten_hang,
-          0 as so_luong_da_ban,
-          0 as so_danh_gia,
-          4.5 as diem_trung_binh
-        FROM san_pham sp
-        LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
-        WHERE sp.so_luong_ton > 0
-        ORDER BY RAND()
-        LIMIT 4
-      `);
+  return products;
+}
+
+router.get('/slow-movers', async (req, res) => {
+  try {
+    let products;
+    const forceRefresh = req.query.refresh === 'true';
+    
+    // Force refresh cache nếu có query param
+    if (forceRefresh) {
+      console.log('[Slow Movers] Force refresh requested - clearing cache...');
+      slowMoversCache.products = [];
+      slowMoversCache.lastUpdated = null;
+    }
+    
+    // Kiểm tra cache và refresh nếu cần (mỗi 12 tiếng)
+    if (shouldRefreshSlowMovers()) {
+      console.log('[Slow Movers] Refreshing cache - fetching from DB...');
+      products = await fetchSlowMoversFromDB();
       
-      return res.json({
-        success: true,
-        data: fallbackProducts.map(p => ({
-          id: p.ma_sp,
-          name: p.ten_sp,
-          price: parseFloat(p.gia || 0),
-          image: getSlowMoverImage(p),
-          stock: p.so_luong_ton || 0,
-          sold: 0,
-          rating: 4.5,
-          reviews: 0,
-          brand: p.ten_hang || ''
-        })),
-        message: 'Sản phẩm ưu đãi đặc biệt'
-      });
+      // Cập nhật cache
+      slowMoversCache.products = products;
+      slowMoversCache.lastUpdated = Date.now();
+      
+      console.log(`[Slow Movers] Cache updated at ${new Date(slowMoversCache.lastUpdated).toLocaleString('vi-VN')}`);
+      console.log(`[Slow Movers] Next refresh in 12 hours`);
+    } else {
+      // Sử dụng cache
+      products = slowMoversCache.products;
+      const nextRefreshMs = getTimeUntilNextRefresh();
+      const nextRefreshHours = Math.floor(nextRefreshMs / (1000 * 60 * 60));
+      const nextRefreshMinutes = Math.floor((nextRefreshMs % (1000 * 60 * 60)) / (1000 * 60));
+      console.log(`[Slow Movers] Using cached data. Next refresh in ${nextRefreshHours}h ${nextRefreshMinutes}m`);
     }
 
-    res.json({
-      success: true,
-      data: products.map(p => ({
+    // Tính thời gian còn lại đến lần refresh tiếp theo
+    const nextRefreshMs = getTimeUntilNextRefresh();
+    const nextRefreshTime = new Date(Date.now() + nextRefreshMs);
+
+    // Map ảnh cho từng sản phẩm (luôn gọi getSlowMoverImage để đảm bảo ảnh đúng)
+    const mappedProducts = products.map(p => {
+      const image = getSlowMoverImage(p);
+      console.log(`[Slow Movers] Final mapping: ${p.ten_sp} -> ${image}`);
+      return {
         id: p.ma_sp,
         name: p.ten_sp,
         price: parseFloat(p.gia || 0),
-        image: getSlowMoverImage(p),
+        image: image,
         stock: p.so_luong_ton || 0,
         sold: parseInt(p.so_luong_da_ban) || 0,
         rating: parseFloat(p.diem_trung_binh) || 4.5,
         reviews: parseInt(p.so_danh_gia) || 0,
         brand: p.ten_hang || ''
-      })),
-      message: 'Sản phẩm có lượng mua thấp nhất - Ưu đãi đặc biệt!'
+      };
+    });
+
+    res.json({
+      success: true,
+      data: mappedProducts,
+      message: 'Sản phẩm có lượng mua thấp nhất - Ưu đãi đặc biệt!',
+      cache: {
+        lastUpdated: slowMoversCache.lastUpdated ? new Date(slowMoversCache.lastUpdated).toISOString() : null,
+        nextRefresh: nextRefreshTime.toISOString(),
+        refreshIntervalHours: 12
+      }
     });
   } catch (error) {
     console.error('Get slow movers error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
+});
+
+// API để clear cache (cho admin/debug)
+router.get('/slow-movers/clear-cache', async (req, res) => {
+  slowMoversCache.products = [];
+  slowMoversCache.lastUpdated = null;
+  console.log('[Slow Movers] Cache cleared manually');
+  res.json({ success: true, message: 'Cache cleared' });
 });
 
 // ============================================================

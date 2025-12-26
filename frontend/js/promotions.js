@@ -84,7 +84,15 @@ function filterHotSale(category) {
 
 // ============================================================
 // LOAD FLASH SALE PRODUCTS - Lấy sản phẩm bán chậm nhất từ DB
+// Tự động refresh mỗi 12 tiếng
 // ============================================================
+
+// Lưu thông tin cache từ server
+let slowMoversCache = {
+  lastUpdated: null,
+  nextRefresh: null
+};
+
 async function loadFlashSaleProducts() {
   const container = document.getElementById('flash-products');
   if (!container) return;
@@ -92,32 +100,49 @@ async function loadFlashSaleProducts() {
   container.innerHTML = '<div class="col-span-full text-center py-8"><i class="fas fa-spinner fa-spin text-2xl text-white/50"></i></div>';
 
   try {
-    // Lấy sản phẩm bán chậm nhất từ API slow-movers (dữ liệu thật từ DB)
+    // Lấy sản phẩm bán chậm nhất từ API slow-movers
+    // Server sẽ tự động cache và refresh mỗi 12 tiếng
     const response = await fetch(`${API_BASE}/promotions/slow-movers`);
     const data = await response.json();
 
     console.log('Flash Sale - Slow movers data:', data);
+    
+    // Lưu thông tin cache
+    if (data.cache) {
+      slowMoversCache.lastUpdated = data.cache.lastUpdated;
+      slowMoversCache.nextRefresh = data.cache.nextRefresh;
+      console.log(`[Hot Sale] Dữ liệu được cập nhật lúc: ${new Date(data.cache.lastUpdated).toLocaleString('vi-VN')}`);
+      console.log(`[Hot Sale] Lần refresh tiếp theo: ${new Date(data.cache.nextRefresh).toLocaleString('vi-VN')}`);
+    }
 
     if (data.success && data.data && data.data.length > 0) {
+      // Log chi tiết để debug ảnh
+      console.log('[Hot Sale] Products received:');
+      data.data.forEach(p => {
+        console.log(`  - ID: ${p.id}, Name: ${p.name}, Image: ${p.image}`);
+      });
+      
       // Chuyển đổi dữ liệu slow-movers thành format hot sale - chỉ lấy 4 sản phẩm
       const discounts = [31, 37, 24, 44];
-      const ratings = [5, 5, 4.9, 4.3];
       const flashProducts = data.data.slice(0, 4).map((p, index) => {
         const discount = discounts[index];
         return {
           productId: p.id,
           name: p.name,
-          image: p.image,
+          image: p.image, // Ảnh đã được xử lý từ backend
           originalPrice: p.price,
           flashPrice: p.price * (1 - discount / 100),
           discountPercent: discount,
-          rating: ratings[index],
+          rating: p.rating || 4.5,
           hasInstallment: index % 2 === 0
         };
       });
       
       allFlashProducts = flashProducts;
       renderFlashProducts(flashProducts, container);
+      
+      // Hiển thị thông tin cập nhật (nếu có element)
+      updateCacheInfo();
     } else {
       // Fallback nếu API slow-movers không có dữ liệu
       await loadProductsAsFlash(container);
@@ -125,6 +150,21 @@ async function loadFlashSaleProducts() {
   } catch (error) {
     console.error('Error loading flash sale:', error);
     await loadProductsAsFlash(container);
+  }
+}
+
+// Hiển thị thông tin thời gian cập nhật (optional)
+function updateCacheInfo() {
+  const cacheInfoEl = document.getElementById('cache-info');
+  if (cacheInfoEl && slowMoversCache.lastUpdated) {
+    const lastUpdate = new Date(slowMoversCache.lastUpdated);
+    const nextRefresh = new Date(slowMoversCache.nextRefresh);
+    cacheInfoEl.innerHTML = `
+      <span class="text-xs text-white/70">
+        <i class="fas fa-sync-alt mr-1"></i>
+        Cập nhật: ${lastUpdate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+      </span>
+    `;
   }
 }
 
@@ -158,16 +198,20 @@ async function loadProductsAsFlash(container) {
 }
 
 function renderFlashProducts(products, container) {
+  console.log('[renderFlashProducts] Rendering products:', products.length);
+  
   container.innerHTML = products.map(product => {
     const imageUrl = normalizeImageUrl(product.image);
     const rating = product.rating || (4 + Math.random()).toFixed(1);
     const hasInstallment = product.hasInstallment !== false;
     
+    console.log(`[renderFlashProducts] Product: ${product.name}, Image URL: ${imageUrl}`);
+    
     return `
       <a href="product-detail.html?id=${product.productId}" class="flash-product-card block">
         <div class="flash-product-image">
           <img src="${imageUrl}" alt="${product.name}" 
-               onerror="this.onerror=null; this.src='images/iphone17.avif';">
+               onerror="console.error('[Image Error] Failed to load:', '${imageUrl}'); this.onerror=null; this.src='images/IPHONE17.avif';">
           <div class="badge-group">
             <span class="badge-discount">Giảm ${product.discountPercent}%</span>
             ${hasInstallment ? '<span class="badge-installment">Trả góp 0%</span>' : ''}
@@ -193,16 +237,49 @@ function renderFlashProducts(products, container) {
 
 // Helper function để chuẩn hóa đường dẫn ảnh
 function normalizeImageUrl(imageUrl) {
-  if (!imageUrl) return 'images/iphone17.avif';
+  const DEFAULT_IMAGE = 'images/IPHONE17.avif';
+  
+  if (!imageUrl) {
+    console.log(`[normalizeImageUrl] Empty image, using default`);
+    return DEFAULT_IMAGE;
+  }
   
   // Nếu là URL đầy đủ (http/https), giữ nguyên
-  if (imageUrl.startsWith('http')) return imageUrl;
+  if (imageUrl.startsWith('http')) {
+    console.log(`[normalizeImageUrl] HTTP URL: ${imageUrl}`);
+    return imageUrl;
+  }
+  
+  // Nếu đã có prefix images/ và có extension hợp lệ, giữ nguyên (backend đã xử lý)
+  if (imageUrl.startsWith('images/') && 
+      (imageUrl.includes('.webp') || imageUrl.includes('.avif') || 
+       imageUrl.includes('.jpg') || imageUrl.includes('.png'))) {
+    console.log(`[normalizeImageUrl] Already processed: ${imageUrl}`);
+    return imageUrl;
+  }
+  
+  // Nếu đã được encode (%20), đảm bảo có prefix images/
+  if (imageUrl.includes('%20')) {
+    let result = imageUrl;
+    if (!imageUrl.startsWith('images/')) {
+      result = 'images/' + imageUrl;
+    }
+    console.log(`[normalizeImageUrl] Encoded URL: ${imageUrl} -> ${result}`);
+    return result;
+  }
   
   // Loại bỏ prefix images/ nếu bị lặp
   let normalized = imageUrl.replace(/^(images\/)+/, '');
   
+  // Encode khoảng trắng trong tên file
+  if (normalized.includes(' ')) {
+    normalized = normalized.replace(/ /g, '%20');
+  }
+  
   // Thêm prefix images/ một lần duy nhất
-  return 'images/' + normalized;
+  const result = 'images/' + normalized;
+  console.log(`[normalizeImageUrl] ${imageUrl} -> ${result}`);
+  return result;
 }
 
 // ============================================================
@@ -402,7 +479,7 @@ function renderFeaturedProducts(products, container) {
     return `
       <div class="featured-card" onclick="window.location.href='product-detail.html?id=${id}'">
         <div class="featured-image">
-          <img src="${image}" alt="${name}" onerror="this.onerror=null; this.src='images/iphone17.avif';">
+          <img src="${image}" alt="${name}" onerror="this.onerror=null; this.src='images/IPHONE17.avif';">
           <div class="featured-badge">HOT</div>
         </div>
         <div class="featured-info">

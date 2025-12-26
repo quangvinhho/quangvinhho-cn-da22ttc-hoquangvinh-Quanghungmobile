@@ -56,7 +56,6 @@ router.get('/featured', async (req, res) => {
                 tt.tieu_de,
                 tt.noi_dung,
                 tt.anh_dai_dien,
-                tt.video_url,
                 tt.ngay_dang,
                 a.ho_ten as tac_gia
             FROM tin_tuc tt

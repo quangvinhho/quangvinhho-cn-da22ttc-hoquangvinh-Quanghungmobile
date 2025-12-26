@@ -17,9 +17,16 @@ let searchQuery = '';
 
 // Hàm fetch sản phẩm từ API hoặc JSON file
 async function fetchProducts() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 giây timeout
+    
     try {
         // Thử lấy từ API trước
-        const response = await fetch(`${API_URL}/products`);
+        const response = await fetch(`${API_URL}/products`, {
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
         if (!response.ok) throw new Error('API không khả dụng');
         const data = await response.json();
         if (data && data.length > 0) {
@@ -29,6 +36,7 @@ async function fetchProducts() {
         }
         throw new Error('Không có dữ liệu từ API');
     } catch (error) {
+        clearTimeout(timeoutId);
         console.log('Fallback to product-data.json:', error.message);
         // Fallback: Lấy từ file JSON
         try {
@@ -430,16 +438,22 @@ function createProductCard(product) {
     
     const reviewCount = product.reviews || Math.floor(Math.random() * 200) + 20;
     
+    // Đảm bảo đường dẫn ảnh đúng
+    let productImage = product.image;
+    if (productImage && !productImage.startsWith('http') && !productImage.startsWith('images/')) {
+        productImage = `images/${productImage}`;
+    }
+    
     card.innerHTML = `
         <div class="flex flex-col h-full" onclick="window.location.href='product-detail.html?id=${product.id}'">
             <div class="relative aspect-square p-3 flex items-center justify-center bg-white group overflow-hidden">
                 ${discountBadge}
-                <img src="${product.image}" 
+                <img src="${productImage}" 
                      alt="${product.name}" 
                      class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" 
                      style="mix-blend-mode: multiply; max-height: 100%; max-width: 100%;"
                      loading="lazy"
-                     onerror="this.onerror=null; this.src='images/iphone17.avif';">
+                     onerror="this.onerror=null; this.src='images/IPHONE17.avif';">
             </div>
             
             <div class="p-4 flex flex-col flex-1">
@@ -530,45 +544,110 @@ function closeLoginModal() {
     if (modal) modal.remove();
 }
 
-function addToCart(productId) {
+async function addToCart(productId) {
+    console.log('addToCart called with productId:', productId, 'type:', typeof productId);
+    console.log('PRODUCTS array length:', PRODUCTS.length);
+    
     // Kiểm tra đăng nhập trước
     if (!isLoggedIn()) {
         showLoginRequiredModal();
         return;
     }
     
-    const product = PRODUCTS.find(p => p.id === productId);
-    if (product) {
-        const cartKey = getCartKey();
-        let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
-        const existingItem = cart.find(item => item.id === product.id);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            // Lấy màu đầu tiên từ mảng colors nếu có
-            const firstColor = product.colors && product.colors.length > 0 ? product.colors[0] : '#000000';
-            const firstColorName = product.colorNames && product.colorNames.length > 0 ? product.colorNames[0] : 'Mặc định';
-            
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                originalPrice: product.oldPrice || product.price,
-                image: product.image,
+    // Tìm sản phẩm - so sánh cả số và chuỗi
+    const product = PRODUCTS.find(p => {
+        const pId = p.id;
+        const searchId = productId;
+        return pId == searchId; // So sánh lỏng để xử lý cả number và string
+    });
+    
+    console.log('Found product:', product);
+    
+    if (!product) {
+        console.error('Product not found! ProductId:', productId);
+        console.log('Available product IDs:', PRODUCTS.map(p => p.id));
+        showToast('Không tìm thấy sản phẩm', 'error');
+        return;
+    }
+    
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const firstColor = product.colors && product.colors.length > 0 ? product.colors[0] : '#000000';
+    const firstColorName = product.colorNames && product.colorNames.length > 0 ? product.colorNames[0] : 'Mặc định';
+    
+    // Chuẩn bị thông tin sản phẩm để lưu
+    const cartItem = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.oldPrice || product.price,
+        image: product.image,
+        quantity: 1,
+        color: firstColorName,
+        colorCode: firstColor,
+        storage: product.storage ? `${product.storage}GB` : '128GB',
+        inStock: true
+    };
+    
+    try {
+        // Gọi API thêm vào giỏ hàng - gửi kèm thông tin sản phẩm
+        const response = await fetch(`${API_URL}/cart`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: user.ma_kh,
+                productId: product.id,
                 quantity: 1,
-                color: firstColorName,
-                colorCode: firstColor,
-                storage: product.storage ? `${product.storage}GB` : '128GB',
-                ram: product.ram ? `${product.ram}GB` : null,
-                inStock: true,
-                badge: product.discount ? `-${product.discount}%` : null
-            });
-        }
+                productInfo: {
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    color: firstColorName,
+                    storage: product.storage ? `${product.storage}GB` : '128GB'
+                }
+            })
+        });
+        const data = await response.json();
+        console.log('API response:', data);
         
-        localStorage.setItem(cartKey, JSON.stringify(cart));
-        window.dispatchEvent(new Event('cartUpdated'));
+        // Luôn lưu vào localStorage để backup (dù API thành công hay thất bại)
+        saveToLocalCart(cartItem);
+        
+        if (data.success) {
+            showToast(`Đã thêm "${product.name}" vào giỏ hàng!`);
+        } else {
+            // API thất bại nhưng đã lưu localStorage, vẫn thông báo thành công
+            console.log('API error but saved to localStorage:', data.message);
+            showToast(`Đã thêm "${product.name}" vào giỏ hàng!`);
+        }
+    } catch (error) {
+        console.error('Lỗi thêm giỏ hàng:', error);
+        // Fallback: lưu localStorage nếu API lỗi
+        saveToLocalCart(cartItem);
         showToast(`Đã thêm "${product.name}" vào giỏ hàng!`);
+    }
+}
+
+// Hàm helper lưu vào localStorage
+function saveToLocalCart(cartItem) {
+    const cartKey = getCartKey();
+    let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+    const existingItem = cart.find(item => item.id == cartItem.id); // So sánh lỏng
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push(cartItem);
+    }
+    
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    console.log('Cart saved to localStorage:', cart);
+    
+    // Cập nhật badge
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    // Gọi trực tiếp updateCartBadge nếu có
+    if (typeof updateCartBadge === 'function') {
+        updateCartBadge();
     }
 }
 
@@ -626,34 +705,52 @@ function parseUrlParams() {
     }
 }
 
+// Hàm ẩn page loader
+function hidePageLoader() {
+    const loader = document.getElementById('page-loader');
+    if (loader) {
+        loader.classList.add('hidden');
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 500);
+    }
+}
+
 // --- INITIALIZE ---
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('Products page initializing...');
     
-    // Fetch products from API or JSON
-    await fetchProducts();
-    console.log('Products loaded:', PRODUCTS.length);
-    
-    // Parse URL params
-    parseUrlParams();
-    
-    // Initialize slider
-    const slides = document.querySelectorAll('.banner-slide');
-    if (slides.length > 0) {
-        showSlide(0);
-        startAutoSlide();
+    try {
+        // Fetch products from API or JSON
+        await fetchProducts();
+        console.log('Products loaded:', PRODUCTS.length);
         
-        const bannerSlider = document.getElementById('bannerSlider');
-        if (bannerSlider) {
-            bannerSlider.addEventListener('mouseenter', stopAutoSlide);
-            bannerSlider.addEventListener('mouseleave', startAutoSlide);
+        // Parse URL params
+        parseUrlParams();
+        
+        // Initialize slider
+        const slides = document.querySelectorAll('.banner-slide');
+        if (slides.length > 0) {
+            showSlide(0);
+            startAutoSlide();
+            
+            const bannerSlider = document.getElementById('bannerSlider');
+            if (bannerSlider) {
+                bannerSlider.addEventListener('mouseenter', stopAutoSlide);
+                bannerSlider.addEventListener('mouseleave', startAutoSlide);
+            }
         }
+        
+        // Render products
+        renderProducts();
+        updateFilterTags();
+        
+        console.log('Products page initialized successfully!');
+    } catch (error) {
+        console.error('Error initializing products page:', error);
+    } finally {
+        // Đảm bảo ẩn loader dù có lỗi hay không
+        hidePageLoader();
     }
-    
-    // Render products
-    renderProducts();
-    updateFilterTags();
-    
-    console.log('Products page initialized successfully!');
 });
 

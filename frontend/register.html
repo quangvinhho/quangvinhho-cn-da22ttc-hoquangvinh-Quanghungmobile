@@ -460,7 +460,46 @@
 
       // Đăng ký bằng Google
       function handleGoogleSignup() {
-        window.location.href = `${API_URL}/auth/google`;
+        window.location.href = `${API_URL}/auth/google/register`;
+      }
+      
+      // Xử lý thông báo lỗi từ Google OAuth
+      document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const message = urlParams.get('message');
+        
+        if (error === 'not_registered' && message) {
+          showErrorMessage(decodeURIComponent(message));
+          window.history.replaceState({}, document.title, 'register.html');
+        } else if (error === 'email_exists' && message) {
+          showErrorMessage(decodeURIComponent(message));
+          window.history.replaceState({}, document.title, 'register.html');
+        }
+      });
+      
+      function showErrorMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 z-50';
+        messageDiv.style.animation = 'fadeIn 0.3s ease-out';
+        messageDiv.innerHTML = `
+          <i class="fas fa-exclamation-circle text-xl"></i>
+          <span class="font-medium">${message}</span>
+          <button onclick="this.parentElement.remove()" class="ml-2 hover:text-gray-200">
+            <i class="fas fa-times"></i>
+          </button>
+        `;
+        document.body.appendChild(messageDiv);
+        
+        // Tự động ẩn sau 5 giây
+        setTimeout(() => {
+          if (messageDiv.parentElement) {
+            messageDiv.style.opacity = '0';
+            messageDiv.style.transform = 'translate(-50%, -20px)';
+            messageDiv.style.transition = 'all 0.3s ease-out';
+            setTimeout(() => messageDiv.remove(), 300);
+          }
+        }, 5000);
       }
     </script>
 

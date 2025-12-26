@@ -339,7 +339,12 @@ router.put('/:orderId/cancel', async (req, res) => {
     await connection.beginTransaction();
     
     const { orderId } = req.params;
-    const { userId } = req.body;
+    const { userId, cancelReason } = req.body;
+
+    console.log('=== Cancel Order Request ===');
+    console.log('orderId:', orderId);
+    console.log('userId:', userId);
+    console.log('cancelReason:', cancelReason);
 
     // Kiểm tra đơn hàng tồn tại và thuộc về user
     const [orders] = await connection.query(
@@ -354,6 +359,7 @@ router.put('/:orderId/cancel', async (req, res) => {
     }
 
     const order = orders[0];
+    console.log('Found order:', { ma_don: order.ma_don, ma_kh: order.ma_kh, trang_thai: order.trang_thai });
 
     // Kiểm tra quyền sở hữu (nếu có userId)
     if (userId && order.ma_kh && order.ma_kh != userId) {
@@ -380,14 +386,12 @@ router.put('/:orderId/cancel', async (req, res) => {
       });
     }
 
-    // Lấy lý do hủy từ request
-    const { cancelReason } = req.body;
-
-    // Cập nhật trạng thái đơn hàng thành cancelled và lưu lý do hủy
+    // Cập nhật trạng thái đơn hàng thành cancelled (chỉ cập nhật trang_thai, bỏ qua ly_do_huy)
     await connection.query(
-      'UPDATE don_hang SET trang_thai = ?, ly_do_huy = ? WHERE ma_don = ?',
-      ['cancelled', cancelReason || 'Không có lý do', orderId]
+      'UPDATE don_hang SET trang_thai = ? WHERE ma_don = ?',
+      ['cancelled', orderId]
     );
+    console.log('Order status updated to cancelled');
 
     // Hoàn lại số lượng tồn kho cho các sản phẩm
     const [orderItems] = await connection.query(
@@ -401,8 +405,9 @@ router.put('/:orderId/cancel', async (req, res) => {
         [item.so_luong, item.ma_sp]
       );
     }
+    console.log('Stock restored for', orderItems.length, 'items');
 
-    // Cập nhật trạng thái thanh toán (dùng 'failed' vì ENUM không có 'cancelled')
+    // Cập nhật trạng thái thanh toán
     await connection.query(
       "UPDATE thanh_toan SET trang_thai = 'failed' WHERE ma_don = ?",
       [orderId]
@@ -438,6 +443,8 @@ router.put('/:orderId/cancel', async (req, res) => {
 
     await connection.commit();
     connection.release();
+
+    console.log('Order cancelled successfully:', orderId);
 
     res.json({
       success: true,

@@ -20,7 +20,7 @@
     }
   </script>
 
-  <!-- Google Fonts - Roboto (Consistent with site) -->
+  <!-- Google Fonts - Roboto -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -28,181 +28,482 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-
   <link rel="stylesheet" href="components/header.css">
   
   <style>
     * { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    
+    /* Success Animation */
+    @keyframes checkmark {
+      0% { stroke-dashoffset: 100; }
+      100% { stroke-dashoffset: 0; }
+    }
+    
+    @keyframes circle {
+      0% { stroke-dashoffset: 300; }
+      100% { stroke-dashoffset: 0; }
+    }
+    
+    @keyframes scale-bounce {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes confetti {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    
+    .success-checkmark {
+      animation: scale-bounce 0.5s ease-out forwards;
+    }
+    
+    .success-checkmark .checkmark-circle {
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      animation: circle 0.6s ease-out 0.3s forwards;
+    }
+    
+    .success-checkmark .checkmark-check {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: checkmark 0.4s ease-out 0.8s forwards;
+    }
+    
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      animation: confetti 3s ease-out forwards;
+      z-index: 1000;
+    }
+    
+    /* Order Timeline */
+    .timeline-item {
+      position: relative;
+      padding-left: 30px;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 24px;
+      bottom: -16px;
+      width: 2px;
+      background: #e5e7eb;
+    }
+    
+    .timeline-item:last-child::before {
+      display: none;
+    }
+    
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Product Card Hover */
+    .product-suggest:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    /* Pulse animation for tracking */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      animation: pulse-ring 1.5s ease-out infinite;
+    }
   </style>
 </head>
 
 <body class="bg-gray-100">
-    <!-- ===== PAGE LOADER - Hiệu ứng loading trang ===== -->
+  <!-- Page Loader -->
   <div id="page-loader">
     <div class="loader-logo">
       <img src="images/logo.png" alt="QuangHưng Mobile" onerror="this.style.display='none'">
     </div>
     <div class="loader-spinner"></div>
-    <div class="loader-dots">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
     <div class="loader-text">
       <span>Đ</span><span>a</span><span>n</span><span>g</span><span>&nbsp;</span><span>t</span><span>ả</span><span>i</span><span>.</span><span>.</span><span>.</span>
     </div>
-    <div class="loader-progress">
-      <div class="loader-progress-bar"></div>
-    </div>
+    <div class="loader-progress"><div class="loader-progress-bar"></div></div>
   </div>
 
   <!-- Header Component -->
   <div id="header-placeholder"></div>
   
-  <!-- Spacer for fixed header - Responsive -->
+  <!-- Spacer for fixed header -->
   <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-  <main class="max-w-4xl mx-auto px-4 py-12">
+  <!-- Confetti Container -->
+  <div id="confetti-container"></div>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
     
-    <!-- Success Icon Animation -->
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6 animate-bounce">
-        <i class="fas fa-check-circle text-6xl text-green-600"></i>
+    <!-- Success Header Section -->
+    <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-6 md:p-10 mb-6 text-white text-center relative overflow-hidden">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-40 h-40 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-60 h-60 bg-white rounded-full translate-x-1/3 translate-y-1/3"></div>
       </div>
-      <h1 class="text-3xl md:text-4xl font-black text-gray-900 mb-3">Đặt hàng thành công!</h1>
-      <p class="text-lg text-gray-600">Cảm ơn bạn đã mua hàng tại QuangHưng Mobile</p>
+      
+      <!-- Success Icon -->
+      <div class="relative z-10">
+        <div class="success-checkmark inline-block mb-4">
+          <svg class="w-24 h-24 md:w-32 md:h-32" viewBox="0 0 100 100">
+            <circle class="checkmark-circle" cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="4"/>
+            <path class="checkmark-check" d="M30 50 L45 65 L70 35" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        
+        <h1 class="text-2xl md:text-4xl font-black mb-2">Đặt hàng thành công!</h1>
+        <p class="text-green-100 text-lg">Cảm ơn bạn đã mua hàng tại QuangHưng Mobile</p>
+        
+        <!-- Order ID Badge -->
+        <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 mt-4">
+          <i class="fas fa-receipt"></i>
+          <span class="font-semibold">Mã đơn hàng:</span>
+          <span id="orderId" class="font-black text-lg">---</span>
+          <button onclick="copyOrderId()" class="ml-2 hover:bg-white/20 p-1 rounded transition" title="Sao chép">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
     </div>
-
-    <!-- Order Info Card -->
-    <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 mb-6">
-      <div class="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
-        <div>
-          <p class="text-sm text-gray-600 mb-1">Mã đơn hàng</p>
-          <p id="orderId" class="text-2xl font-black text-red-600">DH123456789</p>
-        </div>
-        <div class="text-right">
-          <p class="text-sm text-gray-600 mb-1">Trạng thái</p>
-          <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-bold text-sm">
-            <i class="fas fa-clock mr-1"></i>
-            Chờ xác nhận
-          </span>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
-            <i class="fas fa-user text-red-600"></i>
-            Thông tin khách hàng
-          </h3>
-          <div class="space-y-2 text-sm">
-            <p><span class="text-gray-600">Họ tên:</span> <span id="customerName" class="font-semibold">-</span></p>
-            <p><span class="text-gray-600">Số điện thoại:</span> <span id="customerPhone" class="font-semibold">-</span></p>
-            <p><span class="text-gray-600">Email:</span> <span id="customerEmail" class="font-semibold">-</span></p>
+    
+<div class="grid lg:grid-cols-3 gap-6">
+      
+      <!-- Left Column: Order Details -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Order Timeline / Status -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <i class="fas fa-route text-red-600"></i>
+            Trạng thái đơn hàng
+          </h2>
+          
+          <div class="space-y-4">
+            <!-- Step 1: Đặt hàng thành công -->
+            <div class="timeline-item">
+              <div class="timeline-dot bg-green-500 text-white pulse-ring">
+                <i class="fas fa-check text-xs"></i>
+              </div>
+              <div class="ml-2">
+                <p class="font-bold text-green-600">Đặt hàng thành công</p>
+                <p id="orderTime" class="text-sm text-gray-500">---</p>
+              </div>
+            </div>
+            
+            <!-- Step 2: Chờ xác nhận -->
+            <div class="timeline-item">
+              <div class="timeline-dot bg-yellow-500 text-white">
+                <i class="fas fa-clock text-xs"></i>
+              </div>
+              <div class="ml-2">
+                <p class="font-semibold text-yellow-600">Chờ xác nhận</p>
+                <p class="text-sm text-gray-500">Shop sẽ xác nhận trong 15 phút</p>
+              </div>
+            </div>
+            
+            <!-- Step 3: Đang chuẩn bị -->
+            <div class="timeline-item">
+              <div class="timeline-dot bg-gray-300 text-gray-500">
+                <i class="fas fa-box text-xs"></i>
+              </div>
+              <div class="ml-2">
+                <p class="font-semibold text-gray-400">Đang chuẩn bị hàng</p>
+                <p class="text-sm text-gray-400">Đơn hàng đang được đóng gói</p>
+              </div>
+            </div>
+            
+            <!-- Step 4: Đang giao -->
+            <div class="timeline-item">
+              <div class="timeline-dot bg-gray-300 text-gray-500">
+                <i class="fas fa-truck text-xs"></i>
+              </div>
+              <div class="ml-2">
+                <p class="font-semibold text-gray-400">Đang giao hàng</p>
+                <p class="text-sm text-gray-400">Shipper đang trên đường giao</p>
+              </div>
+            </div>
+            
+            <!-- Step 5: Hoàn thành -->
+            <div class="timeline-item">
+              <div class="timeline-dot bg-gray-300 text-gray-500">
+                <i class="fas fa-gift text-xs"></i>
+              </div>
+              <div class="ml-2">
+                <p class="font-semibold text-gray-400">Giao hàng thành công</p>
+                <p class="text-sm text-gray-400">Đã nhận hàng</p>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div>
-          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
-            <i class="fas fa-map-marker-alt text-red-600"></i>
-            Địa chỉ giao hàng
-          </h3>
-          <p id="shippingAddress" class="text-sm text-gray-700 leading-relaxed">-</p>
+        
+        <!-- Order Items -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-shopping-bag text-red-600"></i>
+            Sản phẩm đã đặt
+            <span id="itemCount" class="text-sm font-normal text-gray-500">(0 sản phẩm)</span>
+          </h2>
+          
+          <div id="orderItems" class="divide-y divide-gray-100">
+            <!-- Items will be loaded here -->
+          </div>
+        </div>
+        
+        <!-- Customer & Shipping Info -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Customer Info -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <i class="fas fa-user-circle text-red-600"></i>
+              Thông tin người nhận
+            </h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex items-start gap-3">
+                <i class="fas fa-user text-gray-400 mt-0.5"></i>
+                <div>
+                  <p class="text-gray-500">Họ tên</p>
+                  <p id="customerName" class="font-semibold text-gray-900">---</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <i class="fas fa-phone text-gray-400 mt-0.5"></i>
+                <div>
+                  <p class="text-gray-500">Số điện thoại</p>
+                  <p id="customerPhone" class="font-semibold text-gray-900">---</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <i class="fas fa-envelope text-gray-400 mt-0.5"></i>
+                <div>
+                  <p class="text-gray-500">Email</p>
+                  <p id="customerEmail" class="font-semibold text-gray-900">---</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Shipping Info -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-red-600"></i>
+              Địa chỉ giao hàng
+            </h3>
+            <p id="shippingAddress" class="text-sm text-gray-700 leading-relaxed mb-4">---</p>
+            
+            <div class="flex items-center gap-2 text-sm">
+              <i class="fas fa-shipping-fast text-blue-500"></i>
+              <span id="shippingMethod" class="text-gray-600">---</span>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="grid md:grid-cols-2 gap-6 mb-6 pb-6 border-b border-gray-200">
-        <div>
-          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
-            <i class="fas fa-shipping-fast text-red-600"></i>
-            Phương thức vận chuyển
+  
+    <!-- Right Column: Summary & Actions -->
+      <div class="lg:col-span-1 space-y-6">
+        
+        <!-- Payment Summary -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-receipt text-red-600"></i>
+            Tổng thanh toán
           </h3>
-          <p id="shippingMethod" class="text-sm text-gray-700">-</p>
+          
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Tạm tính:</span>
+              <span id="subtotal" class="font-semibold">0đ</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Phí vận chuyển:</span>
+              <span id="shippingFee" class="font-semibold">0đ</span>
+            </div>
+            <div id="discountRow" class="flex justify-between text-green-600 hidden">
+              <span>Giảm giá:</span>
+              <span id="discount">-0đ</span>
+            </div>
+            <div class="border-t-2 border-gray-200 pt-3 mt-3">
+              <div class="flex justify-between text-lg font-black">
+                <span class="text-gray-900">Tổng cộng:</span>
+                <span id="total" class="text-red-600">0đ</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Payment Method -->
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <div class="flex items-center gap-2 text-sm">
+              <i class="fas fa-credit-card text-gray-400"></i>
+              <span class="text-gray-600">Thanh toán:</span>
+              <span id="paymentMethod" class="font-semibold text-gray-900">---</span>
+            </div>
+            <div id="paymentStatus" class="mt-2 inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">
+              <i class="fas fa-clock"></i>
+              <span>Chờ thanh toán</span>
+            </div>
+          </div>
         </div>
-
-        <div>
-          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
-            <i class="fas fa-credit-card text-red-600"></i>
-            Phương thức thanh toán
+        
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-bolt text-yellow-500"></i>
+            Thao tác nhanh
           </h3>
-          <p id="paymentMethod" class="text-sm text-gray-700">-</p>
+          
+          <div class="space-y-3">
+            <a href="profile.html#orders" class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-red-50 rounded-lg transition group">
+              <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center group-hover:bg-red-200 transition">
+                <i class="fas fa-list-alt text-red-600"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900">Xem đơn hàng của tôi</p>
+                <p class="text-xs text-gray-500">Theo dõi tất cả đơn hàng</p>
+              </div>
+              <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+            </a>
+            
+            <a href="products.html" class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-blue-50 rounded-lg transition group">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition">
+                <i class="fas fa-shopping-bag text-blue-600"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900">Tiếp tục mua sắm</p>
+                <p class="text-xs text-gray-500">Khám phá thêm sản phẩm</p>
+              </div>
+              <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+            </a>
+            
+            <a href="contact.html" class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-green-50 rounded-lg transition group">
+              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition">
+                <i class="fas fa-headset text-green-600"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900">Liên hệ hỗ trợ</p>
+                <p class="text-xs text-gray-500">Hotline: 1800.2097</p>
+              </div>
+              <i class="fas fa-chevron-right text-gray-400 ml-auto"></i>
+            </a>
+          </div>
         </div>
-      </div>
-
-      <!-- Order Items -->
-      <div class="mb-6">
-        <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <i class="fas fa-box text-red-600"></i>
-          Sản phẩm đã đặt
-        </h3>
-        <div id="orderItems" class="space-y-3">
-          <!-- Items will be loaded here -->
-        </div>
-      </div>
-
-      <!-- Price Summary -->
-      <div class="bg-gray-50 rounded-lg p-4 space-y-2">
-        <div class="flex justify-between text-sm">
-          <span class="text-gray-600">Tạm tính:</span>
-          <span id="subtotal" class="font-semibold">0đ</span>
-        </div>
-        <div class="flex justify-between text-sm">
-          <span class="text-gray-600">Phí vận chuyển:</span>
-          <span id="shippingFee" class="font-semibold">0đ</span>
-        </div>
-        <div id="discountRow" class="flex justify-between text-sm text-green-600 hidden">
-          <span>Giảm giá:</span>
-          <span id="discount">-0đ</span>
-        </div>
-        <div class="flex justify-between text-xl font-black text-red-600 pt-3 border-t-2 border-gray-200">
-          <span>Tổng cộng:</span>
-          <span id="total">0đ</span>
+        
+        <!-- Share Order -->
+        <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-6 text-white">
+          <h3 class="font-bold mb-2 flex items-center gap-2">
+            <i class="fas fa-share-alt"></i>
+            Chia sẻ đơn hàng
+          </h3>
+          <p class="text-purple-100 text-sm mb-4">Chia sẻ với bạn bè để nhận ưu đãi!</p>
+          <div class="flex gap-2">
+            <button onclick="shareToFacebook()" class="flex-1 bg-white/20 hover:bg-white/30 py-2 rounded-lg transition">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+            <button onclick="shareToMessenger()" class="flex-1 bg-white/20 hover:bg-white/30 py-2 rounded-lg transition">
+              <i class="fab fa-facebook-messenger"></i>
+            </button>
+            <button onclick="shareToZalo()" class="flex-1 bg-white/20 hover:bg-white/30 py-2 rounded-lg transition">
+              <i class="fas fa-comment-dots"></i>
+            </button>
+            <button onclick="copyShareLink()" class="flex-1 bg-white/20 hover:bg-white/30 py-2 rounded-lg transition">
+              <i class="fas fa-link"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Next Steps -->
-    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
+ 
+   <!-- Suggested Products Section -->
+    <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <i class="fas fa-fire text-orange-500"></i>
+          Có thể bạn cũng thích
+        </h2>
+        <a href="products.html" class="text-red-600 hover:text-red-700 text-sm font-semibold flex items-center gap-1">
+          Xem tất cả <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      
+      <div id="suggestedProducts" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <!-- Products will be loaded here -->
+        <div class="col-span-full text-center py-8">
+          <i class="fas fa-spinner fa-spin text-3xl text-gray-300 mb-3"></i>
+          <p class="text-gray-500">Đang tải sản phẩm gợi ý...</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Next Steps Info -->
+    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
       <h3 class="font-bold text-blue-900 mb-4 flex items-center gap-2">
         <i class="fas fa-info-circle text-blue-600"></i>
         Bước tiếp theo
       </h3>
-      <ul class="space-y-3 text-sm text-blue-900">
-        <li class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-blue-600 mt-0.5"></i>
-          <span>Chúng tôi sẽ gọi điện xác nhận đơn hàng trong vòng <strong>15 phút</strong></span>
-        </li>
-        <li class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-blue-600 mt-0.5"></i>
-          <span>Đơn hàng sẽ được giao trong <strong>2-3 ngày</strong> (hoặc 2 giờ nếu chọn giao nhanh)</span>
-        </li>
-        <li class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-blue-600 mt-0.5"></i>
-          <span>Bạn có thể kiểm tra hàng trước khi thanh toán</span>
-        </li>
-        <li class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-blue-600 mt-0.5"></i>
-          <span>Liên hệ hotline <strong class="text-red-600">1800.2097</strong> nếu cần hỗ trợ</span>
-        </li>
-      </ul>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm">1</div>
+          <div>
+            <p class="font-semibold text-blue-900">Xác nhận đơn hàng</p>
+            <p class="text-sm text-blue-700">Shop sẽ gọi xác nhận trong 15 phút</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm">2</div>
+          <div>
+            <p class="font-semibold text-blue-900">Chuẩn bị hàng</p>
+            <p class="text-sm text-blue-700">Đóng gói cẩn thận, kiểm tra kỹ</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm">3</div>
+          <div>
+            <p class="font-semibold text-blue-900">Giao hàng</p>
+            <p class="text-sm text-blue-700">2-3 ngày (hoặc 2h giao nhanh)</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm">4</div>
+          <div>
+            <p class="font-semibold text-blue-900">Nhận hàng</p>
+            <p class="text-sm text-blue-700">Kiểm tra hàng trước khi thanh toán</p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Countdown Timer -->
-    <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 text-center">
-      <p class="text-green-800">
-        <i class="fas fa-clock mr-2"></i>
-        Trang sẽ tự động chuyển về trang chủ sau <span id="countdown" class="font-bold text-green-600">60</span> giây
-      </p>
-    </div>
-
+    
     <!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="index.html" class="bg-white border-2 border-red-600 text-red-600 hover:bg-red-50 font-bold py-3 px-8 rounded-xl transition-all text-center">
-        <i class="fas fa-home mr-2"></i>
+    <div class="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="index.html" class="bg-white border-2 border-gray-300 hover:border-red-600 text-gray-700 hover:text-red-600 font-bold py-4 px-8 rounded-xl transition-all text-center flex items-center justify-center gap-2">
+        <i class="fas fa-home"></i>
         Về trang chủ
       </a>
-      <a href="products.html" class="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold py-3 px-8 rounded-xl transition-all text-center">
-        <i class="fas fa-shopping-bag mr-2"></i>
+      <a href="products.html" class="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold py-4 px-8 rounded-xl transition-all text-center flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+        <i class="fas fa-shopping-bag"></i>
         Tiếp tục mua sắm
       </a>
     </div>
@@ -245,15 +546,90 @@
       }
     })();
   </script>
-
-  <!-- Order Success Logic -->
+  <!-- Or
+der Success Logic -->
   <script>
+    const API_URL = 'http://localhost:3000/api';
+    let currentOrder = null;
+    
     function formatPrice(price) {
       return price.toLocaleString('vi-VN') + 'đ';
     }
-
+    
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleString('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `fixed top-24 right-6 z-50 px-6 py-4 rounded-lg shadow-xl text-white font-semibold animate-slide-in ${type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`;
+      toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-2"></i>${message}`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+    
+    // Create confetti effect
+    function createConfetti() {
+      const container = document.getElementById('confetti-container');
+      const colors = ['#d91e23', '#22c55e', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6'];
+      
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+          confetti.style.animationDelay = Math.random() * 0.5 + 's';
+          container.appendChild(confetti);
+          
+          setTimeout(() => confetti.remove(), 5000);
+        }, i * 50);
+      }
+    }
+    
+    // Copy order ID
+    function copyOrderId() {
+      const orderId = document.getElementById('orderId').textContent;
+      navigator.clipboard.writeText(orderId).then(() => {
+        showToast('Đã sao chép mã đơn hàng!', 'success');
+      });
+    }
+    
+    // Share functions
+    function shareToFacebook() {
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+    }
+    
+    function shareToMessenger() {
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.facebook.com/dialog/send?link=${url}&app_id=YOUR_APP_ID`, '_blank', 'width=600,height=400');
+    }
+    
+    function shareToZalo() {
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://zalo.me/share?url=${url}`, '_blank', 'width=600,height=400');
+    }
+    
+    function copyShareLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        showToast('Đã sao chép link!', 'success');
+      });
+    }
+    
+    // Load order details
     function loadOrderDetails() {
-      // Get order ID from URL
       const urlParams = new URLSearchParams(window.location.search);
       const orderId = urlParams.get('orderId');
 
@@ -262,17 +638,47 @@
         return;
       }
 
+      // Get user info
+      const user = JSON.parse(localStorage.getItem('user') || 'null');
+      const ordersKey = user?.ma_kh ? `orders_user_${user.ma_kh}` : 'orders_guest';
+      
       // Get order from localStorage
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      const orders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
       const order = orders.find(o => o.orderId === orderId);
 
       if (!order) {
-        window.location.href = 'index.html';
-        return;
+        // Try guest orders as fallback
+        const guestOrders = JSON.parse(localStorage.getItem('orders_guest') || '[]');
+        const guestOrder = guestOrders.find(o => o.orderId === orderId);
+        
+        if (!guestOrder) {
+          showToast('Không tìm thấy đơn hàng!', 'error');
+          setTimeout(() => window.location.href = 'index.html', 2000);
+          return;
+        }
+        currentOrder = guestOrder;
+      } else {
+        currentOrder = order;
       }
 
       // Display order details
+      displayOrderDetails(currentOrder);
+      
+      // Create confetti effect
+      createConfetti();
+      
+      // Load suggested products
+      loadSuggestedProducts();
+    }
+    
+    function displayOrderDetails(order) {
+      // Order ID
       document.getElementById('orderId').textContent = order.orderId;
+      
+      // Order time
+      document.getElementById('orderTime').textContent = formatDate(order.orderDate);
+      
+      // Customer info
       document.getElementById('customerName').textContent = order.customer.fullName;
       document.getElementById('customerPhone').textContent = order.customer.phone;
       document.getElementById('customerEmail').textContent = order.customer.email || 'Không có';
@@ -282,7 +688,9 @@
       document.getElementById('shippingAddress').textContent = address;
 
       // Shipping method
-      const shippingText = order.shipping.method === 'express' ? 'Giao hàng nhanh (2 giờ)' : 'Giao hàng tiêu chuẩn (2-3 ngày)';
+      const shippingText = order.shipping.method === 'express' 
+        ? 'Giao hàng nhanh (2 giờ)' 
+        : 'Giao hàng tiêu chuẩn (2-3 ngày)';
       document.getElementById('shippingMethod').textContent = shippingText;
 
       // Payment method
@@ -290,27 +698,48 @@
         'cod': 'Thanh toán khi nhận hàng (COD)',
         'bank': 'Chuyển khoản ngân hàng',
         'momo': 'Ví MoMo',
+        'momo_qr': 'MoMo - Quét QR',
+        'momo_wallet': 'MoMo - Ví điện tử',
+        'momo_atm': 'MoMo - Thẻ ATM',
+        'momo_credit': 'MoMo - Thẻ quốc tế',
         'vnpay': 'VNPay',
         'installment': 'Trả góp 0%'
       };
       document.getElementById('paymentMethod').textContent = paymentMethods[order.payment.method] || 'Không xác định';
+      
+      // Payment status
+      const paymentStatus = document.getElementById('paymentStatus');
+      if (order.status === 'paid' || order.payment.method === 'momo' || order.payment.method?.startsWith('momo_')) {
+        paymentStatus.className = 'mt-2 inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-green-100 text-green-700';
+        paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><span>Đã thanh toán</span>';
+      } else if (order.payment.method === 'cod') {
+        paymentStatus.className = 'mt-2 inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-700';
+        paymentStatus.innerHTML = '<i class="fas fa-clock"></i><span>Thanh toán khi nhận hàng</span>';
+      }
 
       // Order items
+      document.getElementById('itemCount').textContent = `(${order.items.length} sản phẩm)`;
       const orderItemsContainer = document.getElementById('orderItems');
-      orderItemsContainer.innerHTML = order.items.map(item => `
-        <div class="flex gap-3 pb-3 border-b border-gray-200 last:border-0">
-          <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-contain rounded-lg border border-gray-200">
+      orderItemsContainer.innerHTML = order.items.map(item => {
+        let itemImage = item.image || item.anh_dai_dien || 'images/15-256.avif';
+        if (!itemImage.startsWith('http') && !itemImage.startsWith('images/')) {
+          itemImage = `images/${itemImage}`;
+        }
+        
+        return `
+        <div class="flex gap-4 py-4">
+          <img src="${itemImage}" alt="${item.name}" class="w-20 h-20 object-contain rounded-lg border border-gray-200 bg-gray-50" onerror="this.src='images/15-256.avif'">
           <div class="flex-1">
-            <h4 class="font-semibold text-sm text-gray-900 mb-1">${item.name}</h4>
-            ${item.color ? `<p class="text-xs text-gray-600">Màu: ${item.color}</p>` : ''}
-            ${item.storage ? `<p class="text-xs text-gray-600">Dung lượng: ${item.storage}</p>` : ''}
+            <h4 class="font-semibold text-gray-900 mb-1 line-clamp-2">${item.name}</h4>
+            ${item.color ? `<p class="text-xs text-gray-500">Màu: ${item.color}</p>` : ''}
+            ${item.storage ? `<p class="text-xs text-gray-500">Dung lượng: ${item.storage}</p>` : ''}
             <div class="flex items-center justify-between mt-2">
-              <span class="text-xs text-gray-600">Số lượng: ${item.quantity}</span>
+              <span class="text-sm text-gray-600">x${item.quantity}</span>
               <span class="font-bold text-red-600">${formatPrice(item.price * item.quantity)}</span>
             </div>
           </div>
         </div>
-      `).join('');
+      `;}).join('');
 
       // Pricing
       document.getElementById('subtotal').textContent = formatPrice(order.pricing.subtotal);
@@ -323,29 +752,103 @@
       
       document.getElementById('total').textContent = formatPrice(order.pricing.total);
     }
-
-    document.addEventListener('DOMContentLoaded', loadOrderDetails);
     
-    // Countdown timer - 60 seconds (1 minute)
-    let timeLeft = 60;
-    const countdownElement = document.getElementById('countdown');
-    
-    const countdownTimer = setInterval(() => {
-      timeLeft--;
-      if (countdownElement) {
-        countdownElement.textContent = timeLeft;
-      }
+    // Load suggested products
+    async function loadSuggestedProducts() {
+      const container = document.getElementById('suggestedProducts');
       
-      if (timeLeft <= 0) {
-        clearInterval(countdownTimer);
-        window.location.href = 'index.html';
+      try {
+        // Get category from ordered items
+        let categoryId = null;
+        if (currentOrder && currentOrder.items && currentOrder.items.length > 0) {
+          categoryId = currentOrder.items[0].ma_loai || currentOrder.items[0].categoryId;
+        }
+        
+        // Fetch products
+        let url = `${API_URL}/products?limit=10`;
+        if (categoryId) {
+          url += `&category=${categoryId}`;
+        }
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success && data.data && data.data.length > 0) {
+          // Filter out products already in order
+          const orderedIds = currentOrder?.items?.map(i => i.id || i.ma_sp) || [];
+          let products = data.data.filter(p => !orderedIds.includes(p.ma_sp));
+          
+          // Take first 5 products
+          products = products.slice(0, 5);
+          
+          if (products.length === 0) {
+            container.innerHTML = `
+              <div class="col-span-full text-center py-8">
+                <i class="fas fa-box-open text-4xl text-gray-300 mb-3"></i>
+                <p class="text-gray-500">Không có sản phẩm gợi ý</p>
+              </div>
+            `;
+            return;
+          }
+          
+          container.innerHTML = products.map(product => {
+            let productImage = product.anh_dai_dien || 'images/15-256.avif';
+            if (!productImage.startsWith('http') && !productImage.startsWith('images/')) {
+              productImage = `images/${productImage}`;
+            }
+            
+            const originalPrice = product.gia_goc || product.gia_ban * 1.2;
+            const discount = Math.round((1 - product.gia_ban / originalPrice) * 100);
+            
+            return `
+              <a href="product-detail.html?id=${product.ma_sp}" class="product-suggest bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 block">
+                <div class="aspect-square p-3 bg-gray-50 relative">
+                  <img src="${productImage}" alt="${product.ten_sp}" class="w-full h-full object-contain" onerror="this.src='images/15-256.avif'">
+                  ${discount > 0 ? `<span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">-${discount}%</span>` : ''}
+                </div>
+                <div class="p-3">
+                  <h3 class="font-semibold text-gray-900 text-sm line-clamp-2 mb-2 min-h-[40px]">${product.ten_sp}</h3>
+                  <div class="flex items-center gap-2">
+                    <span class="text-red-600 font-bold">${formatPrice(product.gia_ban)}</span>
+                    ${discount > 0 ? `<span class="text-gray-400 text-xs line-through">${formatPrice(originalPrice)}</span>` : ''}
+                  </div>
+                  <div class="flex items-center gap-1 mt-2 text-xs text-gray-500">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <span>${product.rating || '4.5'}</span>
+                    <span class="mx-1">|</span>
+                    <span>Đã bán ${product.da_ban || Math.floor(Math.random() * 500 + 100)}</span>
+                  </div>
+                </div>
+              </a>
+            `;
+          }).join('');
+        } else {
+          // Fallback: show placeholder
+          container.innerHTML = `
+            <div class="col-span-full text-center py-8">
+              <i class="fas fa-box-open text-4xl text-gray-300 mb-3"></i>
+              <p class="text-gray-500">Không có sản phẩm gợi ý</p>
+              <a href="products.html" class="text-red-600 hover:underline text-sm mt-2 inline-block">Xem tất cả sản phẩm</a>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading suggested products:', error);
+        container.innerHTML = `
+          <div class="col-span-full text-center py-8">
+            <i class="fas fa-exclamation-circle text-4xl text-gray-300 mb-3"></i>
+            <p class="text-gray-500">Không thể tải sản phẩm gợi ý</p>
+            <a href="products.html" class="text-red-600 hover:underline text-sm mt-2 inline-block">Xem tất cả sản phẩm</a>
+          </div>
+        `;
       }
-    }, 1000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', loadOrderDetails);
   </script>
 
   <script src="components/floating-share.js"></script>
-  <!-- Main JS - Page Loader -->
   <script src="main.js"></script>
 </body>
 </html>
-

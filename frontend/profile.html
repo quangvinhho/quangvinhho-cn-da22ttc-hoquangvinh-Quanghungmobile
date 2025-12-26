@@ -1394,7 +1394,7 @@
         const localOrders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
         
         console.log('=== DEBUG loadMyOrders ===');
-        console.log('Local orders:', localOrders.map(o => ({id: o.orderId, status: o.status})));
+        console.log('Local orders:', localOrders.map(o => ({id: o.orderId, dbOrderId: o.dbOrderId, status: o.status})));
         
         allOrders = [...localOrders];
         
@@ -1403,18 +1403,30 @@
           const response = await fetch(`${API_URL}/orders/user/${user.ma_kh}`);
           const data = await response.json();
           if (data.success && data.data.length > 0) {
+            console.log('DB orders:', data.data.map(o => ({ma_don: o.ma_don, trang_thai: o.trang_thai})));
+            
             // Merge với local orders
             data.data.forEach(dbOrder => {
-              // Tìm trong allOrders xem có đơn trùng dbOrderId không
-              const existIndex = allOrders.findIndex(o => o.dbOrderId === dbOrder.ma_don);
+              // Tìm trong allOrders xem có đơn trùng không (theo nhiều cách)
+              const existIndex = allOrders.findIndex(o => {
+                // So sánh theo dbOrderId
+                if (o.dbOrderId && o.dbOrderId === dbOrder.ma_don) return true;
+                // So sánh theo orderId dạng #123
+                if (o.orderId === `#${dbOrder.ma_don}`) return true;
+                // So sánh theo orderId dạng số
+                if (o.orderId === dbOrder.ma_don.toString()) return true;
+                return false;
+              });
               
               if (existIndex >= 0) {
                 // ĐÃ TỒN TẠI: Update status từ DB (DB là nguồn chính xác nhất)
                 allOrders[existIndex].status = dbOrder.trang_thai;
+                allOrders[existIndex].dbOrderId = dbOrder.ma_don; // Đảm bảo set dbOrderId
                 allOrders[existIndex].items = dbOrder.items || allOrders[existIndex].items;
+                console.log(`Updated order ${allOrders[existIndex].orderId} with dbOrderId=${dbOrder.ma_don}, status=${dbOrder.trang_thai}`);
               } else {
                 // CHƯA TỒN TẠI: Thêm mới từ DB
-                allOrders.push({
+                const newOrder = {
                   orderId: `#${dbOrder.ma_don}`,
                   dbOrderId: dbOrder.ma_don,
                   orderDate: dbOrder.thoi_gian,
@@ -1428,9 +1440,14 @@
                   },
                   payment: { method: dbOrder.phuong_thuc || 'cod' },
                   items: dbOrder.items || [] // Chi tiết sản phẩm từ API
-                });
+                };
+                allOrders.push(newOrder);
+                console.log(`Added new order from DB: orderId=${newOrder.orderId}, dbOrderId=${newOrder.dbOrderId}`);
               }
             });
+            
+            // Cập nhật localStorage với dbOrderId mới
+            localStorage.setItem(ordersKey, JSON.stringify(allOrders));
           }
         } catch (error) {
           console.log('Không thể load từ DB:', error);
@@ -1455,13 +1472,52 @@
         ordersCount.textContent = `${allOrders.length} đơn hàng`;
         ordersEmpty.classList.add('hidden');
         
+        // Hàm parse màu sắc từ JSON
+        function parseColor(colorData) {
+          if (!colorData) return '';
+          if (typeof colorData === 'string') {
+            // Nếu là JSON string
+            if (colorData.startsWith('{') || colorData.startsWith('[')) {
+              try {
+                const parsed = JSON.parse(colorData);
+                if (parsed.colorNames && parsed.colorNames.length > 0) {
+                  return parsed.colorNames[0];
+                }
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                  return parsed[0];
+                }
+              } catch (e) {
+                return colorData;
+              }
+            }
+            return colorData;
+          }
+          return '';
+        }
+        
         // Render đơn hàng
         ordersList.innerHTML = allOrders.map(order => {
           const statusInfo = getStatusInfo(order.status);
           const items = order.items || [];
-          const firstItem = items[0];
+          let firstItem = items[0];
           const moreItems = items.length > 1 ? items.length - 1 : 0;
           const canCancel = order.status === 'pending'; // Chỉ cho phép hủy khi pending (chờ xử lý)
+          
+          // Xử lý đường dẫn ảnh cho firstItem
+          let firstItemImage = 'images/15-256.avif';
+          let firstItemColor = '';
+          if (firstItem) {
+            let img = firstItem.image || firstItem.anh_dai_dien || '';
+            if (img) {
+              if (!img.startsWith('http') && !img.startsWith('images/')) {
+                img = 'images/' + img;
+              }
+              img = img.replace('images/images/', 'images/');
+              firstItemImage = img;
+            }
+            // Parse màu sắc
+            firstItemColor = parseColor(firstItem.color || firstItem.mau_sac);
+          }
           
           return `
             <div class="border rounded-lg p-4 hover:shadow-md transition">
@@ -1478,16 +1534,16 @@
 
               ${firstItem ? `
               <div class="flex items-center space-x-4 mb-3">
-                <img src="${firstItem.image || 'images/iphone.jpg'}" alt="${firstItem.name}" class="w-16 h-16 object-contain rounded border" onerror="this.src='images/iphone.jpg'">
+                <img src="${firstItemImage}" alt="${firstItem.name}" class="w-16 h-16 object-contain rounded border" onerror="this.src='images/15-256.avif'">
                 <div class="flex-1 min-w-0">
                   <h3 class="font-semibold text-gray-800 truncate">${firstItem.name}</h3>
-                  <p class="text-sm text-gray-600">${firstItem.color || ''} ${firstItem.storage || ''}</p>
-                  <p class="text-sm text-gray-500">x${firstItem.quantity}</p>
+                  <p class="text-sm text-gray-600">${firstItemColor ? 'Màu: ' + firstItemColor : ''} ${firstItem.storage ? '- ' + firstItem.storage : ''}</p>
+                  <p class="text-sm text-gray-500">Số lượng: ${firstItem.quantity}</p>
                 </div>
                 <div class="text-right">
                   <p class="font-bold text-red-600">${formatPrice(firstItem.price * firstItem.quantity)}</p>
                   ${(order.status === 'delivered' || order.status === 'completed' || order.status === 'da_giao' || order.status === 'hoan_thanh' || order.status === 'confirmed' || order.status === 'paid') ? `
-                    <button onclick="openReviewModal(${firstItem.id}, '${firstItem.name.replace(/'/g, "\\'")}', '${firstItem.image || 'images/iphone.jpg'}', '${(firstItem.color || '') + ' ' + (firstItem.storage || '')}')" 
+                    <button onclick="openReviewModal(${firstItem.id}, '${firstItem.name.replace(/'/g, "\\'")}', '${firstItemImage}', '${(firstItemColor || '') + ' ' + (firstItem.storage || '')}')" 
                       class="mt-1 text-xs text-yellow-600 hover:text-yellow-700 font-semibold">
                       <i class="fas fa-star mr-1"></i>Đánh giá
                     </button>
@@ -1572,28 +1628,58 @@
         
         const canReview = order.status === 'delivered' || order.status === 'completed' || order.status === 'da_giao' || order.status === 'hoan_thanh' || order.status === 'confirmed' || order.status === 'paid';
         
+        // Helper function để xử lý đường dẫn ảnh
+        function getItemImage(item) {
+          let img = item.image || item.anh_dai_dien || '';
+          if (!img) return 'images/15-256.avif';
+          if (!img.startsWith('http') && !img.startsWith('images/')) {
+            img = 'images/' + img;
+          }
+          return img.replace('images/images/', 'images/');
+        }
+        
+        // Helper function để parse màu sắc
+        function getItemColor(item) {
+          const colorData = item.color || item.mau_sac || '';
+          if (!colorData) return '';
+          if (typeof colorData === 'string' && (colorData.startsWith('{') || colorData.startsWith('['))) {
+            try {
+              const parsed = JSON.parse(colorData);
+              if (parsed.colorNames && parsed.colorNames.length > 0) {
+                return parsed.colorNames[0];
+              }
+            } catch (e) {
+              return colorData;
+            }
+          }
+          return colorData;
+        }
+        
         if (items.length > 0) {
-          productsContainer.innerHTML = items.map(item => `
+          productsContainer.innerHTML = items.map(item => {
+            const itemImage = getItemImage(item);
+            const itemColor = getItemColor(item);
+            return `
             <div class="flex items-center gap-3 p-3 bg-white rounded-lg border">
-              <img src="${item.image || 'images/iphone.jpg'}" alt="${item.name}" 
-                class="w-16 h-16 object-contain rounded border" onerror="this.src='images/iphone.jpg'">
+              <img src="${itemImage}" alt="${item.name}" 
+                class="w-16 h-16 object-contain rounded border" onerror="this.src='images/15-256.avif'">
               <div class="flex-1 min-w-0">
                 <h5 class="font-semibold text-gray-800 text-sm truncate">${item.name}</h5>
-                <p class="text-xs text-gray-500">${item.color || ''} ${item.storage || ''}</p>
+                <p class="text-xs text-gray-500">${itemColor ? 'Màu: ' + itemColor : ''} ${item.storage ? '- ' + item.storage : ''}</p>
                 <p class="text-xs text-gray-500">Số lượng: ${item.quantity}</p>
               </div>
               <div class="text-right">
                 <p class="font-bold text-red-600 text-sm">${formatPrice(item.price)}</p>
                 <p class="text-xs text-gray-500">x${item.quantity}</p>
                 ${canReview ? `
-                  <button onclick="openReviewModal(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.image || 'images/iphone.jpg'}', '${(item.color || '') + ' ' + (item.storage || '')}')" 
+                  <button onclick="openReviewModal(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${itemImage}', '${(itemColor || '') + ' ' + (item.storage || '')}')" 
                     class="mt-1 text-xs bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-2 py-1 rounded font-semibold transition">
                     <i class="fas fa-star mr-1"></i>Đánh giá
                   </button>
                 ` : ''}
               </div>
             </div>
-          `).join('');
+          `;}).join('');
         } else {
           productsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Không có thông tin sản phẩm</p>';
         }
@@ -1730,10 +1816,25 @@
         
         const user = JSON.parse(localStorage.getItem('user') || 'null');
         
-        // Nếu đơn hàng có dbOrderId (từ database), gọi API để hủy
-        if (cancelOrderData.dbOrderId) {
+        // Lấy dbOrderId - có thể từ cancelOrderData hoặc parse từ orderId
+        let dbOrderId = cancelOrderData.dbOrderId;
+        
+        // Nếu không có dbOrderId, thử parse từ orderId (dạng #123)
+        if (!dbOrderId && cancelOrderData.orderId) {
+          const match = cancelOrderData.orderId.match(/^#?(\d+)$/);
+          if (match) {
+            dbOrderId = parseInt(match[1]);
+          }
+        }
+        
+        console.log('=== DEBUG confirmCancelOrder ===');
+        console.log('cancelOrderData:', cancelOrderData);
+        console.log('dbOrderId:', dbOrderId);
+        
+        // Nếu có dbOrderId (từ database), gọi API để hủy
+        if (dbOrderId) {
           try {
-            const response = await fetch(`${API_URL}/orders/${cancelOrderData.dbOrderId}/cancel`, {
+            const response = await fetch(`${API_URL}/orders/${dbOrderId}/cancel`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ 
@@ -1744,7 +1845,24 @@
             
             const data = await response.json();
             
+            console.log('API response:', data);
+            
             if (data.success) {
+              // Cập nhật cả trong localStorage nếu có
+              const ordersKey = getOrdersKey();
+              const orders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
+              const orderIndex = orders.findIndex(o => 
+                o.orderId === cancelOrderData.orderId || 
+                o.dbOrderId === dbOrderId ||
+                o.orderId === '#' + dbOrderId ||
+                o.orderId === 'DH' + dbOrderId
+              );
+              if (orderIndex >= 0) {
+                orders[orderIndex].status = 'cancelled';
+                orders[orderIndex].cancelReason = cancelReason;
+                localStorage.setItem(ordersKey, JSON.stringify(orders));
+              }
+              
               closeCancelModal();
               alert('Đã hủy đơn hàng thành công!');
               loadMyOrders(); // Reload danh sách
@@ -1753,17 +1871,28 @@
             }
           } catch (error) {
             console.error('Error cancelling order:', error);
-            alert('Có lỗi xảy ra khi hủy đơn hàng!');
+            alert('Có lỗi xảy ra khi hủy đơn hàng: ' + error.message);
           }
         } else {
-          // Đơn hàng chỉ có trong localStorage
+          // Đơn hàng chỉ có trong localStorage (chưa sync lên DB)
           const ordersKey = getOrdersKey();
           const orders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
           
           console.log('Cancel localStorage order:', cancelOrderData.orderId);
-          console.log('Orders in localStorage:', orders.map(o => o.orderId));
+          console.log('Orders in localStorage:', orders.map(o => ({orderId: o.orderId, dbOrderId: o.dbOrderId})));
           
-          const orderIndex = orders.findIndex(o => o.orderId === cancelOrderData.orderId);
+          // Tìm đơn hàng theo nhiều cách
+          const orderIndex = orders.findIndex(o => {
+            // So sánh trực tiếp
+            if (o.orderId === cancelOrderData.orderId) return true;
+            // So sánh không có #
+            const searchId = cancelOrderData.orderId.replace('#', '');
+            if (o.orderId === searchId) return true;
+            if (o.orderId === '#' + searchId) return true;
+            // So sánh với dbOrderId
+            if (o.dbOrderId && o.dbOrderId.toString() === searchId) return true;
+            return false;
+          });
           
           console.log('Found at index:', orderIndex);
           
@@ -1775,24 +1904,7 @@
             alert('Đã hủy đơn hàng thành công!');
             loadMyOrders();
           } else {
-            // Thử tìm theo cách khác - có thể orderId có # hoặc không
-            const orderIdWithoutHash = cancelOrderData.orderId.replace('#', '');
-            const orderIndex2 = orders.findIndex(o => 
-              o.orderId === cancelOrderData.orderId || 
-              o.orderId === orderIdWithoutHash ||
-              o.orderId === '#' + orderIdWithoutHash
-            );
-            
-            if (orderIndex2 >= 0) {
-              orders[orderIndex2].status = 'cancelled';
-              orders[orderIndex2].cancelReason = cancelReason;
-              localStorage.setItem(ordersKey, JSON.stringify(orders));
-              closeCancelModal();
-              alert('Đã hủy đơn hàng thành công!');
-              loadMyOrders();
-            } else {
-              alert('Không tìm thấy đơn hàng trong hệ thống!');
-            }
+            alert('Không tìm thấy đơn hàng trong hệ thống! Vui lòng thử lại.');
           }
         }
       }

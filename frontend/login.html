@@ -308,6 +308,8 @@
       document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
         const justRegistered = urlParams.get('registered');
+        const googleRegistered = urlParams.get('google_registered');
+        const registeredEmail = urlParams.get('email');
         
         // Clear form trước
         document.getElementById('username').value = '';
@@ -315,20 +317,51 @@
         
         if (justRegistered === 'true') {
           // Hiển thị thông báo chào mừng
-          showWelcomeMessage();
-          
-          // Tự động điền email đã đăng ký
-          const registeredEmail = localStorage.getItem('registeredEmail');
-          if (registeredEmail) {
-            document.getElementById('username').value = registeredEmail;
-            document.getElementById('password').focus();
-            localStorage.removeItem('registeredEmail');
+          if (googleRegistered === 'true') {
+            showGoogleRegisterSuccessMessage();
+            // Điền email từ Google nếu có
+            if (registeredEmail) {
+              document.getElementById('username').value = decodeURIComponent(registeredEmail);
+            }
+          } else {
+            showWelcomeMessage();
+            // Tự động điền email đã đăng ký (đăng ký thường)
+            const savedEmail = localStorage.getItem('registeredEmail');
+            if (savedEmail) {
+              document.getElementById('username').value = savedEmail;
+              document.getElementById('password').focus();
+              localStorage.removeItem('registeredEmail');
+            }
           }
           
           // Xóa param khỏi URL
           window.history.replaceState({}, document.title, 'login.html');
         }
+        
+        // Xử lý lỗi từ Google OAuth
+        const error = urlParams.get('error');
+        const message = urlParams.get('message');
+        if (error === 'email_exists' && message) {
+          showGoogleErrorMessage(decodeURIComponent(message));
+          window.history.replaceState({}, document.title, 'login.html');
+        }
       });
+      
+      function showGoogleRegisterSuccessMessage() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 z-50 animate-slide-down';
+        messageDiv.innerHTML = `
+          <i class="fas fa-check-circle text-xl"></i>
+          <span class="font-medium">Đăng ký Google thành công! Bây giờ bạn có thể đăng nhập bằng Google.</span>
+        `;
+        document.body.appendChild(messageDiv);
+        
+        // Tự động ẩn sau 5 giây
+        setTimeout(() => {
+          messageDiv.classList.add('animate-slide-up');
+          setTimeout(() => messageDiv.remove(), 300);
+        }, 5000);
+      }
       
       // Clear form sau 100ms để chắc chắn browser không điền lại
       setTimeout(function() {
@@ -371,7 +404,7 @@
       }
 
       function handleGoogleLogin() {
-        // Redirect đến Google OAuth
+        // Redirect đến Google OAuth (đăng nhập, không phải đăng ký)
         window.location.href = `${API_URL}/auth/google`;
       }
       
@@ -381,9 +414,16 @@
         const googleSuccess = urlParams.get('google_success');
         const userData = urlParams.get('user');
         const error = urlParams.get('error');
+        const justRegistered = urlParams.get('just_registered');
         
         if (error === 'google_failed') {
-          alert('Đăng nhập Google thất bại! Vui lòng thử lại.');
+          showGoogleErrorMessage('Đăng nhập Google thất bại! Vui lòng thử lại.');
+          window.history.replaceState({}, document.title, 'login.html');
+          return;
+        }
+        
+        if (error === 'not_registered') {
+          showGoogleErrorMessage('Tài khoản Google chưa được đăng ký. Vui lòng đăng ký trước!');
           window.history.replaceState({}, document.title, 'login.html');
           return;
         }
@@ -395,6 +435,11 @@
             // Lưu thông tin user
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('isLoggedIn', 'true');
+            
+            // Hiển thị thông báo nếu vừa đăng ký xong
+            if (justRegistered === 'true') {
+              showGoogleSuccessMessage(`Đăng ký thành công! Chào mừng ${user.ho_ten}!`);
+            }
             
             // Kiểm tra nếu là admin
             if (user.isAdmin || user.role === 'admin') {
@@ -411,6 +456,43 @@
             window.history.replaceState({}, document.title, 'login.html');
           }
         }
+      }
+      
+      function showGoogleErrorMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 z-50 animate-slide-down';
+        messageDiv.innerHTML = `
+          <i class="fas fa-exclamation-circle text-xl"></i>
+          <span class="font-medium">${message}</span>
+          <button onclick="this.parentElement.remove()" class="ml-2 hover:text-gray-200">
+            <i class="fas fa-times"></i>
+          </button>
+        `;
+        document.body.appendChild(messageDiv);
+        
+        setTimeout(() => {
+          if (messageDiv.parentElement) {
+            messageDiv.classList.add('animate-slide-up');
+            setTimeout(() => messageDiv.remove(), 300);
+          }
+        }, 5000);
+      }
+      
+      function showGoogleSuccessMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 z-50 animate-slide-down';
+        messageDiv.innerHTML = `
+          <i class="fas fa-check-circle text-xl"></i>
+          <span class="font-medium">${message}</span>
+        `;
+        document.body.appendChild(messageDiv);
+        
+        setTimeout(() => {
+          if (messageDiv.parentElement) {
+            messageDiv.classList.add('animate-slide-up');
+            setTimeout(() => messageDiv.remove(), 300);
+          }
+        }, 3000);
       }
       
       // Gọi khi trang load

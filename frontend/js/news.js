@@ -330,10 +330,14 @@ function renderNewsDetail(news) {
         }
     }
 
+    // Xử lý nội dung - đảm bảo không bị lỗi nếu null
+    const content = news.noi_dung || '';
+    const contentHtml = content.split('\n').filter(p => p.trim()).map(p => `<p class="mb-4">${p.trim()}</p>`).join('') || '<p class="text-gray-500 italic">Chưa có nội dung.</p>';
+
     const articleContainer = document.getElementById('news-article');
     if (articleContainer) {
         articleContainer.innerHTML = `
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">${news.tieu_de}</h1>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">${news.tieu_de || 'Không có tiêu đề'}</h1>
             
             <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pb-4 border-b border-gray-200">
                 <span class="flex items-center">
@@ -347,7 +351,7 @@ function renderNewsDetail(news) {
             </div>
 
             <div class="relative h-64 md:h-96 rounded-2xl overflow-hidden mb-6">
-                <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de}" 
+                <img src="${getNewsImage(news.anh_dai_dien)}" alt="${news.tieu_de || 'Tin tức'}" 
                      class="w-full h-full object-cover"
                      onerror="this.src='images/inta.webp'">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -356,7 +360,7 @@ function renderNewsDetail(news) {
             ${videoHtml}
 
             <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                ${news.noi_dung.split('\n').filter(p => p.trim()).map(p => `<p class="mb-4">${p.trim()}</p>`).join('')}
+                ${contentHtml}
             </div>
 
             <div class="mt-8 pt-6 border-t border-gray-200 flex flex-wrap items-center gap-4">

@@ -434,6 +434,21 @@ router.post('/products', async (req, res) => {
     try {
         const { ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta, anh_dai_dien, cau_hinh } = req.body;
         
+        // Validation
+        if (!ten_sp || !ten_sp.trim()) {
+            return res.status(400).json({ success: false, message: 'Tên sản phẩm không được để trống' });
+        }
+        
+        const price = parseFloat(gia);
+        if (!price || price <= 0) {
+            return res.status(400).json({ success: false, message: 'Giá sản phẩm phải lớn hơn 0' });
+        }
+        
+        const stock = parseInt(so_luong_ton) || 0;
+        if (stock < 0) {
+            return res.status(400).json({ success: false, message: 'Số lượng tồn kho không được âm' });
+        }
+        
         // Lưu màu sắc dạng JSON object chứa cả hex và tên
         let colorData = null;
         if (mau_sac) {
@@ -446,7 +461,7 @@ router.post('/products', async (req, res) => {
             }
         }
         
-        // Thêm sản phẩm
+        // Thêm sản phẩm (ngay_cap_nhat sẽ tự động set bởi MySQL DEFAULT CURRENT_TIMESTAMP)
         const [result] = await pool.query(
             `INSERT INTO san_pham (ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, mo_ta, anh_dai_dien) 
              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -525,6 +540,21 @@ router.put('/products/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { ten_sp, ma_hang, gia, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta, anh_dai_dien, cau_hinh } = req.body;
+        
+        // Validation
+        if (!ten_sp || !ten_sp.trim()) {
+            return res.status(400).json({ success: false, message: 'Tên sản phẩm không được để trống' });
+        }
+        
+        const price = parseFloat(gia);
+        if (!price || price <= 0) {
+            return res.status(400).json({ success: false, message: 'Giá sản phẩm phải lớn hơn 0' });
+        }
+        
+        const stock = parseInt(so_luong_ton) || 0;
+        if (stock < 0) {
+            return res.status(400).json({ success: false, message: 'Số lượng tồn kho không được âm' });
+        }
         
         // Lưu màu sắc dạng JSON object chứa cả hex và tên
         let colorData = null;
@@ -812,9 +842,34 @@ router.get('/dashboard', async (req, res) => {
 
 // ==================== NEWS MANAGEMENT ====================
 
+// Hàm đảm bảo cột video_url tồn tại trong bảng tin_tuc
+async function ensureVideoUrlColumn() {
+    try {
+        // Kiểm tra cột có tồn tại không
+        const [columns] = await pool.query(`
+            SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tin_tuc' AND COLUMN_NAME = 'video_url'
+        `);
+        
+        if (columns.length === 0) {
+            // Cột chưa tồn tại, thêm vào
+            await pool.query('ALTER TABLE tin_tuc ADD COLUMN video_url VARCHAR(500) DEFAULT NULL');
+            console.log('Added video_url column to tin_tuc table');
+        }
+    } catch (err) {
+        console.error('Error checking/adding video_url column:', err.message);
+    }
+}
+
+// Gọi hàm khi module được load
+ensureVideoUrlColumn();
+
 // GET /api/admin/news - Lấy tất cả tin tức
 router.get('/news', async (req, res) => {
     try {
+        // Đảm bảo cột video_url tồn tại
+        await ensureVideoUrlColumn();
+        
         const [news] = await pool.query(`
             SELECT tt.*, a.ho_ten as ten_admin
             FROM tin_tuc tt
@@ -832,9 +887,21 @@ router.get('/news', async (req, res) => {
 router.post('/news', async (req, res) => {
     try {
         const { tieu_de, noi_dung, anh_dai_dien, video_url, ma_admin } = req.body;
+        
+        // Validation
+        if (!tieu_de || !tieu_de.trim()) {
+            return res.status(400).json({ success: false, message: 'Tiêu đề không được để trống' });
+        }
+        if (!noi_dung || !noi_dung.trim()) {
+            return res.status(400).json({ success: false, message: 'Nội dung không được để trống' });
+        }
+        
+        // Đảm bảo cột video_url tồn tại
+        await ensureVideoUrlColumn();
+        
         const [result] = await pool.query(
             'INSERT INTO tin_tuc (tieu_de, noi_dung, anh_dai_dien, video_url, ma_admin) VALUES (?, ?, ?, ?, ?)',
-            [tieu_de, noi_dung, anh_dai_dien, video_url || null, ma_admin || null]
+            [tieu_de.trim(), noi_dung.trim(), anh_dai_dien || null, video_url || null, ma_admin || null]
         );
         res.json({ success: true, message: 'Thêm tin tức thành công', data: { id: result.insertId } });
     } catch (error) {
@@ -848,9 +915,21 @@ router.put('/news/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { tieu_de, noi_dung, anh_dai_dien, video_url } = req.body;
+        
+        // Validation
+        if (!tieu_de || !tieu_de.trim()) {
+            return res.status(400).json({ success: false, message: 'Tiêu đề không được để trống' });
+        }
+        if (!noi_dung || !noi_dung.trim()) {
+            return res.status(400).json({ success: false, message: 'Nội dung không được để trống' });
+        }
+        
+        // Đảm bảo cột video_url tồn tại
+        await ensureVideoUrlColumn();
+        
         await pool.query(
             'UPDATE tin_tuc SET tieu_de = ?, noi_dung = ?, anh_dai_dien = ?, video_url = ? WHERE ma_tintuc = ?',
-            [tieu_de, noi_dung, anh_dai_dien, video_url || null, id]
+            [tieu_de.trim(), noi_dung.trim(), anh_dai_dien || null, video_url || null, id]
         );
         res.json({ success: true, message: 'Cập nhật tin tức thành công' });
     } catch (error) {

@@ -48,19 +48,41 @@
       overflow: hidden;
     }
     
-    .thumbnail-item {
-      border: 2px solid transparent;
+    /* Thumbnails - Style CellphoneS liền kề, kích thước lớn hơn */
+    #thumbnailsContainer {
+      display: flex;
+      gap: 10px;
+      padding: 4px 0;
+    }
+    
+    .thumb-item {
+      flex-shrink: 0;
+      width: 90px;
+      height: 90px;
+      border: 2px solid #e5e7eb;
       border-radius: 12px;
-      padding: 8px;
+      padding: 6px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       background: white;
     }
     
-    .thumbnail-item:hover,
-    .thumbnail-item.active {
-      border-color: #d91e23;
-      box-shadow: 0 4px 12px rgba(217, 30, 35, 0.15);
+    .thumb-item:hover {
+      border-color: #fca5a5;
+    }
+    
+    .thumb-item.border-red-500 {
+      border-color: #d91e23 !important;
+      box-shadow: 0 2px 8px rgba(217, 30, 35, 0.2);
+    }
+    
+    #thumbnailsScroll {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    #thumbnailsScroll::-webkit-scrollbar {
+      display: none;
     }
     
     .zoom-lens {
@@ -295,8 +317,8 @@
       <div class="lg:col-span-5">
         <div class="bg-white rounded-2xl shadow-sm p-4 sticky top-[160px]">
           <!-- Main Image -->
-          <div class="main-image-container relative mb-4 aspect-square flex items-center justify-center p-4">
-            <img id="mainProductImage" src="" alt="" class="max-w-full max-h-full object-contain transition-transform duration-300 hover:scale-105" />
+          <div class="main-image-container relative mb-4 aspect-square flex items-center justify-center p-4 bg-gradient-to-b from-gray-50 to-white rounded-xl">
+            <img id="mainProductImage" src="" alt="" class="max-w-full max-h-full object-contain transition-all duration-500 hover:scale-105" />
             
             <!-- Discount Badge -->
             <div id="discountBadge" class="absolute top-4 left-4 bg-gradient-to-r from-red-600 to-red-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg hidden">
@@ -307,13 +329,34 @@
             <div id="brandBadge" class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-xs font-bold text-gray-700 shadow hidden">
               Chính hãng
             </div>
+            
+            <!-- Navigation Arrows for Main Image -->
+            <button id="prevImageBtn" onclick="navigateImage(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all opacity-0 hover:opacity-100 group-hover:opacity-100">
+              <i class="fas fa-chevron-left text-gray-600"></i>
+            </button>
+            <button id="nextImageBtn" onclick="navigateImage(1)" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all opacity-0 hover:opacity-100 group-hover:opacity-100">
+              <i class="fas fa-chevron-right text-gray-600"></i>
+            </button>
           </div>
           
-          <!-- Thumbnails -->
-          <div class="swiper thumbSwiper">
-            <div class="swiper-wrapper" id="thumbnailsContainer">
-              <!-- Thumbnails will be rendered here -->
+          <!-- Thumbnails Gallery - Style CellphoneS liền kề -->
+          <div id="thumbnailsWrapper" class="relative mt-3">
+            <!-- Prev Button -->
+            <button id="thumbPrevBtn" onclick="scrollThumbnails(-1)" class="absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white/90 shadow-lg rounded-full flex items-center justify-center hover:bg-white transition-all border border-gray-200">
+              <i class="fas fa-chevron-left text-gray-600 text-xs"></i>
+            </button>
+            
+            <!-- Thumbnails Container - liền kề không gap -->
+            <div id="thumbnailsScroll" class="overflow-x-auto scrollbar-hide scroll-smooth">
+              <div id="thumbnailsContainer" class="flex">
+                <!-- Thumbnails will be rendered here -->
+              </div>
             </div>
+            
+            <!-- Next Button -->
+            <button id="thumbNextBtn" onclick="scrollThumbnails(1)" class="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white/90 shadow-lg rounded-full flex items-center justify-center hover:bg-white transition-all border border-gray-200">
+              <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
+            </button>
           </div>
           
           <!-- Share & Wishlist -->
@@ -768,11 +811,11 @@
       });
   </script>
 
+  <!-- Main JS - Page Loader (load trước để có updateCartBadge) -->
+  <script src="main.js"></script>
+
   <!-- Product Detail Logic -->
   <script src="product-detail.js"></script>
-
-  <!-- Main JS - Page Loader -->
-  <script src="main.js"></script>
 
   <!-- AI Chatbot -->
   <link rel="stylesheet" href="components/ai-chatbot.css">

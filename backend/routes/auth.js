@@ -650,19 +650,72 @@ router.put('/change-password/:id', async (req, res) => {
 // ==================== GOOGLE OAUTH ====================
 
 // GET /api/auth/google - Bắt đầu đăng nhập Google (cho khách hàng)
-router.get('/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
-}));
+router.get('/google', (req, res, next) => {
+    // Lưu state vào session để passport strategy có thể đọc
+    req.session.googleAuthState = 'login';
+    passport.authenticate('google', {
+        scope: ['profile', 'email'],
+        state: 'login' // Đánh dấu là đăng nhập
+    })(req, res, next);
+});
+
+// GET /api/auth/google/register - Đăng ký bằng Google
+router.get('/google/register', (req, res, next) => {
+    // Lưu state vào session để passport strategy có thể đọc
+    req.session.googleAuthState = 'register';
+    passport.authenticate('google', {
+        scope: ['profile', 'email'],
+        state: 'register' // Đánh dấu là đăng ký
+    })(req, res, next);
+});
 
 // GET /api/auth/google/callback - Callback từ Google
-router.get('/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/login.html?error=google_failed' }),
-    (req, res) => {
-        // Đăng nhập thành công - redirect về frontend với user data
-        const userData = encodeURIComponent(JSON.stringify(req.user));
-        res.redirect(`/login.html?google_success=true&user=${userData}`);
-    }
-);
+router.get('/google/callback', (req, res, next) => {
+    // Log để debug
+    console.log('Google callback - Query state:', req.query.state);
+    console.log('Google callback - Session state:', req.session?.googleAuthState);
+    
+    passport.authenticate('google', (err, user, info) => {
+        // Xóa state khỏi session sau khi sử dụng
+        const authState = req.session?.googleAuthState;
+        if (req.session) {
+            delete req.session.googleAuthState;
+        }
+        
+        if (err) {
+            console.error('Google OAuth Error:', err);
+            return res.redirect('/login.html?error=google_failed');
+        }
+        
+        if (!user) {
+            // Xử lý các trường hợp lỗi hoặc đăng ký thành công
+            if (info && info.message === 'not_registered') {
+                // User chưa đăng ký → redirect về trang đăng ký với thông báo
+                return res.redirect('/register.html?error=not_registered&message=' + encodeURIComponent('Tài khoản Google chưa được đăng ký. Vui lòng bấm "Đăng ký với Google" trước!'));
+            }
+            if (info && info.message === 'email_exists') {
+                // Email đã tồn tại khi đăng ký
+                return res.redirect('/login.html?error=email_exists&message=' + encodeURIComponent('Email này đã được đăng ký. Vui lòng đăng nhập!'));
+            }
+            if (info && info.message === 'register_success') {
+                // Đăng ký Google thành công → redirect về trang login với thông báo
+                return res.redirect('/login.html?registered=true&google_registered=true&email=' + encodeURIComponent(info.email || ''));
+            }
+            return res.redirect('/login.html?error=google_failed');
+        }
+        
+        // Đăng nhập thành công (user đã tồn tại trong DB)
+        req.logIn(user, (loginErr) => {
+            if (loginErr) {
+                console.error('Login Error:', loginErr);
+                return res.redirect('/login.html?error=google_failed');
+            }
+            
+            const userData = encodeURIComponent(JSON.stringify(user));
+            return res.redirect(`/login.html?google_success=true&user=${userData}`);
+        });
+    })(req, res, next);
+});
 
 // ==================== GOOGLE OAUTH CHO ADMIN ====================
 
