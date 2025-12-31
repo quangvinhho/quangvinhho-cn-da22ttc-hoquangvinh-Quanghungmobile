@@ -8,9 +8,10 @@
 
 // ============================================
 // PAGE LOADER - Hiệu ứng loading trang
+// CHỈ HIỂN THỊ KHI ĐĂNG NHẬP THÀNH CÔNG
 // ============================================
 (function() {
-  // Tạo loader HTML nếu chưa có
+  // Tạo loader HTML
   function createPageLoader() {
     if (document.getElementById('page-loader')) return;
     
@@ -34,28 +35,22 @@
       </div>
     `;
     
-    // Chèn loader vào đầu body
     document.body.insertBefore(loader, document.body.firstChild);
   }
   
-  // Ẩn loader khi trang đã load xong
+  // Ẩn loader
   function hidePageLoader() {
     const loader = document.getElementById('page-loader');
     if (loader) {
-      // Thêm hiệu ứng fade out
       loader.classList.add('hidden');
-      
-      // Thêm hiệu ứng page transition cho body
       document.body.classList.add('page-transition');
-      
-      // Xóa loader sau khi animation hoàn tất
       setTimeout(() => {
         loader.remove();
       }, 500);
     }
   }
   
-  // Hiển thị loader khi chuyển trang
+  // Hiển thị loader (chỉ dùng khi đăng nhập thành công)
   function showPageLoader() {
     createPageLoader();
     const loader = document.getElementById('page-loader');
@@ -64,37 +59,15 @@
     }
   }
   
-  // Khởi tạo loader ngay khi script được load
-  if (document.readyState === 'loading') {
-    // DOM chưa sẵn sàng, đợi DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', function() {
-      createPageLoader();
-    });
-  } else {
-    // DOM đã sẵn sàng
-    createPageLoader();
-  }
-  
-  // Ẩn loader khi trang load xong hoàn toàn
+  // Kiểm tra và ẩn loader nếu có sẵn trong HTML (từ trang login)
   window.addEventListener('load', function() {
-    // Đợi thêm một chút để đảm bảo mọi thứ đã render
-    setTimeout(hidePageLoader, 300);
-  });
-  
-  // Xử lý khi click vào link để chuyển trang
-  document.addEventListener('click', function(e) {
-    const link = e.target.closest('a');
-    if (link && link.href && !link.href.startsWith('#') && !link.href.startsWith('javascript:') && 
-        !link.target && link.hostname === window.location.hostname) {
-      // Chỉ hiển thị loader cho các link nội bộ
-      const href = link.getAttribute('href');
-      if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
-        showPageLoader();
-      }
+    const existingLoader = document.getElementById('page-loader');
+    if (existingLoader) {
+      setTimeout(hidePageLoader, 300);
     }
   });
   
-  // Export functions để có thể sử dụng từ bên ngoài
+  // Export functions
   window.showPageLoader = showPageLoader;
   window.hidePageLoader = hidePageLoader;
 })();

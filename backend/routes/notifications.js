@@ -196,4 +196,74 @@ router.post('/broadcast', async (req, res) => {
     }
 });
 
+// ==================== ADMIN ENDPOINTS ====================
+
+// GET /api/notifications/admin/all - Lấy tất cả thông báo (cho admin)
+router.get('/admin/all', async (req, res) => {
+    try {
+        const [notifications] = await pool.query(`
+            SELECT tb.*, kh.ho_ten, kh.email as email_kh
+            FROM thong_bao tb
+            LEFT JOIN khach_hang kh ON tb.ma_kh = kh.ma_kh
+            ORDER BY tb.ngay_tao DESC
+            LIMIT 200
+        `);
+        
+        res.json({ success: true, data: notifications });
+    } catch (error) {
+        console.error('Error getting all notifications:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/notifications/admin/send - Admin gửi thông báo
+router.post('/admin/send', async (req, res) => {
+    try {
+        const { target, email, type, title, content, link } = req.body;
+        
+        if (!title || !content) {
+            return res.status(400).json({ success: false, message: 'Thiếu tiêu đề hoặc nội dung' });
+        }
+        
+        if (target === 'all') {
+            // Gửi cho tất cả user
+            const [users] = await pool.query('SELECT ma_kh FROM khach_hang');
+            
+            if (users.length === 0) {
+                return res.json({ success: true, message: 'Không có khách hàng nào' });
+            }
+            
+            const values = users.map(u => [u.ma_kh, null, title, content, type || 'system', link || null, 0]);
+            
+            await pool.query(
+                `INSERT INTO thong_bao (ma_kh, email_nguoi_nhan, tieu_de, noi_dung, loai, lien_ket, da_doc) VALUES ?`,
+                [values]
+            );
+            
+            res.json({ success: true, message: `Đã gửi thông báo cho ${users.length} khách hàng` });
+        } else {
+            // Gửi cho user cụ thể theo email
+            const [users] = await pool.query('SELECT ma_kh FROM khach_hang WHERE email = ?', [email]);
+            
+            if (users.length === 0) {
+                // Gửi cho email không có tài khoản
+                await pool.query(
+                    `INSERT INTO thong_bao (ma_kh, email_nguoi_nhan, tieu_de, noi_dung, loai, lien_ket, da_doc) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [null, email, title, content, type || 'system', link || null, 0]
+                );
+            } else {
+                await pool.query(
+                    `INSERT INTO thong_bao (ma_kh, email_nguoi_nhan, tieu_de, noi_dung, loai, lien_ket, da_doc) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [users[0].ma_kh, email, title, content, type || 'system', link || null, 0]
+                );
+            }
+            
+            res.json({ success: true, message: `Đã gửi thông báo đến ${email}` });
+        }
+    } catch (error) {
+        console.error('Error sending notification:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 module.exports = router;

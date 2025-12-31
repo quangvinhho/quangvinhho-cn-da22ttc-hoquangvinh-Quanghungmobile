@@ -244,7 +244,7 @@ router.post('/register', handleUpload, async (req, res) => {
     }
 });
 
-// POST /api/auth/login - Đăng nhập khách hàng
+// POST /api/auth/login - Đăng nhập (kiểm tra cả admin và khách hàng)
 router.post('/login', async (req, res) => {
     try {
         const { email, mat_khau } = req.body;
@@ -256,7 +256,36 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        // Find user by email or phone
+        // 1. Kiểm tra trong bảng admin trước
+        const [admins] = await pool.query(
+            'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?', 
+            [email, email]
+        );
+
+        if (admins.length > 0) {
+            const admin = admins[0];
+            // So sánh mật khẩu (plain text hoặc bcrypt)
+            const isAdminMatch = admin.mat_khau === mat_khau || await bcrypt.compare(mat_khau, admin.mat_khau).catch(() => false);
+            
+            if (isAdminMatch) {
+                return res.json({ 
+                    success: true, 
+                    message: 'Đăng nhập admin thành công',
+                    data: {
+                        ma_admin: admin.ma_admin,
+                        tai_khoan: admin.tai_khoan,
+                        ho_ten: admin.ho_ten,
+                        email: admin.email,
+                        quyen: admin.quyen,
+                        avt: admin.avt,
+                        role: 'admin',
+                        isAdmin: true
+                    }
+                });
+            }
+        }
+
+        // 2. Kiểm tra trong bảng khách hàng
         const [users] = await pool.query(
             'SELECT * FROM khach_hang WHERE email = ? OR so_dt = ?', 
             [email, email]
@@ -316,10 +345,10 @@ router.post('/admin/login', async (req, res) => {
             });
         }
 
-        // Find admin
+        // Find admin by tai_khoan OR email
         const [admins] = await pool.query(
-            'SELECT * FROM admin WHERE tai_khoan = ?', 
-            [tai_khoan]
+            'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?', 
+            [tai_khoan, tai_khoan]
         );
 
         if (admins.length === 0) {
@@ -331,7 +360,7 @@ router.post('/admin/login', async (req, res) => {
 
         const admin = admins[0];
 
-        // Compare password (assuming plain text for now, should use bcrypt)
+        // Compare password (plain text hoặc bcrypt)
         const isMatch = admin.mat_khau === mat_khau || await bcrypt.compare(mat_khau, admin.mat_khau).catch(() => false);
 
         if (!isMatch) {
@@ -350,6 +379,7 @@ router.post('/admin/login', async (req, res) => {
                 ho_ten: admin.ho_ten,
                 quyen: admin.quyen,
                 avt: admin.avt,
+                email: admin.email,
                 role: 'admin'
             }
         });
@@ -675,7 +705,7 @@ router.get('/google/callback', (req, res, next) => {
     console.log('Google callback - Query state:', req.query.state);
     console.log('Google callback - Session state:', req.session?.googleAuthState);
     
-    passport.authenticate('google', (err, user, info) => {
+    passport.authenticate('google', async (err, user, info) => {
         // Xóa state khỏi session sau khi sử dụng
         const authState = req.session?.googleAuthState;
         if (req.session) {
@@ -704,7 +734,35 @@ router.get('/google/callback', (req, res, next) => {
             return res.redirect('/login.html?error=google_failed');
         }
         
-        // Đăng nhập thành công (user đã tồn tại trong DB)
+        // Kiểm tra xem user có phải admin không
+        try {
+            const [admins] = await pool.query(
+                'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?',
+                [user.email, user.email]
+            );
+            
+            if (admins.length > 0) {
+                // User là admin
+                const admin = admins[0];
+                const adminData = {
+                    ma_admin: admin.ma_admin,
+                    tai_khoan: admin.tai_khoan,
+                    email: user.email,
+                    ho_ten: admin.ho_ten || user.ho_ten,
+                    avt: admin.avt || user.avt,
+                    quyen: admin.quyen,
+                    role: 'admin',
+                    isAdmin: true
+                };
+                
+                const userData = encodeURIComponent(JSON.stringify(adminData));
+                return res.redirect(`/login.html?google_success=true&user=${userData}`);
+            }
+        } catch (adminCheckError) {
+            console.error('Error checking admin:', adminCheckError);
+        }
+        
+        // Đăng nhập thành công như khách hàng bình thường
         req.logIn(user, (loginErr) => {
             if (loginErr) {
                 console.error('Login Error:', loginErr);

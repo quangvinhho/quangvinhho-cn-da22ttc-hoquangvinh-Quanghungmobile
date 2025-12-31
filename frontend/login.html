@@ -154,24 +154,6 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body class="flex items-center justify-center min-h-screen px-4 py-8">
-    <!-- ===== PAGE LOADER - Hiệu ứng loading trang ===== -->
-    <div id="page-loader">
-      <div class="loader-logo">
-        <img src="images/logo.png" alt="QuangHưng Mobile" onerror="this.style.display='none'">
-      </div>
-      <div class="loader-spinner"></div>
-      <div class="loader-dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div class="loader-text">
-      <span>Đ</span><span>a</span><span>n</span><span>g</span><span>&nbsp;</span><span>t</span><span>ả</span><span>i</span><span>.</span><span>.</span><span>.</span>
-    </div>
-      <div class="loader-progress">
-        <div class="loader-progress-bar"></div>
-      </div>
-    </div>
 
     <!-- Container cho hiệu ứng tuyết rơi -->
     <div id="snow-container"></div>
@@ -432,21 +414,31 @@
           try {
             const user = JSON.parse(decodeURIComponent(userData));
             
-            // Lưu thông tin user
-            localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('isLoggedIn', 'true');
-            
             // Hiển thị thông báo nếu vừa đăng ký xong
             if (justRegistered === 'true') {
               showGoogleSuccessMessage(`Đăng ký thành công! Chào mừng ${user.ho_ten}!`);
             }
             
+            // Hiển thị loader khi chuyển trang
+            if (typeof showPageLoader === 'function') {
+              showPageLoader();
+            }
+            
             // Kiểm tra nếu là admin
             if (user.isAdmin || user.role === 'admin') {
+              // Lưu thông tin admin vào adminData
+              localStorage.setItem('adminData', JSON.stringify(user));
+              localStorage.setItem('adminToken', 'admin-session');
               localStorage.setItem('isAdmin', 'true');
+              localStorage.setItem('isLoggedIn', 'true');
+              
               alert(`Xin chào Admin ${user.ho_ten}!`);
               window.location.href = 'admin.html';
             } else {
+              // Lưu thông tin user bình thường
+              localStorage.setItem('user', JSON.stringify(user));
+              localStorage.setItem('isLoggedIn', 'true');
+              
               // Merge giỏ hàng cho customer
               mergeGuestCart(user.ma_kh);
               window.location.href = 'index.html';
@@ -531,7 +523,7 @@
         }
 
         try {
-          // Thử đăng nhập như khách hàng trước
+          // Gọi API login - tự động kiểm tra cả admin và khách hàng
           let response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -541,7 +533,25 @@
           let data = await response.json();
 
           if (data.success) {
-            // Lưu thông tin user vào localStorage
+            // Hiển thị loader khi chuyển trang
+            if (typeof showPageLoader === 'function') {
+              showPageLoader();
+            }
+            
+            // Kiểm tra nếu là admin
+            if (data.data.role === 'admin' || data.data.isAdmin) {
+              // Lưu thông tin admin
+              localStorage.setItem('adminData', JSON.stringify(data.data));
+              localStorage.setItem('adminToken', 'admin-session');
+              localStorage.setItem('isLoggedIn', 'true');
+              localStorage.setItem('isAdmin', 'true');
+              
+              alert(`Xin chào Admin ${data.data.ho_ten}!`);
+              window.location.href = 'admin.html';
+              return;
+            }
+            
+            // Đăng nhập như khách hàng
             localStorage.setItem('user', JSON.stringify(data.data));
             localStorage.setItem('isLoggedIn', 'true');
             
@@ -557,7 +567,6 @@
             } else if (redirectUrl) {
               window.location.href = redirectUrl + '.html';
             } else {
-              // Chuyển về trang chủ để thấy header đã đăng nhập
               window.location.href = 'index.html';
             }
             return;

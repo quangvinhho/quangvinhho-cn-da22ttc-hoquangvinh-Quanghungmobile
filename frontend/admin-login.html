@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đăng nhập Admin - QuangHưng Mobile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Be Vietnam Pro', sans-serif;
     }
 
     body {
@@ -323,6 +323,26 @@
   </div>
 
   <script>
+    const API_URL = 'http://localhost:3000/api';
+
+    // Kiểm tra nếu đã đăng nhập thì chuyển đến trang admin
+    document.addEventListener('DOMContentLoaded', function() {
+      const adminData = localStorage.getItem('adminData');
+      if (adminData) {
+        window.location.href = 'admin.html';
+      }
+      
+      // Load remember me
+      const remembered = localStorage.getItem('adminRemember');
+      if (remembered) {
+        try {
+          const data = JSON.parse(remembered);
+          document.getElementById('username').value = data.username || '';
+          document.getElementById('remember').checked = true;
+        } catch(e) {}
+      }
+    });
+
     function togglePassword() {
       const input = document.getElementById('password');
       const icon = document.getElementById('eye-icon');
@@ -335,9 +355,86 @@
       }
     }
 
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    function showError(message) {
+      // Tạo toast thông báo lỗi
+      const existing = document.querySelector('.login-toast');
+      if (existing) existing.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = 'login-toast';
+      toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#ef4444;color:white;padding:12px 20px;border-radius:10px;font-size:14px;z-index:9999;animation:slideIn 0.3s ease;';
+      toast.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>${message}`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    function showSuccess(message) {
+      const existing = document.querySelector('.login-toast');
+      if (existing) existing.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = 'login-toast';
+      toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#10b981;color:white;padding:12px 20px;border-radius:10px;font-size:14px;z-index:9999;animation:slideIn 0.3s ease;';
+      toast.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      alert('Chức năng đăng nhập chưa được kết nối!');
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const remember = document.getElementById('remember').checked;
+      
+      if (!username || !password) {
+        showError('Vui lòng nhập đầy đủ tài khoản và mật khẩu!');
+        return;
+      }
+      
+      // Disable button và hiển thị loading
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang đăng nhập...';
+      
+      try {
+        const res = await fetch(`${API_URL}/auth/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tai_khoan: username, mat_khau: password })
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          // Lưu thông tin admin - backend trả về trong data.data
+          localStorage.setItem('adminData', JSON.stringify(data.data));
+          localStorage.setItem('adminToken', data.token || 'admin-session');
+          localStorage.setItem('isAdmin', 'true');
+          localStorage.setItem('isLoggedIn', 'true');
+          
+          // Lưu remember me
+          if (remember) {
+            localStorage.setItem('adminRemember', JSON.stringify({ username }));
+          } else {
+            localStorage.removeItem('adminRemember');
+          }
+          
+          showSuccess('Đăng nhập thành công!');
+          setTimeout(() => {
+            window.location.href = 'admin.html';
+          }, 1000);
+        } else {
+          showError(data.message || 'Tài khoản hoặc mật khẩu không đúng!');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showError('Không thể kết nối đến server. Vui lòng thử lại!');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
     });
   </script>
 </body>

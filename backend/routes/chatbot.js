@@ -12,7 +12,7 @@ async function getProductsFromDB() {
       SELECT 
         sp.ma_sp as id,
         sp.ten_sp as name,
-        h.ten_hang as brand,
+        hsx.ten_hang as brand,
         sp.gia as price,
         sp.gia_cu as oldPrice,
         sp.ram,
@@ -20,10 +20,10 @@ async function getProductsFromDB() {
         sp.man_hinh as screen,
         sp.camera,
         sp.pin as battery,
-        sp.so_luong as stock
+        sp.so_luong_ton as stock
       FROM san_pham sp
-      LEFT JOIN hang h ON sp.ma_hang = h.ma_hang
-      WHERE sp.trang_thai = 1 AND sp.so_luong > 0
+      LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+      WHERE sp.so_luong_ton > 0
       ORDER BY sp.gia ASC
     `);
     return rows;

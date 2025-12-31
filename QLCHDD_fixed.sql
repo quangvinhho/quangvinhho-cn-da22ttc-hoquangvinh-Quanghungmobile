@@ -144,20 +144,7 @@ CREATE TABLE khuyen_mai (
   ngay_tao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- 10.1 LICH SU VOUCHER
-CREATE TABLE lich_su_voucher (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  ma_km INT NOT NULL,
-  ma_kh INT,
-  ma_don INT,
-  so_tien_giam DECIMAL(14,2),
-  ngay_su_dung DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (ma_km) REFERENCES khuyen_mai(ma_km) ON DELETE CASCADE,
-  FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh) ON DELETE SET NULL,
-  FOREIGN KEY (ma_don) REFERENCES don_hang(ma_don) ON DELETE SET NULL
-);
-
--- 10.2 VOUCHER DA LUU CUA USER
+-- 10.2 VOUCHER DA LUU CUA USER (tạo trước vì không phụ thuộc don_hang)
 CREATE TABLE voucher_nguoi_dung (
   id INT AUTO_INCREMENT PRIMARY KEY,
   ma_km INT NOT NULL,
@@ -205,6 +192,19 @@ CREATE TABLE thanh_toan (
   trang_thai ENUM('pending','success','failed') DEFAULT 'pending',
   thoi_gian DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (ma_don) REFERENCES don_hang(ma_don) ON DELETE CASCADE
+);
+
+-- 13.1 LICH SU VOUCHER (tạo sau don_hang vì có foreign key tham chiếu)
+CREATE TABLE lich_su_voucher (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  ma_km INT NOT NULL,
+  ma_kh INT,
+  ma_don INT,
+  so_tien_giam DECIMAL(14,2),
+  ngay_su_dung DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ma_km) REFERENCES khuyen_mai(ma_km) ON DELETE CASCADE,
+  FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh) ON DELETE SET NULL,
+  FOREIGN KEY (ma_don) REFERENCES don_hang(ma_don) ON DELETE SET NULL
 );
 
 -- 14. BAO HANH

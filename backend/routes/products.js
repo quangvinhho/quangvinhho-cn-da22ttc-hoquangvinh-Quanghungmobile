@@ -879,6 +879,11 @@ function mapProductToFrontendWithDB(row) {
     if (row.db_pin) baseProduct.battery = row.db_pin;
     if (row.db_os) baseProduct.os = row.db_os;
     
+    // Thêm ảnh gallery từ bảng anh_san_pham nếu có
+    if (row.images && row.images.length > 0) {
+        baseProduct.images = row.images;
+    }
+    
     return baseProduct;
 }
 
@@ -1105,12 +1110,24 @@ router.get('/:id', async (req, res) => {
         
         const product = rows[0];
         
-        // Thêm ảnh từ DB vào product và filter bỏ ảnh banner
+        // Xử lý ảnh: ảnh đại diện + ảnh mô tả từ DB
+        let allImages = [];
+        
+        // Thêm ảnh đại diện vào đầu tiên (nếu có)
+        if (product.anh_dai_dien) {
+            const mainImg = product.anh_dai_dien.startsWith('images/') ? product.anh_dai_dien : `images/${product.anh_dai_dien}`;
+            allImages.push(mainImg);
+        }
+        
+        // Thêm ảnh từ bảng anh_san_pham
         if (imageRows.length > 0) {
-            let images = imageRows.map(img => img.duong_dan.startsWith('images/') ? img.duong_dan : `images/${img.duong_dan}`);
-            // Lọc bỏ ảnh banner
-            images = images.filter(img => {
+            let galleryImages = imageRows.map(img => img.duong_dan.startsWith('images/') ? img.duong_dan : `images/${img.duong_dan}`);
+            // Lọc bỏ ảnh banner và ảnh trùng với ảnh đại diện
+            galleryImages = galleryImages.filter(img => {
                 if (!img) return false;
+                // Loại bỏ ảnh trùng với ảnh đại diện
+                if (allImages.includes(img)) return false;
+                
                 const imgLower = img.toLowerCase();
                 if (imgLower.includes('h1_1440x242')) return false;
                 if (imgLower.includes('banner')) return false;
@@ -1123,9 +1140,12 @@ router.get('/:id', async (req, res) => {
                 if (/\d{3,4}x\d{2,3}/.test(imgLower)) return false;
                 return true;
             });
-            if (images.length > 0) {
-                product.images = images;
-            }
+            allImages = [...allImages, ...galleryImages];
+        }
+        
+        // Gán mảng ảnh vào product
+        if (allImages.length > 0) {
+            product.images = allImages;
         }
         
         // Map dữ liệu sang format frontend

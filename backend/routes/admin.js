@@ -225,8 +225,8 @@ router.put('/orders/:id/status', async (req, res) => {
         
         await pool.query('UPDATE don_hang SET trang_thai = ? WHERE ma_don = ?', [status, id]);
         
-        // Nếu đơn hàng đã giao, cập nhật thanh toán COD thành công
-        if (status === 'delivered') {
+        // Nếu đơn hàng đã giao/hoàn thành, cập nhật thanh toán COD thành công
+        if (status === 'delivered' || status === 'completed') {
             await pool.query(
                 "UPDATE thanh_toan SET trang_thai = 'success' WHERE ma_don = ? AND phuong_thuc = 'COD'",
                 [id]
@@ -236,6 +236,42 @@ router.put('/orders/:id/status', async (req, res) => {
         res.json({ success: true, message: 'Cập nhật trạng thái thành công' });
     } catch (error) {
         console.error('Error updating order status:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/orders/:id/cancel - Hủy đơn hàng với lý do
+router.put('/orders/:id/cancel', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { reason } = req.body;
+        
+        if (!reason) {
+            return res.status(400).json({ success: false, message: 'Vui lòng nhập lý do hủy đơn' });
+        }
+        
+        // Cập nhật trạng thái và lý do hủy
+        await pool.query(
+            'UPDATE don_hang SET trang_thai = ?, ly_do_huy = ? WHERE ma_don = ?', 
+            ['cancelled', reason, id]
+        );
+        
+        // Hoàn lại số lượng tồn kho
+        const [orderItems] = await pool.query(
+            'SELECT ma_sp, so_luong FROM chi_tiet_don_hang WHERE ma_don = ?',
+            [id]
+        );
+        
+        for (const item of orderItems) {
+            await pool.query(
+                'UPDATE san_pham SET so_luong_ton = so_luong_ton + ? WHERE ma_sp = ?',
+                [item.so_luong, item.ma_sp]
+            );
+        }
+        
+        res.json({ success: true, message: 'Đã hủy đơn hàng thành công' });
+    } catch (error) {
+        console.error('Error cancelling order:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });
@@ -500,6 +536,56 @@ router.get('/products/:id/specs', async (req, res) => {
         res.json({ success: true, data: rows[0] });
     } catch (error) {
         console.error('Error getting product specs:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/products/:id/gallery - Lấy danh sách ảnh mô tả sản phẩm
+router.get('/products/:id/gallery', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [rows] = await pool.query('SELECT ma_anh, duong_dan FROM anh_san_pham WHERE ma_sp = ?', [id]);
+        
+        const images = rows.map(row => row.duong_dan.startsWith('images/') ? row.duong_dan : `images/${row.duong_dan}`);
+        
+        res.json({ success: true, images: images });
+    } catch (error) {
+        console.error('Error getting product gallery:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/products/:id/gallery - Xóa tất cả ảnh gallery của sản phẩm
+router.delete('/products/:id/gallery', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM anh_san_pham WHERE ma_sp = ?', [id]);
+        res.json({ success: true, message: 'Đã xóa tất cả ảnh gallery' });
+    } catch (error) {
+        console.error('Error deleting product gallery:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/products/:id/gallery - Cập nhật danh sách ảnh gallery
+router.put('/products/:id/gallery', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { images } = req.body; // Mảng các URL ảnh cần giữ lại
+        
+        // Xóa tất cả ảnh cũ
+        await pool.query('DELETE FROM anh_san_pham WHERE ma_sp = ?', [id]);
+        
+        // Thêm lại các ảnh được giữ
+        if (images && images.length > 0) {
+            for (const imgUrl of images) {
+                await pool.query('INSERT INTO anh_san_pham (ma_sp, duong_dan) VALUES (?, ?)', [id, imgUrl]);
+            }
+        }
+        
+        res.json({ success: true, message: 'Cập nhật gallery thành công' });
+    } catch (error) {
+        console.error('Error updating product gallery:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });
@@ -836,6 +922,461 @@ router.get('/dashboard', async (req, res) => {
         });
     } catch (error) {
         console.error('Error getting dashboard:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ==================== ADVANCED DASHBOARD ANALYTICS ====================
+
+// GET /api/admin/dashboard/revenue - Doanh thu theo khoảng thời gian (tuần/tháng/năm)
+router.get('/dashboard/revenue', async (req, res) => {
+    try {
+        const { period = 'week', year, month } = req.query;
+        const currentYear = year || new Date().getFullYear();
+        const currentMonth = month || new Date().getMonth() + 1;
+        
+        let revenueData = [];
+        let labels = [];
+        let comparison = { current: 0, previous: 0, change: 0 };
+        
+        if (period === 'week') {
+            // Doanh thu 7 ngày gần nhất
+            const [dailyRevenue] = await pool.query(`
+                SELECT DATE(thoi_gian) as date, 
+                       COALESCE(SUM(tong_tien), 0) as revenue,
+                       COUNT(*) as orders
+                FROM don_hang 
+                WHERE thoi_gian >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                AND trang_thai NOT IN ('cancelled')
+                GROUP BY DATE(thoi_gian)
+                ORDER BY date
+            `);
+            
+            // Tạo mảng 7 ngày
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const found = dailyRevenue.find(d => d.date.toISOString().split('T')[0] === dateStr);
+                labels.push(date.toLocaleDateString('vi-VN', { weekday: 'short', day: '2-digit', month: '2-digit' }));
+                revenueData.push({
+                    date: dateStr,
+                    revenue: found ? parseFloat(found.revenue) : 0,
+                    orders: found ? found.orders : 0
+                });
+            }
+            
+            // So sánh với tuần trước
+            const [[currentWeek]] = await pool.query(`
+                SELECT COALESCE(SUM(tong_tien), 0) as total
+                FROM don_hang 
+                WHERE thoi_gian >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                AND trang_thai NOT IN ('cancelled')
+            `);
+            const [[previousWeek]] = await pool.query(`
+                SELECT COALESCE(SUM(tong_tien), 0) as total
+                FROM don_hang 
+                WHERE thoi_gian >= DATE_SUB(CURDATE(), INTERVAL 14 DAY)
+                AND thoi_gian < DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                AND trang_thai NOT IN ('cancelled')
+            `);
+            comparison = {
+                current: parseFloat(currentWeek.total),
+                previous: parseFloat(previousWeek.total),
+                change: previousWeek.total > 0 ? ((currentWeek.total - previousWeek.total) / previousWeek.total * 100).toFixed(1) : 0
+            };
+            
+        } else if (period === 'month') {
+            // Doanh thu theo ngày trong tháng
+            const [dailyRevenue] = await pool.query(`
+                SELECT DAY(thoi_gian) as day, 
+                       COALESCE(SUM(tong_tien), 0) as revenue,
+                       COUNT(*) as orders
+                FROM don_hang 
+                WHERE YEAR(thoi_gian) = ? AND MONTH(thoi_gian) = ?
+                AND trang_thai NOT IN ('cancelled')
+                GROUP BY DAY(thoi_gian)
+                ORDER BY day
+            `, [currentYear, currentMonth]);
+            
+            const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+            for (let i = 1; i <= daysInMonth; i++) {
+                const found = dailyRevenue.find(d => d.day === i);
+                labels.push(i.toString());
+                revenueData.push({
+                    day: i,
+                    revenue: found ? parseFloat(found.revenue) : 0,
+                    orders: found ? found.orders : 0
+                });
+            }
+            
+            // So sánh với tháng trước
+            const [[currentMonthTotal]] = await pool.query(`
+                SELECT COALESCE(SUM(tong_tien), 0) as total
+                FROM don_hang 
+                WHERE YEAR(thoi_gian) = ? AND MONTH(thoi_gian) = ?
+                AND trang_thai NOT IN ('cancelled')
+            `, [currentYear, currentMonth]);
+            
+            const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+            const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+            const [[previousMonthTotal]] = await pool.query(`
+                SELECT COALESCE(SUM(tong_tien), 0) as total
+                FROM don_hang 
+                WHERE YEAR(thoi_gian) = ? AND MONTH(thoi_gian) = ?
+                AND trang_thai NOT IN ('cancelled')
+            `, [prevYear, prevMonth]);
+            
+            comparison = {
+                current: parseFloat(currentMonthTotal.total),
+                previous: parseFloat(previousMonthTotal.total),
+                change: previousMonthTotal.total > 0 ? ((currentMonthTotal.total - previousMonthTotal.total) / previousMonthTotal.total * 100).toFixed(1) : 0
+            };
+            
+        } else if (period === 'year') {
+            // Doanh thu theo tháng trong năm
+            const [monthlyRevenue] = await pool.query(`
+                SELECT MONTH(thoi_gian) as month, 
+                       COALESCE(SUM(tong_tien), 0) as revenue,
+                       COUNT(*) as orders
+                FROM don_hang 
+                WHERE YEAR(thoi_gian) = ?
+                AND trang_thai NOT IN ('cancelled')
+                GROUP BY MONTH(thoi_gian)
+                ORDER BY month
+            `, [currentYear]);
+            
+            const monthNames = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
+            for (let i = 1; i <= 12; i++) {
+                const found = monthlyRevenue.find(d => d.month === i);
+                labels.push(monthNames[i - 1]);
+                revenueData.push({
+                    month: i,
+                    revenue: found ? parseFloat(found.revenue) : 0,
+                    orders: found ? found.orders : 0
+                });
+            }
+            
+            // So sánh với năm trước
+            const [[currentYearTotal]] = await pool.query(`
+                SELECT COALESCE(SUM(tong_tien), 0) as total
+                FROM don_hang 
+                WHERE YEAR(thoi_gian) = ?
+                AND trang_thai NOT IN ('cancelled')
+            `, [currentYear]);
+            const [[previousYearTotal]] = await pool.query(`
+                SELECT COALESCE(SUM(tong_tien), 0) as total
+                FROM don_hang 
+                WHERE YEAR(thoi_gian) = ?
+                AND trang_thai NOT IN ('cancelled')
+            `, [currentYear - 1]);
+            
+            comparison = {
+                current: parseFloat(currentYearTotal.total),
+                previous: parseFloat(previousYearTotal.total),
+                change: previousYearTotal.total > 0 ? ((currentYearTotal.total - previousYearTotal.total) / previousYearTotal.total * 100).toFixed(1) : 0
+            };
+        }
+        
+        res.json({
+            success: true,
+            data: {
+                period,
+                labels,
+                revenueData,
+                comparison,
+                year: currentYear,
+                month: currentMonth
+            }
+        });
+    } catch (error) {
+        console.error('Error getting revenue data:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/dashboard/inventory - Thống kê tồn kho
+router.get('/dashboard/inventory', async (req, res) => {
+    try {
+        // Tổng quan tồn kho
+        const [[inventoryStats]] = await pool.query(`
+            SELECT 
+                COUNT(*) as total_products,
+                SUM(so_luong_ton) as total_stock,
+                SUM(CASE WHEN so_luong_ton = 0 THEN 1 ELSE 0 END) as out_of_stock,
+                SUM(CASE WHEN so_luong_ton > 0 AND so_luong_ton <= 5 THEN 1 ELSE 0 END) as low_stock,
+                SUM(CASE WHEN so_luong_ton > 50 THEN 1 ELSE 0 END) as high_stock,
+                SUM(so_luong_ton * gia) as total_inventory_value
+            FROM san_pham
+        `);
+        
+        // Tồn kho theo thương hiệu
+        const [inventoryByBrand] = await pool.query(`
+            SELECT h.ten_hang as brand, 
+                   COUNT(sp.ma_sp) as products,
+                   COALESCE(SUM(sp.so_luong_ton), 0) as stock,
+                   COALESCE(SUM(sp.so_luong_ton * sp.gia), 0) as value
+            FROM hang_san_xuat h
+            LEFT JOIN san_pham sp ON h.ma_hang = sp.ma_hang
+            GROUP BY h.ma_hang, h.ten_hang
+            ORDER BY stock DESC
+        `);
+        
+        // Sản phẩm sắp hết hàng (<=5)
+        const [lowStockProducts] = await pool.query(`
+            SELECT sp.ma_sp, sp.ten_sp, sp.so_luong_ton, sp.gia, sp.anh_dai_dien, h.ten_hang as brand
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat h ON sp.ma_hang = h.ma_hang
+            WHERE sp.so_luong_ton <= 5
+            ORDER BY sp.so_luong_ton ASC
+            LIMIT 10
+        `);
+        
+        // Sản phẩm hết hàng
+        const [outOfStockProducts] = await pool.query(`
+            SELECT sp.ma_sp, sp.ten_sp, sp.gia, sp.anh_dai_dien, h.ten_hang as brand
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat h ON sp.ma_hang = h.ma_hang
+            WHERE sp.so_luong_ton = 0
+            ORDER BY sp.ten_sp
+        `);
+        
+        // Top sản phẩm tồn kho nhiều nhất
+        const [highStockProducts] = await pool.query(`
+            SELECT sp.ma_sp, sp.ten_sp, sp.so_luong_ton, sp.gia, sp.anh_dai_dien, h.ten_hang as brand,
+                   (sp.so_luong_ton * sp.gia) as inventory_value
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat h ON sp.ma_hang = h.ma_hang
+            ORDER BY sp.so_luong_ton DESC
+            LIMIT 10
+        `);
+        
+        res.json({
+            success: true,
+            data: {
+                stats: inventoryStats,
+                byBrand: inventoryByBrand,
+                lowStock: lowStockProducts,
+                outOfStock: outOfStockProducts,
+                highStock: highStockProducts
+            }
+        });
+    } catch (error) {
+        console.error('Error getting inventory data:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/dashboard/sales-analytics - Phân tích bán hàng chi tiết
+router.get('/dashboard/sales-analytics', async (req, res) => {
+    try {
+        // Top sản phẩm bán chạy
+        const [topProducts] = await pool.query(`
+            SELECT sp.ma_sp, sp.ten_sp, sp.anh_dai_dien, sp.gia, h.ten_hang as brand,
+                   COALESCE(SUM(ct.so_luong), 0) as total_sold,
+                   COALESCE(SUM(ct.so_luong * ct.gia), 0) as total_revenue
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat h ON sp.ma_hang = h.ma_hang
+            LEFT JOIN chi_tiet_don_hang ct ON sp.ma_sp = ct.ma_sp
+            LEFT JOIN don_hang dh ON ct.ma_don = dh.ma_don AND dh.trang_thai NOT IN ('cancelled')
+            GROUP BY sp.ma_sp
+            ORDER BY total_sold DESC
+            LIMIT 10
+        `);
+        
+        // Doanh thu theo thương hiệu
+        const [revenueByBrand] = await pool.query(`
+            SELECT h.ten_hang as brand,
+                   COALESCE(SUM(ct.so_luong * ct.gia), 0) as revenue,
+                   COALESCE(SUM(ct.so_luong), 0) as quantity
+            FROM hang_san_xuat h
+            LEFT JOIN san_pham sp ON h.ma_hang = sp.ma_hang
+            LEFT JOIN chi_tiet_don_hang ct ON sp.ma_sp = ct.ma_sp
+            LEFT JOIN don_hang dh ON ct.ma_don = dh.ma_don AND dh.trang_thai NOT IN ('cancelled')
+            GROUP BY h.ma_hang, h.ten_hang
+            ORDER BY revenue DESC
+        `);
+        
+        // Đơn hàng theo trạng thái
+        const [ordersByStatus] = await pool.query(`
+            SELECT trang_thai, COUNT(*) as count, COALESCE(SUM(tong_tien), 0) as total
+            FROM don_hang
+            GROUP BY trang_thai
+        `);
+        
+        // Phương thức thanh toán
+        const [paymentMethods] = await pool.query(`
+            SELECT tt.phuong_thuc, COUNT(*) as count, COALESCE(SUM(tt.so_tien), 0) as total
+            FROM thanh_toan tt
+            JOIN don_hang dh ON tt.ma_don = dh.ma_don
+            WHERE dh.trang_thai NOT IN ('cancelled')
+            GROUP BY tt.phuong_thuc
+            ORDER BY count DESC
+        `);
+        
+        // Khách hàng mới theo tháng (12 tháng gần nhất)
+        const [newCustomers] = await pool.query(`
+            SELECT YEAR(ngay_tao) as year, MONTH(ngay_tao) as month, COUNT(*) as count
+            FROM khach_hang
+            WHERE ngay_tao >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+            GROUP BY YEAR(ngay_tao), MONTH(ngay_tao)
+            ORDER BY year, month
+        `);
+        
+        // Giá trị đơn hàng trung bình
+        const [[avgOrderValue]] = await pool.query(`
+            SELECT 
+                AVG(tong_tien) as avg_value,
+                MAX(tong_tien) as max_value,
+                MIN(tong_tien) as min_value
+            FROM don_hang
+            WHERE trang_thai NOT IN ('cancelled') AND tong_tien > 0
+        `);
+        
+        res.json({
+            success: true,
+            data: {
+                topProducts,
+                revenueByBrand,
+                ordersByStatus,
+                paymentMethods,
+                newCustomers,
+                avgOrderValue
+            }
+        });
+    } catch (error) {
+        console.error('Error getting sales analytics:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/dashboard/overview - Tổng quan dashboard với so sánh
+router.get('/dashboard/overview', async (req, res) => {
+    try {
+        const today = new Date();
+        const currentMonth = today.getMonth() + 1;
+        const currentYear = today.getFullYear();
+        const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+        const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+        
+        // Doanh thu tháng này vs tháng trước
+        const [[revenueThisMonth]] = await pool.query(`
+            SELECT COALESCE(SUM(tong_tien), 0) as total
+            FROM don_hang 
+            WHERE YEAR(thoi_gian) = ? AND MONTH(thoi_gian) = ?
+            AND trang_thai NOT IN ('cancelled')
+        `, [currentYear, currentMonth]);
+        
+        const [[revenueLastMonth]] = await pool.query(`
+            SELECT COALESCE(SUM(tong_tien), 0) as total
+            FROM don_hang 
+            WHERE YEAR(thoi_gian) = ? AND MONTH(thoi_gian) = ?
+            AND trang_thai NOT IN ('cancelled')
+        `, [prevYear, prevMonth]);
+        
+        // Đơn hàng tháng này vs tháng trước
+        const [[ordersThisMonth]] = await pool.query(`
+            SELECT COUNT(*) as total
+            FROM don_hang 
+            WHERE YEAR(thoi_gian) = ? AND MONTH(thoi_gian) = ?
+        `, [currentYear, currentMonth]);
+        
+        const [[ordersLastMonth]] = await pool.query(`
+            SELECT COUNT(*) as total
+            FROM don_hang 
+            WHERE YEAR(thoi_gian) = ? AND MONTH(thoi_gian) = ?
+        `, [prevYear, prevMonth]);
+        
+        // Khách hàng mới tháng này vs tháng trước
+        const [[customersThisMonth]] = await pool.query(`
+            SELECT COUNT(*) as total
+            FROM khach_hang 
+            WHERE YEAR(ngay_tao) = ? AND MONTH(ngay_tao) = ?
+        `, [currentYear, currentMonth]);
+        
+        const [[customersLastMonth]] = await pool.query(`
+            SELECT COUNT(*) as total
+            FROM khach_hang 
+            WHERE YEAR(ngay_tao) = ? AND MONTH(ngay_tao) = ?
+        `, [prevYear, prevMonth]);
+        
+        // Sản phẩm đã bán tháng này vs tháng trước
+        const [[soldThisMonth]] = await pool.query(`
+            SELECT COALESCE(SUM(ct.so_luong), 0) as total
+            FROM chi_tiet_don_hang ct
+            JOIN don_hang dh ON ct.ma_don = dh.ma_don
+            WHERE YEAR(dh.thoi_gian) = ? AND MONTH(dh.thoi_gian) = ?
+            AND dh.trang_thai NOT IN ('cancelled')
+        `, [currentYear, currentMonth]);
+        
+        const [[soldLastMonth]] = await pool.query(`
+            SELECT COALESCE(SUM(ct.so_luong), 0) as total
+            FROM chi_tiet_don_hang ct
+            JOIN don_hang dh ON ct.ma_don = dh.ma_don
+            WHERE YEAR(dh.thoi_gian) = ? AND MONTH(dh.thoi_gian) = ?
+            AND dh.trang_thai NOT IN ('cancelled')
+        `, [prevYear, prevMonth]);
+        
+        // Tổng số liệu
+        const [[totals]] = await pool.query(`
+            SELECT 
+                (SELECT COALESCE(SUM(tong_tien), 0) FROM don_hang WHERE trang_thai NOT IN ('cancelled')) as total_revenue,
+                (SELECT COUNT(*) FROM don_hang) as total_orders,
+                (SELECT COUNT(*) FROM khach_hang) as total_customers,
+                (SELECT COUNT(*) FROM san_pham) as total_products,
+                (SELECT COUNT(*) FROM don_hang WHERE trang_thai = 'pending') as pending_orders
+        `);
+        
+        // Đơn hàng gần đây
+        const [recentOrders] = await pool.query(`
+            SELECT dh.*, tt.phuong_thuc, kh.ho_ten as customer_name
+            FROM don_hang dh
+            LEFT JOIN thanh_toan tt ON dh.ma_don = tt.ma_don
+            LEFT JOIN khach_hang kh ON dh.ma_kh = kh.ma_kh
+            ORDER BY dh.thoi_gian DESC
+            LIMIT 10
+        `);
+        
+        const calcChange = (current, previous) => {
+            const curr = parseFloat(current) || 0;
+            const prev = parseFloat(previous) || 0;
+            if (prev === 0) return curr > 0 ? 100 : 0;
+            return ((curr - prev) / prev * 100).toFixed(1);
+        };
+        
+        res.json({
+            success: true,
+            data: {
+                revenue: {
+                    current: parseFloat(revenueThisMonth.total),
+                    previous: parseFloat(revenueLastMonth.total),
+                    change: calcChange(revenueThisMonth.total, revenueLastMonth.total),
+                    total: parseFloat(totals.total_revenue)
+                },
+                orders: {
+                    current: ordersThisMonth.total,
+                    previous: ordersLastMonth.total,
+                    change: calcChange(ordersThisMonth.total, ordersLastMonth.total),
+                    total: totals.total_orders,
+                    pending: totals.pending_orders
+                },
+                customers: {
+                    current: customersThisMonth.total,
+                    previous: customersLastMonth.total,
+                    change: calcChange(customersThisMonth.total, customersLastMonth.total),
+                    total: totals.total_customers
+                },
+                products: {
+                    sold_current: soldThisMonth.total,
+                    sold_previous: soldLastMonth.total,
+                    change: calcChange(soldThisMonth.total, soldLastMonth.total),
+                    total: totals.total_products
+                },
+                recentOrders
+            }
+        });
+    } catch (error) {
+        console.error('Error getting dashboard overview:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });
