@@ -123,6 +123,67 @@
   transform: scaleX(1);
 }
 
+/* ===== OUT OF STOCK PRODUCT ===== */
+.product-card.out-of-stock {
+  opacity: 0.6;
+  filter: grayscale(70%);
+  position: relative;
+}
+
+.product-card.out-of-stock::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 20px;
+}
+
+.product-card.out-of-stock:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  opacity: 0.75;
+}
+
+.product-card.out-of-stock:hover::before {
+  transform: scaleX(0);
+}
+
+.out-of-stock-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 6px;
+  z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.out-of-stock-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  z-index: 10;
+  white-space: nowrap;
+}
+
 /* Product Image */
 .product-card .relative.overflow-hidden {
   background: linear-gradient(145deg, #fafafa 0%, #f5f5f5 100%);
@@ -270,15 +331,48 @@
 /* ===== FILTER SIDEBAR - FPT SHOP STYLE ===== */
 #filterSidebar {
   width: 280px;
-  max-height: calc(100vh - 160px);
-  overflow-y: auto;
-  transition: all 0.3s ease;
+  max-height: calc(100vh - 200px);
+  overflow: hidden;
   background: #f8f9fa;
   border-radius: 16px;
-  padding: 12px;
+  padding: 0;
   position: sticky;
-  top: 150px;
+  top: 160px;
   align-self: flex-start;
+  z-index: 10;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Filter header - không scroll */
+#filterSidebar .filter-header {
+  flex-shrink: 0;
+  margin: 12px 12px 0 12px;
+}
+
+/* Filters container - có scroll */
+#filterSidebar .filter-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--red-main) #f1f1f1;
+}
+
+#filterSidebar .filter-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+#filterSidebar .filter-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+#filterSidebar .filter-scroll::-webkit-scrollbar-thumb {
+  background: var(--red-main);
+  border-radius: 3px;
 }
 
 #filterSidebar::-webkit-scrollbar {
@@ -473,12 +567,13 @@
   width: 20px;
   height: 20px;
   border: 2px solid #d1d5db;
-  border-radius: 6px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  position: relative;
 }
 
 #filterSidebar .filter-option:hover .custom-checkbox {
@@ -486,16 +581,22 @@
 }
 
 #filterSidebar .filter-option input:checked + .custom-checkbox {
-  background: linear-gradient(135deg, var(--red-main) 0%, #ef4444 100%);
+  background: white;
   border-color: var(--red-main);
-  box-shadow: 0 2px 8px rgba(217, 30, 35, 0.3);
+  border-width: 2px;
+  box-shadow: 0 2px 8px rgba(217, 30, 35, 0.2);
 }
 
 #filterSidebar .filter-option input:checked + .custom-checkbox::after {
-  content: '✓';
-  color: white;
-  font-size: 11px;
-  font-weight: bold;
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, var(--red-main) 0%, #ef4444 100%);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #filterSidebar .filter-option .option-label {

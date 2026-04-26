@@ -6,6 +6,7 @@
   let conversations = [];
   let historyLoaded = false;
   let sidebarOpen = false;
+  let currentImageBase64 = null;
   
   // Lấy userId từ localStorage
   function getUserId() {
@@ -109,9 +110,17 @@
             <button class="ai-quick-btn" data-action="warranty">🛡️ Bảo hành</button>
           </div>
           
-          <div class="ai-chat-input-area">
+          <div class="ai-chat-input-area" style="position: relative;">
+            <div id="ai-image-preview-container" style="display: none; position: absolute; bottom: 100%; left: 10px; background: #fff; padding: 5px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 10; margin-bottom: 10px;">
+              <img id="ai-image-preview" src="" style="max-width: 100px; max-height: 100px; border-radius: 4px; object-fit: cover;">
+              <button id="ai-remove-image-btn" style="position:absolute; top:-5px; right:-5px; background:#d70018; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fas fa-times"></i></button>
+            </div>
             <div class="ai-chat-input-wrapper">
-              <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Nhập tin nhắn...">
+              <label for="ai-image-upload" class="ai-image-upload-label" style="cursor: pointer; padding: 0 10px; color: #888; display:flex; align-items:center;" title="Tải ảnh lên">
+                <i class="fas fa-image text-lg hover:text-[#d70018] transition-colors"></i>
+              </label>
+              <input type="file" id="ai-image-upload" accept="image/*" style="display: none;">
+              <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Nhập tin nhắn hay tải ảnh...">
               <button class="ai-chat-send" id="ai-chat-send">
                 <i class="fas fa-paper-plane"></i>
               </button>
@@ -277,7 +286,7 @@
           if (msg.role === 'user') {
             addUserMessage(msg.content);
           } else {
-            addBotMessage(msg.content);
+            addBotMessage(msg.content, true);
           }
         });
       } else {
@@ -408,11 +417,15 @@
   }
   
   // Add user message
-  function addUserMessage(text) {
+  function addUserMessage(text, isHTML = false) {
     const messagesContainer = document.getElementById('ai-chat-messages');
     const messageDiv = document.createElement('div');
     messageDiv.className = 'ai-message user';
-    messageDiv.textContent = text;
+    if(isHTML) {
+      messageDiv.innerHTML = text;
+    } else {
+      messageDiv.textContent = text;
+    }
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
@@ -435,9 +448,9 @@
   }
   
   // Call AI API
-  async function callAI(message) {
+  async function callAI(message, imageBase64 = null) {
     const userId = getUserId();
-    
+
     try {
       const response = await fetch(`${API_URL}/chatbot/chat`, {
         method: 'POST',
@@ -446,6 +459,7 @@
         },
         body: JSON.stringify({
           message: message,
+          image: imageBase64,
           userId: userId,
           conversationId: currentConversationId
         })
@@ -475,24 +489,45 @@
   async function sendMessage() {
     const input = document.getElementById('ai-chat-input');
     const message = input.value.trim();
-    
-    if (!message) return;
-    
-    addUserMessage(message);
+
+    if (!message && !currentImageBase64) return;
+
+    // Show user message with or without image
+    if (currentImageBase64) {
+      addUserMessage(message ? message + '<br><img src="'+currentImageBase64+'" style="max-width:100px; max-height:100px; border-radius:4px; margin-top:5px;">' : '<img src="'+currentImageBase64+'" style="max-width:100px; max-height:100px; border-radius:4px;">', true);
+    } else {
+      addUserMessage(message);
+    }
+
+    const payloadMessage = message;
+    const payloadImage = currentImageBase64;
+
     input.value = '';
+    removePreviewImage();
     input.disabled = true;
-    
+
     showTyping();
-    
-    const response = await callAI(message);
-    
+
+    const response = await callAI(payloadMessage, payloadImage);
+
     hideTyping();
     input.disabled = false;
     input.focus();
-    
-    addBotMessage(response);
+
+    addBotMessage(response, true);
   }
-  
+
+  function removePreviewImage() {
+    const previewContainer = document.getElementById('ai-image-preview-container');
+    const previewImg = document.getElementById('ai-image-preview');
+    const uploadInput = document.getElementById('ai-image-upload');
+
+    currentImageBase64 = null;
+    if(uploadInput) uploadInput.value = '';
+    if(previewImg) previewImg.src = '';
+    if(previewContainer) previewContainer.style.display = 'none';
+  }
+
   // Initialize chatbot
   function initChatbot() {
     createChatbotHTML();
@@ -507,21 +542,43 @@
     const sendBtn = document.getElementById('ai-chat-send');
     const input = document.getElementById('ai-chat-input');
     const quickBtns = document.querySelectorAll('.ai-quick-btn');
-    
-    // Khởi tạo currentUserId
-    currentUserId = getUserId();
-    
-    // Toggle chat window
-    chatBtn.addEventListener('click', async () => {
-      chatWindow.classList.toggle('active');
-      
-      if (chatWindow.classList.contains('active')) {
-        // Phát sự kiện để ẩn floating share
-        window.dispatchEvent(new CustomEvent('chatbot-opened'));
-        
-        const userChanged = checkUserChanged();
-        
-        if (!historyLoaded || userChanged) {
+
+    // Image upload elements
+    const uploadInput = document.getElementById('ai-image-upload');
+    const removeImageBtn = document.getElementById('ai-remove-image-btn');
+    const previewContainer = document.getElementById('ai-image-preview-container');
+    const previewImg = document.getElementById('ai-image-preview');
+
+    if (uploadInput) {
+      uploadInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            currentImageBase64 = e.target.result;
+            previewImg.src = currentImageBase64;
+            previewContainer.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    if (removeImageBtn) {
+        removeImageBtn.addEventListener('click', removePreviewImage);
+      }
+
+      currentUserId = getUserId();
+
+      chatBtn.addEventListener('click', async () => {
+        chatWindow.classList.toggle('active');
+
+        if (chatWindow.classList.contains('active')) {
+          window.dispatchEvent(new CustomEvent('chatbot-opened'));
+
+          const userChanged = checkUserChanged();
+
+          if (!historyLoaded || userChanged) {
           await loadInitialChat();
           historyLoaded = true;
         }

@@ -2,7 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Đăng ký - QuangHưng Mobile</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -52,6 +52,73 @@
       .step { display: none !important; }
       .step.active { display: block !important; animation: fadeIn 0.3s ease-out; }
       @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      
+      /* ===== RESPONSIVE STYLES ===== */
+      @media (max-width: 479px) {
+        body {
+          padding: 12px;
+        }
+        
+        .w-full.max-w-md {
+          max-width: 100%;
+        }
+        
+        .glass-effect {
+          padding: 20px 16px;
+          border-radius: 16px;
+        }
+        
+        h2.text-2xl {
+          font-size: 1.25rem;
+          margin-bottom: 1rem;
+        }
+        
+        .space-y-3 > * + * {
+          margin-top: 0.625rem;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+          padding: 10px 12px;
+          font-size: 14px;
+        }
+        
+        .text-sm {
+          font-size: 0.8125rem;
+        }
+        
+        /* Avatar smaller on mobile */
+        .w-16.h-16 {
+          width: 56px;
+          height: 56px;
+        }
+        
+        button[type="submit"] {
+          padding: 10px;
+          font-size: 14px;
+        }
+      }
+      
+      @media (max-height: 700px) {
+        body {
+          padding: 8px;
+          align-items: flex-start;
+        }
+        
+        .glass-effect {
+          padding: 16px;
+        }
+        
+        .space-y-3 > * + * {
+          margin-top: 0.5rem;
+        }
+        
+        .mb-4 {
+          margin-bottom: 0.75rem;
+        }
+      }
     </style>
   </head>
   <body class="flex items-center justify-center min-h-screen px-4 py-8">

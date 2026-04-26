@@ -96,7 +96,6 @@ const suggestedProducts = [
 
 // State
 let cartItems = [];
-let appliedPromo = null;
 const API_URL = 'http://localhost:3000/api';
 
 // Lấy thông tin user
@@ -258,16 +257,20 @@ function renderCart() {
         <input type="checkbox" class="item-checkbox w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500 mt-8 cursor-pointer" checked data-index="${index}">
         
         <div class="relative">
-          <img src="${itemImage}" alt="${itemName}" class="w-24 h-24 md:w-28 md:h-28 object-contain rounded-xl bg-gray-50 p-2" onerror="this.src='images/15-256.avif'">
+          <a href="product-detail.html?id=${item.id || item.ma_sp}" class="block">
+            <img src="${itemImage}" alt="${itemName}" class="w-24 h-24 md:w-28 md:h-28 object-contain rounded-xl bg-gray-50 p-2 hover:opacity-80 transition" onerror="this.src='images/15-256.avif'">
+          </a>
           ${item.badge ? `<span class="absolute -top-1 -left-1 ${getBadgeClass(item.badge)} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${item.badge}</span>` : ''}
         </div>
         
         <div class="flex-1 min-w-0">
           <div class="flex justify-between items-start gap-2">
             <div>
-              <h3 class="font-bold text-gray-900 text-base md:text-lg line-clamp-2 hover:text-red-600 transition cursor-pointer">
-                ${itemName}
-              </h3>
+              <a href="product-detail.html?id=${item.id || item.ma_sp}" class="block">
+                <h3 class="font-bold text-gray-900 text-base md:text-lg line-clamp-2 hover:text-red-600 transition cursor-pointer">
+                  ${itemName}
+                </h3>
+              </a>
               <div class="flex items-center gap-2 mt-1.5">
                 <span class="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
                   <span class="w-3 h-3 rounded-full" style="background-color: ${itemColorCode}"></span> ${itemColor}
@@ -333,8 +336,17 @@ function formatPrice(price) {
 
 // Update quantity
 async function updateQuantity(index, delta) {
-  const newQty = cartItems[index].quantity + delta;
-  if (newQty >= 1 && newQty <= 10) {
+  const item = cartItems[index];
+  const maxStock = item.stockCount || 99;
+  const newQty = item.quantity + delta;
+  
+  // Kiểm tra không vượt quá tồn kho
+  if (newQty > maxStock) {
+    showToast(`Số lượng tối đa có thể mua là ${maxStock} sản phẩm`, 'error');
+    return;
+  }
+  
+  if (newQty >= 1) {
     cartItems[index].quantity = newQty;
     saveCartLocal();
     renderCart();
@@ -343,7 +355,7 @@ async function updateQuantity(index, delta) {
     const user = getUser();
     if (user && user.ma_kh && cartItems[index].cartItemId) {
       try {
-        await fetch(`${API_URL}/cart/update`, {
+        const response = await fetch(`${API_URL}/cart/update`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -351,6 +363,14 @@ async function updateQuantity(index, delta) {
             quantity: newQty
           })
         });
+        const data = await response.json();
+        if (!data.success) {
+          // Rollback nếu backend từ chối
+          cartItems[index].quantity = newQty - delta;
+          saveCartLocal();
+          renderCart();
+          showToast(data.message || 'Không thể cập nhật số lượng', 'error');
+        }
       } catch (error) {
         console.error('Lỗi sync giỏ hàng:', error);
       }
@@ -360,8 +380,18 @@ async function updateQuantity(index, delta) {
 
 // Set quantity directly
 async function setQuantity(index, value) {
-  const qty = parseInt(value) || 1;
-  cartItems[index].quantity = Math.max(1, Math.min(10, qty));
+  const item = cartItems[index];
+  const maxStock = item.stockCount || 99;
+  let qty = parseInt(value) || 1;
+  
+  // Kiểm tra không vượt quá tồn kho
+  if (qty > maxStock) {
+    showToast(`Số lượng tối đa có thể mua là ${maxStock} sản phẩm`, 'error');
+    qty = maxStock;
+  }
+  
+  const oldQty = cartItems[index].quantity;
+  cartItems[index].quantity = Math.max(1, qty);
   saveCartLocal();
   renderCart();
   
@@ -369,7 +399,7 @@ async function setQuantity(index, value) {
   const user = getUser();
   if (user && user.ma_kh && cartItems[index].cartItemId) {
     try {
-      await fetch(`${API_URL}/cart/update`, {
+      const response = await fetch(`${API_URL}/cart/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -377,6 +407,14 @@ async function setQuantity(index, value) {
           quantity: cartItems[index].quantity
         })
       });
+      const data = await response.json();
+      if (!data.success) {
+        // Rollback nếu backend từ chối
+        cartItems[index].quantity = oldQty;
+        saveCartLocal();
+        renderCart();
+        showToast(data.message || 'Không thể cập nhật số lượng', 'error');
+      }
     } catch (error) {
       console.error('Lỗi sync giỏ hàng:', error);
     }
@@ -489,13 +527,7 @@ function updateSummary() {
   const originalTotal = checkedItems.reduce((sum, item) => sum + ((item.originalPrice || item.price || 0) * (item.quantity || 1)), 0);
   const savings = originalTotal - subtotal;
   
-  // Apply promo discount
-  let discount = 0;
-  if (appliedPromo === 'GIAM10') {
-    discount = subtotal * 0.1;
-  }
-  
-  const total = subtotal - discount;
+  const total = subtotal;
   const totalItems = checkedItems.reduce((sum, item) => sum + item.quantity, 0);
   
   // Update UI
@@ -503,15 +535,13 @@ function updateSummary() {
   document.getElementById('select-all-count').textContent = `(${cartItems.length} sản phẩm)`;
   document.getElementById('summary-count').textContent = totalItems;
   document.getElementById('subtotal').textContent = formatPrice(subtotal);
-  document.getElementById('discount').textContent = discount > 0 ? `-${formatPrice(discount)}` : '0₫';
   document.getElementById('total').textContent = formatPrice(total);
   
   // Savings badge
   const savingsBadge = document.getElementById('savings-badge');
-  const totalSavings = savings + discount;
-  if (totalSavings > 0) {
+  if (savings > 0) {
     savingsBadge.classList.remove('hidden');
-    document.getElementById('savings-amount').textContent = formatPrice(totalSavings);
+    document.getElementById('savings-amount').textContent = formatPrice(savings);
   } else {
     savingsBadge.classList.add('hidden');
   }
@@ -681,37 +711,8 @@ function initEventListeners() {
     }
   });
   
-  // Apply promo
-  document.getElementById('apply-promo').addEventListener('click', applyPromoCode);
-  document.getElementById('promo-code').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') applyPromoCode();
-  });
-  
-  // Promo tags
-  document.querySelectorAll('.promo-tag').forEach(tag => {
-    tag.addEventListener('click', function() {
-      document.getElementById('promo-code').value = this.dataset.code;
-      applyPromoCode();
-    });
-  });
-  
   // Checkout button
   initCheckoutButton();
-}
-
-// Apply promo code
-function applyPromoCode() {
-  const code = document.getElementById('promo-code').value.trim().toUpperCase();
-  
-  if (code === 'GIAM10') {
-    appliedPromo = 'GIAM10';
-    showToast('Áp dụng mã giảm 10% thành công!', 'success');
-    updateSummary();
-  } else if (code === 'FREESHIP') {
-    showToast('Đơn hàng đã được miễn phí vận chuyển!', 'success');
-  } else if (code) {
-    showToast('Mã giảm giá không hợp lệ', 'error');
-  }
 }
 
 // Render suggested products

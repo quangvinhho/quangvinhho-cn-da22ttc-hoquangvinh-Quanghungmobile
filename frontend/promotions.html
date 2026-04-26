@@ -528,9 +528,15 @@
 </head>
 <body>
   <div id="header-placeholder"></div>
-  <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+  <div class="h-[70px]"></div>
 
-  <div class="container mx-auto px-4 py-8 max-w-7xl">
+  <!-- Background Layer kéo dài hiệu ứng màu đỏ từ Header - Cải thiện sự liền mạch -->
+  <div class="w-full absolute left-0 top-[70px] -z-10 overflow-hidden h-[120px] sm:h-[160px] flex justify-center">
+      <!-- Hình dạng bo tròn dưới đáy -->
+      <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] md:rounded-b-[40%] shadow-sm"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8 max-w-[1440px] relative z-10">
 
     <!-- Hot Sale Section - Clean Design -->
     <section class="hot-sale-section">

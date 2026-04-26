@@ -32,26 +32,60 @@ function getBadgeColor(index) {
     return colors[index % colors.length];
 }
 
-// Lấy category
-function getCategory(index) {
-    const cats = ['Mẹo hay', 'Tin mới', 'Công nghệ', 'Đánh giá', 'Khuyến mãi', 'Thủ thuật'];
-    return cats[index % cats.length];
+// Lấy category dựa trên loai_tin từ database
+function getCategory(loaiTin) {
+    const categories = {
+        'noi_bat': 'Nổi bật',
+        'thuong': 'Tin mới',
+        'khuyen_mai': 'Khuyến mãi',
+        'su_kien': 'Sự kiện',
+        'huong_dan': 'Hướng dẫn',
+        'danh_gia': 'Đánh giá',
+        'meo_hay': 'Mẹo hay'
+    };
+    return categories[loaiTin] || 'Tin mới';
 }
 
-// Load và render tin tức
-async function loadNews() {
-    try {
-        const response = await fetch(`${API_URL}/news/featured?limit=20`);
-        const result = await response.json();
+// Lấy màu badge dựa trên loại tin
+function getCategoryColor(loaiTin) {
+    const colors = {
+        'noi_bat': 'bg-orange-500',
+        'thuong': 'bg-blue-500',
+        'khuyen_mai': 'bg-green-500',
+        'su_kien': 'bg-purple-500',
+        'huong_dan': 'bg-teal-500',
+        'danh_gia': 'bg-pink-500',
+        'meo_hay': 'bg-yellow-500'
+    };
+    return colors[loaiTin] || 'bg-blue-500';
+}
 
-        if (result.success && result.data.length > 0) {
+// Biến lưu loại tin đang lọc
+let currentFilter = '';
+
+// Load và render tin tức
+async function loadNews(loaiTin = '') {
+    try {
+        let url = `${API_URL}/news/featured?limit=20`;
+        if (loaiTin) {
+            url = `${API_URL}/news?limit=20&loai_tin=${loaiTin}`;
+        }
+        
+        const response = await fetch(url);
+        const result = await response.json();
+        
+        const newsData = result.data || [];
+
+        if (newsData.length > 0) {
             // Tin mới nhất (4 tin đầu tiên)
-            renderLatestNews(result.data.slice(0, 4));
+            renderLatestNews(newsData.slice(0, 4));
             // Tin nổi bật (tin từ 5-8, hoặc từ đầu nếu không đủ)
-            const featuredData = result.data.length > 4 ? result.data.slice(4) : result.data;
-            renderFeaturedMain(featuredData[0] || result.data[0]);
-            renderFeaturedList(featuredData.slice(1, 4) || result.data.slice(1, 4));
-            renderAllNews(result.data);
+            const featuredData = newsData.length > 4 ? newsData.slice(4) : newsData;
+            renderFeaturedMain(featuredData[0] || newsData[0]);
+            renderFeaturedList(featuredData.slice(1, 4) || newsData.slice(1, 4));
+            renderAllNews(newsData);
+        } else {
+            showNoNews();
         }
     } catch (error) {
         console.error('Lỗi load tin tức:', error);
@@ -59,12 +93,52 @@ async function loadNews() {
     }
 }
 
+// Lọc tin tức theo loại
+function filterNews(loaiTin) {
+    currentFilter = loaiTin;
+    
+    // Cập nhật trạng thái nút
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-red-main', 'text-white');
+        btn.classList.add('bg-gray-100', 'text-gray-700');
+    });
+    
+    if (typeof event !== 'undefined' && event && event.type === 'click') {
+        const targetBtn = event.currentTarget || event.target;
+        targetBtn.classList.remove('bg-gray-100', 'text-gray-700');
+        targetBtn.classList.add('active', 'bg-red-main', 'text-white');
+    } else {
+        const activeBtn = document.querySelector(`.filter-btn[onclick="filterNews('${loaiTin}')"]`);
+        if (activeBtn) {
+            activeBtn.classList.remove('bg-gray-100', 'text-gray-700');
+            activeBtn.classList.add('active', 'bg-red-main', 'text-white');
+        }
+    }
+    
+    // Load lại tin tức với filter
+    loadNews(loaiTin);
+}
+
+// Hiển thị khi không có tin
+function showNoNews() {
+    const containers = ['latest-news', 'featured-main', 'featured-list', 'all-news'];
+    containers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.innerHTML = `
+                <div class="col-span-full text-center py-8">
+                    <i class="fas fa-newspaper text-4xl text-gray-300 mb-3"></i>
+                    <p class="text-gray-500">Không có tin tức nào trong danh mục này</p>
+                </div>
+            `;
+        }
+    });
+}
+
 // Render tin mới nhất - section riêng
 function renderLatestNews(newsList) {
     const container = document.getElementById('latest-news');
     if (!container) return;
-    
-    const badgeColors = ['bg-red-500', 'bg-orange-500', 'bg-blue-500', 'bg-green-500'];
     
     container.innerHTML = newsList.map((news, index) => `
         <article class="group cursor-pointer">
@@ -74,14 +148,17 @@ function renderLatestNews(newsList) {
                          alt="${news.tieu_de}" 
                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                          onerror="this.src='images/inta.webp'">
-                    <!-- Badge Mới -->
+                    <!-- Badge loại tin -->
                     <div class="absolute top-2 left-2">
-                        <span class="${badgeColors[index % 4]} text-white px-2 py-0.5 rounded-full text-xs font-bold">
-                            Mới
+                        <span class="${getCategoryColor(news.loai_tin)} text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                            ${getCategory(news.loai_tin)}
                         </span>
                     </div>
                     <div class="absolute bottom-3 left-3 right-3">
-                        <span class="text-white text-xs font-medium">${formatDate(news.ngay_dang)}</span>
+                        <div class="flex items-center gap-2 text-white text-xs">
+                            <span class="font-medium">${formatDate(news.ngay_dang)}</span>
+                            ${news.luot_xem ? `<span>• <i class="far fa-eye"></i> ${news.luot_xem}</span>` : ''}
+                        </div>
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 </div>
@@ -111,7 +188,8 @@ function renderFeaturedMain(news) {
                     <div class="flex items-center gap-2 text-white text-sm mb-3">
                         <span class="font-medium">${formatDate(news.ngay_dang)}</span>
                         <span>•</span>
-                        <span class="bg-orange-500 px-3 py-1 rounded-full text-xs font-semibold">Nổi bật</span>
+                        <span class="${getCategoryColor(news.loai_tin)} px-3 py-1 rounded-full text-xs font-semibold">${getCategory(news.loai_tin)}</span>
+                        ${news.luot_xem ? `<span>• <i class="far fa-eye"></i> ${news.luot_xem}</span>` : ''}
                     </div>
                 </div>
                 
@@ -123,7 +201,7 @@ function renderFeaturedMain(news) {
                 ${news.tieu_de}
             </h3>
             <p class="text-sm md:text-base text-gray-600 line-clamp-2">
-                ${truncateText(news.noi_dung, 150)}
+                ${news.mo_ta_ngan || truncateText(news.noi_dung, 150)}
             </p>
         </a>
     `;
@@ -174,7 +252,7 @@ function renderPopularNews(newsList) {
                         <div class="flex items-center gap-2 text-white text-xs">
                             <span class="font-medium">${formatDate(news.ngay_dang)}</span>
                             <span>•</span>
-                            <span class="${getBadgeColor(index)} px-2 py-0.5 rounded-full text-xs font-semibold">${getCategory(index)}</span>
+                            <span class="${getCategoryColor(news.loai_tin)} px-2 py-0.5 rounded-full text-xs font-semibold">${getCategory(news.loai_tin)}</span>
                         </div>
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -184,6 +262,7 @@ function renderPopularNews(newsList) {
                 </h4>
                 <div class="flex items-center gap-2 text-xs text-gray-500">
                     <span><i class="far fa-user mr-1"></i>${news.tac_gia || 'Admin'}</span>
+                    ${news.luot_xem ? `<span>• <i class="far fa-eye mr-1"></i>${news.luot_xem}</span>` : ''}
                 </div>
             </a>
         </article>
@@ -208,7 +287,7 @@ function renderAllNews(newsList) {
                         <div class="flex items-center gap-2 text-white text-sm">
                             <span class="font-medium">${formatDate(news.ngay_dang)}</span>
                             <span>•</span>
-                            <span class="${getBadgeColor(index)} px-3 py-1 rounded-full text-xs font-semibold">${getCategory(index)}</span>
+                            <span class="${getCategoryColor(news.loai_tin)} px-3 py-1 rounded-full text-xs font-semibold">${getCategory(news.loai_tin)}</span>
                         </div>
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -217,8 +296,12 @@ function renderAllNews(newsList) {
                     ${news.tieu_de}
                 </h3>
                 <p class="text-sm text-gray-600 line-clamp-2">
-                    ${truncateText(news.noi_dung, 100)}
+                    ${news.mo_ta_ngan || truncateText(news.noi_dung, 100)}
                 </p>
+                <div class="flex items-center gap-3 text-xs text-gray-500 mt-2">
+                    <span><i class="far fa-user mr-1"></i>${news.tac_gia || 'Admin'}</span>
+                    ${news.luot_xem ? `<span><i class="far fa-eye mr-1"></i>${news.luot_xem} lượt xem</span>` : ''}
+                </div>
             </a>
         </article>
     `).join('');
@@ -430,11 +513,19 @@ function showNewsNotFound() {
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname;
-    const isNewsPage = path.endsWith('news.html') || path.endsWith('news');
+    const isNewsPage = path.endsWith('news.html') || path.endsWith('news') || path === '/' || path === '';
     const isNewsDetailPage = path.includes('news-detail');
 
     if (isNewsPage) {
-        loadNews();
+        // Tự động nhận diện loai_tin truyền qua URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const loaiTin = urlParams.get('loai_tin');
+        
+        if (loaiTin) {
+            filterNews(loaiTin);
+        } else {
+            loadNews();
+        }
     }
 
     if (isNewsDetailPage) {

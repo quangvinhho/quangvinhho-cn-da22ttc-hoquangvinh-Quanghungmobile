@@ -18,8 +18,8 @@ function initHeader() {
     
     if (isLoggedIn && user) {
       // Ẩn nút đăng nhập, hiện thông tin user
-      if (loginBtn) loginBtn.classList.add('hidden');
-      if (userInfo) userInfo.classList.remove('hidden');
+      if (loginBtn) { loginBtn.classList.add('hidden'); loginBtn.style.setProperty('display', 'none', 'important'); }
+      if (userInfo) { userInfo.classList.remove('hidden'); userInfo.style.setProperty('display', 'block', 'important'); }
       
       // Hiện chuông thông báo
       if (notificationBellContainer) {
@@ -72,8 +72,8 @@ function initHeader() {
       }
     } else {
       // Hiện nút đăng nhập, ẩn thông tin user
-      if (loginBtn) loginBtn.classList.remove('hidden');
-      if (userInfo) userInfo.classList.add('hidden');
+      if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.style.removeProperty('display'); }
+      if (userInfo) { userInfo.classList.add('hidden'); userInfo.style.setProperty('display', 'none', 'important'); }
       
       // Ẩn chuông thông báo
       if (notificationBellContainer) {
@@ -237,6 +237,8 @@ function initHeader() {
     
     // Thêm CSS cho container input
     inputElement.parentElement.style.position = 'relative';
+    inputElement.parentElement.style.overflow = 'visible';
+    inputElement.parentElement.classList.remove('overflow-hidden');
     inputElement.parentElement.appendChild(dropdown);
     
     return dropdown;
@@ -691,16 +693,23 @@ function initHeader() {
 
   // Mobile search input
   const mobileSearchInput = document.getElementById("mobile-search-input");
+    const mobileHeaderSearchBtn = document.getElementById("mobile-header-search-btn");
 
-  if (mobileSearchInput) {
-    initSearchWithSuggestions(mobileSearchInput);
-    
-    mobileSearchInput.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
+    if (mobileSearchInput) {
+      initSearchWithSuggestions(mobileSearchInput);
+
+      mobileSearchInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          handleSearch(mobileSearchInput);
+        }
+      });
+    }
+
+    if (mobileHeaderSearchBtn) {
+      mobileHeaderSearchBtn.addEventListener("click", function () {
         handleSearch(mobileSearchInput);
-      }
-    });
-  }
+      });
+    }
 
   // Lấy cart key theo user (mỗi user có giỏ hàng riêng)
   function getCartKey() {
@@ -713,9 +722,10 @@ function initHeader() {
 
   // Update cart badge from localStorage
   function updateCartBadge() {
-    const cartBadges = document.querySelectorAll(
-      ".cart-badge, .mobile-cart-badge"
-    );
+    // Tất cả các badge giỏ hàng
+    const headerCartCount = document.getElementById('header-cart-count');
+    const navCartBadge = document.getElementById('nav-cart-badge');
+    const mobileCartBadge = document.getElementById('mobile-cart-badge');
     const cartCount = document.querySelector(".cart-count");
 
     // Lấy giỏ hàng theo user
@@ -726,9 +736,18 @@ function initHeader() {
       0
     );
 
-    cartBadges.forEach((badge) => {
-      badge.textContent = totalItems;
-      badge.style.display = totalItems > 0 ? "inline-block" : "none";
+    // Cập nhật tất cả badges
+    [headerCartCount, navCartBadge, mobileCartBadge].forEach((badge) => {
+      if (badge) {
+        badge.textContent = totalItems;
+        if (totalItems > 0) {
+          badge.classList.remove('hidden');
+          badge.style.display = 'flex';
+        } else {
+          badge.classList.add('hidden');
+          badge.style.display = 'none';
+        }
+      }
     });
 
     if (cartCount) {

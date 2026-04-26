@@ -266,11 +266,62 @@ function selectShipping(element, method) {
   selectedShipping = method;
   if (method === 'express') {
     shippingFee = 30000;
+  } else if (method === 'pickup') {
+    shippingFee = 0;
   } else {
     shippingFee = 0;
   }
   
+  // Hiển thị thông báo đặt cọc 50% nếu chọn pickup và có từ 3 sản phẩm trở lên
+  updatePickupDepositNotice();
+  
   calculateTotal();
+}
+
+// Cập nhật thông báo đặt cọc khi mua số lượng lớn hoặc tổng tiền cao
+function updatePickupDepositNotice() {
+  const notice = document.getElementById('pickupDepositNotice');
+  if (!notice) return;
+  
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const currentTotal = subtotal + shippingFee - discount;
+  
+  // Ngưỡng yêu cầu đặt cọc
+  const DEPOSIT_THRESHOLD_QUANTITY = 3;
+  const DEPOSIT_THRESHOLD_AMOUNT = 20000000; // 20 triệu
+  
+  // Kiểm tra điều kiện đặt cọc
+  const requiresDeposit = (totalItems >= DEPOSIT_THRESHOLD_QUANTITY || currentTotal >= DEPOSIT_THRESHOLD_AMOUNT);
+  
+  if (requiresDeposit) {
+    notice.classList.remove('hidden');
+    
+    // Xác định lý do
+    let reason = '';
+    if (totalItems >= DEPOSIT_THRESHOLD_QUANTITY && currentTotal >= DEPOSIT_THRESHOLD_AMOUNT) {
+      reason = `Đơn hàng có ${totalItems} sản phẩm và tổng tiền ${formatPrice(currentTotal)}`;
+    } else if (totalItems >= DEPOSIT_THRESHOLD_QUANTITY) {
+      reason = `Đơn hàng có ${totalItems} sản phẩm (từ ${DEPOSIT_THRESHOLD_QUANTITY} sản phẩm trở lên)`;
+    } else {
+      reason = `Tổng tiền ${formatPrice(currentTotal)} (từ ${formatPrice(DEPOSIT_THRESHOLD_AMOUNT)} trở lên)`;
+    }
+    
+    const depositAmount = Math.ceil(currentTotal / 2);
+    
+    notice.innerHTML = `
+      <div class="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <i class="fas fa-exclamation-triangle text-yellow-600 mt-0.5"></i>
+        <div class="text-sm">
+          <p class="font-semibold text-yellow-800">⚠️ Yêu cầu đặt cọc 50%</p>
+          <p class="text-yellow-700 mb-1">${reason}</p>
+          <p class="text-yellow-700">Cần đặt cọc <strong class="text-red-600">${formatPrice(depositAmount)}</strong> qua chuyển khoản trước khi xử lý.</p>
+          <p class="text-xs text-yellow-600 mt-1">💰 Còn lại ${formatPrice(currentTotal - depositAmount)} sẽ thanh toán khi nhận hàng.</p>
+        </div>
+      </div>
+    `;
+  } else {
+    notice.classList.add('hidden');
+  }
 }
 
 // ===== PAYMENT METHOD SELECTION =====
@@ -882,6 +933,10 @@ function placeOrder() {
   const orderId = 'DH' + Date.now();
   currentOrderId = orderId;
   
+  // Tính tổng số lượng sản phẩm
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const total = subtotal + shippingFee - discount;
+  
   // Collect order data
   const orderData = {
     customer: {
@@ -908,7 +963,7 @@ function placeOrder() {
       subtotal: subtotal,
       shippingFee: shippingFee,
       discount: discount,
-      total: subtotal + shippingFee - discount
+      total: total
     },
     orderDate: new Date().toISOString(),
     orderId: orderId,
@@ -917,6 +972,32 @@ function placeOrder() {
   
   const paymentMethod = getSelectedPayment();
   
+  // ===== LOGIC ĐẶT CỌC 50% CHO ĐƠN HÀNG LỚN =====
+  // Điều kiện yêu cầu đặt cọc:
+  // 1. Số lượng sản phẩm >= 3
+  // 2. Hoặc tổng tiền >= 20,000,000đ
+  const DEPOSIT_THRESHOLD_QUANTITY = 3;
+  const DEPOSIT_THRESHOLD_AMOUNT = 20000000; // 20 triệu
+  
+  const requiresDeposit = (totalItems >= DEPOSIT_THRESHOLD_QUANTITY || total >= DEPOSIT_THRESHOLD_AMOUNT);
+  
+  // Chỉ yêu cầu đặt cọc khi chọn COD (thanh toán khi nhận hàng)
+  if (requiresDeposit && paymentMethod === 'cod') {
+    // Xác định lý do yêu cầu đặt cọc để hiển thị
+    let depositReason = '';
+    if (totalItems >= DEPOSIT_THRESHOLD_QUANTITY && total >= DEPOSIT_THRESHOLD_AMOUNT) {
+      depositReason = `Đơn hàng có ${totalItems} sản phẩm và tổng tiền ${formatPrice(total)}`;
+    } else if (totalItems >= DEPOSIT_THRESHOLD_QUANTITY) {
+      depositReason = `Đơn hàng có ${totalItems} sản phẩm (từ ${DEPOSIT_THRESHOLD_QUANTITY} sản phẩm trở lên)`;
+    } else {
+      depositReason = `Tổng tiền ${formatPrice(total)} (từ ${formatPrice(DEPOSIT_THRESHOLD_AMOUNT)} trở lên)`;
+    }
+    orderData.depositReason = depositReason;
+    
+    showBankDepositModal(orderData);
+    return;
+  }
+  
   // Check if payment method is MoMo (any type)
   if (paymentMethod.startsWith('momo')) {
     const momoType = getMoMoPaymentType(paymentMethod);
@@ -924,8 +1005,102 @@ function placeOrder() {
     return;
   }
   
-  // For COD, proceed directly
+  // For COD with small orders, proceed directly
   completeOrder(orderData);
+}
+
+// ===== BANK DEPOSIT MODAL (50% đặt cọc) =====
+function showBankDepositModal(orderData) {
+  const modal = document.getElementById('bankDepositModal');
+  const total = orderData.pricing.total;
+  const depositAmount = Math.ceil(total / 2); // 50% làm tròn lên
+  const remainingAmount = total - depositAmount; // 50% còn lại
+  
+  // Cập nhật thông tin
+  document.getElementById('bankOrderId').textContent = orderData.orderId;
+  document.getElementById('bankDepositAmount').textContent = formatPrice(depositAmount);
+  document.getElementById('bankTransferContent').textContent = `DATCOC ${orderData.orderId}`;
+  
+  // Hiển thị lý do yêu cầu đặt cọc (nếu có)
+  const reasonEl = document.getElementById('depositReasonText');
+  if (reasonEl && orderData.depositReason) {
+    reasonEl.textContent = orderData.depositReason;
+    reasonEl.parentElement.classList.remove('hidden');
+  }
+  
+  // Hiển thị số tiền còn lại phải trả
+  const remainingEl = document.getElementById('bankRemainingAmount');
+  if (remainingEl) {
+    remainingEl.textContent = formatPrice(remainingAmount);
+  }
+  
+  // Cập nhật QR code với số tiền và nội dung chuyển khoản
+  const qrImage = document.getElementById('bankQRImage');
+  const transferContent = encodeURIComponent(`DATCOC ${orderData.orderId}`);
+  qrImage.src = `https://img.vietqr.io/image/agribank-8888355745120-compact2.png?amount=${depositAmount}&addInfo=${transferContent}&accountName=HO%20QUANG%20VINH`;
+  
+  // Lưu order data để xử lý sau
+  orderData.depositAmount = depositAmount;
+  orderData.remainingAmount = remainingAmount;
+  orderData.depositRequired = true;
+  orderData.depositStatus = 'pending'; // pending, confirmed
+  orderData.isDeposit = true; // Đánh dấu là đơn đặt cọc
+  localStorage.setItem('pendingDepositOrder', JSON.stringify(orderData));
+  
+  // Hiển thị modal
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBankDepositModal() {
+  const modal = document.getElementById('bankDepositModal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function copyBankNumber() {
+  navigator.clipboard.writeText('8888355745120').then(() => {
+    showToast('Đã sao chép số tài khoản!', 'success');
+  }).catch(() => {
+    showToast('Không thể sao chép, vui lòng copy thủ công', 'error');
+  });
+}
+
+function copyTransferContent() {
+  const content = document.getElementById('bankTransferContent').textContent;
+  navigator.clipboard.writeText(content).then(() => {
+    showToast('Đã sao chép nội dung chuyển khoản!', 'success');
+  }).catch(() => {
+    showToast('Không thể sao chép, vui lòng copy thủ công', 'error');
+  });
+}
+
+async function confirmBankDeposit() {
+  const pendingOrder = JSON.parse(localStorage.getItem('pendingDepositOrder') || 'null');
+  
+  if (!pendingOrder) {
+    showToast('Không tìm thấy thông tin đơn hàng!', 'error');
+    return;
+  }
+  
+  // Vì đây là thanh toán ảo (demo), lập tức ghi nhận đặt cọc thành công
+  pendingOrder.depositStatus = 'paid'; // Đã thanh toán đặt cọc
+  pendingOrder.status = 'pending'; // Đơn hàng chờ xử lý (đã cọc)
+  pendingOrder.payment.method = 'bank_deposit'; // Phương thức thanh toán: đặt cọc ngân hàng
+  pendingOrder.depositPaid = true; // Đánh dấu đã thanh toán cọc
+  pendingOrder.depositPaidAt = new Date().toISOString(); // Thời gian thanh toán cọc
+  
+  // Đóng modal
+  closeBankDepositModal();
+  
+  // Hiển thị thông báo thanh toán cọc thành công
+  showToast(`Đặt cọc thành công! Số tiền: ${formatPrice(pendingOrder.depositAmount)}`, 'success');
+  
+  // Hoàn tất đơn hàng với trạng thái đã cọc
+  completeOrder(pendingOrder);
+  
+  // Xóa pending order
+  localStorage.removeItem('pendingDepositOrder');
 }
 
 // ===== MOMO PAYMENT VARIABLES =====
@@ -1082,14 +1257,115 @@ function addDemoButtons(container, paymentType) {
   
   if (!parent) return;
   
+  // Thêm animation scan line cho QR
+  if (paymentType === 'qr') {
+    const scanLine = document.createElement('div');
+    scanLine.className = 'qr-scan-line';
+    scanLine.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #e91e63, transparent);
+      animation: qrScan 2s ease-in-out infinite;
+      border-radius: 2px;
+      box-shadow: 0 0 10px #e91e63;
+    `;
+    container.style.position = 'relative';
+    container.appendChild(scanLine);
+    
+    // Thêm style animation
+    if (!document.getElementById('qrScanStyle')) {
+      const style = document.createElement('style');
+      style.id = 'qrScanStyle';
+      style.textContent = `
+        @keyframes qrScan {
+          0%, 100% { top: 0; opacity: 1; }
+          50% { top: calc(100% - 3px); opacity: 0.8; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+  
   const btnContainer = document.createElement('div');
-  btnContainer.className = 'demo-btn-container mt-3 flex justify-center';
+  btnContainer.className = 'demo-btn-container mt-3 flex flex-col items-center gap-2';
   btnContainer.innerHTML = `
-    <button onclick="confirmDemoPayment()" class="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
-      <i class="fas fa-check-circle mr-1"></i> Xác nhận (Demo)
+    <p class="text-xs text-gray-500 text-center">
+      <i class="fas fa-info-circle text-pink-500 mr-1"></i>
+      Đây là chế độ Demo - Nhấn nút bên dưới để giả lập thanh toán
+    </p>
+    <button onclick="simulateScanQR()" class="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+      <i class="fas fa-qrcode"></i> Quét QR (Demo)
     </button>
   `;
   parent.appendChild(btnContainer);
+}
+
+// ===== SIMULATE SCAN QR =====
+function simulateScanQR() {
+  const container = document.getElementById('qrCodeContainer');
+  const btnContainer = document.querySelector('.demo-btn-container');
+  
+  // Hiển thị animation đang quét
+  if (btnContainer) {
+    btnContainer.innerHTML = `
+      <div class="flex flex-col items-center gap-2">
+        <div class="flex items-center gap-2 text-pink-600">
+          <i class="fas fa-spinner fa-spin text-lg"></i>
+          <span class="text-sm font-semibold">Đang quét mã QR...</span>
+        </div>
+        <div class="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full animate-pulse" style="width: 0%; animation: scanProgress 2s ease-out forwards;"></div>
+        </div>
+      </div>
+    `;
+    
+    // Thêm animation progress bar
+    if (!document.getElementById('scanProgressStyle')) {
+      const style = document.createElement('style');
+      style.id = 'scanProgressStyle';
+      style.textContent = `
+        @keyframes scanProgress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+  
+  // Thêm hiệu ứng flash cho QR
+  if (container) {
+    container.style.transition = 'all 0.3s ease';
+    container.style.boxShadow = '0 0 20px rgba(233, 30, 99, 0.5)';
+    container.style.transform = 'scale(1.02)';
+  }
+  
+  // Sau 2 giây, hiển thị kết quả quét thành công
+  setTimeout(() => {
+    if (btnContainer) {
+      btnContainer.innerHTML = `
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-1">
+            <i class="fas fa-check text-green-600 text-xl"></i>
+          </div>
+          <p class="text-sm font-semibold text-green-600">Quét mã thành công!</p>
+          <p class="text-xs text-gray-500">Đang xử lý thanh toán...</p>
+        </div>
+      `;
+    }
+    
+    if (container) {
+      container.style.boxShadow = '0 0 20px rgba(34, 197, 94, 0.5)';
+    }
+    
+    // Sau 1.5 giây nữa, xác nhận thanh toán
+    setTimeout(() => {
+      confirmDemoPayment();
+    }, 1500);
+  }, 2000);
 }
 
 // ===== SHOW CARD INPUT FORM =====
@@ -1632,6 +1908,11 @@ async function completeOrder(orderData) {
       type: appliedDiscountVoucher.discountType || 'fixed'
     } : null;
     
+    // Chuẩn bị thông tin đặt cọc nếu có
+    const isDeposit = orderData.depositRequired || orderData.payment.method === 'bank_deposit';
+    const depositAmount = orderData.depositAmount || 0;
+    const remainingAmount = isDeposit ? (orderData.pricing.total - depositAmount) : 0;
+    
     const response = await fetch(`${API_URL}/orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1649,7 +1930,12 @@ async function completeOrder(orderData) {
         // Gửi thông tin voucher
         freeshipVoucher: freeshipVoucherData,
         discountVoucher: discountVoucherData,
-        voucherCode: discountVoucherData?.code || freeshipVoucherData?.code || null
+        voucherCode: discountVoucherData?.code || freeshipVoucherData?.code || null,
+        // Gửi thông tin đặt cọc
+        isDeposit: isDeposit,
+        depositAmount: depositAmount,
+        depositPercent: isDeposit ? 50 : 0,
+        remainingAmount: remainingAmount
       })
     });
     
@@ -1659,8 +1945,21 @@ async function completeOrder(orderData) {
       // Cập nhật orderId từ database
       orderData.dbOrderId = result.data.orderId;
       
-      // Nếu đã thanh toán, cập nhật trạng thái
-      if (orderData.status === 'paid') {
+      // Nếu đã thanh toán đặt cọc (demo mode - lập tức thành công)
+      if (orderData.depositPaid && isDeposit) {
+        await fetch(`${API_URL}/orders/${result.data.orderId}/payment`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: 'success',
+            paymentType: 'deposit', // Chỉ cập nhật phần đặt cọc
+            transactionId: `DEP_${Date.now()}`
+          })
+        });
+        console.log(`Deposit payment confirmed: ${depositAmount} for order ${result.data.orderId}`);
+      }
+      // Nếu đã thanh toán toàn bộ (MoMo, etc.)
+      else if (orderData.status === 'paid') {
         await fetch(`${API_URL}/orders/${result.data.orderId}/payment`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -1706,26 +2005,13 @@ async function completeOrder(orderData) {
   // Dispatch event để cập nhật cart badge
   window.dispatchEvent(new Event('cartUpdated'));
   
-  // Show success message with countdown
-  let countdown = 5;
-  const updateToast = () => {
-    showToast(`Đặt hàng thành công! Đang chuyển hướng sau ${countdown}s...`, 'success');
-  };
-  updateToast();
+  // Show success message once and redirect after 1 second
+  showToast('Đặt hàng thành công! Đang chuyển hướng...', 'success');
   
-  const countdownInterval = setInterval(() => {
-    countdown--;
-    if (countdown > 0) {
-      updateToast();
-    } else {
-      clearInterval(countdownInterval);
-    }
-  }, 1000);
-  
-  // Redirect to success page after 5 seconds
+  // Redirect to success page after 1 second
   setTimeout(() => {
     window.location.href = `order-success.html?orderId=${orderData.orderId}`;
-  }, 5000);
+  }, 1000);
 }
 
 // ===== CUSTOM DROPDOWN FUNCTIONS =====
@@ -2386,6 +2672,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Auto-fill thông tin user và load địa chỉ mặc định
   setTimeout(() => {
     autoFillUserInfo();
+    
+    // Cập nhật thông báo đặt cọc nếu cần
+    updatePickupDepositNotice();
     
     // Đảm bảo scroll về đầu sau khi mọi thứ hoàn tất
     setTimeout(() => {

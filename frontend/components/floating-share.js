@@ -24,7 +24,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 32px;
             transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
         }
         
@@ -35,63 +35,13 @@
             transform: translateX(100px);
         }
 
-        /* Nút Share chính */
-        .share-toggle-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #e53935;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 0 8px rgba(229, 57, 53, 0.25), 0 0 0 16px rgba(229, 57, 53, 0.15);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 10;
-        }
-
-        .share-toggle-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 10px rgba(229, 57, 53, 0.3), 0 0 0 20px rgba(229, 57, 53, 0.2);
-        }
-
-        .share-toggle-btn i {
-            color: white;
-            font-size: 24px;
-            transition: transform 0.4s ease;
-        }
-
-        .share-toggle-btn.active i {
-            transform: rotate(360deg);
-        }
-
-        /* Pulse animation cho nút share */
-        .share-toggle-btn::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: rgba(229, 57, 53, 0.4);
-            animation: sharePulse 2s ease-in-out infinite;
-            z-index: -1;
-        }
-
-        @keyframes sharePulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.4); opacity: 0; }
-        }
+        /* Nút Share chính (Đã bị loại bỏ, chỉ giữ CSS của container và list) */
 
         /* Container các nút social */
         .share-buttons-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
+            gap: 32px;
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
@@ -114,12 +64,10 @@
             transition: all 0.3s ease;
             text-decoration: none;
             position: relative;
-            opacity: 0;
-            transform: scale(0);
         }
 
         .share-btn:hover {
-            transform: scale(1.15) !important;
+            transform: scale(1.15);
         }
 
         .share-btn i {
@@ -203,7 +151,7 @@
             box-shadow: 0 0 0 8px rgba(100, 100, 100, 0.45), 0 0 0 16px rgba(100, 100, 100, 0.25);
         }
 
-        /* Zalo - Xanh dương nhạt với vòng tròn kép */
+        /* Vòng tròn Zalo */
         .share-btn.zalo {
             background: #0068ff;
             box-shadow: 0 0 0 6px rgba(0, 104, 255, 0.3), 0 0 0 12px rgba(0, 104, 255, 0.15);
@@ -212,46 +160,18 @@
             box-shadow: 0 0 0 8px rgba(0, 104, 255, 0.4), 0 0 0 16px rgba(0, 104, 255, 0.2);
         }
 
-        /* Animation cho từng nút khi hiện - bounce effect */
-        .share-buttons-list.show .share-btn:nth-child(1) { animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 0.05s; }
-        .share-buttons-list.show .share-btn:nth-child(2) { animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 0.1s; }
-        .share-buttons-list.show .share-btn:nth-child(3) { animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 0.15s; }
-        .share-buttons-list.show .share-btn:nth-child(4) { animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 0.2s; }
-        .share-buttons-list.show .share-btn:nth-child(5) { animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 0.25s; }
-        .share-buttons-list.show .share-btn:nth-child(6) { animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 0.3s; }
-
-        @keyframes shareBounceIn {
-            0% { 
-                transform: scale(0) rotate(-180deg); 
-                opacity: 0; 
-            }
-            60% { 
-                transform: scale(1.2) rotate(10deg); 
-                opacity: 1; 
-            }
-            100% { 
-                transform: scale(1) rotate(0deg); 
-                opacity: 1; 
-            }
-        }
-
-        /* Hiệu ứng nhấp nháy nhẹ cho các nút */
-        .share-buttons-list.show .share-btn {
-            animation-fill-mode: forwards;
-        }
-
         /* Floating animation khi đã hiện */
         @keyframes floatBtn {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-3px); }
         }
 
-        .share-buttons-list.show .share-btn:nth-child(odd) {
-            animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards, floatBtn 3s ease-in-out infinite 0.6s;
+        .share-btn:nth-child(odd) {
+            animation: floatBtn 3s ease-in-out infinite 0.6s;
         }
 
-        .share-buttons-list.show .share-btn:nth-child(even) {
-            animation: shareBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards, floatBtn 3s ease-in-out infinite 0.9s;
+        .share-btn:nth-child(even) {
+            animation: floatBtn 3s ease-in-out infinite 0.9s;
         }
 
         /* Responsive */
@@ -259,16 +179,6 @@
             .floating-share-container {
                 right: 12px;
                 bottom: 140px;
-            }
-
-            .share-toggle-btn {
-                width: 48px;
-                height: 48px;
-                box-shadow: 0 0 0 5px rgba(229, 57, 53, 0.25), 0 0 0 10px rgba(229, 57, 53, 0.15);
-            }
-
-            .share-toggle-btn i {
-                font-size: 18px;
             }
 
             .share-btn {
@@ -302,11 +212,6 @@
                 bottom: 130px;
             }
             
-            .share-toggle-btn {
-                width: 44px;
-                height: 44px;
-            }
-            
             .share-btn {
                 width: 38px;
                 height: 38px;
@@ -324,11 +229,6 @@
                 bottom: 160px;
             }
             
-            .share-toggle-btn {
-                width: 56px;
-                height: 56px;
-            }
-            
             .share-btn {
                 width: 50px;
                 height: 50px;
@@ -343,58 +243,22 @@
     container.innerHTML = `
         <!-- Các nút social -->
         <div class="share-buttons-list" id="shareButtonsList">
-            <a href="https://maps.google.com/?q=Nam+Kỳ+Khởi+Nghĩa,+Phường+2,+Trà+Vinh" target="_blank" class="share-btn location" data-tooltip="Vị trí cửa hàng">
-                <i class="fas fa-map-marker-alt"></i>
-            </a>
             <a href="https://www.facebook.com/share/183XCxD3i5/" target="_blank" class="share-btn facebook" data-tooltip="Facebook">
                 <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://www.tiktok.com/@qv25084?_r=1&_t=ZS-92NB3IAtk5n" target="_blank" class="share-btn tiktok" data-tooltip="TikTok">
-                <i class="fab fa-tiktok"></i>
             </a>
             <a href="https://zalo.me/0388516888" target="_blank" class="share-btn zalo" data-tooltip="Chat Zalo">
                 <span style="font-weight: bold; font-size: 14px; color: white;">Zalo</span>
             </a>
         </div>
-        
-        <!-- Nút toggle chính -->
-        <button class="share-toggle-btn" id="shareToggleBtn" title="Chia sẻ & Liên hệ">
-            <i class="fas fa-share-alt"></i>
-        </button>
     `;
 
     // Thêm vào body khi DOM ready
     function init() {
         document.body.appendChild(container);
 
-        // Toggle hiển thị các nút social
-        const toggleBtn = document.getElementById('shareToggleBtn');
-        const buttonsList = document.getElementById('shareButtonsList');
-
-        toggleBtn.addEventListener('click', function() {
-            this.classList.toggle('active');
-            buttonsList.classList.toggle('show');
-            
-            // Ẩn chatbot khi mở share
-            const chatWindow = document.getElementById('ai-chat-window');
-            if (chatWindow && buttonsList.classList.contains('show')) {
-                chatWindow.classList.remove('active');
-            }
-        });
-
-        // Đóng khi click ra ngoài
-        document.addEventListener('click', function(e) {
-            if (!container.contains(e.target)) {
-                toggleBtn.classList.remove('active');
-                buttonsList.classList.remove('show');
-            }
-        });
-        
         // Lắng nghe sự kiện từ chatbot
         window.addEventListener('chatbot-opened', function() {
             container.classList.add('hidden');
-            toggleBtn.classList.remove('active');
-            buttonsList.classList.remove('show');
         });
         
         window.addEventListener('chatbot-closed', function() {

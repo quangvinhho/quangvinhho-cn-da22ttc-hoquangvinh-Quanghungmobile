@@ -300,6 +300,15 @@ router.post('/login', async (req, res) => {
 
         const user = users[0];
 
+        // Kiểm tra tài khoản có bị khóa không
+        if (user.trang_thai === 'locked') {
+            return res.status(403).json({ 
+                success: false, 
+                message: 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin để được hỗ trợ.',
+                code: 'ACCOUNT_LOCKED'
+            });
+        }
+
         // Compare password
         const isMatch = await bcrypt.compare(mat_khau, user.mat_khau);
 
@@ -726,6 +735,10 @@ router.get('/google/callback', (req, res, next) => {
             if (info && info.message === 'email_exists') {
                 // Email đã tồn tại khi đăng ký
                 return res.redirect('/login.html?error=email_exists&message=' + encodeURIComponent('Email này đã được đăng ký. Vui lòng đăng nhập!'));
+            }
+            if (info && info.message === 'account_locked') {
+                // Tài khoản bị khóa
+                return res.redirect('/login.html?error=account_locked&message=' + encodeURIComponent('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin để được hỗ trợ.'));
             }
             if (info && info.message === 'register_success') {
                 // Đăng ký Google thành công → redirect về trang login với thông báo

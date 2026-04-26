@@ -838,10 +838,27 @@ function mapProductToFrontend(row) {
         sku: row.sku || `SKU-${row.ma_sp || row.id}`,
         rating: row.rating || 4.5,
         reviews: row.reviews || Math.floor(Math.random() * 200) + 50,
-        stock: row.so_luong_ton || row.stock || 10,
+        stock: row.so_luong_ton !== undefined && row.so_luong_ton !== null ? row.so_luong_ton : (row.stock !== undefined && row.stock !== null ? row.stock : 10),
         description: row.mo_ta || row.description || ''
     };
 }
+
+// GET /api/products/brands - Lấy danh sách hãng sản xuất (public API)
+router.get('/brands', async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT h.ma_hang, h.ten_hang, qg.ten_quoc_gia,
+                   (SELECT COUNT(*) FROM san_pham WHERE ma_hang = h.ma_hang) as so_san_pham
+            FROM hang_san_xuat h
+            LEFT JOIN quoc_gia qg ON h.ma_quoc_gia = qg.ma_quoc_gia
+            ORDER BY so_san_pham DESC, h.ten_hang ASC
+        `);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error getting brands:', error);
+        res.status(500).json({ error: 'Lỗi lấy danh sách hãng' });
+    }
+});
 
 // GET /api/products - Lấy tất cả sản phẩm
 router.get('/', async (req, res) => {

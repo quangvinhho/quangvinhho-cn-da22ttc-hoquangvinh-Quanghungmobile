@@ -346,10 +346,15 @@
     <div id="header-placeholder"></div>
     
     <!-- Spacer for fixed header - Responsive -->
-    <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+    <div class="h-[70px]"></div>
 
-    <!-- Christmas Banner -->
-    <div class="christmas-banner text-white py-8">
+    <!-- Christmas Banner with Top Red Curve -->
+    <div class="christmas-banner text-white py-8 pt-10">
+      
+      <!-- Red background connection from header to banner -->
+      <div class="w-full absolute left-0 top-0 overflow-hidden h-[120px] flex justify-center z-10 pointer-events-none">
+        <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] shadow-sm"></div>
+      </div>
       <!-- Stars -->
       <div class="stars">
         <div class="star" style="top: 10%; left: 5%;"></div>
@@ -442,7 +447,7 @@
       <!-- Snow Ground -->
       <div class="snow-ground"></div>
       
-      <div class="container mx-auto px-4 banner-content">
+      <div class="container mx-auto px-4 banner-content pt-8">
         <h1 class="text-3xl font-bold title-glow">
           <span class="christmas-icon">🎄</span> Tài khoản của tôi <span class="christmas-icon">🎅</span>
         </h1>
@@ -644,6 +649,74 @@
               </button>
             </div>
           </div>
+
+          <!-- Đổi mật khẩu -->
+          <div id="password" class="bg-white rounded-lg shadow-md p-6 mb-6 scroll-mt-32">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">Đổi mật khẩu</h2>
+            </div>
+
+            <form id="change-password-form" class="space-y-5" onsubmit="handleChangePassword(event)">
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">
+                  Mật khẩu hiện tại <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <input type="password" id="current-password" 
+                    class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition pr-12" 
+                    placeholder="Nhập mật khẩu hiện tại" required />
+                  <button type="button" onclick="togglePasswordVisibility('current-password', this)" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-2">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">
+                  Mật khẩu mới <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <input type="password" id="new-password" 
+                    class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition pr-12" 
+                    placeholder="Nhập mật khẩu mới (ít nhất 8 ký tự)" required minlength="8" />
+                  <button type="button" onclick="togglePasswordVisibility('new-password', this)" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-2">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-1">Mật khẩu phải có ít nhất 8 ký tự</p>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">
+                  Xác nhận mật khẩu mới <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <input type="password" id="confirm-password" 
+                    class="w-full px-4 py-3 border rounded-lg outline-none focus:border-red-600 transition pr-12" 
+                    placeholder="Nhập lại mật khẩu mới" required minlength="8" />
+                  <button type="button" onclick="togglePasswordVisibility('confirm-password', this)" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-2">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div id="password-error" class="hidden bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="password-error-text"></span>
+              </div>
+
+              <div id="password-success" class="hidden bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span>Đổi mật khẩu thành công!</span>
+              </div>
+
+              <button type="submit" id="change-password-btn" 
+                class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition flex items-center gap-2">
+                <i class="fas fa-key"></i>
+                <span>Đổi mật khẩu</span>
+              </button>
+            </form>
+          </div>
         </main>
       </div>
     </div>
@@ -826,6 +899,8 @@
               <span class="font-bold text-gray-800">Tổng thanh toán:</span>
               <span id="modalTotal" class="font-bold text-red-600 text-xl">---</span>
             </div>
+            <!-- Container cho thông tin đặt cọc -->
+            <div id="modalDepositInfo" class="hidden"></div>
           </div>
         </div>
         
@@ -936,6 +1011,18 @@
               <i class="fas fa-exclamation-triangle mr-2"></i>
               <strong>Lưu ý:</strong> Bạn chỉ có thể hủy đơn hàng khi đơn đang ở trạng thái "Chờ xử lý". Sau khi admin xác nhận, bạn sẽ không thể hủy đơn.
             </p>
+          </div>
+          
+          <!-- Thông tin hoàn tiền đặt cọc (ẩn mặc định) -->
+          <div id="depositRefundInfo" class="hidden bg-emerald-50 border border-emerald-200 rounded-lg p-3 mb-4">
+            <p class="text-emerald-800 text-sm font-semibold mb-2">
+              <i class="fas fa-hand-holding-usd mr-2"></i>Thông tin hoàn tiền đặt cọc
+            </p>
+            <div class="text-sm text-emerald-700 space-y-1">
+              <p>Tiền đã cọc: <strong id="cancelDepositAmount">0đ</strong></p>
+              <p>Số tiền hoàn lại: <strong class="text-emerald-600" id="cancelRefundAmount">0đ</strong></p>
+              <p id="cancelRefundNote" class="text-xs text-emerald-600 mt-1"></p>
+            </div>
           </div>
           
           <label class="block text-sm font-semibold text-gray-700 mb-2">
@@ -1484,6 +1571,11 @@
           const moreItems = items.length > 1 ? items.length - 1 : 0;
           const canCancel = order.status === 'pending'; // Chỉ cho phép hủy khi pending (chờ xử lý)
           
+          // Xử lý thông tin đặt cọc
+          const isDeposit = order.depositPaid || order.depositRequired || order.payment?.method === 'bank_deposit';
+          const depositAmount = order.depositAmount || 0;
+          const remainingAmount = isDeposit ? ((order.pricing?.total || 0) - depositAmount) : 0;
+          
           // Xử lý đường dẫn ảnh cho firstItem
           let firstItemImage = 'images/15-256.avif';
           let firstItemColor = '';
@@ -1510,6 +1602,11 @@
                 <div class="text-right">
                   <span class="${statusInfo.class} px-3 py-1 rounded-full text-sm font-semibold">${statusInfo.text}</span>
                   ${canCancel ? '<p class="text-xs text-yellow-600 mt-1"><i class="fas fa-info-circle mr-1"></i>Có thể hủy</p>' : ''}
+                  ${isDeposit ? `
+                    <p class="text-xs text-emerald-600 mt-1">
+                      <i class="fas fa-hand-holding-usd mr-1"></i>Đã cọc: ${formatPrice(depositAmount)}
+                    </p>
+                  ` : ''}
                 </div>
               </div>
 
@@ -1541,6 +1638,9 @@
               <div class="flex items-center justify-between pt-3 border-t">
                 <div class="text-sm text-gray-600">
                   Tổng: <span class="font-bold text-lg text-red-600">${formatPrice(order.pricing?.total || 0)}</span>
+                  ${isDeposit && remainingAmount > 0 ? `
+                    <span class="text-xs text-amber-600 ml-2">(Còn lại: ${formatPrice(remainingAmount)})</span>
+                  ` : ''}
                 </div>
                 <div class="flex gap-2">
                   ${order.status === 'completed' || order.status === 'paid' || order.status === 'delivered' ? `
@@ -1579,13 +1679,6 @@
         
         currentViewOrder = order;
         const statusInfo = getStatusInfo(order.status);
-        const paymentLabels = {
-          'cod': 'Thanh toán khi nhận hàng',
-          'momo_qr': 'MoMo - QR Code',
-          'momo_wallet': 'MoMo - Ví điện tử',
-          'momo_atm': 'MoMo - Thẻ ATM',
-          'momo_credit': 'MoMo - Thẻ quốc tế'
-        };
         
         // Cập nhật modal
         document.getElementById('modalOrderId').textContent = order.orderId;
@@ -1598,10 +1691,49 @@
         document.getElementById('modalAddress').textContent = order.address?.detail || '---';
         
         // Payment info
+        const paymentLabels = {
+          'cod': 'Thanh toán khi nhận hàng',
+          'momo_qr': 'MoMo - QR Code',
+          'momo_wallet': 'MoMo - Ví điện tử',
+          'momo_atm': 'MoMo - Thẻ ATM',
+          'momo_credit': 'MoMo - Thẻ quốc tế',
+          'bank_deposit': 'Đặt cọc chuyển khoản'
+        };
         document.getElementById('modalPayment').textContent = paymentLabels[order.payment?.method] || order.payment?.method || 'COD';
         document.getElementById('modalShipping').textContent = order.pricing?.shippingFee ? formatPrice(order.pricing.shippingFee) : 'Miễn phí';
         document.getElementById('modalDiscount').textContent = order.pricing?.discount ? '-' + formatPrice(order.pricing.discount) : '0đ';
         document.getElementById('modalTotal').textContent = formatPrice(order.pricing?.total || 0);
+        
+        // Hiển thị thông tin đặt cọc nếu có
+        const isDeposit = order.depositPaid || order.depositRequired || order.payment?.method === 'bank_deposit';
+        const depositInfoContainer = document.getElementById('modalDepositInfo');
+        
+        if (isDeposit && depositInfoContainer) {
+          const depositAmount = order.depositAmount || 0;
+          const remainingAmount = (order.pricing?.total || 0) - depositAmount;
+          
+          depositInfoContainer.classList.remove('hidden');
+          depositInfoContainer.innerHTML = `
+            <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 mt-3">
+              <p class="text-sm font-semibold text-emerald-700 mb-2">
+                <i class="fas fa-hand-holding-usd mr-1"></i>Thông tin đặt cọc 50%
+              </p>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <p class="text-gray-500">Đã cọc:</p>
+                  <p class="font-bold text-emerald-600">${formatPrice(depositAmount)}</p>
+                </div>
+                <div>
+                  <p class="text-gray-500">Còn lại (COD):</p>
+                  <p class="font-bold text-amber-600">${formatPrice(remainingAmount)}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (depositInfoContainer) {
+          depositInfoContainer.classList.add('hidden');
+          depositInfoContainer.innerHTML = '';
+        }
         
         // Products
         const productsContainer = document.getElementById('modalProducts');
@@ -1753,6 +1885,36 @@
         document.getElementById('cancelReasonSelect').value = '';
         document.getElementById('cancelReasonText').value = '';
         document.getElementById('cancelReasonText').classList.add('hidden');
+        
+        // Kiểm tra nếu là đơn đặt cọc và hiển thị thông tin hoàn tiền
+        const depositRefundInfo = document.getElementById('depositRefundInfo');
+        const isDepositOrder = order.depositPaid || order.depositRequired || order.payment?.method === 'bank_deposit' || order.loai_don === 'deposit';
+        
+        if (isDepositOrder && depositRefundInfo) {
+          const depositAmount = order.depositAmount || order.tien_dat_coc || 0;
+          const depositConfirmed = order.depositStatus === 'paid' || order.trang_thai_coc === 'confirmed';
+          
+          // Tính số tiền hoàn lại
+          let refundAmount = depositAmount;
+          let refundNote = '';
+          
+          if (depositConfirmed) {
+            // Đã xác nhận cọc -> hoàn 80%
+            refundAmount = Math.floor(depositAmount * 0.8);
+            refundNote = '* Hoàn 80% (mất 20% phí xử lý do hủy sau khi đã cọc)';
+          } else {
+            // Chưa xác nhận cọc -> hoàn 100%
+            refundNote = '* Hoàn 100% (hủy trước khi xác nhận cọc)';
+          }
+          
+          document.getElementById('cancelDepositAmount').textContent = formatPrice(depositAmount);
+          document.getElementById('cancelRefundAmount').textContent = formatPrice(refundAmount);
+          document.getElementById('cancelRefundNote').textContent = refundNote;
+          depositRefundInfo.classList.remove('hidden');
+        } else if (depositRefundInfo) {
+          depositRefundInfo.classList.add('hidden');
+        }
+        
         document.getElementById('cancelOrderModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
       }
@@ -1812,10 +1974,20 @@
         console.log('cancelOrderData:', cancelOrderData);
         console.log('dbOrderId:', dbOrderId);
         
+        // Kiểm tra nếu là đơn đặt cọc
+        const isDepositOrder = cancelOrderData.depositPaid || cancelOrderData.depositRequired || 
+                               cancelOrderData.payment?.method === 'bank_deposit' || 
+                               cancelOrderData.loai_don === 'deposit';
+        
         // Nếu có dbOrderId (từ database), gọi API để hủy
         if (dbOrderId) {
           try {
-            const response = await fetch(`${API_URL}/orders/${dbOrderId}/cancel`, {
+            // Chọn API phù hợp: đơn đặt cọc dùng /cancel-deposit, đơn thường dùng /cancel
+            const cancelEndpoint = isDepositOrder 
+              ? `${API_URL}/orders/${dbOrderId}/cancel-deposit`
+              : `${API_URL}/orders/${dbOrderId}/cancel`;
+            
+            const response = await fetch(cancelEndpoint, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ 
@@ -1845,7 +2017,14 @@
               }
               
               closeCancelModal();
-              alert('Đã hủy đơn hàng thành công!');
+              
+              // Hiển thị thông báo phù hợp
+              if (isDepositOrder && data.data?.refundAmount > 0) {
+                alert(`Đã hủy đơn hàng thành công!\n\nSố tiền hoàn lại: ${formatPrice(data.data.refundAmount)}\n${data.data.refundNote || ''}`);
+              } else {
+                alert('Đã hủy đơn hàng thành công!');
+              }
+              
               loadMyOrders(); // Reload danh sách
             } else {
               alert(data.message || 'Không thể hủy đơn hàng!');
@@ -2401,6 +2580,122 @@
         } catch (error) {
           console.error('Lỗi gửi đánh giá:', error);
           alert('Có lỗi xảy ra, vui lòng thử lại!');
+        }
+      }
+
+      // ===== CHANGE PASSWORD FUNCTIONS =====
+      
+      // Toggle hiển thị mật khẩu
+      function togglePasswordVisibility(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        
+        if (input && icon) {
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+          } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+          }
+        }
+      }
+
+      // Hiển thị lỗi
+      function showPasswordError(message) {
+        const errorDiv = document.getElementById('password-error');
+        const errorText = document.getElementById('password-error-text');
+        const successDiv = document.getElementById('password-success');
+        
+        successDiv.classList.add('hidden');
+        errorText.textContent = message;
+        errorDiv.classList.remove('hidden');
+      }
+
+      // Hiển thị thành công
+      function showPasswordSuccess() {
+        const errorDiv = document.getElementById('password-error');
+        const successDiv = document.getElementById('password-success');
+        
+        errorDiv.classList.add('hidden');
+        successDiv.classList.remove('hidden');
+      }
+
+      // Ẩn thông báo
+      function hidePasswordMessages() {
+        document.getElementById('password-error').classList.add('hidden');
+        document.getElementById('password-success').classList.add('hidden');
+      }
+
+      // Xử lý đổi mật khẩu
+      async function handleChangePassword(event) {
+        event.preventDefault();
+        hidePasswordMessages();
+
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        // Validate
+        if (!currentPassword || !newPassword || !confirmPassword) {
+          showPasswordError('Vui lòng điền đầy đủ thông tin');
+          return;
+        }
+
+        if (newPassword.length < 8) {
+          showPasswordError('Mật khẩu mới phải có ít nhất 8 ký tự');
+          return;
+        }
+
+        if (newPassword !== confirmPassword) {
+          showPasswordError('Mật khẩu xác nhận không khớp');
+          return;
+        }
+
+        if (currentPassword === newPassword) {
+          showPasswordError('Mật khẩu mới phải khác mật khẩu hiện tại');
+          return;
+        }
+
+        // Disable button
+        const btn = document.getElementById('change-password-btn');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+
+        try {
+          const response = await fetch(`${API_URL}/auth/change-password/${user.ma_kh}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              mat_khau_cu: currentPassword,
+              mat_khau_moi: newPassword
+            })
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showPasswordSuccess();
+            // Reset form
+            document.getElementById('change-password-form').reset();
+          } else {
+            showPasswordError(data.message || 'Đổi mật khẩu thất bại');
+          }
+        } catch (error) {
+          console.error('Lỗi đổi mật khẩu:', error);
+          showPasswordError('Có lỗi xảy ra, vui lòng thử lại');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
         }
       }
     </script>

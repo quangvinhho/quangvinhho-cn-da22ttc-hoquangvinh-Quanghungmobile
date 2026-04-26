@@ -1,0 +1,1 @@
+const fs=require('fs'); let c=fs.readFileSync('D:/GDDA/frontend/components/header.js','utf8'); c=c.replace('handleSearch(mobileSearchInput);\\n      });\\n    }\\n\\n  // L', 'handleSearch(mobileSearchInput);\r\n      });\r\n    }\r\n\r\n  // L'); fs.writeFileSync('D:/GDDA/frontend/components/header.js',c);

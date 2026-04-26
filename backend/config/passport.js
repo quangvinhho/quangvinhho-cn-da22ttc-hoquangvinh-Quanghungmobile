@@ -51,6 +51,12 @@ module.exports = function(passport) {
                     return done(null, false, { message: 'email_exists' });
                 }
                 
+                // Kiểm tra tài khoản có bị khóa không
+                if (user.trang_thai === 'locked') {
+                    console.log('Tài khoản bị khóa:', user.email);
+                    return done(null, false, { message: 'account_locked' });
+                }
+                
                 // Cập nhật google_id nếu chưa có
                 if (!user.google_id) {
                     await pool.query(

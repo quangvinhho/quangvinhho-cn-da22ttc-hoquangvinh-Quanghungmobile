@@ -245,6 +245,26 @@ router.put('/update', async (req, res) => {
   try {
     const { cartItemId, quantity } = req.body;
     
+    // Lấy thông tin sản phẩm để kiểm tra tồn kho
+    const [cartItem] = await pool.query(
+      `SELECT ct.ma_sp, sp.so_luong_ton 
+       FROM chi_tiet_gio_hang ct 
+       JOIN san_pham sp ON ct.ma_sp = sp.ma_sp 
+       WHERE ct.ma_ct = ?`,
+      [cartItemId]
+    );
+    
+    if (cartItem.length > 0) {
+      const stockQuantity = parseInt(cartItem[0].so_luong_ton) || 0;
+      if (quantity > stockQuantity) {
+        return res.json({ 
+          success: false, 
+          message: `Số lượng tối đa có thể mua là ${stockQuantity} sản phẩm`,
+          maxQuantity: stockQuantity
+        });
+      }
+    }
+    
     await pool.query(
       'UPDATE chi_tiet_gio_hang SET so_luong = ? WHERE ma_ct = ?',
       [quantity, cartItemId]
@@ -265,21 +285,39 @@ router.post('/', async (req, res) => {
       return res.json({ success: false, message: 'Thiếu thông tin userId hoặc productId' });
     }
     
-    // Lấy thông tin sản phẩm từ database
+    // Lấy thông tin sản phẩm từ database (bao gồm số lượng tồn kho)
     const [products] = await pool.query(
-      'SELECT ma_sp, ten_sp, gia, mau_sac, bo_nho, anh_dai_dien FROM san_pham WHERE ma_sp = ?',
+      'SELECT ma_sp, ten_sp, gia, mau_sac, bo_nho, anh_dai_dien, so_luong_ton FROM san_pham WHERE ma_sp = ?',
       [productId]
     );
     
     let product;
     let price;
     let isFromDB = false;
+    let stockQuantity = 99; // Mặc định nếu không có trong DB
     
     if (products.length > 0) {
       // Sản phẩm có trong database
       product = products[0];
       price = parseFloat(product.gia) || 0;
+      stockQuantity = parseInt(product.so_luong_ton) || 0;
       isFromDB = true;
+      
+      // Kiểm tra số lượng tồn kho
+      if (quantity > stockQuantity) {
+        return res.json({ 
+          success: false, 
+          message: `Số lượng tối đa có thể mua là ${stockQuantity} sản phẩm`,
+          maxQuantity: stockQuantity
+        });
+      }
+      
+      if (stockQuantity <= 0) {
+        return res.json({ 
+          success: false, 
+          message: 'Sản phẩm đã hết hàng'
+        });
+      }
     } else if (productInfo) {
       // Sản phẩm từ JSON file - dùng thông tin từ frontend
       product = {
@@ -323,6 +361,17 @@ router.post('/', async (req, res) => {
       );
       
       if (existing.length > 0) {
+        // Kiểm tra tổng số lượng sau khi cộng thêm không vượt quá tồn kho
+        const newTotalQuantity = existing[0].so_luong + quantity;
+        if (newTotalQuantity > stockQuantity) {
+          return res.json({ 
+            success: false, 
+            message: `Bạn đã có ${existing[0].so_luong} sản phẩm trong giỏ. Tối đa có thể thêm ${stockQuantity - existing[0].so_luong} sản phẩm nữa.`,
+            maxQuantity: stockQuantity,
+            currentInCart: existing[0].so_luong
+          });
+        }
+        
         // Cập nhật số lượng
         await pool.query(
           'UPDATE chi_tiet_gio_hang SET so_luong = so_luong + ? WHERE ma_ct = ?',

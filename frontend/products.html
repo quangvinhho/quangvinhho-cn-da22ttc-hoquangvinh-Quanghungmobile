@@ -29,11 +29,17 @@
     <div id="header-placeholder"></div>
     
     <!-- Spacer for fixed header - Responsive -->
-    <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+    <div class="h-[70px]"></div>
+
+    <!-- Background Layer kéo dài hiệu ứng màu đỏ từ Header - Cải thiện sự liền mạch -->
+    <div class="w-full absolute left-0 top-[70px] -z-10 overflow-hidden h-[120px] sm:h-[160px] md:h-[200px] lg:h-[260px] flex justify-center">
+        <!-- Hình dạng bo tròn dưới đáy -->
+        <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] md:rounded-b-[40%] lg:rounded-b-[35%] shadow-sm"></div>
+    </div>
 
     <!-- Banner Slider - Premium Design -->
-    <section class="bg-gray-50 py-3">
-        <div class="container mx-auto px-4">
+    <section class="bg-transparent pt-3 pb-6 md:pt-6 lg:pt-8 relative z-10">
+        <div class="container mx-auto px-4 max-w-[1440px]">
             <div class="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer">
                 <div id="bannerSlider" class="relative h-[150px] sm:h-[180px] md:h-[220px] lg:h-[240px] bg-white">
                     
@@ -155,9 +161,9 @@
         <div class="flex flex-col lg:flex-row gap-4 lg:gap-5 lg:items-start">
             
             <!-- Sidebar Filter - FPT Shop Style -->
-            <aside id="filterSidebar" class="hidden lg:block flex-shrink-0 lg:sticky lg:top-4 lg:self-start">
+            <aside id="filterSidebar" class="hidden lg:flex lg:flex-col flex-shrink-0">
                 
-                <!-- Bộ lọc Header - Premium -->
+                <!-- Bộ lọc Header - Premium (Không scroll) -->
                 <div class="filter-header">
                     <div class="flex items-center gap-3 relative z-10">
                         <div class="icon-box">
@@ -170,8 +176,11 @@
                     </div>
                 </div>
 
+                <!-- Filters Container (Có scroll) -->
+                <div class="space-y-2.5 filter-scroll">
+
                 <!-- Active Filters Summary -->
-                <div id="activeFiltersBox" class="bg-white rounded-xl p-3 mb-3 border border-gray-100 hidden">
+                <div id="activeFiltersBox" class="bg-white rounded-xl p-3 border border-gray-100 hidden">
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs font-semibold text-gray-600">Đang lọc:</span>
                         <button onclick="clearAllFilters()" class="text-xs text-red-500 hover:text-red-600 font-medium">Xóa tất cả</button>
@@ -180,9 +189,6 @@
                         <!-- Active filter tags will be added here -->
                     </div>
                 </div>
-
-                <!-- Filters Container -->
-                <div class="space-y-2.5 overflow-y-auto filter-scroll" style="max-height: calc(100vh - 200px);">
                 
                 <!-- Hãng sản xuất -->
                 <div class="filter-section expanded" data-section="brand">
@@ -197,57 +203,9 @@
                     </div>
                     
                     <div class="filter-section-content" id="brandSection">
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="apple" onchange="toggleBrandFilter('apple')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">Apple</span>
-                            <span class="count-badge">24</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="samsung" onchange="toggleBrandFilter('samsung')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">Samsung</span>
-                            <span class="count-badge">32</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="xiaomi" onchange="toggleBrandFilter('xiaomi')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">Xiaomi</span>
-                            <span class="count-badge">28</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="oppo" onchange="toggleBrandFilter('oppo')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">OPPO</span>
-                            <span class="count-badge">18</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="honor" onchange="toggleBrandFilter('honor')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">HONOR</span>
-                            <span class="count-badge">12</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="tecno" onchange="toggleBrandFilter('tecno')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">Tecno</span>
-                            <span class="count-badge">8</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="vivo" onchange="toggleBrandFilter('vivo')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">Vivo</span>
-                            <span class="count-badge">15</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" class="brand-filter" value="realme" onchange="toggleBrandFilter('realme')">
-                            <span class="custom-checkbox"></span>
-                            <span class="option-label">Realme</span>
-                            <span class="count-badge">10</span>
-                        </label>
-                        <div class="see-more-btn" onclick="toggleMoreBrands()">
-                            <span>Xem thêm 5 hãng</span>
-                            <i class="fas fa-chevron-right"></i>
+                        <!-- Danh sách hãng sẽ được render động từ API -->
+                        <div class="text-center py-3 text-gray-400 text-sm">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...
                         </div>
                     </div>
                 </div>
@@ -709,13 +667,7 @@
                 <!-- Products Grid - 4 sản phẩm mỗi hàng -->
                 <div id="productsGrid" class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5"></div>
                 
-                <!-- Load More Button -->
-                <div class="text-center mt-10">
-                    <button id="loadMoreBtn" onclick="loadMoreProducts()" class="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-full font-bold text-base hover:from-red-700 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-                        <i class="fas fa-plus-circle"></i>
-                        Xem thêm sản phẩm
-                    </button>
-                </div>
+                <!-- Load More Button - Được tạo động từ JS -->
 
             </section>
         </div>

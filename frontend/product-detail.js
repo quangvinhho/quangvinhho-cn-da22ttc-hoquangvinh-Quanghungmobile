@@ -5,6 +5,8 @@ let PRODUCTS = [];
 let currentProduct = null;
 let selectedRating = 0;
 let reviewImages = []; // Lưu base64 của ảnh đánh giá
+let shopSettings = { hideStockFromCustomer: false }; // Cài đặt shop
+let currentStock = 0; // Lưu số lượng tồn kho thực tế
 const API_URL = 'http://localhost:3000/api';
 
 // Brand logos fallback
@@ -17,12 +19,27 @@ const BRAND_LOGOS = {
   pixel: 'images/pixel-9-pro.avif'
 };
 
+// Load cài đặt shop từ API
+async function loadShopSettings() {
+  try {
+    const response = await fetch(`${API_URL}/admin/settings/public`);
+    const data = await response.json();
+    if (data.success) {
+      shopSettings = data.data;
+    }
+  } catch (error) {
+    console.log('Using default settings');
+  }
+}
+
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = parseInt(urlParams.get('id')) || 1;
   
   try {
+    // Load cài đặt shop trước
+    await loadShopSettings();
     // Load chi tiết sản phẩm từ API (ưu tiên) hoặc từ danh sách
     await loadProductDetail(productId);
   } catch (error) {
@@ -270,9 +287,29 @@ function renderProductDetail(productId) {
   
   // Update stock
   const stockCountEl = document.getElementById('stockCount');
+  const stockContainer = stockCountEl ? stockCountEl.closest('span') : null;
   const quantityEl = document.getElementById('quantity');
-  if (stockCountEl) stockCountEl.textContent = stock;
+  
+  // Lưu số lượng tồn kho thực tế để kiểm tra
+  currentStock = stock;
+  
+  // Kiểm tra cài đặt ẩn tồn kho
+  if (shopSettings.hideStockFromCustomer) {
+    // Ẩn phần hiển thị số lượng tồn kho
+    if (stockContainer) {
+      stockContainer.innerHTML = stock > 0 
+        ? '<i class="fas fa-check-circle text-green-500 mr-1"></i><span class="text-green-600 font-medium">Còn hàng</span>'
+        : '<i class="fas fa-times-circle text-red-500 mr-1"></i><span class="text-red-600 font-medium">Hết hàng</span>';
+    }
+  } else {
+    // Hiển thị số lượng tồn kho bình thường
+    if (stockCountEl) stockCountEl.textContent = stock;
+  }
+  
   if (quantityEl) quantityEl.max = stock;
+  
+  // Cập nhật giao diện nút mua hàng khi hết hàng
+  updateBuyButtonsState(stock);
   
   // Render storage options first (Phiên bản)
   const storageSection = document.getElementById('storageSection');
@@ -613,10 +650,33 @@ function selectStorageCard(btn, size, price) {
 // ===== QUANTITY FUNCTIONS =====
 function changeQuantity(delta) {
   const input = document.getElementById('quantity');
-  const max = parseInt(input.max) || 99;
+  // Sử dụng currentStock thay vì max attribute để đảm bảo kiểm tra chính xác
+  const max = currentStock || parseInt(input.max) || 99;
   let value = parseInt(input.value) || 1;
-  value = Math.max(1, Math.min(max, value + delta));
+  const newValue = value + delta;
+  
+  // Kiểm tra không vượt quá tồn kho
+  if (newValue > max) {
+    showToast(`Số lượng tối đa có thể mua là ${max} sản phẩm`, 'error');
+    return;
+  }
+  
+  value = Math.max(1, Math.min(max, newValue));
   input.value = value;
+}
+
+// Kiểm tra khi người dùng nhập trực tiếp số lượng
+function validateQuantityInput() {
+  const input = document.getElementById('quantity');
+  const max = currentStock || parseInt(input.max) || 99;
+  let value = parseInt(input.value) || 1;
+  
+  if (value > max) {
+    showToast(`Số lượng tối đa có thể mua là ${max} sản phẩm`, 'error');
+    input.value = max;
+  } else if (value < 1) {
+    input.value = 1;
+  }
 }
 
 // ===== CART FUNCTIONS =====
@@ -673,8 +733,68 @@ function closeLoginModal() {
   if (modal) modal.remove();
 }
 
+// Cập nhật trạng thái nút mua hàng khi hết hàng
+function updateBuyButtonsState(stock) {
+  const isOutOfStock = !stock || stock <= 0;
+  
+  // Tìm tất cả nút mua hàng và thêm giỏ hàng
+  const buyNowBtns = document.querySelectorAll('button[onclick*="buyNow"]');
+  const addCartBtns = document.querySelectorAll('button[onclick*="addToCart"]');
+  
+  if (isOutOfStock) {
+    // Vô hiệu hóa và thay đổi giao diện nút MUA NGAY
+    buyNowBtns.forEach(btn => {
+      btn.disabled = true;
+      btn.classList.remove('bg-gradient-to-r', 'from-red-600', 'to-red-500', 'hover:from-red-700', 'hover:to-red-600', 'bg-red-600', 'hover:bg-red-700', 'hover:scale-[1.02]');
+      btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+      btn.innerHTML = '<i class="fas fa-times-circle"></i> HẾT HÀNG';
+    });
+    
+    // Vô hiệu hóa và thay đổi giao diện nút Thêm vào giỏ hàng
+    addCartBtns.forEach(btn => {
+      btn.disabled = true;
+      btn.classList.remove('border-red-500', 'text-red-600', 'hover:bg-red-50');
+      btn.classList.add('border-gray-300', 'text-gray-400', 'bg-gray-100', 'cursor-not-allowed');
+      btn.innerHTML = '<i class="fas fa-times-circle"></i> Hết hàng';
+    });
+    
+    // Vô hiệu hóa input số lượng
+    const quantityEl = document.getElementById('quantity');
+    if (quantityEl) {
+      quantityEl.disabled = true;
+      quantityEl.value = 0;
+    }
+    
+    // Thêm banner hết hàng
+    const productInfoSection = document.querySelector('.space-y-3');
+    if (productInfoSection && !document.getElementById('out-of-stock-banner')) {
+      const banner = document.createElement('div');
+      banner.id = 'out-of-stock-banner';
+      banner.className = 'bg-red-50 border-2 border-red-200 rounded-xl p-4 mb-4';
+      banner.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+            <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
+          </div>
+          <div>
+            <p class="font-bold text-red-700">Sản phẩm tạm hết hàng</p>
+            <p class="text-sm text-red-600">Vui lòng quay lại sau hoặc liên hệ hotline để được hỗ trợ.</p>
+          </div>
+        </div>
+      `;
+      productInfoSection.parentNode.insertBefore(banner, productInfoSection);
+    }
+  }
+}
+
 async function addToCart() {
   if (!currentProduct) return;
+  
+  // Kiểm tra sản phẩm hết hàng
+  if (currentStock <= 0) {
+    showToast('Sản phẩm đã hết hàng. Vui lòng quay lại sau!', 'error');
+    return;
+  }
   
   // Kiểm tra đăng nhập trước
   if (!isLoggedIn()) {
@@ -684,6 +804,20 @@ async function addToCart() {
   
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   const quantity = parseInt(document.getElementById('quantity').value) || 1;
+  
+  // Kiểm tra số lượng không vượt quá tồn kho
+  const maxStock = currentStock || parseInt(document.getElementById('quantity').max) || 99;
+  if (quantity > maxStock) {
+    showToast(`Số lượng tối đa có thể mua là ${maxStock} sản phẩm`, 'error');
+    document.getElementById('quantity').value = maxStock;
+    return;
+  }
+  
+  if (quantity < 1) {
+    showToast('Số lượng phải lớn hơn 0', 'error');
+    document.getElementById('quantity').value = 1;
+    return;
+  }
   
   // Lấy màu đang được chọn từ color card
   const selectedColorCard = document.querySelector('.color-option-card.active');
@@ -754,6 +888,12 @@ async function addToCart() {
 }
 
 async function buyNow() {
+  // Kiểm tra sản phẩm hết hàng
+  if (currentStock <= 0) {
+    showToast('Sản phẩm đã hết hàng. Vui lòng quay lại sau!', 'error');
+    return;
+  }
+  
   // Kiểm tra đăng nhập trước
   if (!isLoggedIn()) {
     showLoginRequiredModal();
@@ -761,17 +901,6 @@ async function buyNow() {
   }
   await addToCart();
   window.location.href = 'checkout.html';
-}
-
-async function buyInstallment() {
-  // Kiểm tra đăng nhập trước
-  if (!isLoggedIn()) {
-    showLoginRequiredModal();
-    return;
-  }
-  await addToCart();
-  showToast('Chuyển đến trang trả góp...', 'success');
-  setTimeout(() => window.location.href = 'checkout.html?installment=true', 1000);
 }
 
 function addToWishlist() {
@@ -934,10 +1063,6 @@ function loadSpecs() {
         <li class="flex items-center gap-2">
           <i class="fas fa-check text-blue-600"></i>
           Bảo hành 12 tháng tại trung tâm bảo hành chính hãng
-        </li>
-        <li class="flex items-center gap-2">
-          <i class="fas fa-check text-blue-600"></i>
-          Hỗ trợ trả góp 0% qua thẻ tín dụng và công ty tài chính
         </li>
       </ul>
     </div>

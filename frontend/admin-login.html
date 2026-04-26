@@ -2,107 +2,252 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>Đăng nhập Admin - QuangHưng Mobile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Be Vietnam Pro', sans-serif;
     }
 
     body {
+      font-family: 'Inter', sans-serif;
       min-height: 100vh;
-      background: #1a1a2e;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated Background */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-animation .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .bg-animation .orb:nth-child(1) {
+      width: 600px;
+      height: 600px;
+      background: linear-gradient(180deg, #8b5cf6 0%, #6366f1 100%);
+      top: -200px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .bg-animation .orb:nth-child(2) {
+      width: 500px;
+      height: 500px;
+      background: linear-gradient(180deg, #06b6d4 0%, #3b82f6 100%);
+      bottom: -150px;
+      right: -100px;
+      animation-delay: -5s;
+    }
+
+    .bg-animation .orb:nth-child(3) {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(180deg, #ec4899 0%, #8b5cf6 100%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -50px) scale(1.1); }
+      50% { transform: translate(-30px, 30px) scale(0.95); }
+      75% { transform: translate(40px, 20px) scale(1.05); }
+    }
+
+    /* Left Panel - Branding */
+    .left-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-content {
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .brand-logo {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
+      border-radius: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      margin: 0 auto 35px;
+      box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+      animation: pulse-glow 3s ease-in-out infinite;
     }
 
-    .login-container {
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4); }
+      50% { box-shadow: 0 25px 80px rgba(139, 92, 246, 0.6); }
+    }
+
+    .brand-logo i {
+      font-size: 45px;
+      color: white;
+    }
+
+    .brand-title {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+
+    .brand-subtitle {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 50px;
+      line-height: 1.6;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateX(8px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-icon i {
+      font-size: 20px;
+      color: white;
+    }
+
+    .feature-text h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .feature-text p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Right Panel - Login Form */
+    .right-panel {
+      width: 520px;
+      min-height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-wrapper {
       width: 100%;
-      max-width: 420px;
+      max-width: 380px;
     }
 
     .login-header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
 
-    .logo {
-      width: 60px;
-      height: 60px;
-      background: #8b5cf6;
-      border-radius: 16px;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo i {
-      font-size: 28px;
-      color: white;
-    }
-
-    .login-header h1 {
-      font-size: 24px;
-      color: white;
-      margin-bottom: 8px;
-    }
-
-    .login-header p {
-      color: #888;
-      font-size: 14px;
-    }
-
-    .login-card {
-      background: white;
-      border-radius: 20px;
-      padding: 35px;
-    }
-
-    .badge {
+    .admin-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: #8b5cf6;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
       color: white;
-      padding: 8px 16px;
+      padding: 10px 20px;
       border-radius: 50px;
       font-size: 12px;
       font-weight: 600;
-      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
     }
 
-    .card-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 25px;
-      text-align: center;
+    .login-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1e1b4b;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .login-header p {
+      font-size: 15px;
+      color: #64748b;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .form-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      display: block;
       font-size: 14px;
       font-weight: 600;
-      color: #333;
-      margin-bottom: 8px;
-    }
-
-    .form-label i {
-      color: #8b5cf6;
+      color: #334155;
+      margin-bottom: 10px;
     }
 
     .input-wrapper {
@@ -111,86 +256,167 @@
 
     .input-wrapper input {
       width: 100%;
-      padding: 14px 45px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 14px;
+      padding: 16px 20px 16px 52px;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #1e293b;
+      transition: all 0.3s ease;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #94a3b8;
     }
 
     .input-wrapper input:focus {
       outline: none;
       border-color: #8b5cf6;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
     }
 
-    .input-wrapper .icon {
+    .input-wrapper .input-icon {
       position: absolute;
-      left: 15px;
+      left: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: #999;
+      font-size: 18px;
+      color: #94a3b8;
+      transition: color 0.3s ease;
+    }
+
+    .input-wrapper input:focus + .input-icon,
+    .input-wrapper input:focus ~ .input-icon {
+      color: #8b5cf6;
     }
 
     .toggle-password {
       position: absolute;
-      right: 15px;
+      right: 16px;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: #999;
+      color: #94a3b8;
       cursor: pointer;
+      padding: 4px;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+
+    .toggle-password:hover {
+      color: #8b5cf6;
     }
 
     .form-options {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
 
-    .remember {
+    .remember-checkbox {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: #666;
+      gap: 10px;
+      cursor: pointer;
     }
 
-    .remember input {
-      width: 16px;
-      height: 16px;
+    .remember-checkbox input {
+      display: none;
     }
 
-    .forgot {
+    .checkbox-custom {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-custom i {
+      font-size: 12px;
+      color: white;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.2s ease;
+    }
+
+    .remember-checkbox input:checked + .checkbox-custom {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      border-color: #8b5cf6;
+    }
+
+    .remember-checkbox input:checked + .checkbox-custom i {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .remember-checkbox span {
       font-size: 14px;
-      color: #8b5cf6;
-      text-decoration: none;
+      color: #64748b;
     }
 
     .btn-login {
       width: 100%;
-      padding: 14px;
-      background: #8b5cf6;
+      padding: 16px 28px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #4f46e5 100%);
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 15px;
+      border-radius: 14px;
+      font-size: 16px;
       font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-login:hover::before {
+      left: 100%;
     }
 
     .btn-login:hover {
-      background: #7c3aed;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(139, 92, 246, 0.45);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .divider {
       display: flex;
       align-items: center;
-      margin: 25px 0;
+      margin: 32px 0;
     }
 
     .divider::before,
@@ -198,95 +424,251 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: #ddd;
+      background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
     }
 
     .divider span {
-      padding: 0 15px;
-      color: #999;
+      padding: 0 20px;
+      color: #94a3b8;
       font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .btn-google {
       width: 100%;
-      padding: 14px;
+      padding: 14px 24px;
       background: white;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 14px;
-      color: #333;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      color: #334155;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
+      transition: all 0.3s ease;
     }
 
     .btn-google:hover {
-      background: #f5f5f5;
+      border-color: #cbd5e1;
+      background: #f8fafc;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .btn-google img {
+      width: 22px;
+      height: 22px;
+    }
+
+    .security-notice {
+      margin-top: 32px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .security-notice i {
+      font-size: 20px;
+      color: #d97706;
+    }
+
+    .security-notice p {
+      font-size: 13px;
+      color: #92400e;
+      line-height: 1.5;
+    }
+
+    /* Toast Notification */
+    .login-toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideInRight 0.4s ease;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-toast.success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .login-toast.error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ===== RESPONSIVE STYLES ===== */
+    @media (max-width: 1024px) {
+      .left-panel {
+        display: none;
+      }
+      
+      .right-panel {
+        width: 100%;
+        min-height: 100vh;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .right-panel {
+        padding: 30px 24px;
+      }
+      
+      .login-header h1 {
+        font-size: 26px;
+      }
+      
+      .admin-badge {
+        padding: 8px 16px;
+        font-size: 11px;
+      }
+      
+      .form-group {
+        margin-bottom: 20px;
+      }
+      
+      .input-wrapper input {
+        padding: 14px 18px 14px 48px;
+        font-size: 14px;
+      }
+      
+      .btn-login {
+        padding: 14px 24px;
+        font-size: 15px;
+      }
+      
+      .security-notice {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+      }
+      
+      .login-toast {
+        left: 16px;
+        right: 16px;
+        top: auto;
+        bottom: 24px;
+      }
+    }
+
+    /* Loading Animation */
+    .btn-login .spinner {
       width: 20px;
       height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
 
-    .login-footer {
-      text-align: center;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .login-footer a {
-      color: #8b5cf6;
-      text-decoration: none;
-      font-weight: 600;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="login-header">
-      <div class="logo">
-        <i class="fas fa-shield-alt"></i>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <!-- Left Panel - Branding -->
+  <div class="left-panel">
+    <div class="brand-content">
+      <div class="brand-logo">
+        <i class="fas fa-shield-halved"></i>
       </div>
-      <h1>Admin Portal</h1>
-      <p>QuangHưng Mobile - Hệ thống quản trị</p>
+      <h1 class="brand-title">QuangHưng Mobile</h1>
+      <p class="brand-subtitle">Hệ thống quản trị dành cho Admin<br>Quản lý cửa hàng điện thoại thông minh</p>
+      
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Thống kê doanh thu</h4>
+            <p>Theo dõi doanh thu theo thời gian thực</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-boxes-stacked"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Quản lý sản phẩm</h4>
+            <p>Thêm, sửa, xóa sản phẩm dễ dàng</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-truck-fast"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Xử lý đơn hàng</h4>
+            <p>Quản lý và cập nhật trạng thái đơn hàng</p>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="login-card">
-      <div style="text-align: center;">
-        <span class="badge">
+  <!-- Right Panel - Login Form -->
+  <div class="right-panel">
+    <div class="login-wrapper">
+      <div class="login-header">
+        <span class="admin-badge">
           <i class="fas fa-lock"></i>
-          KHU VỰC QUẢN TRỊ
+          Khu vực quản trị
         </span>
+        <h1>Đăng nhập Admin</h1>
+        <p>Vui lòng đăng nhập để tiếp tục</p>
       </div>
-
-      <h2 class="card-title">Đăng nhập Admin</h2>
 
       <form id="login-form">
         <div class="form-group">
-          <label class="form-label">
-            <i class="fas fa-user"></i>
-            Tài khoản Admin
-          </label>
+          <label class="form-label">Tài khoản</label>
           <div class="input-wrapper">
-            <i class="fas fa-user icon"></i>
             <input type="text" id="username" placeholder="Nhập tài khoản admin" required>
+            <i class="fas fa-user input-icon"></i>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">
-            <i class="fas fa-key"></i>
-            Mật khẩu
-          </label>
+          <label class="form-label">Mật khẩu</label>
           <div class="input-wrapper">
-            <i class="fas fa-lock icon"></i>
             <input type="password" id="password" placeholder="Nhập mật khẩu" required>
+            <i class="fas fa-lock input-icon"></i>
             <button type="button" class="toggle-password" onclick="togglePassword()">
               <i class="fas fa-eye" id="eye-icon"></i>
             </button>
@@ -294,16 +676,16 @@
         </div>
 
         <div class="form-options">
-          <label class="remember">
+          <label class="remember-checkbox">
             <input type="checkbox" id="remember">
-            Ghi nhớ đăng nhập
+            <span class="checkbox-custom"><i class="fas fa-check"></i></span>
+            <span>Ghi nhớ đăng nhập</span>
           </label>
-          <a href="#" class="forgot">Quên mật khẩu?</a>
         </div>
 
         <button type="submit" class="btn-login">
-          <i class="fas fa-sign-in-alt"></i>
-          Đăng nhập
+          <i class="fas fa-right-to-bracket"></i>
+          <span>Đăng nhập</span>
         </button>
       </form>
 
@@ -311,13 +693,14 @@
         <span>hoặc</span>
       </div>
 
-      <button type="button" class="btn-google">
+      <button type="button" class="btn-google" onclick="loginWithGoogle()">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
         Đăng nhập với Google
       </button>
 
-      <div class="login-footer">
-        <p>Bạn là khách hàng? <a href="login.html">Đăng nhập tại đây</a></p>
+      <div class="security-notice">
+        <i class="fas fa-shield-halved"></i>
+        <p>Chỉ tài khoản được cấp quyền quản trị mới có thể đăng nhập vào hệ thống này.</p>
       </div>
     </div>
   </div>
@@ -327,6 +710,42 @@
 
     // Kiểm tra nếu đã đăng nhập thì chuyển đến trang admin
     document.addEventListener('DOMContentLoaded', function() {
+      // Xử lý callback từ Google OAuth
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      if (urlParams.get('google_success') === 'true') {
+        const userData = urlParams.get('user');
+        if (userData) {
+          try {
+            const admin = JSON.parse(decodeURIComponent(userData));
+            // Lưu thông tin admin
+            localStorage.setItem('adminData', JSON.stringify(admin));
+            localStorage.setItem('adminToken', 'google-oauth-session');
+            localStorage.setItem('isAdmin', 'true');
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            showSuccess('Đăng nhập Google thành công!');
+            setTimeout(() => {
+              window.location.href = 'admin.html';
+            }, 1000);
+            return;
+          } catch(e) {
+            console.error('Error parsing user data:', e);
+          }
+        }
+      }
+      
+      // Xử lý lỗi từ Google OAuth
+      if (urlParams.get('error') === 'not_admin') {
+        showError('Email này không có quyền truy cập trang quản trị!');
+        // Xóa params khỏi URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else if (urlParams.get('error') === 'google_failed') {
+        showError('Đăng nhập Google thất bại. Vui lòng thử lại!');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      
+      // Kiểm tra đã đăng nhập admin chưa
       const adminData = localStorage.getItem('adminData');
       if (adminData) {
         window.location.href = 'admin.html';
@@ -342,6 +761,11 @@
         } catch(e) {}
       }
     });
+
+    // Đăng nhập bằng Google
+    function loginWithGoogle() {
+      window.location.href = `${API_URL}/auth/admin/google`;
+    }
 
     function togglePassword() {
       const input = document.getElementById('password');

@@ -1,392 +1,392 @@
-<!-- ===== HEADER (Đã bổ sung Khuyến mãi) ===== -->
-<header
-  class="header-wrapper bg-red-600 shadow-lg fixed top-0 left-0 right-0 z-50 w-full"
->
-  <!-- Main Header -->
-  <div class="main-header py-2 md:py-3">
-    <div
-      class="container mx-auto flex justify-between items-center px-3 md:px-6"
-    >
-      <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-3 no-underline">
-        <img
-          src="images/logo.png"
-          alt="Logo"
-          class="w-12 h-12 md:w-14 md:h-14 rounded-lg object-contain bg-white"
-        />
-        <div class="leading-tight hidden sm:block">
-          <h1 class="text-xl md:text-2xl font-black text-white tracking-tight leading-none mb-0.5">
-            QuangHưng Mobile
-          </h1>
-          <p class="text-sm text-red-100 font-medium leading-none">Uy tín - Chất lượng - Giá tốt</p>
+<!-- ===== HEADER REDESIGN (SINGLE BAR - DIDONGVIET STYLE) ===== -->
+<header class="header-wrapper w-full bg-[#d70018] text-white fixed top-0 left-0 right-0 z-50 h-[70px] flex items-center">
+  <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4 flex items-center justify-between w-full h-full gap-3 xl:gap-6">
+
+    <!-- Left: Logo -->
+    <div class="flex items-center gap-3 md:gap-4 shrink-0">
+      <!-- Mobile Menu Btn -->
+      <button id="mobile-menu-btn" class="xl:hidden w-12 h-12 flex items-center justify-center text-3xl hover:bg-white/20 rounded-lg">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <!-- Logo block -->
+      <a href="index.html" class="flex items-center justify-center no-underline shrink-0 lg:ml-2 transition-transform hover:scale-105">
+        <img src="images/logodt.png" alt="Logo" class="h-[50px] lg:h-[60px] object-contain" />
+      </a>
+    </div>
+
+    <!-- Center: Navigation Menu (Desktop) -->
+    <nav class="hidden xl:flex items-center gap-2 flex-1 justify-center max-w-[700px]">
+      <a href="index.html" class="nav-link px-4 py-2.5 text-[16px] lg:text-[17px] font-bold hover:bg-white/20 rounded-lg transition-colors whitespace-nowrap text-white no-underline">
+        <i class="fas fa-home mr-1.5 text-lg"></i>Trang chủ
+      </a>
+      <a href="about.html" class="nav-link px-4 py-2.5 text-[16px] lg:text-[17px] font-bold hover:bg-white/20 rounded-lg transition-colors whitespace-nowrap text-white no-underline">
+        <i class="fas fa-info-circle mr-1.5 text-lg"></i>Giới thiệu
+      </a>
+      <div class="relative group">
+        <a href="products.html" class="nav-link px-4 py-2.5 text-[16px] lg:text-[17px] font-bold hover:bg-white/20 rounded-lg transition-colors whitespace-nowrap text-white no-underline flex items-center gap-1">
+          <i class="fas fa-mobile-alt mr-1.5 text-lg"></i>Sản phẩm
+          <i class="fas fa-chevron-down text-[12px] ml-0.5"></i>
+        </a>
+        <!-- Dropdown Menu Sản phẩm -->
+        <div class="absolute top-full left-0 mt-2 w-[260px] bg-white text-gray-800 shadow-[0_10px_40px_rgba(0,0,0,0.15)] rounded-xl z-50 border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ">
+           <ul class="py-2">
+             <li class="group/item">
+               <a href="products.html?brand=apple" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="fas fa-mobile-alt w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">iPhone</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[500px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-8 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Chọn dòng máy</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=iphone 16" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 16 Series</a>
+                     <a href="products.html?search=iphone 15" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 15 Series</a>
+                     <a href="products.html?search=iphone 14" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 14 Series</a>
+                     <a href="products.html?search=iphone 13" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 13 Series</a>
+                     <a href="products.html?search=iphone 11" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 11 Series</a>
+                   </div>
+                 </div>
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Sản phẩm hot</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 16 Pro Max 256GB</a>
+                     <a href="products.html" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 15 Pro Max 256GB</a>
+                     <a href="products.html?search=iphone cu" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone cũ giá rẻ</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+             <li class="group/item">
+               <a href="products.html?category=iphone17" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="fas fa-certificate w-6 text-center text-xl text-[#d70018] relative"><span class="absolute inset-0 flex items-center justify-center text-white text-[8px] font-bold">HOT</span></i> <span class="flex-1">iPhone 17</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[550px] min-h-[300px] h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex flex-col gap-4 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 
+                 <!-- Banner Top -->
+                 <div class="w-full flex-grow relative rounded-xl overflow-hidden shadow-sm group">
+                   <a href="products.html?search=iphone 17" class="block w-full h-full">
+                     <img src="images/IPHONE17.avif" alt="iPhone 17 Series" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#d70018]/90 to-transparent p-4">
+                       <h4 class="text-white font-bold text-[16px] leading-tight shadow-sm">Siêu Phẩm iPhone 17</h4>
+                       <p class="text-yellow-300 font-bold text-[12px] mt-1">Sắp ra mắt - Khám phá ngay</p>
+                     </div>
+                   </a>
+                 </div>
+
+                 <!-- Bottom Links Row -->
+                 <div class="grid grid-cols-4 gap-4 mt-2">
+                    <a href="products.html?search=iphone 17 pro max" class="flex flex-col text-[13px] text-gray-800 hover:text-[#d70018] group/prod">
+                        <span class="w-8 h-0.5 bg-[#d70018] mb-2 group-hover/prod:w-full transition-all duration-300"></span>
+                        <span class="font-bold">iPhone 17 Pro Max</span>
+                        <span class="text-gray-500 text-[12px] mt-1 line-clamp-2">Cập nhật giá liên tục, ưu đãi sốc</span>
+                    </a>
+                    <a href="products.html?search=iphone 17 pro" class="flex flex-col text-[13px] text-gray-800 hover:text-[#d70018] group/prod">
+                        <span class="w-8 h-0.5 bg-gray-200 mb-2 group-hover/prod:w-full group-hover/prod:bg-[#d70018] transition-all duration-300"></span>
+                        <span class="font-bold">iPhone 17 Pro</span>
+                        <span class="text-gray-500 text-[12px] mt-1 line-clamp-2">Bản pro mạnh mẽ, camera AI</span>
+                    </a>
+                    <a href="products.html?search=iphone 17 plus" class="flex flex-col text-[13px] text-gray-800 hover:text-[#d70018] group/prod">
+                        <span class="w-8 h-0.5 bg-gray-200 mb-2 group-hover/prod:w-full group-hover/prod:bg-[#d70018] transition-all duration-300"></span>
+                        <span class="font-bold">iPhone 17 Plus</span>
+                        <span class="text-gray-500 text-[12px] mt-1 line-clamp-2">Màn hình siêu lớn, pin trâu</span>
+                    </a>
+                    <a href="products.html?search=iphone 17" class="flex flex-col text-[13px] text-gray-800 hover:text-[#d70018] group/prod">
+                        <span class="w-8 h-0.5 bg-gray-200 mb-2 group-hover/prod:w-full group-hover/prod:bg-[#d70018] transition-all duration-300"></span>
+                        <span class="font-bold">iPhone 17</span>
+                        <span class="text-gray-500 text-[12px] mt-1 line-clamp-2">Sắc màu mới lạ, nhiều nâng cấp</span>
+                    </a>
+                 </div>
+
+               </div>
+             </li>
+             <li><a href="products.html?category=s26ultra" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="fas fa-mobile w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">Galaxy S26 Ultra</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018] opacity-0"></i></a></li>
+             <li class="group/item">
+               <a href="products.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="fas fa-mobile-alt w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">Điện thoại</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[550px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-10 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="w-1/2">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Chọn theo hãng</h3>
+                   <div class="grid grid-cols-2 gap-y-3 gap-x-4">
+                     <a href="products.html?brand=iphone" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone</a>
+                     <a href="products.html?brand=samsung" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Samsung</a>
+                     <a href="products.html?brand=xiaomi" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Xiaomi</a>
+                     <a href="products.html?brand=tecno" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">TECNO</a>
+                     <a href="products.html?brand=realme" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Realme</a>
+                     <a href="products.html?brand=infinix" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">INFINIX</a>
+                     <a href="products.html?brand=tcl" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">TCL</a>
+                     <a href="products.html?brand=oscal" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Oscal</a>
+                     <a href="products.html?brand=inoi" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">INOI</a>
+                     <a href="products.html?brand=zte" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">ZTE Nubia</a>
+                     <a href="products.html?brand=nokia" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Nokia</a>
+                     <a href="products.html?brand=oppo" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Oppo</a>
+                     <a href="products.html?brand=vivo" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Vivo</a>
+                   </div>
+                 </div>
+                 <div class="w-1/2">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Điện thoại hot</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=iphone 16" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 16</a>
+                     <a href="products.html?search=galaxy s25 ultra" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy S25 Ultra</a>
+                     <a href="products.html?search=xiaomi note 14" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Xiaomi Note 14</a>
+                     <a href="products.html?search=iphone 15" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 15</a>
+                     <a href="products.html?search=iphone 13" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone 13</a>
+                     <a href="products.html?search=iphone cu" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPhone cũ giá rẻ</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+             <li class="group/item">
+               <a href="products.html?brand=samsung" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><span class="w-6 text-center text-[9px] font-black text-[#d70018] border border-[#d70018] rounded-[4px] px-0.5 tracking-tighter inline-block leading-normal">SAMSUNG</span> <span class="flex-1">Samsung</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[500px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-8 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Chọn theo dòng</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=galaxy s" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy S Series</a>
+                     <a href="products.html?search=galaxy z" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy Z Series</a>
+                     <a href="products.html?search=galaxy a" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy A Series</a>
+                     <a href="products.html?search=galaxy m" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy M Series</a>
+                   </div>
+                 </div>
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Samsung hot</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=s24 ultra" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy S24 Ultra</a>
+                     <a href="products.html?search=z fold6" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy Z Fold6</a>
+                     <a href="products.html?search=a55" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy A55 5G</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+             <li class="group/item">
+               <a href="products.html?category=ipad" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="fas fa-tablet-alt w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">Máy tính bảng</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[500px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-8 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Thương hiệu</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?brand=apple" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPad (Apple)</a>
+                     <a href="products.html?brand=samsung" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Samsung Galaxy Tab</a>
+                     <a href="products.html?brand=xiaomi" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Xiaomi Pad</a>
+                     <a href="products.html?brand=oppo" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Oppo Pad</a>
+                     <a href="products.html?brand=lenovo" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Lenovo Pad</a>
+                   </div>
+                 </div>
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Tablet bán chạy</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=ipad pro m4" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPad Pro M4 2024</a>
+                     <a href="products.html?search=ipad air 6" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">iPad Air 6 M2</a>
+                     <a href="products.html?search=tab s9" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy Tab S9</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+             <li class="group/item">
+               <a href="products.html?category=dongho" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="far fa-clock w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">Đồng hồ</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[500px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-8 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Đồng hồ thông minh</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=apple watch" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Apple Watch</a>
+                     <a href="products.html?search=galaxy watch" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Samsung Galaxy Watch</a>
+                     <a href="products.html?search=garmin" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Garmin</a>
+                     <a href="products.html?search=huawei watch" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Huawei Watch</a>
+                     <a href="products.html?search=amazfit" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Amazfit</a>
+                   </div>
+                 </div>
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Sản phẩm nổi bật</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=series 9" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Apple Watch Series 9</a>
+                     <a href="products.html?search=se 2" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Apple Watch SE 2</a>
+                     <a href="products.html?search=watch 6" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Galaxy Watch 6</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+             <li class="group/item">
+               <a href="products.html?category=amthanh" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="fas fa-headphones-alt w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">Âm thanh</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[500px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-8 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Tai nghe</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=airpods" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">AirPods</a>
+                     <a href="products.html?search=tai nghe sony" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Tai nghe Sony</a>
+                     <a href="products.html?search=tai nghe jbl" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Tai nghe JBL</a>
+                     <a href="products.html?search=marshall" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Tai nghe Marshall</a>
+                   </div>
+                 </div>
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Loa</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?search=loa marshall" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Loa Marshall</a>
+                     <a href="products.html?search=loa jbl" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Loa JBL</a>
+                     <a href="products.html?search=harman" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Loa Harman Kardon</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+             <li class="group/item">
+               <a href="products.html?category=phukien" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="fas fa-plug w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">Phụ kiện</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[500px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-8 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Phụ kiện nổi bật</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?category=sac" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Củ sạc, dây sạc</a>
+                     <a href="products.html?category=sacduphong" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Sạc dự phòng</a>
+                     <a href="products.html?category=oplung" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Ốp lưng, bao da</a>
+                     <a href="products.html?category=kinhcuongluc" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Kính cường lực</a>
+                   </div>
+                 </div>
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Thiết bị thông minh</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="products.html?category=camera" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Camera an ninh</a>
+                     <a href="products.html?category=mang" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Thiết bị mạng</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+             <li class="group/item">
+               <a href="news.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 hover:text-[#d70018] font-medium text-[15px] text-gray-800 transition-colors"><i class="far fa-newspaper w-6 text-center text-xl text-[#d70018]"></i> <span class="flex-1">Tin tức</span> <i class="fas fa-chevron-right text-[11px] text-[#d70018]"></i></a>
+               <div class="absolute left-[260px] top-0 w-[500px] min-h-full bg-white text-gray-800 shadow-[15px_0_30px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 p-6 flex gap-8 rounded-r-xl border border-gray-100 border-l-0 z-50 pointer-events-none group-hover/item:pointer-events-auto">
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Chủ đề Công nghệ</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="news.html" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Tin mới nhất</a>
+                     <a href="news.html?loai_tin=noi_bat" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Tin nổi bật</a>
+                     <a href="news.html?loai_tin=khuyen_mai" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Tin khuyến mãi</a>
+                     <a href="news.html?loai_tin=su_kien" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Sự kiện công nghệ</a>
+                     <a href="news.html?loai_tin=huong_dan" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Hướng dẫn & Thủ thuật</a>
+                   </div>
+                 </div>
+                 <div class="flex-1">
+                   <h3 class="text-[15px] font-bold text-gray-800 mb-3 border-b border-gray-100 pb-2">Nội dung khác</h3>
+                   <div class="flex flex-col gap-y-3">
+                     <a href="news.html?loai_tin=danh_gia" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Đánh giá sản phẩm</a>
+                     <a href="news.html?loai_tin=meo_hay" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Mẹo hay</a>
+                     <a href="news.html?search=tuyendung" class="text-[14px] text-gray-600 hover:text-[#d70018] transition-colors no-underline">Tuyển dụng</a>
+                   </div>
+                 </div>
+               </div>
+             </li>
+           </ul>
         </div>
+      </div>
+      <a href="promotions.html" class="nav-link px-4 py-2.5 text-[16px] lg:text-[17px] font-bold hover:bg-white/20 rounded-lg transition-colors whitespace-nowrap text-white no-underline">
+        <i class="fas fa-tags mr-1.5 text-lg"></i>Khuyến mãi
+      </a>
+      <a href="cart.html" class="nav-link px-4 py-2.5 text-[16px] lg:text-[17px] font-bold hover:bg-white/20 rounded-lg transition-colors whitespace-nowrap text-white no-underline relative">
+        <i class="fas fa-shopping-cart mr-1.5 text-lg"></i>Giỏ hàng
+        <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-yellow-400 text-red-600 font-bold text-[11px] h-[18px] min-w-[18px] px-1 flex justify-center items-center rounded-full border border-red-600 shadow-sm hidden">0</span>
+      </a>
+    </nav>
+
+    <!-- Right: Search Bar (Desktop) -->
+    <div class="flex-1 max-w-[280px] lg:max-w-[360px] xl:max-w-[420px] hidden md:block relative">
+      <div class="flex items-center w-full h-[46px] bg-white rounded-full overflow-hidden shadow-inner p-[3px] pl-5 pr-1 border border-transparent focus-within:border-yellow-400 focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all">
+        <input id="header-search-input" type="text" class="w-full h-full text-[15px] lg:text-[16px] text-gray-800 outline-none placeholder-gray-400 bg-transparent pr-2" placeholder="Tìm kiếm sản phẩm..." autocomplete="off" />
+        <button id="voice-search-btn" class="w-9 h-9 flex items-center justify-center text-gray-400 hover:text-[#d70018] shrink-0 transition-colors mr-1" title="Tìm kiếm giọng nói">
+          <i class="fas fa-microphone text-[17px]"></i>
+        </button>
+        <button id="header-search-btn" class="w-[42px] h-[38px] rounded-[19px] bg-red-50 flex items-center justify-center text-[#d70018] hover:bg-pink-100 transition-colors shrink-0">
+          <i class="fas fa-search text-[16px]"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Search Icon -->
+    <button id="mobile-search-btn" class="md:hidden w-12 h-12 flex items-center justify-center text-[26px] ml-auto">
+      <i class="fas fa-search"></i>
+    </button>
+
+    <!-- Right: User Actions -->
+    <div class="flex items-center justify-end gap-3 lg:gap-4 shrink-0 whitespace-nowrap overflow-visible">
+      
+      <!-- Hotline (Desktop only) -->
+      <a href="tel:18006018" class="hidden xl:flex items-center gap-2 hover:bg-white/10 px-2 py-1.5 rounded-lg transition-colors no-underline text-white">
+         <i class="fas fa-phone-alt text-[24px]"></i>
+         <div class="leading-[1.1] flex flex-col justify-center">
+           <span class="text-[12px] font-medium leading-none mb-0.5">Hotline</span>
+           <strong class="text-[15px] font-bold leading-none">1800 6018</strong>
+         </div>
       </a>
 
-      <!-- Search Bar - YouTube Style -->
-      <div
-        class="hidden md:flex items-center bg-white rounded-full overflow-visible flex-1 max-w-2xl mx-6 lg:mx-10 shadow-lg relative search-container"
-      >
-        <button class="text-gray-400 px-4 py-3 hover:text-red-500 transition-colors">
-          <i class="fas fa-search text-lg"></i>
-        </button>
-        <input
-          id="header-search-input"
-          type="text"
-          class="flex-grow px-2 py-3 outline-none text-gray-800 text-base font-medium placeholder-gray-400 bg-transparent"
-          placeholder="Tìm kiếm điện thoại, phụ kiện..."
-          autocomplete="off"
-        />
-        <!-- Voice Search Button -->
-        <button id="voice-search-btn" class="text-gray-400 px-4 py-3 hover:text-red-500 transition-colors border-l border-gray-200" title="Tìm kiếm bằng giọng nói">
-          <i class="fas fa-microphone text-lg"></i>
-        </button>
-      </div>
+      <!-- Giỏ hàng (Mobile) -->
+      <a href="cart.html" class="xl:hidden flex items-center gap-1.5 hover:bg-white/10 px-2 py-1.5 rounded-lg transition-colors text-white relative no-underline">
+         <div class="relative">
+            <i class="fas fa-shopping-cart text-[26px]"></i>
+            <span id="header-cart-count" class="absolute -top-1.5 -right-2 bg-yellow-400 text-red-600 font-bold text-[11px] h-[18px] min-w-[18px] px-1 flex justify-center items-center rounded-full border border-red-600 shadow-sm">0</span>
+         </div>
+      </a>
 
-      <!-- Actions - Desktop -->
-      <div class="hidden lg:flex items-center gap-5 xl:gap-6">
-        <!-- Notification Bell - Hiển thị khi đã đăng nhập -->
-        <div id="notification-bell-container"></div>
-
-        <a
-          href="cart.html"
-          class="relative flex items-center gap-2 text-white hover:text-yellow-300 transition-colors group no-underline"
-        >
-          <i class="fas fa-shopping-cart text-2xl group-hover:scale-110 transition-transform"></i>
-          <span class="text-base font-bold">Giỏ hàng</span>
-          <span
-            class="cart-badge absolute -top-2 -right-2 bg-yellow-400 text-red-600 text-xs font-black px-1.5 py-0.5 rounded-full min-w-[20px] text-center border-2 border-red-600"
-            >0</span
-          >
-        </a>
-
-        <!-- User Account - Hiển thị khi chưa đăng nhập -->
-        <a
-          href="login.html"
-          id="login-btn"
-          class="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors group no-underline"
-        >
-          <i class="fas fa-user-circle text-2xl group-hover:scale-110 transition-transform"></i>
-          <span class="text-base font-bold">Tài khoản</span>
-        </a>
-
-        <!-- User Info - Hiển thị khi đã đăng nhập -->
-        <div id="user-info" class="hidden relative group">
-          <button class="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors">
-            <img id="user-avatar" src="" alt="Avatar" class="w-9 h-9 rounded-full object-cover border-2 border-white/50 group-hover:border-yellow-300 transition-colors">
-            <span id="user-name" class="text-base font-bold max-w-[120px] truncate">Tên user</span>
-            <i class="fas fa-chevron-down text-xs"></i>
-          </button>
-          
-          <!-- Dropdown Menu -->
-          <div class="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl w-56 py-2 hidden group-hover:block z-50 border border-gray-100">
-            <div class="px-4 py-3 border-b border-gray-100">
-              <p class="text-sm text-gray-500">Xin chào,</p>
-              <p id="dropdown-user-name" class="font-bold text-gray-800 truncate">Tên user</p>
-            </div>
-            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
-              <i class="fas fa-user w-5 text-center"></i>
-              <span>Tài khoản của tôi</span>
-            </a>
-            <a href="profile.html#orders" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
-              <i class="fas fa-box w-5 text-center"></i>
-              <span>Đơn hàng</span>
-            </a>
-            <a href="profile.html#wishlist" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline">
-              <i class="fas fa-heart w-5 text-center"></i>
-              <span>Yêu thích</span>
-            </a>
-            <a href="notifications.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors no-underline relative">
-              <i class="fas fa-bell w-5 text-center"></i>
-              <span>Thông báo</span>
-              <span id="dropdown-notif-badge" class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold hidden">0</span>
-            </a>
-            <div class="border-t border-gray-100 mt-2 pt-2">
-              <button onclick="handleLogout()" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors w-full text-left">
-                <i class="fas fa-sign-out-alt w-5 text-center"></i>
-                <span class="font-medium">Đăng xuất</span>
-              </button>
-            </div>
+      <!-- Đăng nhập / Đăng ký -->
+      <a href="login.html" id="login-btn" class="flex items-center gap-2 hover:bg-white/10 px-3 py-1.5 rounded-lg transition-colors cursor-pointer text-white no-underline">        
+          <i class="fas fa-user-circle text-[26px]"></i>
+          <div class="hidden lg:flex flex-col leading-tight">
+            <span class="text-[12px] font-medium">Đăng nhập</span>
+            <strong class="text-[15px] font-bold">Tài khoản</strong>
           </div>
-        </div>
+      </a>
+
+      <!-- User Info (Auth Dropdown) -->
+      <div id="user-info" class="hidden relative group shrink-0">
+         <button class="flex items-center gap-2 h-12 px-2 rounded-lg hover:bg-white/10 transition-colors">
+           <img id="user-avatar" src="images/avatars/default.png" alt="Avatar" class="w-9 h-9 rounded-full object-cover border-2 border-white/50 bg-white">
+           <span id="user-name" class="hidden lg:block text-[14px] font-bold max-w-[90px] truncate">User</span>
+           <i class="fas fa-chevron-down text-[11px]"></i>
+         </button>
+         <!-- Dropdown -->
+         <div class="absolute right-0 top-[110%] w-[220px] bg-white rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 text-gray-800 border border-gray-100">
+           <div class="px-4 py-3 border-b border-gray-100">
+             <p class="text-[12px] text-gray-500 mb-1">Xin chào,</p>
+             <p id="dropdown-user-name" class="font-bold text-[15px] truncate text-[#d70018]">User</p>
+           </div>
+           <a href="profile.html" class="flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 hover:text-[#d70018] text-[14px] font-medium text-gray-700 no-underline"><i class="fas fa-user w-5 text-center"></i> Tài khoản của tôi</a>
+           <a href="profile.html#orders" class="flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 hover:text-[#d70018] text-[14px] font-medium text-gray-700 no-underline"><i class="fas fa-box w-5 text-center"></i> Đơn hàng</a>
+           <a href="notifications.html" class="flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 hover:text-[#d70018] text-[14px] font-medium text-gray-700 no-underline"><i class="fas fa-bell w-5 text-center"></i> Thông báo <span id="dropdown-notif-badge" class="hidden bg-[#d70018] shadow-sm text-white text-[10px] font-black h-4 min-w-[16px] px-1 rounded-full flex items-center justify-center ml-auto">0</span></a>
+           <button onclick="handleLogout()" class="flex items-center gap-3 px-4 py-2.5 text-[#d70018] hover:bg-red-50 w-full text-left font-bold text-[14px] mt-1 border-t border-gray-100"><i class="fas fa-sign-out-alt w-5 text-center"></i> Đăng xuất</button>
+         </div>
       </div>
 
-      <!-- Mobile Actions -->
-      <div class="flex lg:hidden items-center gap-3">
-        <!-- Mobile Notification Bell -->
-        <div id="notification-bell-container-mobile" class="hidden"></div>
-        
-        <button
-          id="mobile-search-btn"
-          class="text-white hover:text-red-100 text-2xl"
-        >
-          <i class="fas fa-search"></i>
-        </button>
-        <a href="cart.html" class="relative text-white hover:text-red-100 no-underline">
-          <i class="fas fa-shopping-cart text-2xl"></i>
-          <span
-            class="cart-badge absolute -top-2 -right-3 bg-yellow-400 text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center"
-            >0</span
-          >
-        </a>
-        <button
-          id="mobile-menu-btn"
-          class="text-white hover:text-red-100 text-2xl ml-2"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Mobile Search Bar - YouTube Style -->
-    <div id="mobile-search-bar" class="hidden md:hidden px-3 pb-3 pt-2">
-      <div class="flex items-center bg-white rounded-full overflow-visible shadow-lg relative search-container">
-        <button class="text-gray-400 px-3 py-2.5">
-          <i class="fas fa-search text-base"></i>
-        </button>
-        <input
-          id="mobile-search-input"
-          type="text"
-          class="flex-grow px-2 py-2.5 outline-none text-gray-800 text-base bg-transparent"
-          placeholder="Tìm kiếm..."
-          autocomplete="off"
-        />
-        <!-- Mobile Voice Search -->
-        <button id="mobile-voice-search-btn" class="text-gray-400 px-3 py-2.5 hover:text-red-500 transition-colors border-l border-gray-200" title="Tìm kiếm bằng giọng nói">
-          <i class="fas fa-microphone text-base"></i>
-        </button>
-      </div>
     </div>
   </div>
-
-  <!-- Navigation - Desktop -->
-  <nav
-    class="hidden lg:block bg-red-700 text-white py-2 border-t border-red-800 shadow-inner"
-  >
-    <div class="container mx-auto px-6">
-      <ul
-        class="flex justify-start items-center gap-8 text-lg font-bold tracking-wide"
-      >
-        <!-- 1. Trang chủ -->
-        <li>
-          <a
-            href="index.html"
-            class="nav-link hover:text-yellow-300 transition-colors py-2 block flex items-center gap-2 no-underline"
-          >
-            <i class="fas fa-home"></i> Trang chủ
-          </a>
-        </li>
-
-        <!-- 2. Giới thiệu -->
-        <li>
-          <a
-            href="about.html"
-            class="nav-link hover:text-yellow-300 transition-colors py-2 block flex items-center gap-2 no-underline"
-          >
-            <i class="fas fa-info-circle"></i> Giới thiệu
-          </a>
-        </li>
-
-        <!-- 3. Sản phẩm (Có Dropdown) -->
-        <li class="relative group">
-          <a
-            href="products.html"
-            class="nav-link hover:text-yellow-300 transition-colors flex items-center gap-2 py-2 cursor-pointer no-underline"
-          >
-            <i class="fas fa-mobile-alt"></i> Sản phẩm <i class="fas fa-chevron-down text-xs mt-0.5 opacity-80"></i>
-          </a>
-          
-          <!-- Dropdown Menu -->
-          <ul
-            class="absolute hidden group-hover:block bg-white text-gray-800 shadow-2xl rounded-lg w-56 text-base font-medium z-50 top-full left-0 overflow-hidden mt-0 border border-gray-100 pt-1"
-          >
-            <li>
-              <a
-                href="products.html?brand=apple"
-                class="block px-5 py-3 hover:bg-red-50 hover:text-red-600 transition-colors border-b border-gray-100 flex items-center gap-3 no-underline"
-              >
-                <i class="fab fa-apple text-lg w-5 text-center"></i> iPhone
-              </a>
-            </li>
-            <li>
-              <a
-                href="products.html?category=ipad"
-                class="block px-5 py-3 hover:bg-red-50 hover:text-red-600 transition-colors border-b border-gray-100 flex items-center gap-3 no-underline"
-              >
-                <i class="fas fa-tablet-alt text-lg w-5 text-center"></i> iPad
-              </a>
-            </li>
-            <li>
-              <a
-                href="products.html?brand=samsung"
-                class="block px-5 py-3 hover:bg-red-50 hover:text-red-600 transition-colors border-b border-gray-100 flex items-center gap-3 no-underline"
-              >
-                <i class="fab fa-android text-lg w-5 text-center"></i> Samsung
-              </a>
-            </li>
-            <li>
-              <a
-                href="products.html?brand=oppo"
-                class="block px-5 py-3 hover:bg-red-50 hover:text-red-600 transition-colors border-b border-gray-100 flex items-center gap-3 no-underline"
-              >
-                <i class="fas fa-mobile text-lg w-5 text-center"></i> OPPO
-              </a>
-            </li>
-            <li>
-              <a
-                href="products.html?brand=xiaomi"
-                class="block px-5 py-3 hover:bg-red-50 hover:text-red-600 transition-colors border-b border-gray-100 flex items-center gap-3 no-underline"
-              >
-                <i class="fas fa-mobile-alt text-lg w-5 text-center"></i> Xiaomi
-              </a>
-            </li>
-            <li>
-              <a
-                href="products.html?category=phukien"
-                class="block px-5 py-3 hover:bg-red-50 hover:text-red-600 transition-colors flex items-center gap-3 no-underline"
-              >
-                <i class="fas fa-headphones text-lg w-5 text-center"></i> Phụ kiện
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <!-- 4. Khuyến mãi -->
-        <li>
-          <a
-            href="promotions.html"
-            class="nav-link hover:text-yellow-300 transition-colors py-2 block flex items-center gap-2 no-underline"
-          >
-            <i class="fas fa-tags"></i> Khuyến mãi
-          </a>
-        </li>
-
-        <!-- 5. Tin tức -->
-        <li>
-          <a
-            href="news.html"
-            class="nav-link hover:text-yellow-300 transition-colors py-2 block flex items-center gap-2 no-underline"
-          >
-            <i class="fas fa-newspaper"></i> Tin tức
-          </a>
-        </li>
-
-        <!-- 6. Hỗ trợ -->
-        <li>
-          <a
-            href="contact.html"
-            class="nav-link hover:text-yellow-300 transition-colors py-2 block flex items-center gap-2 no-underline"
-          >
-            <i class="fas fa-headset"></i> Hỗ trợ
-          </a>
-        </li>
-      </ul>
+  
+  <!-- Mobile Search Bar Expander -->
+  <div id="mobile-search-bar" class="hidden md:hidden bg-[#d70018] pb-3 px-3 w-full absolute top-[100%] left-0 z-40 shadow-lg border-t border-white/10">
+    <div class="flex items-center w-full h-11 bg-white rounded-full p-[3px] pl-4 pr-1 shadow-inner">
+      <input id="mobile-search-input" type="text" class="flex-grow h-full text-[15px] text-gray-800 outline-none placeholder-gray-400 bg-transparent pr-2" placeholder="Bạn muốn tìm gì..." autocomplete="off" />
+      <button id="mobile-voice-search-btn" class="w-9 h-9 flex items-center justify-center text-gray-400 hover:text-[#d70018] shrink-0 transition-colors mr-1" title="Tìm kiếm giọng nói">
+        <i class="fas fa-microphone text-[16px]"></i>
+      </button>
+      <button id="mobile-header-search-btn" class="w-[42px] h-[36px] rounded-[18px] bg-red-50 flex items-center justify-center text-[#d70018] shrink-0">
+        <i class="fas fa-search text-[16px]"></i>
+      </button>
     </div>
-  </nav>
-
-  <!-- Mobile Menu -->
-  <div
-    id="mobile-menu"
-    class="hidden lg:hidden bg-red-700 text-white border-t border-red-800 shadow-inner"
-  >
-    <nav class="container mx-auto py-1">
-      <ul class="space-y-0">
-        <!-- 1. Trang chủ -->
+  </div>
+  
+  <!-- Mobile Menu Sidebar -->
+  <div id="mobile-menu" class="hidden xl:hidden bg-[#d70018] text-white shadow-inner absolute top-[100%] left-0 w-full overflow-y-auto max-h-[calc(100vh-70px)] z-40">
+    <nav class="px-4 py-2">
+      <ul class="space-y-1">
+        <li><a href="index.html" class="flex items-center px-4 py-3.5 hover:bg-white/10 text-[16px] font-medium border-b border-white/10 gap-3 text-white no-underline"><i class="fas fa-home w-8 text-center text-xl"></i> Trang chủ</a></li>
+        <li><a href="about.html" class="flex items-center px-4 py-3.5 hover:bg-white/10 text-[16px] font-medium border-b border-white/10 gap-3 text-white no-underline"><i class="fas fa-info-circle w-8 text-center text-xl"></i> Giới thiệu</a></li>
         <li>
-          <a
-            href="index.html"
-            class="flex items-center px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium border-b border-red-800 gap-3 no-underline"
-          >
-            <i class="fas fa-home w-6 text-center"></i> Trang chủ
-          </a>
-        </li>
-
-        <!-- 2. Giới thiệu -->
-        <li>
-          <a
-            href="about.html"
-            class="flex items-center px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium border-b border-red-800 gap-3 no-underline"
-          >
-            <i class="fas fa-info-circle w-6 text-center"></i> Giới thiệu
-          </a>
-        </li>
-
-        <!-- 3. Sản phẩm (Dropdown Mobile) -->
-        <li>
-          <div class="flex items-center justify-between w-full px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium border-b border-red-800">
-            <a href="products.html" class="flex items-center gap-3 flex-1 no-underline text-white">
-                <i class="fas fa-mobile-alt w-6 text-center"></i> Sản phẩm
-            </a>
-            <button onclick="toggleMobileSubmenu()" class="px-3 py-1 hover:bg-red-500 rounded">
-              <i class="fas fa-chevron-down text-sm" id="submenu-icon"></i>
-            </button>
+          <div class="flex justify-between items-center w-full px-4 py-3.5 hover:bg-white/10 text-[16px] font-medium border-b border-white/10">
+            <a href="products.html" class="flex items-center gap-3 flex-1 text-white no-underline"><i class="fas fa-mobile-alt w-8 text-center text-xl"></i> Sản phẩm</a>
+            <button onclick="toggleMobileSubmenu()" class="w-12 h-10 flex items-center justify-center"><i class="fas fa-chevron-down"></i></button>
           </div>
-          <ul id="mobile-submenu" class="hidden bg-red-800">
-            <li>
-              <a href="products.html?brand=apple" class="block px-10 py-3 hover:bg-red-600 text-base border-b border-red-700 flex items-center gap-3 no-underline">
-                <i class="fab fa-apple w-5 text-center"></i> iPhone
-              </a>
-            </li>
-            <li>
-              <a href="products.html?category=ipad" class="block px-10 py-3 hover:bg-red-600 text-base border-b border-red-700 flex items-center gap-3 no-underline">
-                <i class="fas fa-tablet-alt w-5 text-center"></i> iPad
-              </a>
-            </li>
-            <li>
-              <a href="products.html?brand=samsung" class="block px-10 py-3 hover:bg-red-600 text-base border-b border-red-700 flex items-center gap-3 no-underline">
-                <i class="fab fa-android w-5 text-center"></i> Samsung
-              </a>
-            </li>
-            <li>
-              <a href="products.html?brand=oppo" class="block px-10 py-3 hover:bg-red-600 text-base border-b border-red-700 flex items-center gap-3 no-underline">
-                <i class="fas fa-mobile w-5 text-center"></i> OPPO
-              </a>
-            </li>
-            <li>
-              <a href="products.html?brand=xiaomi" class="block px-10 py-3 hover:bg-red-600 text-base border-b border-red-700 flex items-center gap-3 no-underline">
-                <i class="fas fa-mobile-alt w-5 text-center"></i> Xiaomi
-              </a>
-            </li>
-            <li>
-              <a href="products.html?category=phukien" class="block px-10 py-3 hover:bg-red-600 text-base border-b border-red-700 flex items-center gap-3 no-underline">
-                <i class="fas fa-headphones w-5 text-center"></i> Phụ kiện
-              </a>
-            </li>
+          <ul id="mobile-submenu" class="hidden bg-black/10 rounded-xl mt-1 overflow-hidden transition-all">
+            <li><a href="products.html?brand=apple" class="block pl-16 pr-4 py-3 hover:bg-white/10 text-[15px] border-b border-white/5 flex items-center gap-3 text-white no-underline"><i class="fab fa-apple w-6 text-center text-xl"></i> iPhone</a></li>
+            <li><a href="products.html?category=ipad" class="block pl-16 pr-4 py-3 hover:bg-white/10 text-[15px] border-b border-white/5 flex items-center gap-3 text-white no-underline"><i class="fas fa-tablet-alt w-6 text-center text-lg"></i> iPad</a></li>
+            <li><a href="products.html?brand=samsung" class="block pl-16 pr-4 py-3 hover:bg-white/10 text-[15px] border-b border-white/5 flex items-center gap-3 text-white no-underline"><i class="fab fa-android w-6 text-center text-lg"></i> Samsung</a></li>
+            <li><a href="products.html?brand=oppo" class="block pl-16 pr-4 py-3 hover:bg-white/10 text-[15px] border-b border-white/5 flex items-center gap-3 text-white no-underline"><i class="fas fa-mobile w-6 text-center text-xl"></i> OPPO</a></li>
+            <li><a href="products.html?brand=xiaomi" class="block pl-16 pr-4 py-3 hover:bg-white/10 text-[15px] flex items-center gap-3 text-white no-underline"><i class="fas fa-mobile-alt w-6 text-center text-lg"></i> Xiaomi</a></li>
           </ul>
         </li>
-
-        <!-- 4. Khuyến mãi -->
-        <li>
-          <a
-            href="promotions.html"
-            class="flex items-center px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium border-b border-red-800 gap-3 no-underline"
-          >
-            <i class="fas fa-tags w-6 text-center"></i> Khuyến mãi
-          </a>
-        </li>
-
-        <!-- 5. Tin tức -->
-        <li>
-          <a
-            href="news.html"
-            class="flex items-center px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium border-b border-red-800 gap-3 no-underline"
-          >
-            <i class="fas fa-newspaper w-6 text-center"></i> Tin tức
-          </a>
-        </li>
-
-        <!-- 6. Hỗ trợ -->
-        <li>
-          <a
-            href="contact.html"
-            class="flex items-center px-5 py-3 hover:bg-red-600 transition-colors text-lg font-medium gap-3 no-underline"
-          >
-            <i class="fas fa-headset w-6 text-center"></i> Hỗ trợ
-          </a>
-        </li>
+        <li><a href="promotions.html" class="flex items-center px-4 py-3.5 hover:bg-white/10 text-[16px] font-medium border-b border-white/10 gap-3 text-white no-underline"><i class="fas fa-tags w-8 text-center text-xl text-yellow-300"></i> Khuyến mãi</a></li>
+        <li><a href="cart.html" class="flex items-center px-4 py-3.5 hover:bg-white/10 text-[16px] font-medium border-b border-white/10 gap-3 text-white no-underline relative">
+          <i class="fas fa-shopping-cart w-8 text-center text-xl"></i> Giỏ hàng
+          <span id="mobile-cart-badge" class="bg-yellow-400 text-red-600 font-bold text-[10px] h-[16px] min-w-[16px] px-1 flex justify-center items-center rounded-full border border-red-600 shadow-sm ml-auto hidden">0</span>
+        </a></li>
+        <li><a href="login.html" id="mobile-login-link" class="flex items-center px-4 py-3.5 hover:bg-white/10 text-[16px] font-medium gap-3 text-white no-underline"><i class="fas fa-user-circle w-8 text-center text-xl"></i> Đăng nhập / Đăng ký</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
-<!-- Notification Popup Script - Real-time notifications -->
 <script src="components/notification-popup.js"></script>

@@ -1,9 +1,34 @@
 /* Header Component - Red Theme Style */
 
+/* Hide scrollbar for nav links row */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Fixed header styles */
 .header-wrapper {
   transition: box-shadow 0.3s ease-in-out;
-  background-color: #dc2626;
+  background-color: #d70018; /* CellphoneS style red */
+}
+
+/* Navigation links */
+.nav-link {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  transform: translateY(-1px);
+}
+
+/* Active nav link */
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  font-weight: 600;
 }
 
 /* Dropdown menu hover fix */
@@ -18,14 +43,6 @@
 
 .group ul {
   margin-top: 0;
-}
-
-/* Active nav link */
-.nav-link.active {
-  color: #fef3c7 !important;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 
 /* Mobile menu animation */

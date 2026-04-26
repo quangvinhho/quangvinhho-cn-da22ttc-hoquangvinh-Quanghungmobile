@@ -218,6 +218,10 @@
             </div>
           </div>
           <div class="flex items-center gap-3">
+            <!-- Nút cài đặt hiển thị tồn kho -->
+            <button onclick="openSettingsModal()" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors relative" title="Cài đặt">
+              <i class="fas fa-cog"></i>
+            </button>
             <button class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors relative">
               <i class="fas fa-bell"></i>
               <span class="notification-dot"></span>
@@ -244,53 +248,67 @@
                   <i class="fas fa-wallet text-white text-xl"></i>
                 </div>
                 <div class="text-right">
-                  <p class="text-xs text-slate-500 font-medium mb-1">Tổng doanh thu</p>
-                  <p class="text-2xl font-extrabold text-slate-800" id="stat-revenue">0d</p>
+                  <p class="text-xs text-slate-500 font-medium mb-1">Doanh thu tháng này</p>
+                  <p class="text-2xl font-extrabold text-slate-800" id="stat-revenue">0đ</p>
                 </div>
               </div>
-              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span class="text-xs text-slate-400">So với tháng trước</span>
-                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-600" id="revenue-change">
-                  <i class="fas fa-arrow-up text-[10px]"></i><span>0%</span>
-                </span>
+              <div class="mt-3 pt-3 border-t border-slate-100">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs text-slate-400">Tháng trước:</span>
+                  <span class="text-xs font-semibold text-slate-600" id="revenue-last-month">0đ</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-slate-400">So sánh:</span>
+                  <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-600" id="revenue-change">
+                    <i class="fas fa-arrow-up text-[10px]"></i><span>0%</span>
+                  </span>
+                </div>
               </div>
             </div>
             
-            <!-- Số đơn hàng -->
+            <!-- Doanh thu tuần -->
             <div class="stat-card bg-white rounded-2xl shadow-lg border border-slate-100 p-5">
               <div class="flex items-start justify-between">
                 <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                  <i class="fas fa-shopping-cart text-white text-xl"></i>
+                  <i class="fas fa-calendar-week text-white text-xl"></i>
                 </div>
                 <div class="text-right">
-                  <p class="text-xs text-slate-500 font-medium mb-1">Số đơn hàng</p>
-                  <p class="text-2xl font-extrabold text-slate-800" id="stat-orders">0</p>
+                  <p class="text-xs text-slate-500 font-medium mb-1">Doanh thu 7 ngày</p>
+                  <p class="text-2xl font-extrabold text-slate-800" id="stat-revenue-week">0đ</p>
                 </div>
               </div>
-              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span class="text-xs text-slate-400">So với tháng trước</span>
-                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-600" id="orders-change">
-                  <i class="fas fa-arrow-up text-[10px]"></i><span>0%</span>
-                </span>
+              <div class="mt-3 pt-3 border-t border-slate-100">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-slate-400">Số đơn trong tuần:</span>
+                  <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-100 text-blue-600" id="week-orders-count">
+                    <i class="fas fa-shopping-bag text-[10px] mr-1"></i><span>0 đơn</span>
+                  </span>
+                </div>
               </div>
             </div>
             
-            <!-- Khách hàng -->
+            <!-- Số đơn hàng tháng -->
             <div class="stat-card bg-white rounded-2xl shadow-lg border border-slate-100 p-5">
               <div class="flex items-start justify-between">
                 <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
-                  <i class="fas fa-users text-white text-xl"></i>
+                  <i class="fas fa-shopping-cart text-white text-xl"></i>
                 </div>
                 <div class="text-right">
-                  <p class="text-xs text-slate-500 font-medium mb-1">Khách hàng mới</p>
-                  <p class="text-2xl font-extrabold text-slate-800" id="stat-customers">0</p>
+                  <p class="text-xs text-slate-500 font-medium mb-1">Đơn hàng tháng này</p>
+                  <p class="text-2xl font-extrabold text-slate-800" id="stat-orders">0</p>
                 </div>
               </div>
-              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span class="text-xs text-slate-400">So với tháng trước</span>
-                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-600" id="customers-change">
-                  <i class="fas fa-arrow-up text-[10px]"></i><span>0%</span>
-                </span>
+              <div class="mt-3 pt-3 border-t border-slate-100">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs text-slate-400">Tháng trước:</span>
+                  <span class="text-xs font-semibold text-slate-600" id="orders-last-month">0 đơn</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-slate-400">So sánh:</span>
+                  <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-600" id="orders-change">
+                    <i class="fas fa-arrow-up text-[10px]"></i><span>0%</span>
+                  </span>
+                </div>
               </div>
             </div>
             
@@ -301,15 +319,137 @@
                   <i class="fas fa-box-open text-white text-xl"></i>
                 </div>
                 <div class="text-right">
-                  <p class="text-xs text-slate-500 font-medium mb-1">Sản phẩm đã bán</p>
+                  <p class="text-xs text-slate-500 font-medium mb-1">SP bán tháng này</p>
                   <p class="text-2xl font-extrabold text-slate-800" id="stat-products-sold">0</p>
                 </div>
               </div>
-              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span class="text-xs text-slate-400">So với tháng trước</span>
-                <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-600" id="products-change">
-                  <i class="fas fa-arrow-up text-[10px]"></i><span>0%</span>
-                </span>
+              <div class="mt-3 pt-3 border-t border-slate-100">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs text-slate-400">Tháng trước:</span>
+                  <span class="text-xs font-semibold text-slate-600" id="products-last-month">0 SP</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-slate-400">So sánh:</span>
+                  <span class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-600" id="products-change">
+                    <i class="fas fa-arrow-up text-[10px]"></i><span>0%</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 1.5: Bộ lọc tháng -->
+          <div class="chart-card rounded-2xl shadow-lg p-5 mb-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+                  <i class="fas fa-filter text-blue-500"></i>
+                  Xem doanh thu theo tháng
+                </h3>
+                <p class="text-sm text-slate-400 mt-1">Chọn tháng để xem chi tiết doanh thu và sản phẩm đã bán</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <select id="filter-month" class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer">
+                  <option value="1">Tháng 1</option>
+                  <option value="2">Tháng 2</option>
+                  <option value="3">Tháng 3</option>
+                  <option value="4">Tháng 4</option>
+                  <option value="5">Tháng 5</option>
+                  <option value="6">Tháng 6</option>
+                  <option value="7">Tháng 7</option>
+                  <option value="8">Tháng 8</option>
+                  <option value="9">Tháng 9</option>
+                  <option value="10">Tháng 10</option>
+                  <option value="11">Tháng 11</option>
+                  <option value="12">Tháng 12</option>
+                </select>
+                <select id="filter-year" class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer">
+                </select>
+                <button onclick="loadMonthlyStats()" class="btn-primary px-5 py-2.5 rounded-xl text-white text-sm font-medium flex items-center gap-2">
+                  <i class="fas fa-search"></i>
+                  Xem
+                </button>
+                <button onclick="resetToCurrentMonth()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 text-sm font-medium transition-colors">
+                  <i class="fas fa-undo"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 1.6: Thống kê tháng đã chọn -->
+          <div id="monthly-stats-section" class="hidden mb-6">
+            <div class="chart-card rounded-2xl shadow-lg p-5 border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+                  <i class="fas fa-chart-bar text-blue-500"></i>
+                  Thống kê tháng <span id="selected-month-label" class="text-blue-600"></span>
+                </h3>
+                <button onclick="hideMonthlyStats()" class="p-2 hover:bg-white rounded-lg transition-colors">
+                  <i class="fas fa-times text-slate-400"></i>
+                </button>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                  <p class="text-xs text-slate-500 mb-1">Doanh thu</p>
+                  <p class="text-xl font-bold text-blue-600" id="monthly-revenue">0đ</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                  <p class="text-xs text-slate-500 mb-1">Số đơn hàng</p>
+                  <p class="text-xl font-bold text-emerald-600" id="monthly-orders">0</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                  <p class="text-xs text-slate-500 mb-1">Sản phẩm đã bán</p>
+                  <p class="text-xl font-bold text-amber-600" id="monthly-products-sold">0</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                  <p class="text-xs text-slate-500 mb-1">Giá trị TB/đơn</p>
+                  <p class="text-xl font-bold text-violet-600" id="monthly-avg-order">0đ</p>
+                </div>
+              </div>
+              <!-- Danh sách sản phẩm đã bán trong tháng -->
+              <div class="mt-4">
+                <h4 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                  <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  Top sản phẩm bán chạy trong tháng
+                </h4>
+                <div class="overflow-y-auto max-h-64 bg-white rounded-xl p-3" id="monthly-products-list">
+                  <div class="text-center py-6 text-slate-400">Chọn tháng để xem</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 1.7: Chi tiết doanh thu tháng hiện tại -->
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5 mb-6">
+            <!-- Sản phẩm bán được tháng này -->
+            <div class="chart-card rounded-2xl shadow-lg p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                  <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                  Sản phẩm bán được tháng này
+                </h3>
+                <span class="text-xs text-slate-400" id="current-month-label">Tháng 1/2026</span>
+              </div>
+              <div class="overflow-y-auto max-h-64" id="products-sold-this-month">
+                <div class="text-center py-8 text-slate-400">
+                  <i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...
+                </div>
+              </div>
+            </div>
+            
+            <!-- Sản phẩm bán được tháng trước -->
+            <div class="chart-card rounded-2xl shadow-lg p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                  <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  Sản phẩm bán được tháng trước
+                </h3>
+                <span class="text-xs text-slate-400" id="last-month-label">Tháng 12/2025</span>
+              </div>
+              <div class="overflow-y-auto max-h-64" id="products-sold-last-month">
+                <div class="text-center py-8 text-slate-400">
+                  <i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...
+                </div>
               </div>
             </div>
           </div>
@@ -323,7 +463,7 @@
                   Biểu đồ doanh thu
                 </h3>
                 <p class="text-sm text-slate-400 mt-1">
-                  <span id="revenue-total-display">0d</span>
+                  <span id="revenue-total-display">0đ</span>
                   <span id="revenue-change-display" class="ml-2 text-emerald-500">↑ 0%</span>
                 </p>
               </div>
@@ -814,6 +954,11 @@
         <div id="section-customers" class="section-content">
           <div class="flex items-center justify-between mb-6">
             <input type="text" id="customer-search" placeholder="Tìm kiếm Khách hàng..." class="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64" onkeyup="searchCustomers()">
+            <select id="customer-status-filter" onchange="filterCustomersByStatus()" class="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Tất cả trạng thái</option>
+              <option value="active">Hoạt động</option>
+              <option value="locked">Đã khóa</option>
+            </select>
           </div>
           <div class="chart-card rounded-2xl shadow-lg overflow-hidden">
             <div class="overflow-x-auto">
@@ -826,11 +971,13 @@
                     <th class="px-4 py-3 font-semibold">SĐT</th>
                     <th class="px-4 py-3 font-semibold">Số đơn</th>
                     <th class="px-4 py-3 font-semibold">Tổng chi tiêu</th>
+                    <th class="px-4 py-3 font-semibold">Trạng thái</th>
                     <th class="px-4 py-3 font-semibold">Ngày tạo</th>
+                    <th class="px-4 py-3 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="customers-table-body">
-                  <tr><td colspan="7" class="py-8 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</td></tr>
+                  <tr><td colspan="9" class="py-8 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -951,6 +1098,64 @@
 
         <!-- ==================== CONTACTS SECTION ==================== -->
         <div id="section-contacts" class="section-content">
+          <!-- Thống kê liên hệ -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                  <i class="fas fa-envelope text-amber-600"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500">Mới</p>
+                  <p class="text-xl font-bold text-amber-600" id="contacts-new-count">0</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <i class="fas fa-eye text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500">Đã đọc</p>
+                  <p class="text-xl font-bold text-blue-600" id="contacts-read-count">0</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
+                  <i class="fas fa-check-circle text-emerald-600"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500">Đã phản hồi</p>
+                  <p class="text-xl font-bold text-emerald-600" id="contacts-replied-count">0</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
+                  <i class="fas fa-inbox text-slate-600"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500">Tổng cộng</p>
+                  <p class="text-xl font-bold text-slate-600" id="contacts-total-count">0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bộ lọc -->
+          <div class="flex items-center gap-3 mb-4">
+            <select id="contacts-filter" onchange="filterContacts()" class="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="">Tất cả trạng thái</option>
+              <option value="new">Mới</option>
+              <option value="read">Đã đọc</option>
+              <option value="replied">Đã phản hồi</option>
+            </select>
+          </div>
+          
           <div class="chart-card rounded-2xl shadow-lg overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
@@ -959,13 +1164,14 @@
                     <th class="px-4 py-3 font-semibold">Họ tên</th>
                     <th class="px-4 py-3 font-semibold">Email</th>
                     <th class="px-4 py-3 font-semibold">SĐT</th>
-                    <th class="px-4 py-3 font-semibold">Nội dung</th>
+                    <th class="px-4 py-3 font-semibold">Chủ đề</th>
                     <th class="px-4 py-3 font-semibold">Ngày gửi</th>
                     <th class="px-4 py-3 font-semibold">Trạng thái</th>
+                    <th class="px-4 py-3 font-semibold text-center">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="contacts-table-body">
-                  <tr><td colspan="6" class="py-8 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</td></tr>
+                  <tr><td colspan="7" class="py-8 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1012,10 +1218,14 @@
                 </select>
               </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Giá bán <span class="text-red-500">*</span></label>
-                <input type="number" id="product-price" required min="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="VD: 29990000">
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Giá gốc <span class="text-red-500">*</span></label>
+                <input type="number" id="product-price" required min="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="VD: 34990000">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Giá giảm</label>
+                <input type="number" id="product-discount-price" min="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="VD: 29990000">
               </div>
               <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Số lượng tồn</label>
@@ -1233,6 +1443,44 @@
           <label class="block text-sm font-semibold text-slate-700 mb-2">Tiêu đề <span class="text-red-500">*</span></label>
           <input type="text" id="news-title" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Nhập tiêu đề bài viết...">
         </div>
+        
+        <!-- Loại tin và Trạng thái -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Loại tin <span class="text-red-500">*</span></label>
+            <select id="news-category" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white">
+              <option value="thuong">📰 Tin thường</option>
+              <option value="noi_bat">⭐ Tin nổi bật</option>
+              <option value="khuyen_mai">🎁 Khuyến mãi</option>
+              <option value="su_kien">📅 Sự kiện</option>
+              <option value="huong_dan">📖 Hướng dẫn</option>
+              <option value="danh_gia">⭐ Đánh giá sản phẩm</option>
+              <option value="meo_hay">💡 Mẹo hay</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Trạng thái</label>
+            <select id="news-status" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white">
+              <option value="hien_thi">✅ Hiển thị</option>
+              <option value="an">🔒 Ẩn</option>
+              <option value="nhap">📝 Bản nháp</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Thứ tự và Mô tả ngắn -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Thứ tự ưu tiên</label>
+            <input type="number" id="news-order" min="0" value="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="0">
+            <p class="text-xs text-slate-400 mt-1">Số càng lớn càng ưu tiên</p>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Mô tả ngắn (tùy chọn)</label>
+            <input type="text" id="news-short-desc" maxlength="500" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Tóm tắt nội dung bài viết...">
+          </div>
+        </div>
+
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-2">Ảnh đại diện</label>
           <div class="flex items-center gap-4">
@@ -1322,6 +1570,41 @@
     </div>
   </div>
 
+  <!-- Modal Hủy đơn đặt cọc -->
+  <div id="cancel-deposit-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[60] p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-amber-500 to-orange-600 rounded-t-2xl">
+        <h3 class="text-lg font-bold text-white"><i class="fas fa-hand-holding-usd mr-2"></i>Hủy đơn đặt cọc</h3>
+        <button onclick="closeCancelDepositModal()" class="text-white/80 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <div class="p-6">
+        <input type="hidden" id="cancel-deposit-order-id">
+        
+        <!-- Thông tin hoàn tiền -->
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-info-circle text-amber-600"></i>
+            <span class="font-semibold text-amber-800">Thông tin hoàn tiền</span>
+          </div>
+          <div class="text-sm text-amber-700 space-y-1">
+            <p>Tiền đặt cọc: <strong id="cancel-deposit-amount">0đ</strong></p>
+            <p>Số tiền hoàn lại (80%): <strong class="text-emerald-600" id="cancel-deposit-refund">0đ</strong></p>
+            <p class="text-xs text-amber-600 mt-2">* Mất 20% phí xử lý do hủy sau khi đã xác nhận cọc</p>
+          </div>
+        </div>
+        
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Lý do hủy đơn</label>
+        <textarea id="cancel-deposit-reason" placeholder="Nhập lý do hủy đơn..." class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500" rows="3"></textarea>
+      </div>
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50 rounded-b-2xl">
+        <button onclick="closeCancelDepositModal()" class="px-6 py-2.5 border border-slate-300 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-100">Đóng</button>
+        <button onclick="confirmCancelDepositOrder()" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-medium">
+          <i class="fas fa-times mr-2"></i>Xác nhận hủy & Hoàn tiền
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal Gửi Thông báo -->
   <div id="notification-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
@@ -1370,6 +1653,82 @@
     </div>
   </div>
 
+  <!-- Modal Chi tiết Liên hệ & Phản hồi -->
+  <div id="contact-detail-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl my-8">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-t-2xl">
+        <div>
+          <h3 class="text-lg font-bold text-white">Chi tiết Liên hệ</h3>
+          <p class="text-white/70 text-sm" id="contact-detail-date"></p>
+        </div>
+        <button onclick="closeContactDetailModal()" class="text-white/80 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <div class="p-6" id="contact-detail-content">
+        <!-- Thông tin khách hàng -->
+        <div class="bg-slate-50 rounded-xl p-4 mb-4">
+          <h4 class="font-semibold text-slate-700 mb-3 flex items-center gap-2">
+            <i class="fas fa-user text-emerald-500"></i> Thông tin người gửi
+          </h4>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span class="text-slate-500">Họ tên:</span>
+              <span class="font-medium text-slate-800 ml-2" id="contact-name"></span>
+            </div>
+            <div>
+              <span class="text-slate-500">Email:</span>
+              <span class="font-medium text-slate-800 ml-2" id="contact-email"></span>
+            </div>
+            <div>
+              <span class="text-slate-500">SĐT:</span>
+              <span class="font-medium text-slate-800 ml-2" id="contact-phone"></span>
+            </div>
+            <div>
+              <span class="text-slate-500">Trạng thái:</span>
+              <span class="ml-2" id="contact-status-badge"></span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Nội dung liên hệ -->
+        <div class="bg-blue-50 rounded-xl p-4 mb-4">
+          <h4 class="font-semibold text-slate-700 mb-2 flex items-center gap-2">
+            <i class="fas fa-envelope text-blue-500"></i> Chủ đề: <span id="contact-subject" class="text-blue-600"></span>
+          </h4>
+          <p class="text-slate-700 whitespace-pre-wrap" id="contact-message"></p>
+          
+          <!-- Ảnh đính kèm -->
+          <div id="contact-images-container" class="mt-4 hidden">
+            <h5 class="text-sm font-medium text-slate-600 mb-2">Ảnh đính kèm:</h5>
+            <div id="contact-images" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+        
+        <!-- Lịch sử phản hồi -->
+        <div id="contact-responses-container" class="mb-4 hidden">
+          <h4 class="font-semibold text-slate-700 mb-3 flex items-center gap-2">
+            <i class="fas fa-comments text-purple-500"></i> Lịch sử phản hồi
+          </h4>
+          <div id="contact-responses" class="space-y-3 max-h-48 overflow-y-auto"></div>
+        </div>
+        
+        <!-- Form phản hồi -->
+        <div class="border-t border-slate-200 pt-4">
+          <h4 class="font-semibold text-slate-700 mb-3 flex items-center gap-2">
+            <i class="fas fa-reply text-emerald-500"></i> Gửi phản hồi
+          </h4>
+          <input type="hidden" id="contact-id">
+          <textarea id="contact-response-text" rows="4" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none" placeholder="Nhập nội dung phản hồi cho khách hàng..."></textarea>
+          <div class="flex items-center justify-end gap-3 mt-3">
+            <button onclick="closeContactDetailModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-100">Đóng</button>
+            <button onclick="sendContactResponse()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium flex items-center gap-2">
+              <i class="fas fa-paper-plane"></i> Gửi phản hồi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ==================== GLOBAL VARIABLES ====================
     const API_URL = 'http://localhost:3000/api';
@@ -1379,6 +1738,7 @@
     let currentOrderTab = 'all';
     let currentViewingOrderId = null;
     let allNotifications = [];
+    let adminInfo = null; // Biến lưu thông tin admin hiện tại
 
     // ==================== INITIALIZATION ====================
     document.addEventListener('DOMContentLoaded', async () => {
@@ -1396,6 +1756,7 @@
         // Parse và hiển thị thông tin admin
         try {
           const admin = JSON.parse(adminData);
+          adminInfo = admin; // Lưu vào biến toàn cục để sử dụng ở các hàm khác
           if (admin.ho_ten) {
             document.getElementById('admin-name').textContent = admin.ho_ten;
           }
@@ -1665,6 +2026,10 @@
         if (overviewData.success) {
           updateOverviewStats(overviewData.data);
           updateRecentOrders(overviewData.data.recentOrders);
+          
+          // Render sản phẩm đã bán tháng này và tháng trước
+          renderProductsSoldList('products-sold-this-month', overviewData.data.productsSoldThisMonth);
+          renderProductsSoldList('products-sold-last-month', overviewData.data.productsSoldLastMonth);
         }
 
         // Load revenue data
@@ -1683,12 +2048,120 @@
         if (inventoryData.success) {
           updateInventoryData(inventoryData.data);
         }
+        
+        // Initialize month filter
+        initMonthFilter();
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         // Hiển thị Thông báo lỗi nhưng vẫn cho phép xem giao diện
         document.getElementById('recent-orders-table').innerHTML = '<tr><td colspan="5" class="py-8 text-center text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Không thể kết nối server. Vui lòng kiểm tra backend đang chạy.</td></tr>';
         document.getElementById('low-stock-table').innerHTML = '<tr><td colspan="5" class="py-8 text-center text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Không thể tải dữ liệu</td></tr>';
+        document.getElementById('products-sold-this-month').innerHTML = '<div class="text-center py-6 text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Lỗi tải dữ liệu</div>';
+        document.getElementById('products-sold-last-month').innerHTML = '<div class="text-center py-6 text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Lỗi tải dữ liệu</div>';
       }
+    }
+
+    // ==================== MONTHLY STATS FILTER ====================
+    function initMonthFilter() {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1;
+      const currentYear = currentDate.getFullYear();
+      
+      // Set default month
+      document.getElementById('filter-month').value = currentMonth;
+      
+      // Populate year dropdown (current year and 5 years back)
+      const yearSelect = document.getElementById('filter-year');
+      yearSelect.innerHTML = '';
+      for (let y = currentYear; y >= currentYear - 5; y--) {
+        const option = document.createElement('option');
+        option.value = y;
+        option.textContent = y;
+        if (y === currentYear) option.selected = true;
+        yearSelect.appendChild(option);
+      }
+    }
+    
+    async function loadMonthlyStats() {
+      const month = document.getElementById('filter-month').value;
+      const year = document.getElementById('filter-year').value;
+      
+      if (!month || !year) {
+        showToast('Vui lòng chọn tháng và năm', 'error');
+        return;
+      }
+      
+      try {
+        // Show loading
+        document.getElementById('monthly-stats-section').classList.remove('hidden');
+        document.getElementById('monthly-products-list').innerHTML = '<div class="text-center py-6 text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</div>';
+        
+        const res = await fetch(`${API_URL}/admin/dashboard/monthly-stats?month=${month}&year=${year}`);
+        const data = await res.json();
+        
+        if (data.success) {
+          // Update label
+          document.getElementById('selected-month-label').textContent = `${month}/${year}`;
+          
+          // Update stats
+          document.getElementById('monthly-revenue').textContent = formatCurrency(data.data.revenue);
+          document.getElementById('monthly-orders').textContent = data.data.orders;
+          document.getElementById('monthly-products-sold').textContent = data.data.productsSold;
+          document.getElementById('monthly-avg-order').textContent = formatCurrency(data.data.avgOrderValue);
+          
+          // Render products list
+          renderMonthlyProductsList(data.data.topProducts);
+          
+          // Scroll to section
+          document.getElementById('monthly-stats-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          showToast(`Đã tải thống kê tháng ${month}/${year}`, 'success');
+        } else {
+          showToast('Lỗi: ' + data.message, 'error');
+        }
+      } catch (error) {
+        console.error('Error loading monthly stats:', error);
+        showToast('Không thể kết nối server', 'error');
+        document.getElementById('monthly-products-list').innerHTML = '<div class="text-center py-6 text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Lỗi tải dữ liệu</div>';
+      }
+    }
+    
+    function renderMonthlyProductsList(products) {
+      const container = document.getElementById('monthly-products-list');
+      
+      if (!products || products.length === 0) {
+        container.innerHTML = '<div class="text-center py-6 text-slate-400"><i class="fas fa-box-open mr-2"></i>Không có sản phẩm nào được bán trong tháng này</div>';
+        return;
+      }
+      
+      container.innerHTML = products.map((p, index) => `
+        <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 ${index > 0 ? 'border-t border-slate-100' : ''}">
+          <div class="w-8 h-8 rounded-lg ${index < 3 ? 'bg-gradient-to-br from-amber-400 to-orange-500' : 'bg-slate-100'} flex items-center justify-center text-xs font-bold ${index < 3 ? 'text-white' : 'text-slate-500'}">
+            ${index + 1}
+          </div>
+          <img src="${p.anh_dai_dien || 'images/placeholder.svg'}" class="w-10 h-10 rounded-lg object-cover" onerror="this.src='images/placeholder.svg'">
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 truncate">${p.ten_sp}</p>
+            <p class="text-xs text-slate-400">${p.brand || 'N/A'}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm font-bold text-emerald-600">${formatCurrency(p.revenue)}</p>
+            <p class="text-xs text-slate-400">${p.quantity} SP</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function hideMonthlyStats() {
+      document.getElementById('monthly-stats-section').classList.add('hidden');
+    }
+    
+    function resetToCurrentMonth() {
+      const currentDate = new Date();
+      document.getElementById('filter-month').value = currentDate.getMonth() + 1;
+      document.getElementById('filter-year').value = currentDate.getFullYear();
+      hideMonthlyStats();
+      showToast('Đã reset về tháng hiện tại', 'info');
     }
 
     async function loadRevenueData(period) {
@@ -1737,22 +2210,59 @@
     }
 
     function updateOverviewStats(data) {
-      // Revenue
+      // Revenue tháng này
       document.getElementById('stat-revenue').textContent = formatCurrency(data.revenue.current);
+      document.getElementById('revenue-last-month').textContent = formatCurrency(data.revenue.previous);
       updateChangeIndicator('revenue-change', data.revenue.change);
+
+      // Revenue tuần
+      document.getElementById('stat-revenue-week').textContent = formatCurrency(data.revenue.week || 0);
+      document.getElementById('week-orders-count').innerHTML = `<i class="fas fa-shopping-bag text-[10px] mr-1"></i><span>${data.revenue.weekOrders || 0} đơn</span>`;
 
       // Orders
       document.getElementById('stat-orders').textContent = data.orders.current;
+      document.getElementById('orders-last-month').textContent = `${data.orders.previous} đơn`;
       updateChangeIndicator('orders-change', data.orders.change);
       document.getElementById('pending-count').textContent = data.orders.pending;
 
-      // Customers
-      document.getElementById('stat-customers').textContent = data.customers.current;
-      updateChangeIndicator('customers-change', data.customers.change);
-
       // Products sold
       document.getElementById('stat-products-sold').textContent = data.products.sold_current;
+      document.getElementById('products-last-month').textContent = `${data.products.sold_previous} SP`;
       updateChangeIndicator('products-change', data.products.change);
+      
+      // Update month labels từ API
+      if (data.currentMonthLabel) {
+        document.getElementById('current-month-label').textContent = `Tháng ${data.currentMonthLabel.month}/${data.currentMonthLabel.year}`;
+      }
+      if (data.lastMonthLabel) {
+        document.getElementById('last-month-label').textContent = `Tháng ${data.lastMonthLabel.month}/${data.lastMonthLabel.year}`;
+      }
+    }
+    
+    // Hàm render danh sách sản phẩm đã bán
+    function renderProductsSoldList(containerId, products) {
+      const container = document.getElementById(containerId);
+      if (!products || products.length === 0) {
+        container.innerHTML = '<div class="text-center py-6 text-slate-400"><i class="fas fa-box-open mr-2"></i>Chưa có sản phẩm nào được bán</div>';
+        return;
+      }
+      
+      container.innerHTML = products.map((p, index) => `
+        <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 ${index > 0 ? 'border-t border-slate-100' : ''}">
+          <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
+            ${index + 1}
+          </div>
+          <img src="${p.anh_dai_dien || 'images/placeholder.svg'}" class="w-10 h-10 rounded-lg object-cover" onerror="this.src='images/placeholder.svg'">
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 truncate">${p.ten_sp}</p>
+            <p class="text-xs text-slate-400">${p.brand || 'N/A'}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm font-bold text-emerald-600">${formatCurrency(p.revenue)}</p>
+            <p class="text-xs text-slate-400">${p.quantity} SP</p>
+          </div>
+        </div>
+      `).join('');
     }
 
     function updateChangeIndicator(elementId, change) {
@@ -1972,7 +2482,6 @@
     function editProduct(productId) {
       showSection('products');
       // TODO: Open edit modal for product
-      console.log('Edit product:', productId);
     }
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -2221,16 +2730,38 @@
 
       container.innerHTML = orders.map(order => {
         const statusConfig = getOrderStatusConfig(order.trang_thai);
+        const depositInfo = order.depositInfo;
+        
+        // Kiểm tra xem có phải đơn đặt cọc không (từ cột loai_don hoặc depositInfo)
+        const isDepositOrder = order.loai_don === 'deposit' || (depositInfo && depositInfo.isDeposit);
+        const depositAmount = order.tien_dat_coc || (depositInfo ? depositInfo.depositAmount : 0);
+        const remainingAmount = order.tien_con_lai || (depositInfo ? depositInfo.remainingAmount : 0);
+        const depositConfirmed = order.trang_thai_coc === 'confirmed' || (depositInfo && depositInfo.depositStatus === 'success');
+        
+        // Hiển thị thông tin đặt cọc nếu có
+        let depositBadge = '';
+        if (isDepositOrder) {
+          const depositStatusClass = depositConfirmed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+          const depositStatusText = depositConfirmed ? 'Đã xác nhận cọc' : 'Chờ xác nhận cọc';
+          depositBadge = `
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${depositStatusClass}">
+              <i class="fas fa-hand-holding-usd mr-1"></i>${depositStatusText}: ${formatCurrency(depositAmount)}
+            </span>
+          `;
+        }
+        
         return `
-          <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow ${isDepositOrder ? 'border-l-4 border-l-amber-400' : ''}">
             <!-- Order Header -->
             <div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
               <div class="flex items-center gap-4">
                 <span class="font-bold text-slate-800">#${order.ma_don}</span>
+                ${isDepositOrder ? '<span class="text-amber-500 text-xs font-semibold bg-amber-50 px-2 py-0.5 rounded">ĐẶT CỌC</span>' : ''}
                 <span class="text-slate-400">|</span>
                 <span class="text-sm text-slate-500"><i class="far fa-clock mr-1"></i>${formatDate(order.thoi_gian)}</span>
               </div>
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2">
+                ${depositBadge}
                 <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.bgClass} ${statusConfig.textClass}">
                   <i class="${statusConfig.icon} mr-1"></i>${statusConfig.label}
                 </span>
@@ -2262,8 +2793,24 @@
                     <p class="font-medium text-slate-700">${order.so_san_pham || 1} SP</p>
                   </div>
                   <div class="text-center">
-                    <p class="text-xs text-slate-500">Tổng tiền</p>
-                    <p class="font-bold text-red-600 text-lg">${formatCurrency(order.tong_tien)}</p>
+                    ${isDepositOrder ? `
+                      ${(order.trang_thai === 'completed' || order.trang_thai === 'delivered') ? `
+                        <p class="text-xs text-slate-500">Tổng tiền</p>
+                        <p class="font-bold text-emerald-600 text-lg">${formatCurrency(order.tong_tien)}</p>
+                        <p class="text-xs text-emerald-500">✓ Đã thu đủ</p>
+                      ` : depositConfirmed ? `
+                        <p class="text-xs text-slate-500">Đã cọc (50%)</p>
+                        <p class="font-bold text-emerald-600 text-lg">${formatCurrency(depositAmount)}</p>
+                        <p class="text-xs text-amber-500">Còn thu: ${formatCurrency(remainingAmount)}</p>
+                      ` : `
+                        <p class="text-xs text-slate-500">Chờ cọc (50%)</p>
+                        <p class="font-bold text-amber-600 text-lg">${formatCurrency(depositAmount)}</p>
+                        <p class="text-xs text-amber-500">⏳ Chờ xác nhận</p>
+                      `}
+                    ` : `
+                      <p class="text-xs text-slate-500">Tổng tiền</p>
+                      <p class="font-bold text-red-600 text-lg">${formatCurrency(order.tong_tien)}</p>
+                    `}
                   </div>
                 </div>
               </div>
@@ -2304,8 +2851,17 @@
         'COD': '<span class="text-amber-600"><i class="fas fa-money-bill-wave mr-1"></i>COD</span>',
         'MOMO': '<span class="text-pink-600"><i class="fas fa-wallet mr-1"></i>MoMo</span>',
         'VNPAY': '<span class="text-blue-600"><i class="fas fa-credit-card mr-1"></i>VNPay</span>',
-        'ZaloPay': '<span class="text-blue-500"><i class="fas fa-wallet mr-1"></i>ZaloPay</span>'
+        'ZaloPay': '<span class="text-blue-500"><i class="fas fa-wallet mr-1"></i>ZaloPay</span>',
+        'BANK_DEPOSIT': '<span class="text-emerald-600"><i class="fas fa-university mr-1"></i>Đặt cọc 50%</span>',
+        'COD_REMAINING': '<span class="text-amber-600"><i class="fas fa-money-bill-wave mr-1"></i>Còn lại (COD)</span>'
       };
+      
+      // Kiểm tra nếu là phương thức đặt cọc
+      if (method.toUpperCase().includes('_DEPOSIT')) {
+        const baseMethod = method.replace('_DEPOSIT', '');
+        return `<span class="text-emerald-600"><i class="fas fa-hand-holding-usd mr-1"></i>Cọc (${baseMethod})</span>`;
+      }
+      
       for (const [key, badge] of Object.entries(badges)) {
         if (method.toUpperCase().includes(key.toUpperCase())) return badge;
       }
@@ -2314,17 +2870,32 @@
 
     function getQuickActionButtons(order) {
       const status = order.trang_thai;
+      const depositInfo = order.depositInfo;
+      const isDepositOrder = order.loai_don === 'deposit' || (depositInfo && depositInfo.isDeposit);
+      const depositConfirmed = order.trang_thai_coc === 'confirmed' || (depositInfo && depositInfo.depositStatus === 'success');
       let buttons = '';
       
       if (status === 'pending') {
-        buttons = `
-          <button onclick="quickUpdateStatus(${order.ma_don}, 'confirmed')" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-medium transition-colors">
-            <i class="fas fa-check mr-1"></i>Xác nhận
-          </button>
-          <button onclick="showCancelOrderModal(${order.ma_don})" class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors">
-            <i class="fas fa-times mr-1"></i>Hủy
-          </button>
-        `;
+        // Nếu là đơn đặt cọc và chưa xác nhận cọc
+        if (isDepositOrder && !depositConfirmed) {
+          buttons = `
+            <button onclick="confirmDeposit(${order.ma_don})" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm font-medium transition-colors">
+              <i class="fas fa-hand-holding-usd mr-1"></i>Xác nhận cọc
+            </button>
+            <button onclick="showCancelDepositOrderModal(${order.ma_don}, ${order.tien_dat_coc || 0})" class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors">
+              <i class="fas fa-times mr-1"></i>Hủy
+            </button>
+          `;
+        } else {
+          buttons = `
+            <button onclick="quickUpdateStatus(${order.ma_don}, 'confirmed')" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-medium transition-colors">
+              <i class="fas fa-check mr-1"></i>Xác nhận
+            </button>
+            <button onclick="showCancelOrderModal(${order.ma_don})" class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors">
+              <i class="fas fa-times mr-1"></i>Hủy
+            </button>
+          `;
+        }
       } else if (status === 'confirmed') {
         buttons = `
           <button onclick="quickUpdateStatus(${order.ma_don}, 'shipping')" class="px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm font-medium transition-colors">
@@ -2332,14 +2903,115 @@
           </button>
         `;
       } else if (status === 'shipping') {
-        buttons = `
-          <button onclick="quickUpdateStatus(${order.ma_don}, 'completed')" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-medium transition-colors">
-            <i class="fas fa-check-double mr-1"></i>Hoàn thành
-          </button>
-        `;
+        // Nếu là đơn đặt cọc, hiện nút thu tiền còn lại
+        if (isDepositOrder) {
+          buttons = `
+            <button onclick="completeDepositOrder(${order.ma_don})" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-medium transition-colors">
+              <i class="fas fa-money-bill-wave mr-1"></i>Thu tiền còn lại & Hoàn thành
+            </button>
+          `;
+        } else {
+          buttons = `
+            <button onclick="quickUpdateStatus(${order.ma_don}, 'completed')" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-medium transition-colors">
+              <i class="fas fa-check-double mr-1"></i>Hoàn thành
+            </button>
+          `;
+        }
       }
       
       return buttons;
+    }
+
+    // Xác nhận đã nhận tiền đặt cọc
+    async function confirmDeposit(orderId) {
+      if (!confirm('Xác nhận đã nhận tiền đặt cọc 50% cho đơn hàng này?')) return;
+      
+      try {
+        const res = await fetch(`${API_URL}/orders/${orderId}/confirm-deposit`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adminId: adminInfo?.ma_admin || null })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Đã xác nhận cọc ${formatCurrency(data.data?.depositAmount || 0)}. Đơn hàng chuyển sang xử lý!`, 'success');
+          loadOrders();
+          loadDashboardData();
+        } else {
+          showToast('Lỗi: ' + data.message, 'error');
+        }
+      } catch (error) {
+        console.error('Error confirming deposit:', error);
+        showToast('Lỗi kết nối server', 'error');
+      }
+    }
+
+    // Hoàn thành đơn đặt cọc (thu tiền còn lại)
+    async function completeDepositOrder(orderId) {
+      if (!confirm('Xác nhận đã thu tiền còn lại (50%) và hoàn thành đơn hàng?')) return;
+      
+      try {
+        const res = await fetch(`${API_URL}/orders/${orderId}/complete-remaining`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adminId: adminInfo?.ma_admin || null })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Đơn hàng hoàn thành! Tổng thu: ${formatCurrency(data.data?.totalAmount || 0)}`, 'success');
+          loadOrders();
+          loadDashboardData();
+        } else {
+          showToast('Lỗi: ' + data.message, 'error');
+        }
+      } catch (error) {
+        console.error('Error completing deposit order:', error);
+        showToast('Lỗi kết nối server', 'error');
+      }
+    }
+
+    // Hủy đơn đặt cọc
+    function showCancelDepositOrderModal(orderId, depositAmount) {
+      const refund80 = Math.floor(depositAmount * 0.8);
+      document.getElementById('cancel-deposit-order-id').value = orderId;
+      document.getElementById('cancel-deposit-amount').textContent = formatCurrency(depositAmount);
+      document.getElementById('cancel-deposit-refund').textContent = formatCurrency(refund80);
+      document.getElementById('cancel-deposit-reason').value = '';
+      document.getElementById('cancel-deposit-modal').classList.remove('hidden');
+      document.getElementById('cancel-deposit-modal').classList.add('flex');
+    }
+
+    function closeCancelDepositModal() {
+      document.getElementById('cancel-deposit-modal').classList.add('hidden');
+      document.getElementById('cancel-deposit-modal').classList.remove('flex');
+    }
+
+    async function confirmCancelDepositOrder() {
+      const orderId = document.getElementById('cancel-deposit-order-id').value;
+      const reason = document.getElementById('cancel-deposit-reason').value || 'Admin hủy đơn';
+      
+      try {
+        const res = await fetch(`${API_URL}/orders/${orderId}/cancel-deposit`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            isAdmin: true,
+            cancelReason: reason
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeCancelDepositModal();
+          showToast(`Đã hủy đơn. Hoàn lại: ${formatCurrency(data.data?.refundAmount || 0)}`, 'success');
+          loadOrders();
+          loadDashboardData();
+        } else {
+          showToast('Lỗi: ' + data.message, 'error');
+        }
+      } catch (error) {
+        console.error('Error cancelling deposit order:', error);
+        showToast('Lỗi kết nối server', 'error');
+      }
     }
 
     async function quickUpdateStatus(orderId, status) {
@@ -2679,6 +3351,7 @@
       const name = document.getElementById('product-name').value.trim();
       const brand = document.getElementById('product-brand').value;
       const price = document.getElementById('product-price').value;
+      const discountPrice = document.getElementById('product-discount-price').value;
       const stock = document.getElementById('product-stock').value || 0;
       const storage = document.getElementById('product-storage').value;
       const colors = document.getElementById('product-colors').value;
@@ -2712,6 +3385,7 @@
         ten_sp: name,
         ma_hang: brand,
         gia: parseFloat(price),
+        gia_giam: discountPrice ? parseFloat(discountPrice) : null,
         so_luong_ton: parseInt(stock),
         bo_nho: storage,
         mau_sac: JSON.stringify(colorArray),
@@ -2786,6 +3460,7 @@
         document.getElementById('product-name').value = product.ten_sp || '';
         document.getElementById('product-brand').value = product.ma_hang || '';
         document.getElementById('product-price').value = product.gia || '';
+        document.getElementById('product-discount-price').value = product.gia_giam || '';
         document.getElementById('product-stock').value = product.so_luong_ton || 0;
         document.getElementById('product-storage').value = product.bo_nho || '128GB';
         document.getElementById('product-description').value = product.mo_ta || '';
@@ -2801,11 +3476,9 @@
               existingGalleryImages = galleryData.images;
               renderGalleryPreview();
             }
-          } else {
-            console.log('Gallery API không khả dụng, bỏ qua');
           }
         } catch (e) {
-          console.log('Không load được gallery:', e.message);
+          // Bỏ qua lỗi gallery
           // Không hiển thị lỗi, chỉ bỏ qua
         }
 
@@ -2837,7 +3510,7 @@
             }
           }
         } catch (e) {
-          console.log('Không load được specs:', e.message);
+          // Bỏ qua lỗi specs
         }
 
         document.getElementById('product-modal').classList.remove('hidden');
@@ -3001,40 +3674,208 @@
         }
       } catch (error) {
         console.error('Error loading customers:', error);
-        document.getElementById('customers-table-body').innerHTML = '<tr><td colspan="7" class="py-8 text-center text-red-400">Lỗi tải dữ liệu</td></tr>';
+        document.getElementById('customers-table-body').innerHTML = '<tr><td colspan="9" class="py-8 text-center text-red-400">Lỗi tải dữ liệu</td></tr>';
       }
     }
 
     function renderCustomers(customers) {
       const tbody = document.getElementById('customers-table-body');
       if (!customers || customers.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-400">Không có Khách hàng nào</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="py-8 text-center text-slate-400">Không có Khách hàng nào</td></tr>';
         return;
       }
       tbody.innerHTML = customers.map(c => `
-        <tr class="border-b border-slate-100 hover:bg-slate-50">
+        <tr class="border-b border-slate-100 hover:bg-slate-50 ${c.trang_thai === 'locked' ? 'bg-red-50' : ''}">
           <td class="px-4 py-3">
             <img src="${c.avt || `https://ui-avatars.com/api/?name=${encodeURIComponent(c.ho_ten || 'U')}&background=3b82f6&color=fff`}" 
-                 class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=U&background=3b82f6&color=fff'">
+                 class="w-10 h-10 rounded-full object-cover ${c.trang_thai === 'locked' ? 'opacity-50' : ''}" onerror="this.src='https://ui-avatars.com/api/?name=U&background=3b82f6&color=fff'">
           </td>
-          <td class="px-4 py-3 font-medium">${c.ho_ten || 'N/A'}</td>
-          <td class="px-4 py-3">${c.email || 'N/A'}</td>
-          <td class="px-4 py-3">${c.so_dt || 'N/A'}</td>
+          <td class="px-4 py-3 font-medium ${c.trang_thai === 'locked' ? 'text-slate-400' : ''}">${c.ho_ten || 'N/A'}</td>
+          <td class="px-4 py-3 ${c.trang_thai === 'locked' ? 'text-slate-400' : ''}">${c.email || 'N/A'}</td>
+          <td class="px-4 py-3 ${c.trang_thai === 'locked' ? 'text-slate-400' : ''}">${c.so_dt || 'N/A'}</td>
           <td class="px-4 py-3 font-semibold">${c.so_don_hang || 0}</td>
           <td class="px-4 py-3 font-semibold text-emerald-600">${formatCurrency(c.tong_chi_tieu)}</td>
+          <td class="px-4 py-3">
+            ${c.trang_thai === 'locked' 
+              ? '<span class="px-2 py-1 bg-red-100 text-red-600 rounded-full text-xs font-medium"><i class="fas fa-lock mr-1"></i>Đã khóa</span>'
+              : '<span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs font-medium"><i class="fas fa-check-circle mr-1"></i>Hoạt động</span>'
+            }
+          </td>
           <td class="px-4 py-3 text-slate-500 text-xs">${formatDate(c.ngay_tao)}</td>
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-2">
+              <button onclick="viewCustomerDetail(${c.ma_kh})" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Xem chi tiết">
+                <i class="fas fa-eye"></i>
+              </button>
+              ${c.trang_thai === 'locked'
+                ? `<button onclick="toggleCustomerStatus(${c.ma_kh}, 'active')" class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition" title="Mở khóa tài khoản">
+                    <i class="fas fa-unlock"></i>
+                  </button>`
+                : `<button onclick="toggleCustomerStatus(${c.ma_kh}, 'locked')" class="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition" title="Khóa tài khoản">
+                    <i class="fas fa-lock"></i>
+                  </button>`
+              }
+              <button onclick="deleteCustomer(${c.ma_kh})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Xóa khách hàng">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
         </tr>
       `).join('');
     }
 
     function searchCustomers() {
       const search = document.getElementById('customer-search').value.toLowerCase();
-      const filtered = allCustomers.filter(c => 
+      const statusFilter = document.getElementById('customer-status-filter')?.value || '';
+      let filtered = allCustomers.filter(c => 
         (c.ho_ten && c.ho_ten.toLowerCase().includes(search)) ||
         (c.email && c.email.toLowerCase().includes(search)) ||
         (c.so_dt && c.so_dt.includes(search))
       );
+      if (statusFilter) {
+        filtered = filtered.filter(c => c.trang_thai === statusFilter);
+      }
       renderCustomers(filtered);
+    }
+
+    function filterCustomersByStatus() {
+      searchCustomers();
+    }
+
+    async function toggleCustomerStatus(customerId, newStatus) {
+      const action = newStatus === 'locked' ? 'khóa' : 'mở khóa';
+      if (!confirm(`Bạn có chắc muốn ${action} tài khoản này?`)) return;
+      
+      try {
+        const res = await fetch(`${API_URL}/admin/customers/${customerId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Đã ${action} tài khoản thành công`, 'success');
+          loadCustomers();
+        } else {
+          showToast(data.message || 'Có lỗi xảy ra', 'error');
+        }
+      } catch (error) {
+        console.error('Error toggling customer status:', error);
+        showToast('Lỗi kết nối server', 'error');
+      }
+    }
+
+    async function deleteCustomer(customerId) {
+      if (!confirm('Bạn có chắc muốn xóa khách hàng này? Hành động này không thể hoàn tác!')) return;
+      
+      try {
+        const res = await fetch(`${API_URL}/admin/customers/${customerId}`, {
+          method: 'DELETE'
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Đã xóa khách hàng thành công', 'success');
+          loadCustomers();
+        } else {
+          showToast(data.message || 'Có lỗi xảy ra', 'error');
+        }
+      } catch (error) {
+        console.error('Error deleting customer:', error);
+        showToast('Lỗi kết nối server', 'error');
+      }
+    }
+
+    async function viewCustomerDetail(customerId) {
+      try {
+        const res = await fetch(`${API_URL}/admin/customers/${customerId}`);
+        const data = await res.json();
+        if (data.success) {
+          const c = data.data;
+          const ordersList = c.orders && c.orders.length > 0 
+            ? c.orders.map(o => `
+                <div class="flex justify-between items-center py-2 border-b border-slate-100">
+                  <span class="font-medium">#${o.ma_don}</span>
+                  <span>${formatCurrency(o.tong_tien)}</span>
+                  <span class="text-xs">${getStatusBadge(o.trang_thai)}</span>
+                </div>
+              `).join('')
+            : '<p class="text-slate-400 text-sm">Chưa có đơn hàng nào</p>';
+          
+          const modalContent = `
+            <div class="text-center mb-6">
+              <img src="${c.avt || `https://ui-avatars.com/api/?name=${encodeURIComponent(c.ho_ten || 'U')}&background=3b82f6&color=fff&size=100`}" 
+                   class="w-24 h-24 rounded-full mx-auto mb-3 object-cover" onerror="this.src='https://ui-avatars.com/api/?name=U&background=3b82f6&color=fff'">
+              <h3 class="text-xl font-bold">${c.ho_ten || 'N/A'}</h3>
+              <p class="text-slate-500">${c.email || 'N/A'}</p>
+              ${c.trang_thai === 'locked' 
+                ? '<span class="inline-block mt-2 px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm"><i class="fas fa-lock mr-1"></i>Tài khoản đã bị khóa</span>'
+                : '<span class="inline-block mt-2 px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm"><i class="fas fa-check-circle mr-1"></i>Tài khoản hoạt động</span>'
+              }
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+              <div class="bg-slate-50 p-3 rounded-xl">
+                <p class="text-xs text-slate-500">Số điện thoại</p>
+                <p class="font-semibold">${c.so_dt || 'Chưa cập nhật'}</p>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl">
+                <p class="text-xs text-slate-500">Giới tính</p>
+                <p class="font-semibold">${c.gioi_tinh === 'nam' ? 'Nam' : c.gioi_tinh === 'nu' ? 'Nữ' : 'Khác'}</p>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl">
+                <p class="text-xs text-slate-500">Tổng đơn hàng</p>
+                <p class="font-semibold text-blue-600">${c.so_don_hang || 0} đơn</p>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl">
+                <p class="text-xs text-slate-500">Tổng chi tiêu</p>
+                <p class="font-semibold text-emerald-600">${formatCurrency(c.tong_chi_tieu)}</p>
+              </div>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-3">Đơn hàng gần đây</h4>
+              <div class="max-h-48 overflow-y-auto">
+                ${ordersList}
+              </div>
+            </div>
+          `;
+          
+          showCustomModal('Chi tiết khách hàng', modalContent);
+        }
+      } catch (error) {
+        console.error('Error viewing customer detail:', error);
+        showToast('Lỗi tải thông tin khách hàng', 'error');
+      }
+    }
+
+    function showCustomModal(title, content) {
+      // Remove existing modal if any
+      const existingModal = document.getElementById('custom-modal');
+      if (existingModal) existingModal.remove();
+      
+      const modal = document.createElement('div');
+      modal.id = 'custom-modal';
+      modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50';
+      modal.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-hidden">
+          <div class="flex items-center justify-between p-4 border-b border-slate-200">
+            <h3 class="text-lg font-bold text-slate-800">${title}</h3>
+            <button onclick="closeCustomModal()" class="p-2 hover:bg-slate-100 rounded-full transition">
+              <i class="fas fa-times text-slate-500"></i>
+            </button>
+          </div>
+          <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+            ${content}
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeCustomModal();
+      });
+    }
+
+    function closeCustomModal() {
+      const modal = document.getElementById('custom-modal');
+      if (modal) modal.remove();
     }
 
     // ==================== REVIEWS SECTION ====================
@@ -3308,12 +4149,56 @@
         grid.innerHTML = '<div class="text-center py-8 text-slate-400 col-span-3">Không có Tin tức nào</div>';
         return;
       }
+      
+      // Hàm lấy tên loại tin
+      const getLoaiTinLabel = (loai) => {
+        const labels = {
+          'noi_bat': '⭐ Nổi bật',
+          'thuong': '📰 Tin thường',
+          'khuyen_mai': '🎁 Khuyến mãi',
+          'su_kien': '📅 Sự kiện',
+          'huong_dan': '📖 Hướng dẫn',
+          'danh_gia': '⭐ Đánh giá',
+          'meo_hay': '💡 Mẹo hay'
+        };
+        return labels[loai] || '📰 Tin thường';
+      };
+      
+      // Hàm lấy màu badge loại tin
+      const getLoaiTinColor = (loai) => {
+        const colors = {
+          'noi_bat': 'bg-amber-100 text-amber-700',
+          'thuong': 'bg-slate-100 text-slate-700',
+          'khuyen_mai': 'bg-green-100 text-green-700',
+          'su_kien': 'bg-blue-100 text-blue-700',
+          'huong_dan': 'bg-purple-100 text-purple-700',
+          'danh_gia': 'bg-orange-100 text-orange-700',
+          'meo_hay': 'bg-pink-100 text-pink-700'
+        };
+        return colors[loai] || 'bg-slate-100 text-slate-700';
+      };
+      
+      // Hàm lấy trạng thái
+      const getTrangThaiLabel = (status) => {
+        const labels = {
+          'hien_thi': '<span class="text-green-600">✅ Hiển thị</span>',
+          'an': '<span class="text-red-600">🔒 Ẩn</span>',
+          'nhap': '<span class="text-yellow-600">📝 Nháp</span>'
+        };
+        return labels[status] || labels['hien_thi'];
+      };
+      
       grid.innerHTML = news.map(n => `
         <div class="chart-card rounded-xl overflow-hidden">
-          <img src="${n.anh_dai_dien || 'images/placeholder.svg'}" class="w-full h-40 object-cover" onerror="this.src='images/placeholder.svg'">
+          <div class="relative">
+            <img src="${n.anh_dai_dien || 'images/placeholder.svg'}" class="w-full h-40 object-cover" onerror="this.src='images/placeholder.svg'">
+            <span class="absolute top-2 left-2 px-2 py-1 text-xs font-medium rounded-lg ${getLoaiTinColor(n.loai_tin)}">${getLoaiTinLabel(n.loai_tin)}</span>
+            ${n.trang_thai !== 'hien_thi' ? `<span class="absolute top-2 right-2 px-2 py-1 text-xs font-medium rounded-lg bg-red-100 text-red-700">${n.trang_thai === 'an' ? '🔒 Ẩn' : '📝 Nháp'}</span>` : ''}
+          </div>
           <div class="p-4">
             <h4 class="font-bold text-slate-800 mb-2">${truncateText(n.tieu_de, 50)}</h4>
-            <p class="text-sm text-slate-500 mb-3">${formatDate(n.ngay_dang)}</p>
+            <p class="text-sm text-slate-500 mb-1">${formatDate(n.ngay_dang)}</p>
+            <p class="text-xs text-slate-400 mb-3">👁 ${n.luot_xem || 0} lượt xem</p>
             <div class="flex gap-2">
               <button onclick="editNews(${n.ma_tin || n.ma_tintuc})" class="px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"><i class="fas fa-edit mr-1"></i>Sửa</button>
               <button onclick="deleteNews(${n.ma_tin || n.ma_tintuc})" class="px-3 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"><i class="fas fa-trash mr-1"></i>Xóa</button>
@@ -3345,6 +4230,10 @@
       document.getElementById('news-id').value = '';
       document.getElementById('news-image-preview').src = 'images/placeholder.svg';
       document.getElementById('news-image-url').value = '';
+      document.getElementById('news-category').value = 'thuong';
+      document.getElementById('news-status').value = 'hien_thi';
+      document.getElementById('news-order').value = '0';
+      document.getElementById('news-short-desc').value = '';
       
       document.getElementById('news-modal').classList.remove('hidden');
       document.getElementById('news-modal').classList.add('flex');
@@ -3391,6 +4280,10 @@
       const title = document.getElementById('news-title').value.trim();
       const content = document.getElementById('news-content').value.trim();
       const video = document.getElementById('news-video').value.trim();
+      const loaiTin = document.getElementById('news-category').value;
+      const trangThai = document.getElementById('news-status').value;
+      const thuTu = parseInt(document.getElementById('news-order').value) || 0;
+      const moTaNgan = document.getElementById('news-short-desc').value.trim();
 
       if (!title || !content) {
         alert('Vui lòng điền đầy đủ tiêu đề và nội dung!');
@@ -3410,6 +4303,10 @@
         noi_dung: content,
         anh_dai_dien: imageUrl,
         video_url: video || null,
+        loai_tin: loaiTin,
+        trang_thai: trangThai,
+        thu_tu: thuTu,
+        mo_ta_ngan: moTaNgan || null,
         ma_admin: 1 // Default admin ID
       };
 
@@ -3448,6 +4345,19 @@
       document.getElementById('news-video').value = news.video_url || '';
       document.getElementById('news-image-preview').src = news.anh_dai_dien || 'images/placeholder.svg';
       document.getElementById('news-image-url').value = news.anh_dai_dien || '';
+      
+      // Set loại tin - đảm bảo giá trị hợp lệ
+      const loaiTinSelect = document.getElementById('news-category');
+      const validLoaiTin = ['thuong', 'noi_bat', 'khuyen_mai', 'su_kien', 'huong_dan', 'danh_gia', 'meo_hay'];
+      loaiTinSelect.value = (news.loai_tin && validLoaiTin.includes(news.loai_tin)) ? news.loai_tin : 'thuong';
+      
+      // Set trạng thái - đảm bảo giá trị hợp lệ
+      const trangThaiSelect = document.getElementById('news-status');
+      const validTrangThai = ['hien_thi', 'an', 'nhap'];
+      trangThaiSelect.value = (news.trang_thai && validTrangThai.includes(news.trang_thai)) ? news.trang_thai : 'hien_thi';
+      
+      document.getElementById('news-order').value = news.thu_tu || 0;
+      document.getElementById('news-short-desc').value = news.mo_ta_ngan || '';
       
       document.getElementById('news-modal').classList.remove('hidden');
       document.getElementById('news-modal').classList.add('flex');
@@ -3570,8 +4480,19 @@
             <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-4 text-white">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-slate-400 text-sm">Tổng thanh toán</p>
-                  <p class="text-2xl font-bold">${formatCurrency(order.tong_tien)}</p>
+                  ${order.depositInfo && order.depositInfo.isDeposit ? `
+                    ${(order.trang_thai === 'completed' || order.trang_thai === 'delivered') ? `
+                      <p class="text-emerald-400 text-sm">Tổng tiền (Đã thu đủ)</p>
+                      <p class="text-2xl font-bold text-emerald-400">${formatCurrency(order.tong_tien)}</p>
+                    ` : `
+                      <p class="text-amber-400 text-sm">Đã cọc (50%)</p>
+                      <p class="text-2xl font-bold text-amber-400">${formatCurrency(order.depositInfo.depositAmount)}</p>
+                      <p class="text-xs text-slate-400 mt-1">Còn thu khi giao: ${formatCurrency(order.depositInfo.remainingAmount)}</p>
+                    `}
+                  ` : `
+                    <p class="text-slate-400 text-sm">Tổng thanh toán</p>
+                    <p class="text-2xl font-bold">${formatCurrency(order.tong_tien)}</p>
+                  `}
                 </div>
                 <div class="text-right">
                   <p class="text-slate-400 text-sm">Mã đơn hàng</p>
@@ -3579,6 +4500,31 @@
                 </div>
               </div>
             </div>
+
+            ${order.depositInfo && order.depositInfo.isDeposit ? `
+              <!-- Deposit Info -->
+              <div class="mt-4 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-4">
+                <p class="text-sm font-semibold text-emerald-700 mb-3 flex items-center gap-2">
+                  <i class="fas fa-hand-holding-usd"></i>Thông tin đặt cọc 50%
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-white rounded-lg p-3 border border-emerald-100">
+                    <p class="text-xs text-slate-500 mb-1">Số tiền đã cọc</p>
+                    <p class="font-bold text-emerald-600 text-lg">${formatCurrency(order.depositInfo.depositAmount)}</p>
+                    <p class="text-xs mt-1 ${order.depositInfo.depositStatus === 'success' ? 'text-emerald-600' : 'text-amber-600'}">
+                      ${order.depositInfo.depositStatus === 'success' ? '<i class="fas fa-check-circle mr-1"></i>Đã thanh toán' : '<i class="fas fa-clock mr-1"></i>Chờ thanh toán'}
+                    </p>
+                  </div>
+                  <div class="bg-white rounded-lg p-3 border border-amber-100">
+                    <p class="text-xs text-slate-500 mb-1">Số tiền còn lại (COD)</p>
+                    <p class="font-bold text-amber-600 text-lg">${formatCurrency(order.depositInfo.remainingAmount)}</p>
+                    <p class="text-xs mt-1 ${order.depositInfo.remainingStatus === 'success' ? 'text-emerald-600' : 'text-amber-600'}">
+                      ${order.depositInfo.remainingStatus === 'success' ? '<i class="fas fa-check-circle mr-1"></i>Đã thanh toán' : '<i class="fas fa-clock mr-1"></i>Thanh toán khi nhận hàng'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
 
             ${order.ly_do_huy ? `
               <div class="mt-4 bg-red-50 border border-red-200 rounded-xl p-4">
@@ -3685,39 +4631,229 @@
     }
 
     // ==================== CONTACTS SECTION ====================
+    let allContacts = [];
+    
     async function loadContacts() {
       try {
         const res = await fetch(`${API_URL}/admin/contacts`);
         const data = await res.json();
         if (data.success) {
-          renderContacts(data.data);
+          allContacts = data.data;
+          renderContacts(allContacts);
+          updateContactStats();
         }
       } catch (error) {
         console.error('Error loading contacts:', error);
-        document.getElementById('contacts-table-body').innerHTML = '<tr><td colspan="6" class="py-8 text-center text-red-400">Lỗi tải dữ liệu</td></tr>';
+        document.getElementById('contacts-table-body').innerHTML = '<tr><td colspan="7" class="py-8 text-center text-red-400">Lỗi tải dữ liệu</td></tr>';
+      }
+    }
+    
+    function updateContactStats() {
+      const newCount = allContacts.filter(c => c.trang_thai === 'new').length;
+      const readCount = allContacts.filter(c => c.trang_thai === 'read').length;
+      const repliedCount = allContacts.filter(c => c.trang_thai === 'replied').length;
+      
+      document.getElementById('contacts-new-count').textContent = newCount;
+      document.getElementById('contacts-read-count').textContent = readCount;
+      document.getElementById('contacts-replied-count').textContent = repliedCount;
+      document.getElementById('contacts-total-count').textContent = allContacts.length;
+      document.getElementById('new-contact-count').textContent = newCount;
+    }
+    
+    function filterContacts() {
+      const filter = document.getElementById('contacts-filter').value;
+      if (!filter) {
+        renderContacts(allContacts);
+      } else {
+        renderContacts(allContacts.filter(c => c.trang_thai === filter));
       }
     }
 
     function renderContacts(contacts) {
       const tbody = document.getElementById('contacts-table-body');
       if (!contacts || contacts.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Không có Liên hệ nào</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-400">Không có Liên hệ nào</td></tr>';
         return;
       }
-      tbody.innerHTML = contacts.map(c => `
-        <tr class="border-b border-slate-100 hover:bg-slate-50">
+      tbody.innerHTML = contacts.map(c => {
+        // Kiểm tra có ảnh đính kèm không
+        let hasImages = false;
+        try {
+          const imgs = typeof c.hinh_anh === 'string' ? JSON.parse(c.hinh_anh) : c.hinh_anh;
+          hasImages = imgs && Array.isArray(imgs) && imgs.length > 0;
+        } catch(e) {}
+        
+        return `
+        <tr class="border-b border-slate-100 hover:bg-slate-50 ${c.trang_thai === 'new' ? 'bg-amber-50' : ''}">
           <td class="px-4 py-3 font-medium">${c.ho_ten || 'N/A'}</td>
           <td class="px-4 py-3">${c.email || 'N/A'}</td>
           <td class="px-4 py-3">${c.so_dien_thoai || 'N/A'}</td>
-          <td class="px-4 py-3 text-slate-600">${truncateText(c.noi_dung, 50)}</td>
+          <td class="px-4 py-3 text-slate-600">
+            ${c.tieu_de || 'Không có chủ đề'}
+            ${hasImages ? '<i class="fas fa-image text-blue-500 ml-2" title="Có ảnh đính kèm"></i>' : ''}
+          </td>
           <td class="px-4 py-3 text-slate-500 text-xs">${formatDate(c.ngay_gui)}</td>
           <td class="px-4 py-3">
             <span class="px-2 py-1 rounded-full text-xs font-medium ${c.trang_thai === 'replied' ? 'bg-emerald-100 text-emerald-600' : c.trang_thai === 'read' ? 'bg-blue-100 text-blue-600' : 'bg-amber-100 text-amber-600'}">
               ${c.trang_thai === 'replied' ? 'Đã phản hồi' : c.trang_thai === 'read' ? 'Đã đọc' : 'Mới'}
             </span>
           </td>
+          <td class="px-4 py-3 text-center">
+            <button onclick="viewContactDetail(${c.ma_lien_he})" class="px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-600 rounded-lg text-xs font-medium transition-colors">
+              <i class="fas fa-eye mr-1"></i>Xem & Phản hồi
+            </button>
+          </td>
         </tr>
-      `).join('');
+      `}).join('');
+    }
+    
+    async function viewContactDetail(contactId) {
+      try {
+        // Lấy chi tiết liên hệ
+        const res = await fetch(`${API_URL}/admin/contacts/${contactId}`);
+        const data = await res.json();
+        
+        if (!data.success) {
+          alert('Không thể tải thông tin liên hệ');
+          return;
+        }
+        
+        const contact = data.data;
+        
+        // Điền thông tin
+        document.getElementById('contact-id').value = contactId;
+        document.getElementById('contact-detail-date').textContent = formatDate(contact.ngay_gui);
+        document.getElementById('contact-name').textContent = contact.ho_ten || 'N/A';
+        document.getElementById('contact-email').textContent = contact.email || 'N/A';
+        document.getElementById('contact-phone').textContent = contact.so_dien_thoai || 'N/A';
+        document.getElementById('contact-subject').textContent = contact.tieu_de || 'Không có chủ đề';
+        document.getElementById('contact-message').textContent = contact.noi_dung || '';
+        
+        // Trạng thái
+        const statusBadge = document.getElementById('contact-status-badge');
+        if (contact.trang_thai === 'replied') {
+          statusBadge.innerHTML = '<span class="px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-600">Đã phản hồi</span>';
+        } else if (contact.trang_thai === 'read') {
+          statusBadge.innerHTML = '<span class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600">Đã đọc</span>';
+        } else {
+          statusBadge.innerHTML = '<span class="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600">Mới</span>';
+        }
+        
+        // Ảnh đính kèm
+        const imagesContainer = document.getElementById('contact-images-container');
+        const imagesDiv = document.getElementById('contact-images');
+        if (contact.hinh_anh) {
+          try {
+            // Xử lý cả trường hợp hinh_anh là string JSON hoặc đã là array
+            let images = contact.hinh_anh;
+            if (typeof images === 'string') {
+              images = JSON.parse(images);
+            }
+            if (images && Array.isArray(images) && images.length > 0) {
+              imagesDiv.innerHTML = images.map(img => `
+                <a href="${img}" target="_blank" class="block">
+                  <img src="${img}" alt="Ảnh đính kèm" class="w-20 h-20 object-cover rounded-lg border border-slate-200 hover:border-blue-400 transition-colors" onerror="this.src='images/placeholder.svg'">
+                </a>
+              `).join('');
+              imagesContainer.classList.remove('hidden');
+            } else {
+              imagesContainer.classList.add('hidden');
+            }
+          } catch(e) {
+            console.error('Error parsing images:', e);
+            imagesContainer.classList.add('hidden');
+          }
+        } else {
+          imagesContainer.classList.add('hidden');
+        }
+        
+        // Lấy lịch sử phản hồi
+        const responsesContainer = document.getElementById('contact-responses-container');
+        const responsesDiv = document.getElementById('contact-responses');
+        try {
+          const resResponses = await fetch(`${API_URL}/admin/contacts/${contactId}/responses`);
+          const dataResponses = await resResponses.json();
+          
+          if (dataResponses.success && dataResponses.data && dataResponses.data.length > 0) {
+            responsesDiv.innerHTML = dataResponses.data.map(r => `
+              <div class="bg-purple-50 rounded-lg p-3 border-l-4 border-purple-400">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-medium text-purple-600">
+                    <i class="fas fa-user-shield mr-1"></i>${r.admin_name || 'Admin'}
+                  </span>
+                  <span class="text-xs text-slate-500">${formatDate(r.ngay_phan_hoi)}</span>
+                </div>
+                <p class="text-sm text-slate-700">${r.noi_dung_phan_hoi}</p>
+              </div>
+            `).join('');
+            responsesContainer.classList.remove('hidden');
+          } else {
+            responsesContainer.classList.add('hidden');
+          }
+        } catch(e) {
+          responsesContainer.classList.add('hidden');
+        }
+        
+        // Reset form phản hồi
+        document.getElementById('contact-response-text').value = '';
+        
+        // Hiển thị modal
+        document.getElementById('contact-detail-modal').classList.remove('hidden');
+        document.getElementById('contact-detail-modal').classList.add('flex');
+        
+        // Cập nhật lại danh sách (vì trạng thái có thể đã thay đổi thành 'read')
+        loadContacts();
+        
+      } catch (error) {
+        console.error('Error loading contact detail:', error);
+        alert('Có lỗi xảy ra khi tải thông tin liên hệ');
+      }
+    }
+    
+    function closeContactDetailModal() {
+      document.getElementById('contact-detail-modal').classList.add('hidden');
+      document.getElementById('contact-detail-modal').classList.remove('flex');
+    }
+    
+    async function sendContactResponse() {
+      const contactId = document.getElementById('contact-id').value;
+      const responseText = document.getElementById('contact-response-text').value.trim();
+      
+      if (!responseText) {
+        alert('Vui lòng nhập nội dung phản hồi');
+        return;
+      }
+      
+      try {
+        // Lấy thông tin admin
+        let adminId = null;
+        try {
+          const adminData = JSON.parse(localStorage.getItem('adminData'));
+          adminId = adminData?.ma_admin;
+        } catch(e) {}
+        
+        const res = await fetch(`${API_URL}/admin/contacts/${contactId}/response`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            noi_dung_phan_hoi: responseText,
+            ma_admin: adminId
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          alert('Phản hồi đã được gửi thành công! Khách hàng sẽ nhận được thông báo.');
+          closeContactDetailModal();
+          loadContacts();
+        } else {
+          alert(data.message || 'Có lỗi xảy ra khi gửi phản hồi');
+        }
+      } catch (error) {
+        console.error('Error sending response:', error);
+        alert('Có lỗi xảy ra khi gửi phản hồi');
+      }
     }
 
     // ==================== SECTION SWITCHING WITH DATA LOADING ====================
@@ -3867,6 +5003,144 @@
     function exportData(type) {
       alert(`Xuất dữ liệu ${type} - Tính năng đang phát triển`);
     }
+
+    // ==================== SETTINGS MODAL ====================
+    
+    // Biến lưu trạng thái cài đặt
+    let shopSettings = {
+      hideStockFromCustomer: false
+    };
+    
+    // Load cài đặt khi trang load
+    async function loadSettings() {
+      try {
+        const res = await fetch(`${API_URL}/admin/settings`);
+        
+        // Kiểm tra content-type trước khi parse JSON
+        const contentType = res.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          console.warn('Settings API không trả về JSON, sử dụng giá trị mặc định');
+          return;
+        }
+        
+        if (!res.ok) {
+          console.warn('Settings API lỗi:', res.status);
+          return;
+        }
+        
+        const data = await res.json();
+        if (data.success) {
+          shopSettings = data.data;
+          updateSettingsUI();
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    }
+    
+    // Cập nhật UI theo cài đặt
+    function updateSettingsUI() {
+      const toggle = document.getElementById('hide-stock-toggle');
+      if (toggle) {
+        toggle.checked = shopSettings.hideStockFromCustomer;
+      }
+    }
+    
+    // Mở modal cài đặt
+    function openSettingsModal() {
+      const modal = document.getElementById('settings-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        updateSettingsUI();
+      }
+    }
+    
+    // Đóng modal cài đặt
+    function closeSettingsModal() {
+      const modal = document.getElementById('settings-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    }
+    
+    // Toggle ẩn/hiện tồn kho
+    async function toggleHideStock() {
+      const toggle = document.getElementById('hide-stock-toggle');
+      const newValue = toggle.checked;
+      
+      try {
+        const res = await fetch(`${API_URL}/admin/settings`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hideStockFromCustomer: newValue })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          shopSettings.hideStockFromCustomer = newValue;
+          showToast(newValue ? 'Đã ẩn số lượng tồn kho với khách hàng' : 'Đã hiển thị số lượng tồn kho với khách hàng', 'success');
+        } else {
+          toggle.checked = !newValue; // Rollback
+          showToast('Lỗi cập nhật cài đặt', 'error');
+        }
+      } catch (error) {
+        toggle.checked = !newValue; // Rollback
+        showToast('Lỗi kết nối server', 'error');
+      }
+    }
+    
+    // Load settings khi trang load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSettings();
+    });
   </script>
+  
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="fas fa-cog"></i> Cài đặt hiển thị
+          </h3>
+          <button onclick="closeSettingsModal()" class="text-white/80 hover:text-white transition">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="p-6">
+        <!-- Toggle ẩn tồn kho -->
+        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-eye-slash text-amber-600"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-800">Ẩn số lượng tồn kho</p>
+              <p class="text-xs text-slate-500">Không hiển thị số lượng tồn kho cho khách hàng</p>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="hide-stock-toggle" class="sr-only peer" onchange="toggleHideStock()">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+          </label>
+        </div>
+        
+        <div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <p class="text-sm text-blue-800">
+            <i class="fas fa-info-circle mr-1"></i>
+            <strong>Lưu ý:</strong> Khi bật tính năng này, khách hàng sẽ không thấy số lượng tồn kho nhưng hệ thống vẫn kiểm tra và không cho phép đặt quá số lượng có sẵn.
+          </p>
+        </div>
+      </div>
+      
+      <div class="px-6 py-4 bg-slate-50 border-t border-slate-200">
+        <button onclick="closeSettingsModal()" class="w-full py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

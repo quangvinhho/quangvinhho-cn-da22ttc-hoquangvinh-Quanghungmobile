@@ -90,10 +90,16 @@
   <div id="header-placeholder"></div>
 
   <!-- Spacer for fixed header - Responsive -->
-  <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+  <div class="h-[70px]"></div>
+
+  <!-- Background Layer kéo dài hiệu ứng màu đỏ từ Header - Cải thiện sự liền mạch -->
+  <div class="w-full absolute left-0 top-[70px] -z-10 overflow-hidden h-[120px] sm:h-[160px] md:h-[200px] lg:h-[260px] flex justify-center">
+    <!-- Hình dạng bo tròn dưới đáy -->
+    <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] md:rounded-b-[40%] lg:rounded-b-[35%] shadow-sm"></div>
+  </div>
 
   <!-- ===== BANNER QUẢNG CÁO - FULL WIDTH ===== -->
-  <section class="py-2 md:py-3 bg-gray-100">
+  <section class="pt-3 pb-6 md:pt-6 lg:pt-8 bg-transparent relative z-10">
     <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
       
       <!-- Khung chứa tất cả banner -->
@@ -133,7 +139,7 @@
         </div>
 
         <!-- Dưới: 2 Banner nhỏ nằm cạnh nhau -->
-        <div class="grid grid-cols-2 gap-2 bg-gray-50 p-2">
+        <div class="grid grid-cols-2 gap-3 md:gap-4 bg-gray-50 p-3 md:p-4 mt-1 border-t border-gray-100">
           <a href="product-detail.html?id=13" class="block group overflow-hidden rounded-lg">
             <img src="images/H1_1440x242_1_95840a416f.webp" class="w-full h-auto group-hover:scale-[1.02] transition-transform duration-300" alt="Samsung Galaxy A17">
           </a>
@@ -249,23 +255,33 @@
   </script>
 
   <!-- GIÁ SỐC MỖI NGÀY - Load động từ API (5 sản phẩm bán chậm, thay đổi mỗi ngày) -->
-  <section class="py-3 sm:py-4 bg-gray-100 reveal-on-scroll">
+  <section class="py-3 sm:py-4 md:py-5 bg-gray-100 reveal-on-scroll">
     <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
-      <div class="bg-gradient-to-r from-red-600 to-red-500 rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-5 relative overflow-hidden">
+      <!-- Khung đổ bóng mâm xôi -->
+      <div class="bg-gradient-to-br from-[#8b0000] via-[#c90014] to-[#7a000c] p-[8px] md:p-[12px] rounded-[24px] md:rounded-[36px] shadow-[0_15px_40px_rgba(215,0,24,0.3)] relative overflow-hidden">
+        <!-- Nền trắng chứa nội dung -->
+        <div class="bg-white text-gray-800 rounded-[16px] md:rounded-[24px] p-5 sm:p-6 md:p-8 relative h-full w-full">
         
-        <div class="relative z-10">
+        <div class="relative z-10 mb-4 md:mb-4 pb-2 border-b border-gray-100">
           <!-- Header đơn giản -->
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-wide">⚡ GIÁ SỐC MỖI NGÀY</h2>
+          <div class="flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-0">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#d70018] to-red-500 rounded-full flex items-center justify-center shadow-md animate-bounce">
+                 <i class="fas fa-bolt text-yellow-300 text-xl md:text-2xl drop-shadow-md"></i>
+              </div>
+              <h2 class="text-2xl sm:text-3xl md:text-[32px] font-black text-gray-800 tracking-tight uppercase">
+                Giá Sốc <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#d70018] to-red-500">Mỗi Ngày</span>
+              </h2>
+            </div>
             <!-- Countdown Timer -->
-            <div class="flex items-center gap-1.5 bg-white/20 px-2.5 py-1 rounded-full">
-              <span class="text-white/90 text-xs hidden sm:inline">Kết thúc:</span>
-              <div class="flex gap-0.5 items-center" id="countdown-timer">
-                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs" id="hours">00</span>
-                <span class="text-white text-xs">:</span>
-                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs" id="minutes">00</span>
-                <span class="text-white text-xs">:</span>
-                <span class="bg-white text-red-600 font-semibold px-1.5 py-0.5 rounded text-xs" id="seconds">00</span>
+            <div class="flex items-center gap-2.5 bg-gradient-to-r from-red-50 to-white border border-[#d70018]/20 px-4 md:px-5 py-2 md:py-2.5 rounded-full shadow-sm">
+              <span class="text-[#d70018] text-sm font-black uppercase tracking-widest hidden sm:inline">Kết thúc trong</span>
+              <div class="flex gap-1 items-center" id="countdown-timer">
+                <span class="bg-[#d70018] text-white font-extrabold px-3 py-1.5 rounded-lg shadow-inner text-sm md:text-base leading-none" id="hours">00</span>
+                <span class="text-[#d70018] font-black text-lg">:</span>
+                <span class="bg-[#d70018] text-white font-extrabold px-3 py-1.5 rounded-lg shadow-inner text-sm md:text-base leading-none" id="minutes">00</span>
+                <span class="text-[#d70018] font-black text-lg">:</span>
+                <span class="bg-[#d70018] text-white font-extrabold px-3 py-1.5 rounded-lg shadow-inner text-sm md:text-base leading-none" id="seconds">00</span>
               </div>
             </div>
           </div>
@@ -302,6 +318,7 @@
           </div>
         </div>
       </div>
+    </div>
   </section>
 
   <!-- Script load GIÁ SỐC MỖI NGÀY từ API -->
@@ -367,35 +384,35 @@
             }
             
             return `
-              <div class="product-card-hover rounded-xl p-4 bg-white relative group">
-                <a href="product-detail.html?id=${product.id}" class="block">
-                  <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                    <span class="absolute top-0 left-0 ${labelColor} text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">${discountLabel}</span>
-                    <span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-${discountPercent}%</span>
+              <div class="product-card-hover rounded-xl p-5 bg-white relative group flex flex-col justify-between h-full shadow-sm border border-red-100 hover:border-red-400 hover:shadow-md transition-all">
+                <a href="product-detail.html?id=${product.id}" class="flex-1 flex flex-col pt-2">
+                  <div class="relative h-44 sm:h-52 mb-3 overflow-hidden p-0 flex items-center justify-center">
+                    <span class="absolute top-0 left-0 ${labelColor} text-white text-[10px] font-bold px-3 py-1.5 rounded-br-lg z-10 shadow-sm">${discountLabel}</span>
+                    <span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-bl-lg z-10 shadow-sm">-${discountPercent}%</span>
                     <img src="${product.image}" alt="${product.name}" 
                       class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
                       onerror="this.src='images/iphone-17-pro-max-256.jpg'">
                   </div>
-                  <div class="mt-auto flex flex-col gap-2">
-                    <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">${product.name}${storage}</h3>
-                    <div class="price-block flex items-end gap-3">
-                      <div class="text-lg font-black text-red-600 leading-none">${price}</div>
-                      <div class="text-xs text-gray-400 line-through mb-1">${oldPrice}</div>
+                  <div class="flex flex-col gap-1.5 mt-auto">
+                    <h3 class="font-bold text-[13px] sm:text-[14px] text-gray-800 line-clamp-2 min-h-[44px] leading-snug">${product.name}${storage}</h3>
+                    <div class="price-block flex items-end gap-2 mt-1">
+                      <div class="text-base sm:text-lg font-black text-[#d70018] leading-none">${price}</div>
+                      <div class="text-[11px] text-gray-400 line-through mb-0.5">${oldPrice}</div>
                     </div>
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center gap-1 text-yellow-400 text-xs">${stars}</div>
-                      <div class="text-xs text-gray-500">(${reviewCount})</div>
+                    <div class="flex items-center justify-between mt-1">
+                      <div class="flex items-center gap-1 text-yellow-400 text-[10px]">${stars}</div>
+                      <div class="text-[11px] text-gray-500 hidden sm:block">(${reviewCount} đánh giá)</div>
                     </div>
                   </div>
                 </a>
-                <div class="flex gap-2 mt-3">
+                <div class="flex gap-2 mt-3 pt-3 border-t border-gray-100">
                   <a href="product-detail.html?id=${product.id}" 
-                     class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
-                    <i class="fas fa-bolt"></i> Mua ngay
+                     class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2.5 px-3 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                    <i class="fas fa-bolt"></i> Mua Ngay
                   </a>
                   <button onclick="addToCartQuick(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.image}')" 
-                          class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all" title="Thêm vào giỏ">
-                    <i class="fas fa-cart-plus"></i>
+                          class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors" title="Thêm vào giỏ">
+                    <i class="fas fa-cart-plus hover:scale-110 transition-transform"></i>
                   </button>
                 </div>
               </div>
@@ -408,142 +425,19 @@
     })();
   </script>
 
-  <!-- SẢN PHẨM MỚI VỀ - Load động từ API -->
-  <section class="py-3 sm:py-4 bg-gray-50 reveal-on-scroll">
-    <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
-      <div class="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 md:p-5">
-        <!-- Header Section -->
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center gap-3">
-            <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-red-600">📱 SẢN PHẨM MỚI VỀ</h2>
-            <span class="hidden md:inline-flex items-center bg-green-100 text-green-600 text-xs font-semibold px-3 py-1 rounded-full">
-              <i class="fas fa-sparkles mr-1"></i>MỚI NHẤT
-            </span>
-          </div>
-          <a href="products.html" class="text-red-600 hover:text-red-700 text-xs md:text-sm font-medium flex items-center gap-1">
-            Xem tất cả <i class="fas fa-arrow-right"></i>
-          </a>
-        </div>
-
-        <!-- Grid Layout 5 cột - Load động từ API -->
-        <div id="newest-products-grid" class="product-grid-responsive">
-          <!-- Skeleton loading -->
-          <div class="product-card-hover rounded-xl p-4 animate-pulse">
-            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
-            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
-          </div>
-          <div class="product-card-hover rounded-xl p-4 animate-pulse">
-            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
-            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
-          </div>
-          <div class="product-card-hover rounded-xl p-4 animate-pulse">
-            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
-            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
-          </div>
-          <div class="product-card-hover rounded-xl p-4 animate-pulse">
-            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
-            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
-          </div>
-          <div class="product-card-hover rounded-xl p-4 animate-pulse">
-            <div class="h-60 bg-gray-200 rounded-lg mb-2"></div>
-            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
-          </div>
-        </div>
-        
-        <!-- Script load sản phẩm mới về từ API -->
-        <script>
-          (async function loadNewestProducts() {
-            try {
-              // Thêm timestamp để bypass cache
-              const res = await fetch('http://localhost:3000/api/products/newest?limit=5&t=' + Date.now());
-              const data = await res.json();
-              
-              if (data.success && data.data.length > 0) {
-                const grid = document.getElementById('newest-products-grid');
-                grid.innerHTML = data.data.map((product) => {
-                  const price = new Intl.NumberFormat('vi-VN').format(product.price) + '₫';
-                  const oldPrice = new Intl.NumberFormat('vi-VN').format(product.oldPrice) + '₫';
-                  const rating = product.rating || 0;
-                  const reviewCount = product.reviewCount || 0;
-                  const storage = product.storage ? ` ${product.storage}GB` : '';
-                  
-                  // Render stars
-                  let stars = '';
-                  for (let i = 1; i <= 5; i++) {
-                    if (i <= Math.floor(rating)) {
-                      stars += '<i class="fas fa-star"></i>';
-                    } else if (i - 0.5 <= rating) {
-                      stars += '<i class="fas fa-star-half-alt"></i>';
-                    } else {
-                      stars += '<i class="far fa-star"></i>';
-                    }
-                  }
-                  
-                  return `
-                    <div class="product-card-hover rounded-xl p-4 relative group">
-                      <a href="product-detail.html?id=${product.id}" class="block">
-                        <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                          <span class="absolute top-0 left-0 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">
-                            <i class="fas fa-sparkles mr-1"></i>MỚI VỀ
-                          </span>
-                          <img src="${product.image}" alt="${product.name}" 
-                            class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
-                            onerror="this.src='images/iphone-17-pro-max-256.jpg'">
-                        </div>
-                        <div class="mt-auto flex flex-col gap-2">
-                          <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">${product.name}${storage}</h3>
-                          <div class="price-block flex items-end gap-3">
-                            <div class="text-lg font-black text-red-600 leading-none">${price}</div>
-                            <div class="text-xs text-gray-400 line-through mb-1">${oldPrice}</div>
-                          </div>
-                          <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-1 text-yellow-400 text-xs">${stars}</div>
-                            <div class="text-xs text-gray-500">(${reviewCount})</div>
-                          </div>
-                        </div>
-                      </a>
-                      <div class="flex gap-2 mt-3">
-                        <a href="product-detail.html?id=${product.id}" 
-                           class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
-                          <i class="fas fa-bolt"></i> Mua ngay
-                        </a>
-                        <button onclick="event.preventDefault(); addToCartQuick(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.image}')" 
-                                class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center"
-                                title="Thêm vào giỏ">
-                          <i class="fas fa-cart-plus"></i>
-                        </button>
-                      </div>
-                    </div>
-                  `;
-                }).join('');
-              }
-            } catch (e) {
-              console.error('Error loading newest products:', e);
-            }
-          })();
-        </script>
-      </div>
-    </div>
-  </section>
-
   <!-- TOP BÁN CHẠY - Load động từ API sản phẩm bán chạy -->
-  <section class="py-3 sm:py-4 bg-gray-50 reveal-on-scroll">
+  <section class="py-3 sm:py-4 md:py-5 bg-gray-50 reveal-on-scroll">
     <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
       <div class="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 md:p-5">
         <!-- Header Section -->
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 pb-2 border-b border-gray-100 gap-3 sm:gap-0">
           <div class="flex items-center gap-3">
-            <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-red-600">🔥 TOP BÁN CHẠY</h2>
-            <span class="hidden md:inline-flex items-center bg-orange-100 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full animate-pulse">
+            <h2 class="text-2xl sm:text-3xl md:text-3xl font-extrabold text-gray-800 uppercase tracking-tight">🔥 Top Bán Chạy</h2>
+            <span class="hidden md:inline-flex items-center bg-orange-50 border border-orange-200 text-orange-600 text-xs font-bold px-3 py-1.5 rounded-full animate-pulse shadow-sm">
               <i class="fas fa-crown mr-1"></i>BEST SELLER
             </span>
           </div>
-          <a href="products.html" class="text-red-600 hover:text-red-700 text-xs md:text-sm font-medium flex items-center gap-1">
+          <a href="products.html" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 border border-red-100 shadow-sm whitespace-nowrap">
             Xem tất cả <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -618,37 +512,37 @@
                   }
                   
                   return `
-                    <div class="product-card-hover rounded-xl p-4 relative group">
-                      <a href="product-detail.html?id=${product.id}" class="block">
-                        <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
-                          <span class="absolute top-0 left-0 bg-gradient-to-r ${badgeColor} text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">${badge}</span>
-                          ${product.totalSold > 0 ? `<span class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">🔥 ${product.totalSold} đã bán</span>` : ''}
+                    <div class="product-card-hover rounded-xl p-3 relative group flex flex-col justify-between h-full bg-white border border-gray-100 hover:border-red-400">
+                      <a href="product-detail.html?id=${product.id}" class="flex-1 flex flex-col pt-1">
+                        <div class="relative h-44 sm:h-52 mb-3 overflow-hidden p-0 flex items-center justify-center">
+                          <span class="absolute top-0 left-0 bg-gradient-to-r ${badgeColor} text-white text-[9px] font-bold px-2 py-1 rounded-br-lg z-10 shadow-sm">${badge}</span>
+                          ${product.totalSold > 0 ? `<span class="absolute top-0 right-0 bg-red-500 text-white text-[9px] font-bold px-2 py-1 rounded-bl-lg z-10 shadow-sm">🔥 ${product.totalSold} đã bán</span>` : ''}
                           <img src="${product.image}" alt="${product.name}" 
                             class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
                             onerror="this.src='images/iphone-17-pro-max-256.jpg'">
                         </div>
-                        <div class="mt-auto flex flex-col gap-2">
-                          <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">${product.name}${storage}</h3>
-                          <div class="price-block flex items-end gap-3">
-                            <div class="text-lg font-black text-red-600 leading-none">${price}</div>
-                            <div class="text-xs text-gray-400 line-through mb-1">${oldPrice}</div>
+                        <div class="flex flex-col gap-1.5 mt-auto">
+                          <h3 class="font-bold text-[13px] sm:text-[14px] text-gray-800 line-clamp-2 min-h-[40px] leading-snug">${product.name}${storage}</h3>
+                          <div class="price-block flex items-end gap-2 mt-1">
+                            <div class="text-base sm:text-lg font-black text-[#d70018] leading-none">${price}</div>
+                            <div class="text-[11px] text-gray-400 line-through mb-0.5">${oldPrice}</div>
                           </div>
-                          <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-1 text-yellow-400 text-xs">${stars}</div>
-                            <div class="text-xs text-gray-500">(${reviewCount})</div>
+                          <div class="flex items-center justify-between mt-1">
+                            <div class="flex items-center gap-1 text-yellow-400 text-[10px]">${stars}</div>
+                            <div class="text-[11px] text-gray-500 hidden sm:block">(${reviewCount} đánh giá)</div>
                           </div>
                         </div>
                       </a>
                       <!-- Nút Mua ngay và Thêm giỏ hàng -->
-                      <div class="flex gap-2 mt-3">
+                      <div class="flex gap-2 mt-3 pt-3 border-t border-gray-100">
                         <a href="product-detail.html?id=${product.id}" 
-                           class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
-                          <i class="fas fa-bolt"></i> Mua ngay
+                           class="flex-1 bg-[#d70018] hover:bg-red-700 text-white text-center text-[13px] font-semibold py-2 px-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                          <i class="fas fa-bolt"></i> Mua Ngay
                         </a>
                         <button onclick="event.preventDefault(); addToCartQuick(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.image}')" 
-                                class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center"
+                                class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-[13px] font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-center"
                                 title="Thêm vào giỏ">
-                          <i class="fas fa-cart-plus"></i>
+                          <i class="fas fa-cart-plus hover:scale-110 transition-transform"></i>
                         </button>
                       </div>
                     </div>
@@ -778,6 +672,249 @@
               setTimeout(() => toast.remove(), 300);
             }, 3000);
           }
+        </script>
+      </div>
+  <!-- APPLE CHÍNH HÃNG - Load động từ API -->
+  <section class="py-3 sm:py-4 md:py-5 bg-gray-50 reveal-on-scroll">
+    <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
+      <div class="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 md:p-5">
+        <!-- Header Section -->
+        <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between mb-4 pb-2 border-b border-gray-100 gap-4 xl:gap-0">
+          <div class="flex items-center gap-3">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#d70018]">Apple Chính Hãng</h2>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 flex-grow justify-end">
+            <a href="products.html?search=iphone 17" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">iPhone 17 Series</a>
+            <a href="products.html?search=iphone 16" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">iPhone 16 Series</a>
+            <a href="products.html?search=iphone 15" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">iPhone 15 Series</a>
+            <a href="products.html?search=macbook" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">MacBook</a>
+            <a href="products.html?brand=apple" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">Xem tất cả</a>
+          </div>
+        </div>
+
+        <!-- Grid Layout 5 cột - Load động từ API -->
+        <div id="apple-products-grid" class="product-grid-responsive">
+          <!-- Skeleton loading -->
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+            <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+        
+        <!-- Script load Apple -->
+        <script>
+          (async function loadAppleProducts() {
+            try {
+              const res = await fetch('http://localhost:3000/api/products');
+              const data = await res.json();
+              
+              if (data && data.length > 0) {
+                const appleProducts = data.filter(p => (p.brand && p.brand.toLowerCase() === 'apple') || p.name.toLowerCase().includes('iphone') || p.name.toLowerCase().includes('ipad') || p.name.toLowerCase().includes('mac')).slice(0, 5);
+                const grid = document.getElementById('apple-products-grid');
+                
+                if(appleProducts.length > 0) {
+                  grid.innerHTML = appleProducts.map((product, index) => {
+                    const price = new Intl.NumberFormat('vi-VN').format(product.price) + ' ₫';
+                    const oldPrice = new Intl.NumberFormat('vi-VN').format(product.oldPrice) + ' ₫';
+                    const discountPercent = product.oldPrice > product.price ? Math.round((1 - product.price / product.oldPrice) * 100) : 0;
+                    const rating = product.rating || 4.8 + Math.random() * 0.2;
+                    const storage = product.storage ? ` ${product.storage}GB` : '';
+                    const badge = index === 0 ? "BEST SELLER" : "MỚI RA MẮT";
+                    const kPrice = new Intl.NumberFormat('vi-VN').format(product.price/1000) + 'k';
+                    
+                    return `
+                      <div class="product-card-hover rounded-xl p-3 relative group flex flex-col h-full bg-white border border-gray-100 hover:border-red-400 hover:shadow-lg transition-all duration-300">
+                        <!-- Tags trả góp & giảm giá -->
+                        <div class="absolute top-3 left-3 right-3 z-10 flex justify-between pointer-events-none">
+                          <span class="text-[#d70018] border border-[#d70018] text-[9px] font-medium px-1.5 py-0.5 rounded bg-white">Trả góp 0%</span>
+                          ${discountPercent > 0 ? `
+                          <span class="bg-[#d70018] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1"><i class="fas fa-arrow-down text-[8px]"></i> ${discountPercent}%</span>
+                          ` : ''}
+                        </div>
+
+                        <a href="product-detail.html?id=${product.id}" class="flex-1 flex flex-col mt-5 pt-1">
+                          <div class="relative h-40 sm:h-48 mb-3 overflow-hidden p-0 flex items-center justify-center">
+                            <img src="${product.image}" alt="${product.name}" 
+                              class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
+                              onerror="this.src='images/iphone-17-pro-max-256.jpg'">
+                          </div>
+                          
+                          <div class="flex flex-col gap-1 mt-auto text-left">
+                            <div class="mb-1">
+                              <span class="bg-[#d70018] text-white text-[9px] font-bold px-2 py-0.5 rounded-r-md rounded-bl-md inline-block">${badge}</span>
+                            </div>
+                            
+                            <h3 class="text-[13px] sm:text-[14px] font-semibold text-gray-800 line-clamp-2 min-h-[40px] leading-snug">${product.name}${storage} Chính Hãng</h3>
+                            
+                            <div class="text-base sm:text-lg font-bold text-[#d70018] mt-1">${price}</div>
+                            <div class="text-[11px] sm:text-xs text-gray-400 line-through">${oldPrice}</div>
+                            
+                            <div class="bg-gray-50 rounded px-2 py-1.5 mt-1.5 border border-gray-100">
+                              <p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5">Duy nhất ${new Date().getDate()}/${new Date().getMonth()+1} giá chỉ <strong class="text-[#d70018]">${kPrice}</strong></p>
+                              <p class="text-[10px] md:text-[11px] text-gray-600">Trade-in giảm đến <strong class="text-[#d70018]">5 triệu</strong></p>
+                            </div>
+                            
+                            <div class="flex items-center gap-1 mt-2">
+                              <div class="flex text-yellow-400 text-[9px] md:text-[10px]">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                              </div>
+                              <span class="text-[11px] text-gray-600 font-medium">${rating.toFixed(1)}</span>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    `;
+                  }).join('');
+                }
+              }
+            } catch (e) {
+              console.error('Error loading Apple products:', e);
+            }
+          })();
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAMSUNG CHÍNH HÃNG - Load động từ API -->
+  <section class="py-3 sm:py-4 md:py-5 bg-gray-50 reveal-on-scroll">
+    <div class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4">
+      <div class="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 md:p-5">
+        <!-- Header Section -->
+        <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between mb-4 pb-2 border-b border-gray-100 gap-4 xl:gap-0">
+          <div class="flex items-center gap-3">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#d70018]">Samsung Chính Hãng</h2>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 flex-grow justify-end">
+            <a href="products.html?search=z fold" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">Galaxy Z Fold</a>
+            <a href="products.html?search=z flip" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">Galaxy Z Flip</a>
+            <a href="products.html?search=s series" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">Galaxy S Series</a>
+            <a href="products.html?search=a series" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">Galaxy A Series</a>
+            <a href="products.html?brand=samsung" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-[#d70018] hover:text-[#d70018] text-xs sm:text-sm font-medium transition-colors bg-white whitespace-nowrap">Xem tất cả</a>
+          </div>
+        </div>
+
+        <!-- Grid Layout 5 cột - Load động từ API -->
+        <div id="samsung-products-grid" class="product-grid-responsive">
+          <!-- Skeleton loading -->
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+            <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="product-card-hover rounded-xl p-4 animate-pulse border border-gray-100">
+             <div class="h-56 bg-gray-200 rounded-lg mb-4"></div>
+             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+             <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+        
+        <!-- Script load Samsung -->
+        <script>
+          (async function loadSamsungProducts() {
+            try {
+              const res = await fetch('http://localhost:3000/api/products');
+              const data = await res.json();
+              
+              if (data && data.length > 0) {
+                const samsungProducts = data.filter(p => (p.brand && p.brand.toLowerCase() === 'samsung') || p.name.toLowerCase().includes('samsung') || p.name.toLowerCase().includes('galaxy')).slice(0, 5);
+                const grid = document.getElementById('samsung-products-grid');
+                
+                if(samsungProducts.length > 0) {
+                  grid.innerHTML = samsungProducts.map((product, index) => {
+                    const price = new Intl.NumberFormat('vi-VN').format(product.price) + ' ₫';
+                    const oldPrice = new Intl.NumberFormat('vi-VN').format(product.oldPrice) + ' ₫';
+                    const discountPercent = product.oldPrice > product.price ? Math.round((1 - product.price / product.oldPrice) * 100) : 0;
+                    const rating = product.rating || 4.7 + Math.random() * 0.3;
+                    const storage = product.storage ? ` ${product.storage}GB` : '';
+                    const badge = index === 0 ? "BEST SELLER" : "MỚI RA MẮT";
+                    const kPrice = new Intl.NumberFormat('vi-VN').format(product.price/1000) + 'k';
+                    
+                    return `
+                      <div class="product-card-hover rounded-xl p-3 relative group flex flex-col h-full bg-white border border-gray-100 hover:border-red-400 hover:shadow-lg transition-all duration-300">
+                        <!-- Tags trả góp & giảm giá -->
+                        <div class="absolute top-3 left-3 right-3 z-10 flex justify-between pointer-events-none">
+                          <span class="text-[#d70018] border border-[#d70018] text-[9px] font-medium px-1.5 py-0.5 rounded bg-white">Trả góp 0%</span>
+                          ${discountPercent > 0 ? `
+                          <span class="bg-[#d70018] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1"><i class="fas fa-arrow-down text-[8px]"></i> ${discountPercent}%</span>
+                          ` : ''}
+                        </div>
+
+                        <a href="product-detail.html?id=${product.id}" class="flex-1 flex flex-col mt-5 pt-1">
+                          <div class="relative h-40 sm:h-48 mb-3 overflow-hidden p-0 flex items-center justify-center">
+                            <img src="${product.image}" alt="${product.name}" 
+                              class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
+                              onerror="this.src='images/samsung-galaxy-s24_15__2.webp'">
+                          </div>
+                          
+                          <div class="flex flex-col gap-1 mt-auto text-left">
+                            <div class="mb-1">
+                              <span class="bg-[#d70018] text-white text-[9px] font-bold px-2 py-0.5 rounded-r-md rounded-bl-md inline-block">${badge}</span>
+                            </div>
+                            
+                            <h3 class="text-[13px] sm:text-[14px] font-semibold text-gray-800 line-clamp-2 min-h-[40px] leading-snug">${product.name}${storage} Chính Hãng</h3>
+                            
+                            <div class="text-base sm:text-lg font-bold text-[#d70018] mt-1">${price}</div>
+                            <div class="text-[11px] sm:text-xs text-gray-400 line-through">${oldPrice}</div>
+                            
+                            <div class="bg-gray-50 rounded px-2 py-1.5 mt-1.5 border border-gray-100">
+                              <p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5">Duy nhất ${new Date().getDate()}/${new Date().getMonth()+1} giá chỉ <strong class="text-[#d70018]">${kPrice}</strong></p>
+                              <p class="text-[10px] md:text-[11px] text-gray-600">Đổi trả miễn phí <strong class="text-[#d70018]">30 ngày</strong></p>
+                            </div>
+                            
+                            <div class="flex items-center gap-1 mt-2">
+                              <div class="flex text-yellow-400 text-[9px] md:text-[10px]">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                              </div>
+                              <span class="text-[11px] text-gray-600 font-medium">${rating.toFixed(1)}</span>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    `;
+                  }).join('');
+                }
+              }
+            } catch (e) {
+              console.error('Error loading Samsung products:', e);
+            }
+          })();
         </script>
       </div>
     </div>
@@ -2030,12 +2167,15 @@
       const discountBadge = discount > 0 ? `<span class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg z-10">-${discount}%</span>` : '';
       const productImage = product.image || PLACEHOLDER_IMG;
       const productName = product.name.replace(/'/g, "\\'");
+      const isOutOfStock = !product.stock || product.stock <= 0;
+      const outOfStockBadge = isOutOfStock ? `<span class="absolute top-0 left-0 bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded-br-lg z-10">Hết hàng</span>` : '';
 
       return `
-        <div class="product-card-hover rounded-xl p-4 bg-white relative group">
+        <div class="product-card-hover rounded-xl p-4 bg-white relative group ${isOutOfStock ? 'opacity-60 grayscale' : ''}">
           <a href="product-detail.html?id=${product.id}" class="block">
             <div class="relative h-60 mb-2 overflow-hidden p-0 flex items-center justify-center">
               ${discountBadge}
+              ${outOfStockBadge}
               <img src="${productImage}" alt="${product.name}"
                 class="card-image rounded-md w-full h-full object-contain transition-transform group-hover:scale-105"
                 onerror="this.src='${PLACEHOLDER_IMG}'">
@@ -2043,29 +2183,35 @@
             <div class="mt-auto flex flex-col gap-2">
               <h3 class="font-bold text-sm text-gray-800 line-clamp-2 min-h-[40px]">${product.name}</h3>
               <div class="price-block flex items-end gap-3">
-                <div class="text-lg font-black text-red-600 leading-none">${formatPrice(product.price)}</div>
-                ${product.oldPrice ? `<div class="text-xs text-gray-400 line-through mb-1">${formatPrice(product.oldPrice)}</div>` : ''}
+                <div class="text-lg font-black ${isOutOfStock ? 'text-gray-400' : 'text-red-600'} leading-none">${formatPrice(product.price)}</div>
+                ${product.oldPrice ? `<div class="text-[11px] text-gray-400 line-through mb-0.5">${formatPrice(product.oldPrice)}</div>` : ''}
               </div>
               <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                <div class="flex items-center gap-1 text-yellow-400 text-[10px]">
                   ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating || 4))}
                   ${(product.rating || 4) % 1 !== 0 ? '<i class="fas fa-star-half-alt"></i>' : ''}
                 </div>
-                <div class="text-xs text-gray-500">(${product.reviews || 0})</div>
+                <div class="text-[11px] text-gray-500 hidden sm:block">(${product.reviews || 0})</div>
               </div>
             </div>
           </a>
           <!-- Nút Mua ngay và Thêm vào giỏ -->
           <div class="flex gap-2 mt-3">
-            <a href="product-detail.html?id=${product.id}" 
-               class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
-              <i class="fas fa-bolt"></i> Mua ngay
-            </a>
-            <button onclick="event.preventDefault(); event.stopPropagation(); addToCartQuick(${product.id}, '${productName}', ${product.price}, '${productImage}')" 
-                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center"
-                    title="Thêm vào giỏ">
-              <i class="fas fa-cart-plus"></i>
-            </button>
+            ${isOutOfStock ? `
+              <div class="flex-1 bg-gray-300 text-gray-500 text-center text-sm font-semibold py-2 px-3 rounded-lg cursor-not-allowed flex items-center justify-center gap-1">
+                <i class="fas fa-times-circle"></i> Hết hàng
+              </div>
+            ` : `
+              <a href="product-detail.html?id=${product.id}" 
+                 class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+                <i class="fas fa-bolt"></i> Mua ngay
+              </a>
+              <button onclick="event.preventDefault(); event.stopPropagation(); addToCartQuick(${product.id}, '${productName}', ${product.price}, '${productImage}')" 
+                      class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center"
+                      title="Thêm vào giỏ">
+                <i class="fas fa-cart-plus"></i>
+              </button>
+            `}
           </div>
         </div>
       `;

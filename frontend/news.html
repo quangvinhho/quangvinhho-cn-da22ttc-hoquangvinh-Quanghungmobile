@@ -32,14 +32,23 @@
     * { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .filter-btn.active { background-color: #d91e23 !important; color: white !important; }
   </style>
 </head>
 <body class="bg-gray-100">
   
   <div id="header-placeholder"></div>
-  <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
 
-  <main class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4 py-4">
+  <!-- Spacer for fixed header - Responsive -->
+  <div class="h-[70px]"></div>
+
+  <!-- Background Layer kéo dài hiệu ứng màu đỏ từ Header - Cải thiện sự liền mạch -->
+  <div class="w-full absolute left-0 top-[70px] -z-10 overflow-hidden h-[120px] sm:h-[160px] md:h-[200px] lg:h-[260px] flex justify-center">
+    <!-- Hình dạng bo tròn dưới đáy -->
+    <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] md:rounded-b-[40%] lg:rounded-b-[35%] shadow-sm"></div>
+  </div>
+
+  <main class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4 py-4 md:py-6 relative z-10 transition-opacity duration-300">
     
     <!-- Khung trắng chứa tin tức -->
     <div class="bg-white rounded-xl md:rounded-2xl shadow-sm p-3 sm:p-4 md:p-5">
@@ -52,6 +61,31 @@
         <a href="index.html" class="text-red-main hover:text-red-dark text-sm font-medium flex items-center gap-1 transition">
           <i class="fas fa-home"></i> Trang chủ
         </a>
+      </div>
+
+      <!-- Bộ lọc loại tin -->
+      <div class="flex flex-wrap gap-2 mb-6" id="news-filter">
+        <button onclick="filterNews('')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-red-main text-white transition">
+          Tất cả
+        </button>
+        <button onclick="filterNews('noi_bat')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-orange-500 hover:text-white transition">
+          ⭐ Nổi bật
+        </button>
+        <button onclick="filterNews('khuyen_mai')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-green-500 hover:text-white transition">
+          🎁 Khuyến mãi
+        </button>
+        <button onclick="filterNews('huong_dan')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-teal-500 hover:text-white transition">
+          📖 Hướng dẫn
+        </button>
+        <button onclick="filterNews('danh_gia')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-pink-500 hover:text-white transition">
+          ⭐ Đánh giá
+        </button>
+        <button onclick="filterNews('meo_hay')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-yellow-500 hover:text-white transition">
+          💡 Mẹo hay
+        </button>
+        <button onclick="filterNews('su_kien')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-purple-500 hover:text-white transition">
+          📅 Sự kiện
+        </button>
       </div>
 
       <!-- TIN MỚI NHẤT -->

@@ -14,13 +14,9 @@ async function getProductsFromDB() {
         sp.ten_sp as name,
         hsx.ten_hang as brand,
         sp.gia as price,
-        sp.gia_cu as oldPrice,
-        sp.ram,
         sp.bo_nho as storage,
-        sp.man_hinh as screen,
-        sp.camera,
-        sp.pin as battery,
-        sp.so_luong_ton as stock
+        sp.so_luong_ton as stock,
+        sp.anh_dai_dien as image
       FROM san_pham sp
       LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
       WHERE sp.so_luong_ton > 0
@@ -43,8 +39,7 @@ function createProductContext(products) {
   if (!products || products.length === 0) return '';
   
   const productList = products.map(p => {
-    const discount = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
-    return `- ${p.name} | Hãng: ${p.brand || 'N/A'} | Giá: ${formatPrice(p.price)}${discount > 0 ? ` (Giảm ${discount}%)` : ''} | RAM: ${p.ram || 'N/A'}GB | Bộ nhớ: ${p.storage || 'N/A'}GB | Màn hình: ${p.screen || 'N/A'} | Camera: ${p.camera || 'N/A'} | Pin: ${p.battery || 'N/A'}`;
+    return `- ${p.name} | Hãng: ${p.brand || 'N/A'} | Giá: ${formatPrice(p.price)} | Bộ nhớ: ${p.storage || 'N/A'} | ID: ${p.id} | Ảnh: ${p.image || ''}`;
   }).join('\n');
   
   return `\n\n📱 DANH SÁCH SẢN PHẨM HIỆN CÓ TẠI CỬA HÀNG:\n${productList}`;
@@ -67,16 +62,24 @@ Chính sách:
 - Giao hàng: Miễn phí toàn quốc
 
 🎯 QUY TẮC TƯ VẤN SẢN PHẨM:
-1. Khi khách hỏi về ngân sách (ví dụ: "điện thoại 3 triệu", "tầm 5tr", "dưới 10 triệu"), hãy GỢI Ý CÁC SẢN PHẨM CỤ THỂ từ danh sách sản phẩm bên dưới phù hợp với ngân sách đó
-2. Khi gợi ý sản phẩm, LUÔN đề cập: Tên sản phẩm, Giá, và 1-2 điểm nổi bật (RAM, Camera, Pin...)
-3. Gợi ý 2-3 sản phẩm phù hợp nhất, ưu tiên sản phẩm đang giảm giá
-4. Nếu ngân sách quá thấp hoặc quá cao so với sản phẩm có sẵn, hãy gợi ý sản phẩm gần nhất và giải thích
+1. Bạn CHỈ ĐƯỢC PHÉP gợi ý các sản phẩm CÓ TRONG DANH SÁCH SẢN PHẨM TẠI CỬA HÀNG bên dưới. KHÔNG tự bịa ra sản phẩm không có trong danh sách.
+2. Cung cấp ĐÚNG CHÍNH XÁC tên sản phẩm, giá bán và cấu hình như trong danh sách.
+3. CHÚ Ý: KHI GỢI Ý 1 HAY NHIỀU ĐIỆN THOẠI HOẶC TƯ VẤN/SO SÁNH MÀ CÓ NHẮC ĐẾN SẢN PHẨM, BẮT BUỘC MỖI ĐIỆN THOẠI PHẢI TRẢ VỀ RAW TEXT KẾT HỢP DẠNG HTML NHƯ SAU ĐỂ HIỂN THỊ ẢNH VÀ LINK (Tuyệt đối không dùng markdown):
+
+<div style="display:flex; align-items:center; margin-top:10px; margin-bottom:10px; gap:15px; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+  <img src="{Anh}" alt="{Ten_san_pham}" style="width:80px; height:80px; object-fit:cover; border-radius:8px;">
+  <div>
+    <strong>{Ten_san_pham}</strong><br>
+    Giá: <span style="color:#e53935; font-weight:bold;">{Gia}</span><br>
+    <a href="product-detail.html?id={ID}" style="display:inline-block; margin-top:5px; padding:5px 10px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:12px;">Xem chi tiết</a>
+  </div>
+</div>
+
+(Thay thế {Anh}, {Ten_san_pham}, {Gia}, {ID} bằng dữ liệu tương ứng của sản phẩm, không dùng markdown cho ảnh hay link).
 
 📝 QUY TẮC TRẢ LỜI:
-1. Trả lời bằng tiếng Việt, thân thiện và chuyên nghiệp
-2. Giữ câu trả lời ngắn gọn, dễ hiểu
-3. Khi gợi ý sản phẩm, format đẹp với emoji và xuống dòng rõ ràng
-4. Nếu không tìm thấy sản phẩm phù hợp, hướng dẫn khách liên hệ hotline`;
+1. Bạn TRẢ VỀ CHỈ HTML (<br>, <strong>, <div>). KHÔNG BAO GIỜ DÙNG MARKDOWN NHƯ IN ĐẬM ** **, HAY IN NGHIÊNG * *, HAY LIST -. Bắt buộc chỉ dùng HTML. KHÔNG CẦN DÙNG DẤU BACKTICK HAY BẤT KỲ ĐỊNH DẠNG MARKDOWN NÀO.
+2. Câu trả lời của bạn sẽ được in vào innerHTML của giao diện, hãy dùng thẻ <br> để xuống dòng và bỏ qua các ký hiệu markdown.`;
 
 // Tạo tiêu đề tự động từ tin nhắn đầu tiên
 function generateTitle(message) {
@@ -136,10 +139,10 @@ async function createConversation(maKh, title = 'Cuộc hội thoại mới') {
 // API chat với AI
 router.post('/chat', async (req, res) => {
   try {
-    const { message, userId, conversationId } = req.body;
-    
-    if (!message) {
-      return res.status(400).json({ error: 'Vui lòng nhập tin nhắn' });
+    const { message, image, userId, conversationId } = req.body;
+
+    if (!message && !image) {
+      return res.status(400).json({ error: 'Vui lòng nhập tin nhắn hoặc hình ảnh' });
     }
 
     if (!GROQ_API_KEY) {
@@ -149,26 +152,48 @@ router.post('/chat', async (req, res) => {
     let history = [];
     let currentConversationId = conversationId;
     let isNewConversation = false;
-    
+
     if (userId) {
       if (!currentConversationId) {
-        const title = generateTitle(message);
+        const title = generateTitle(message || "Tìm kiếm hình ảnh");
         currentConversationId = await createConversation(userId, title);
         isNewConversation = true;
       }
-      
+
       if (currentConversationId) {
         history = await getChatHistory(currentConversationId, 10);
-        await saveMessage(currentConversationId, userId, 'user', message);
+        await saveMessage(currentConversationId, userId, 'user', message || "[Đã gửi một hình ảnh]");
       }
     }
-    
-    history.push({ role: 'user', content: message });
+
+    let userMessage;
+    let selectedModel = 'llama-3.3-70b-versatile';
+
+    if (image) {
+      selectedModel = 'meta-llama/llama-4-scout-17b-16e-instruct';
+      userMessage = {
+        role: 'user',
+        content: [
+          { type: 'text', text: message ? message : "Đây là điện thoại gì? Shop có bán không? Nếu không có thì trả lời lịch sự và giới thiệu sản phẩm khác nhé." },
+          { type: 'image_url', image_url: { url: image } }
+        ]
+      };
+    } else {
+      userMessage = { role: 'user', content: message };
+    }
+
+    // Prepare history format (for vision model it's better if history is strictly text, but groq handles standard formatting)
+    history.push(userMessage);
 
     // Lấy danh sách sản phẩm từ database để AI có thể gợi ý
     const products = await getProductsFromDB();
     const productContext = createProductContext(products);
-    const SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + productContext;
+    
+    let imagePromptExtension = "";
+    if (image) {
+      imagePromptExtension = "\n\nKHÁCH HÀNG VỪA GỬI 1 HÌNH ẢNH: Hãy nhận diện điện thoại trong ảnh. Nếu sản phẩm đó có trong danh sách, hãy giới thiệu nó bằng mẫu HTML đã cho sẵn. Nếu KHÔNG CÓ TRONG DANH SÁCH website, hãy trả lời lịch sự và thân thiện (ví dụ: 'Dạ, hiện tại cửa hàng bên em chưa kinh doanh dòng sản phẩm này ạ...', rồi tư vấn sản phẩm tương đương có trong danh sách).";
+    }
+    const SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + productContext + imagePromptExtension;
 
     const response = await fetch(GROQ_API_URL, {
       method: 'POST',
@@ -177,7 +202,7 @@ router.post('/chat', async (req, res) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: selectedModel,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...history
@@ -188,8 +213,8 @@ router.post('/chat', async (req, res) => {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error('Groq API error:', error);
+      const errorText = await response.text();
+      console.error('Groq API error:', errorText);
       return res.status(500).json({ error: 'Lỗi kết nối AI' });
     }
 
@@ -197,10 +222,10 @@ router.post('/chat', async (req, res) => {
     const aiResponse = data.choices[0]?.message?.content || 'Xin lỗi, tôi không thể trả lời lúc này.';
 
     if (userId && currentConversationId) {
-      await saveMessage(currentConversationId, userId, 'assistant', aiResponse);
+      await saveMessage(currentConversationId, userId, 'assistant', String(aiResponse));
     }
 
-    res.json({ 
+    res.json({
       response: aiResponse,
       conversationId: currentConversationId,
       isNewConversation

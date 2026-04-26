@@ -23,7 +23,12 @@ router.post('/', async (req, res) => {
       voucherCode,
       // Hỗ trợ nhiều mã khuyến mãi
       freeshipVoucher,
-      discountVoucher
+      discountVoucher,
+      // Thông tin đặt cọc
+      depositAmount,      // Số tiền đặt cọc
+      depositPercent,     // Phần trăm đặt cọc (10%, 30%, 50%)
+      remainingAmount,    // Số tiền còn lại cần thanh toán
+      isDeposit           // Có phải đơn đặt cọc không
     } = req.body;
 
     // Xử lý voucher - hỗ trợ cả cách cũ (voucherCode) và cách mới (freeshipVoucher, discountVoucher)
@@ -130,14 +135,22 @@ router.post('/', async (req, res) => {
     // Lưu discount amount để ghi lịch sử sau
     const discountAmount = discount || 0;
 
-    // Tạo đơn hàng
+    // Xác định loại đơn hàng (normal/deposit)
+    const orderType = isDeposit ? 'deposit' : 'normal';
+    const depositStatus = isDeposit ? 'pending' : null;
+    const actualDepositAmount = isDeposit ? (depositAmount || 0) : 0;
+    const actualRemainingAmount = isDeposit ? (remainingAmount || 0) : 0;
+
+    // Tạo đơn hàng với thông tin đặt cọc
     const [orderResult] = await connection.query(
-      `INSERT INTO don_hang (ma_kh, ten_nguoi_nhan, so_dt, dia_chi_nhan, tong_tien, trang_thai, ma_km)
-       VALUES (?, ?, ?, ?, ?, 'pending', ?)`,
-      [customerId || null, customerName, phone, address, total, maKm]
+      `INSERT INTO don_hang (ma_kh, ten_nguoi_nhan, so_dt, dia_chi_nhan, tong_tien, trang_thai, ma_km, loai_don, tien_dat_coc, tien_con_lai, trang_thai_coc)
+       VALUES (?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)`,
+      [customerId || null, customerName, phone, address, total, maKm, orderType, actualDepositAmount, actualRemainingAmount, depositStatus]
     );
     
     const orderId = orderResult.insertId;
+    
+    console.log(`Order ${orderId} created: type=${orderType}, deposit=${actualDepositAmount}, remaining=${actualRemainingAmount}`);
 
     // Thêm chi tiết đơn hàng
     for (const item of items) {
@@ -156,11 +169,34 @@ router.post('/', async (req, res) => {
 
     // Tạo bản ghi thanh toán
     const paymentStatus = paymentMethod === 'cod' ? 'pending' : 'pending';
-    await connection.query(
-      `INSERT INTO thanh_toan (ma_don, so_tien, phuong_thuc, trang_thai)
-       VALUES (?, ?, ?, ?)`,
-      [orderId, total, paymentMethod.toUpperCase(), paymentStatus]
-    );
+    
+    // Xử lý đặt cọc
+    if (isDeposit && depositAmount > 0) {
+      // Tạo bản ghi thanh toán cho tiền đặt cọc
+      await connection.query(
+        `INSERT INTO thanh_toan (ma_don, so_tien, phuong_thuc, trang_thai)
+         VALUES (?, ?, ?, ?)`,
+        [orderId, depositAmount, paymentMethod.toUpperCase() + '_DEPOSIT', 'pending']
+      );
+      
+      // Tạo bản ghi cho số tiền còn lại (sẽ thanh toán khi nhận hàng)
+      if (remainingAmount > 0) {
+        await connection.query(
+          `INSERT INTO thanh_toan (ma_don, so_tien, phuong_thuc, trang_thai)
+           VALUES (?, ?, ?, ?)`,
+          [orderId, remainingAmount, 'COD_REMAINING', 'pending']
+        );
+      }
+      
+      console.log(`Deposit order created: deposit=${depositAmount} (${depositPercent}%), remaining=${remainingAmount}`);
+    } else {
+      // Thanh toán thông thường (toàn bộ)
+      await connection.query(
+        `INSERT INTO thanh_toan (ma_don, so_tien, phuong_thuc, trang_thai)
+         VALUES (?, ?, ?, ?)`,
+        [orderId, total, paymentMethod.toUpperCase(), paymentStatus]
+      );
+    }
 
     // Ghi lịch sử sử dụng voucher nếu có
     for (const usedVoucher of usedVouchers) {
@@ -187,7 +223,10 @@ router.post('/', async (req, res) => {
       success: true,
       data: {
         orderId: orderId,
-        message: 'Đặt hàng thành công'
+        message: isDeposit ? 'Đặt cọc thành công' : 'Đặt hàng thành công',
+        isDeposit: isDeposit || false,
+        depositAmount: depositAmount || 0,
+        remainingAmount: remainingAmount || 0
       }
     });
 
@@ -207,20 +246,53 @@ router.post('/', async (req, res) => {
 router.put('/:orderId/payment', async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { status, transactionId } = req.body;
+    const { status, transactionId, paymentType } = req.body;
 
-    // Cập nhật thanh toán
-    await pool.query(
-      `UPDATE thanh_toan SET trang_thai = ?, thoi_gian = NOW() WHERE ma_don = ?`,
-      [status, orderId]
-    );
-
-    // Nếu thanh toán thành công, cập nhật trạng thái đơn hàng
-    if (status === 'success') {
+    // Nếu là thanh toán đặt cọc, chỉ cập nhật bản ghi deposit
+    if (paymentType === 'deposit') {
       await pool.query(
-        `UPDATE don_hang SET trang_thai = 'confirmed' WHERE ma_don = ?`,
-        [orderId]
+        `UPDATE thanh_toan SET trang_thai = ?, thoi_gian = NOW() 
+         WHERE ma_don = ? AND phuong_thuc LIKE '%_DEPOSIT'`,
+        [status, orderId]
       );
+      
+      // Nếu đặt cọc thành công, cập nhật trạng thái đơn hàng và trạng thái cọc
+      if (status === 'success') {
+        await pool.query(
+          `UPDATE don_hang SET trang_thai = 'confirmed', trang_thai_coc = 'confirmed', thoi_gian_xac_nhan_coc = NOW() WHERE ma_don = ?`,
+          [orderId]
+        );
+        console.log(`Order ${orderId} confirmed after deposit payment success`);
+      }
+    } else if (paymentType === 'remaining') {
+      // Cập nhật thanh toán phần còn lại
+      await pool.query(
+        `UPDATE thanh_toan SET trang_thai = ?, thoi_gian = NOW() 
+         WHERE ma_don = ? AND phuong_thuc = 'COD_REMAINING'`,
+        [status, orderId]
+      );
+      
+      // Nếu thanh toán phần còn lại thành công, đơn hàng hoàn thành
+      if (status === 'success') {
+        await pool.query(
+          `UPDATE don_hang SET trang_thai = 'completed' WHERE ma_don = ?`,
+          [orderId]
+        );
+      }
+    } else {
+      // Cập nhật tất cả thanh toán của đơn hàng
+      await pool.query(
+        `UPDATE thanh_toan SET trang_thai = ?, thoi_gian = NOW() WHERE ma_don = ?`,
+        [status, orderId]
+      );
+      
+      // Nếu thanh toán thành công, cập nhật trạng thái đơn hàng
+      if (status === 'success') {
+        await pool.query(
+          `UPDATE don_hang SET trang_thai = 'confirmed' WHERE ma_don = ?`,
+          [orderId]
+        );
+      }
     }
 
     res.json({
@@ -243,15 +315,39 @@ router.get('/:orderId', async (req, res) => {
     const { orderId } = req.params;
 
     const [orders] = await pool.query(
-      `SELECT dh.*, tt.phuong_thuc, tt.trang_thai as trang_thai_thanh_toan
+      `SELECT dh.*
        FROM don_hang dh
-       LEFT JOIN thanh_toan tt ON dh.ma_don = tt.ma_don
        WHERE dh.ma_don = ?`,
       [orderId]
     );
 
     if (orders.length === 0) {
       return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    }
+
+    // Lấy tất cả bản ghi thanh toán của đơn hàng (có thể có nhiều nếu là đặt cọc)
+    const [payments] = await pool.query(
+      `SELECT * FROM thanh_toan WHERE ma_don = ? ORDER BY ma_tt ASC`,
+      [orderId]
+    );
+
+    // Xử lý thông tin đặt cọc
+    let depositInfo = null;
+    let mainPayment = payments[0] || null;
+    
+    const depositPayment = payments.find(p => p.phuong_thuc && p.phuong_thuc.includes('_DEPOSIT'));
+    const remainingPayment = payments.find(p => p.phuong_thuc === 'COD_REMAINING');
+    
+    if (depositPayment) {
+      depositInfo = {
+        isDeposit: true,
+        depositAmount: parseFloat(depositPayment.so_tien) || 0,
+        depositStatus: depositPayment.trang_thai,
+        depositMethod: depositPayment.phuong_thuc.replace('_DEPOSIT', ''),
+        remainingAmount: remainingPayment ? parseFloat(remainingPayment.so_tien) : 0,
+        remainingStatus: remainingPayment ? remainingPayment.trang_thai : null
+      };
+      mainPayment = depositPayment;
     }
 
     const [items] = await pool.query(
@@ -266,6 +362,9 @@ router.get('/:orderId', async (req, res) => {
       success: true,
       data: {
         ...orders[0],
+        phuong_thuc: mainPayment?.phuong_thuc || null,
+        trang_thai_thanh_toan: mainPayment?.trang_thai || null,
+        depositInfo: depositInfo,
         items: items
       }
     });
@@ -283,15 +382,14 @@ router.get('/user/:userId', async (req, res) => {
 
     // Lấy danh sách đơn hàng
     const [orders] = await pool.query(
-      `SELECT dh.*, tt.phuong_thuc, tt.trang_thai as trang_thai_thanh_toan
+      `SELECT dh.*
        FROM don_hang dh
-       LEFT JOIN thanh_toan tt ON dh.ma_don = tt.ma_don
        WHERE dh.ma_kh = ?
        ORDER BY dh.thoi_gian DESC`,
       [userId]
     );
 
-    // Lấy chi tiết sản phẩm cho mỗi đơn hàng
+    // Lấy chi tiết sản phẩm và thông tin thanh toán cho mỗi đơn hàng
     const ordersWithItems = await Promise.all(orders.map(async (order) => {
       const [items] = await pool.query(
         `SELECT ct.ma_sp as id, ct.so_luong as quantity, ct.gia as price,
@@ -301,6 +399,31 @@ router.get('/user/:userId', async (req, res) => {
          WHERE ct.ma_don = ?`,
         [order.ma_don]
       );
+      
+      // Lấy thông tin thanh toán
+      const [payments] = await pool.query(
+        `SELECT * FROM thanh_toan WHERE ma_don = ? ORDER BY ma_tt ASC`,
+        [order.ma_don]
+      );
+      
+      // Xử lý thông tin đặt cọc
+      let depositInfo = null;
+      let mainPayment = payments[0] || null;
+      
+      const depositPayment = payments.find(p => p.phuong_thuc && p.phuong_thuc.includes('_DEPOSIT'));
+      const remainingPayment = payments.find(p => p.phuong_thuc === 'COD_REMAINING');
+      
+      if (depositPayment) {
+        depositInfo = {
+          isDeposit: true,
+          depositAmount: parseFloat(depositPayment.so_tien) || 0,
+          depositStatus: depositPayment.trang_thai,
+          depositMethod: depositPayment.phuong_thuc.replace('_DEPOSIT', ''),
+          remainingAmount: remainingPayment ? parseFloat(remainingPayment.so_tien) : 0,
+          remainingStatus: remainingPayment ? remainingPayment.trang_thai : null
+        };
+        mainPayment = depositPayment;
+      }
       
       // Format items với đường dẫn ảnh đúng
       const formattedItems = items.map(item => {
@@ -318,6 +441,9 @@ router.get('/user/:userId', async (req, res) => {
       
       return {
         ...order,
+        phuong_thuc: mainPayment?.phuong_thuc || null,
+        trang_thai_thanh_toan: mainPayment?.trang_thai || null,
+        depositInfo: depositInfo,
         items: formattedItems
       };
     }));
@@ -460,6 +586,309 @@ router.put('/:orderId/cancel', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Lỗi hủy đơn hàng: ' + error.message
+    });
+  }
+});
+
+// =====================================================
+// DEPOSIT ORDER MANAGEMENT APIs
+// =====================================================
+
+// PUT /api/orders/:orderId/confirm-deposit - Admin xác nhận đã nhận tiền đặt cọc
+router.put('/:orderId/confirm-deposit', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { adminId, note } = req.body;
+
+    console.log('=== Confirm Deposit Request ===');
+    console.log('orderId:', orderId, 'adminId:', adminId);
+
+    // Kiểm tra đơn hàng tồn tại và là đơn đặt cọc
+    const [orders] = await pool.query(
+      'SELECT * FROM don_hang WHERE ma_don = ?',
+      [orderId]
+    );
+
+    if (orders.length === 0) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    }
+
+    const order = orders[0];
+
+    if (order.loai_don !== 'deposit') {
+      return res.status(400).json({ success: false, message: 'Đây không phải đơn hàng đặt cọc' });
+    }
+
+    if (order.trang_thai_coc === 'confirmed') {
+      return res.status(400).json({ success: false, message: 'Đơn hàng đã được xác nhận cọc trước đó' });
+    }
+
+    // Cập nhật trạng thái đặt cọc
+    await pool.query(
+      `UPDATE don_hang 
+       SET trang_thai_coc = 'confirmed', 
+           thoi_gian_xac_nhan_coc = NOW(),
+           trang_thai = 'confirmed'
+       WHERE ma_don = ?`,
+      [orderId]
+    );
+
+    // Cập nhật thanh toán đặt cọc thành công
+    await pool.query(
+      `UPDATE thanh_toan SET trang_thai = 'success' WHERE ma_don = ? AND phuong_thuc LIKE '%_DEPOSIT'`,
+      [orderId]
+    );
+
+    console.log(`✅ Deposit confirmed for order ${orderId}`);
+
+    res.json({
+      success: true,
+      message: 'Đã xác nhận nhận tiền đặt cọc thành công',
+      data: {
+        orderId: orderId,
+        depositAmount: order.tien_dat_coc,
+        remainingAmount: order.tien_con_lai,
+        status: 'confirmed'
+      }
+    });
+
+  } catch (error) {
+    console.error('Confirm deposit error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi xác nhận đặt cọc: ' + error.message
+    });
+  }
+});
+
+// PUT /api/orders/:orderId/complete-remaining - Admin xác nhận đã thu tiền còn lại (khi giao hàng)
+router.put('/:orderId/complete-remaining', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { adminId } = req.body;
+
+    console.log('=== Complete Remaining Payment ===');
+    console.log('orderId:', orderId);
+
+    const [orders] = await pool.query(
+      'SELECT * FROM don_hang WHERE ma_don = ?',
+      [orderId]
+    );
+
+    if (orders.length === 0) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    }
+
+    const order = orders[0];
+
+    if (order.loai_don !== 'deposit') {
+      return res.status(400).json({ success: false, message: 'Đây không phải đơn hàng đặt cọc' });
+    }
+
+    if (order.trang_thai_coc !== 'confirmed') {
+      return res.status(400).json({ success: false, message: 'Đơn hàng chưa xác nhận đặt cọc' });
+    }
+
+    // Cập nhật đơn hàng thành hoàn thành
+    await pool.query(
+      `UPDATE don_hang SET trang_thai = 'completed' WHERE ma_don = ?`,
+      [orderId]
+    );
+
+    // Cập nhật thanh toán còn lại thành công
+    await pool.query(
+      `UPDATE thanh_toan SET trang_thai = 'success' WHERE ma_don = ? AND phuong_thuc = 'COD_REMAINING'`,
+      [orderId]
+    );
+
+    console.log(`✅ Order ${orderId} completed - remaining payment collected`);
+
+    res.json({
+      success: true,
+      message: 'Đã xác nhận thu tiền còn lại và hoàn thành đơn hàng',
+      data: {
+        orderId: orderId,
+        totalAmount: order.tong_tien,
+        depositPaid: order.tien_dat_coc,
+        remainingPaid: order.tien_con_lai
+      }
+    });
+
+  } catch (error) {
+    console.error('Complete remaining error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi hoàn thành đơn hàng: ' + error.message
+    });
+  }
+});
+
+// PUT /api/orders/:orderId/cancel-deposit - Hủy đơn đặt cọc với logic hoàn tiền
+router.put('/:orderId/cancel-deposit', async (req, res) => {
+  let connection;
+  
+  try {
+    connection = await pool.getConnection();
+    await connection.beginTransaction();
+    
+    const { orderId } = req.params;
+    const { userId, cancelReason, isAdmin } = req.body;
+
+    console.log('=== Cancel Deposit Order ===');
+    console.log('orderId:', orderId, 'userId:', userId, 'isAdmin:', isAdmin);
+
+    const [orders] = await connection.query(
+      'SELECT * FROM don_hang WHERE ma_don = ?',
+      [orderId]
+    );
+
+    if (orders.length === 0) {
+      await connection.rollback();
+      connection.release();
+      return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    }
+
+    const order = orders[0];
+
+    // Kiểm tra quyền
+    if (!isAdmin && userId && order.ma_kh && order.ma_kh != userId) {
+      await connection.rollback();
+      connection.release();
+      return res.status(403).json({ success: false, message: 'Bạn không có quyền hủy đơn hàng này' });
+    }
+
+    // Kiểm tra trạng thái có thể hủy
+    if (order.trang_thai === 'shipping' || order.trang_thai === 'completed') {
+      await connection.rollback();
+      connection.release();
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Không thể hủy đơn hàng đang giao hoặc đã hoàn thành'
+      });
+    }
+
+    // Tính số tiền hoàn lại
+    let refundAmount = 0;
+    let refundNote = '';
+    
+    if (order.loai_don === 'deposit' && order.trang_thai_coc === 'confirmed') {
+      // Đã xác nhận cọc -> hoàn 80% (mất 20% phí xử lý)
+      refundAmount = Math.floor(order.tien_dat_coc * 0.8);
+      refundNote = 'Hoàn 80% tiền cọc (mất 20% phí xử lý do hủy sau khi đã xác nhận)';
+    } else if (order.loai_don === 'deposit' && order.trang_thai_coc === 'pending') {
+      // Chưa xác nhận cọc -> hoàn 100%
+      refundAmount = order.tien_dat_coc || 0;
+      refundNote = 'Hoàn 100% tiền cọc (hủy trước khi xác nhận)';
+    }
+
+    // Cập nhật đơn hàng
+    await connection.query(
+      `UPDATE don_hang 
+       SET trang_thai = 'cancelled', 
+           trang_thai_coc = 'refunded',
+           ly_do_huy = ?,
+           tien_hoan_lai = ?
+       WHERE ma_don = ?`,
+      [cancelReason || 'Khách hàng hủy đơn', refundAmount, orderId]
+    );
+
+    // Hoàn lại số lượng tồn kho
+    const [orderItems] = await connection.query(
+      'SELECT ma_sp, so_luong FROM chi_tiet_don_hang WHERE ma_don = ?',
+      [orderId]
+    );
+
+    for (const item of orderItems) {
+      await connection.query(
+        'UPDATE san_pham SET so_luong_ton = so_luong_ton + ? WHERE ma_sp = ?',
+        [item.so_luong, item.ma_sp]
+      );
+    }
+
+    // Cập nhật thanh toán
+    await connection.query(
+      "UPDATE thanh_toan SET trang_thai = 'failed' WHERE ma_don = ?",
+      [orderId]
+    );
+
+    // Hoàn lại voucher
+    if (order.ma_km) {
+      await connection.query(
+        'UPDATE khuyen_mai SET so_luong_da_dung = GREATEST(0, so_luong_da_dung - 1) WHERE ma_km = ?',
+        [order.ma_km]
+      );
+    }
+
+    await connection.commit();
+    connection.release();
+
+    console.log(`✅ Deposit order ${orderId} cancelled. Refund: ${refundAmount}`);
+
+    res.json({
+      success: true,
+      message: 'Đã hủy đơn hàng đặt cọc thành công',
+      data: {
+        orderId: orderId,
+        refundAmount: refundAmount,
+        refundNote: refundNote
+      }
+    });
+
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+      connection.release();
+    }
+    console.error('Cancel deposit order error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi hủy đơn hàng: ' + error.message
+    });
+  }
+});
+
+// GET /api/orders/deposit/stats - Thống kê đơn đặt cọc (cho admin)
+router.get('/deposit/stats', async (req, res) => {
+  try {
+    // Tổng đơn đặt cọc
+    const [totalDeposit] = await pool.query(
+      `SELECT COUNT(*) as total, SUM(tien_dat_coc) as total_deposit, SUM(tien_con_lai) as total_remaining
+       FROM don_hang WHERE loai_don = 'deposit'`
+    );
+
+    // Đơn chờ xác nhận cọc
+    const [pendingDeposit] = await pool.query(
+      `SELECT COUNT(*) as count, SUM(tien_dat_coc) as amount
+       FROM don_hang WHERE loai_don = 'deposit' AND trang_thai_coc = 'pending'`
+    );
+
+    // Đơn đã xác nhận cọc
+    const [confirmedDeposit] = await pool.query(
+      `SELECT COUNT(*) as count, SUM(tien_dat_coc) as deposit_collected, SUM(tien_con_lai) as remaining_to_collect
+       FROM don_hang WHERE loai_don = 'deposit' AND trang_thai_coc = 'confirmed' AND trang_thai != 'completed'`
+    );
+
+    // Đơn đặt cọc đã hoàn thành
+    const [completedDeposit] = await pool.query(
+      `SELECT COUNT(*) as count, SUM(tong_tien) as total_revenue
+       FROM don_hang WHERE loai_don = 'deposit' AND trang_thai = 'completed'`
+    );
+
+    res.json({
+      success: true,
+      data: {
+        total: totalDeposit[0],
+        pending: pendingDeposit[0],
+        confirmed: confirmedDeposit[0],
+        completed: completedDeposit[0]
+      }
+    });
+
+  } catch (error) {
+    console.error('Get deposit stats error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi lấy thống kê đặt cọc'
     });
   }
 });

@@ -140,12 +140,18 @@
   <div id="header-placeholder"></div>
   
   <!-- Spacer for fixed header -->
-  <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+  <div class="h-[70px]"></div>
+
+  <!-- Background Layer kéo dài hiệu ứng màu đỏ từ Header - Cải thiện sự liền mạch -->
+  <div class="w-full absolute left-0 top-[70px] -z-10 overflow-hidden h-[120px] sm:h-[160px] md:h-[200px] flex justify-center">
+    <!-- Hình dạng bo tròn dưới đáy -->
+    <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] md:rounded-b-[40%] shadow-sm"></div>
+  </div>
 
   <!-- Confetti Container -->
   <div id="confetti-container"></div>
 
-  <main class="max-w-6xl mx-auto px-4 py-8">
+  <main class="max-w-6xl mx-auto px-4 py-6 relative z-10">
     
     <!-- Success Header Section -->
     <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-6 md:p-10 mb-6 text-white text-center relative overflow-hidden">
@@ -690,13 +696,32 @@ der Success Logic -->
         'momo_atm': 'MoMo - Thẻ ATM',
         'momo_credit': 'MoMo - Thẻ quốc tế',
         'vnpay': 'VNPay',
-        'installment': 'Trả góp 0%'
+        'installment': 'Trả góp 0%',
+        'bank_deposit': 'Đặt cọc chuyển khoản'
       };
       document.getElementById('paymentMethod').textContent = paymentMethods[order.payment.method] || 'Không xác định';
       
-      // Payment status
+      // Payment status - xử lý đặt cọc
       const paymentStatus = document.getElementById('paymentStatus');
-      if (order.status === 'paid' || order.payment.method === 'momo' || order.payment.method?.startsWith('momo_')) {
+      
+      // Kiểm tra nếu là đơn đặt cọc
+      if (order.depositPaid || order.depositRequired || order.payment.method === 'bank_deposit') {
+        const depositAmount = order.depositAmount || 0;
+        const remainingAmount = order.pricing.total - depositAmount;
+        
+        paymentStatus.className = 'mt-2 space-y-2';
+        paymentStatus.innerHTML = `
+          <div class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
+            <i class="fas fa-check-circle"></i>
+            <span>Đã cọc: ${formatPrice(depositAmount)}</span>
+          </div>
+          <div class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 ml-2">
+            <i class="fas fa-clock"></i>
+            <span>Còn lại: ${formatPrice(remainingAmount)}</span>
+          </div>
+          <p class="text-xs text-gray-500 mt-1">Thanh toán ${formatPrice(remainingAmount)} khi nhận hàng</p>
+        `;
+      } else if (order.status === 'paid' || order.payment.method === 'momo' || order.payment.method?.startsWith('momo_')) {
         paymentStatus.className = 'mt-2 inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-green-100 text-green-700';
         paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><span>Đã thanh toán</span>';
       } else if (order.payment.method === 'cod') {

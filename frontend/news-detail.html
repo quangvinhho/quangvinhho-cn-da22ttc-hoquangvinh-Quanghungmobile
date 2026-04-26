@@ -36,9 +36,17 @@
 <body class="bg-gray-100">
   
   <div id="header-placeholder"></div>
-  <div class="h-[80px] md:h-[100px] lg:h-[140px]"></div>
+  
+  <!-- Spacer for fixed header -->
+  <div class="h-[70px]"></div>
 
-  <main class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4 py-4">
+  <!-- Background Layer kéo dài hiệu ứng màu đỏ từ Header - Cải thiện sự liền mạch -->
+  <div class="w-full absolute left-0 top-[70px] -z-10 overflow-hidden h-[120px] sm:h-[160px] md:h-[200px] flex justify-center">
+    <!-- Hình dạng bo tròn dưới đáy -->
+    <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] md:rounded-b-[40%] shadow-sm"></div>
+  </div>
+
+  <main class="max-w-[1920px] mx-auto px-2 sm:px-3 md:px-4 py-4 md:py-6 relative z-10 transition-opacity duration-300">
     
     <!-- Khung trắng -->
     <div class="bg-white rounded-xl md:rounded-2xl shadow-sm p-3 sm:p-4 md:p-6">
