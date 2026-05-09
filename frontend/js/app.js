@@ -127,7 +127,14 @@ async function loadAllComponents() {
 
 // Kiểm tra và hiển thị thông tin user đăng nhập
 function checkUserLogin() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  // Ưu tiên đọc từ secureStorage (đã mã hóa)
+  let user = null;
+  if (window.secureStorage) {
+    user = window.secureStorage.getItem('user');
+  } else {
+    user = JSON.parse(localStorage.getItem('user') || 'null');
+  }
+  
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   
   const loginBtn = document.getElementById('login-btn');
@@ -247,7 +254,13 @@ function initHeader() {
  * Lấy cart key theo user (mỗi user có giỏ hàng riêng)
  */
 function getCartKey() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  // Ưu tiên đọc từ secureStorage
+  let user = null;
+  if (window.secureStorage) {
+    user = window.secureStorage.getItem('user');
+  } else {
+    user = JSON.parse(localStorage.getItem('user') || 'null');
+  }
   if (user && user.ma_kh) {
     return `cart_user_${user.ma_kh}`;
   }
@@ -275,7 +288,13 @@ function updateCartBadge() {
  * LUÔN ƯU TIÊN DATABASE - không fallback localStorage
  */
 async function syncCartFromDB() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  // Ưu tiên đọc từ secureStorage
+  let user = null;
+  if (window.secureStorage) {
+    user = window.secureStorage.getItem('user');
+  } else {
+    user = JSON.parse(localStorage.getItem('user') || 'null');
+  }
   if (!user || !user.ma_kh) return;
   
   const API_URL = 'http://localhost:3000/api';
@@ -363,7 +382,13 @@ function toggleMobileSubmenu() {
  * Kiểm tra user đã đăng nhập chưa
  */
 function isLoggedIn() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  // Ưu tiên đọc từ secureStorage
+  let user = null;
+  if (window.secureStorage) {
+    user = window.secureStorage.getItem('user');
+  } else {
+    user = JSON.parse(localStorage.getItem('user') || 'null');
+  }
   const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
   return loggedIn && user && user.ma_kh;
 }
@@ -427,7 +452,13 @@ async function addToCart(product) {
     return;
   }
   
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  // Ưu tiên đọc từ secureStorage
+  let user = null;
+  if (window.secureStorage) {
+    user = window.secureStorage.getItem('user');
+  } else {
+    user = JSON.parse(localStorage.getItem('user') || 'null');
+  }
   const API_URL = 'http://localhost:3000/api';
   
   // Gọi API để thêm vào database
@@ -467,7 +498,13 @@ async function addToCart(product) {
  * Remove item from cart - SYNC VỚI DATABASE
  */
 async function removeFromCart(index, cartItemId = null) {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  // Ưu tiên đọc từ secureStorage
+  let user = null;
+  if (window.secureStorage) {
+    user = window.secureStorage.getItem('user');
+  } else {
+    user = JSON.parse(localStorage.getItem('user') || 'null');
+  }
   const API_URL = 'http://localhost:3000/api';
   
   // Xóa từ database nếu đã đăng nhập và có cartItemId

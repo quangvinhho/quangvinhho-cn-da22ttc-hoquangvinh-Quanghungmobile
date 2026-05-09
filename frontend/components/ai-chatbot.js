@@ -7,7 +7,6 @@
   let historyLoaded = false;
   let sidebarOpen = false;
   let currentImageBase64 = null;
-  
   // Lấy userId từ localStorage
   function getUserId() {
     try {
@@ -103,24 +102,9 @@
             <!-- Messages will be added here -->
           </div>
           
-          <div class="ai-quick-actions">
-            <button class="ai-quick-btn" data-action="budget">💰 Tư vấn theo ngân sách</button>
-            <button class="ai-quick-btn" data-action="promo">🎁 Khuyến mãi</button>
-            <button class="ai-quick-btn" data-action="compare">📊 So sánh</button>
-            <button class="ai-quick-btn" data-action="warranty">🛡️ Bảo hành</button>
-          </div>
-          
-          <div class="ai-chat-input-area" style="position: relative;">
-            <div id="ai-image-preview-container" style="display: none; position: absolute; bottom: 100%; left: 10px; background: #fff; padding: 5px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 10; margin-bottom: 10px;">
-              <img id="ai-image-preview" src="" style="max-width: 100px; max-height: 100px; border-radius: 4px; object-fit: cover;">
-              <button id="ai-remove-image-btn" style="position:absolute; top:-5px; right:-5px; background:#d70018; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fas fa-times"></i></button>
-            </div>
+          <div class="ai-chat-input-area">
             <div class="ai-chat-input-wrapper">
-              <label for="ai-image-upload" class="ai-image-upload-label" style="cursor: pointer; padding: 0 10px; color: #888; display:flex; align-items:center;" title="Tải ảnh lên">
-                <i class="fas fa-image text-lg hover:text-[#d70018] transition-colors"></i>
-              </label>
-              <input type="file" id="ai-image-upload" accept="image/*" style="display: none;">
-              <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Nhập tin nhắn hay tải ảnh...">
+              <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Nhập câu hỏi của bạn..." autocomplete="off" spellcheck="false">
               <button class="ai-chat-send" id="ai-chat-send">
                 <i class="fas fa-paper-plane"></i>
               </button>
@@ -518,14 +502,7 @@
   }
 
   function removePreviewImage() {
-    const previewContainer = document.getElementById('ai-image-preview-container');
-    const previewImg = document.getElementById('ai-image-preview');
-    const uploadInput = document.getElementById('ai-image-upload');
-
     currentImageBase64 = null;
-    if(uploadInput) uploadInput.value = '';
-    if(previewImg) previewImg.src = '';
-    if(previewContainer) previewContainer.style.display = 'none';
   }
 
   // Initialize chatbot
@@ -541,32 +518,8 @@
     const clearAllBtn = document.getElementById('ai-clear-all-btn');
     const sendBtn = document.getElementById('ai-chat-send');
     const input = document.getElementById('ai-chat-input');
-    const quickBtns = document.querySelectorAll('.ai-quick-btn');
 
-    // Image upload elements
-    const uploadInput = document.getElementById('ai-image-upload');
-    const removeImageBtn = document.getElementById('ai-remove-image-btn');
-    const previewContainer = document.getElementById('ai-image-preview-container');
-    const previewImg = document.getElementById('ai-image-preview');
-
-    if (uploadInput) {
-      uploadInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            currentImageBase64 = e.target.result;
-            previewImg.src = currentImageBase64;
-            previewContainer.style.display = 'block';
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-    }
-
-    if (removeImageBtn) {
-        removeImageBtn.addEventListener('click', removePreviewImage);
-      }
+    // Mở/đóng chat window
 
       currentUserId = getUserId();
 
@@ -626,34 +579,6 @@
         e.preventDefault();
         sendMessage();
       }
-    });
-    
-    // Quick action buttons
-    quickBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const action = btn.dataset.action;
-        let message = '';
-        
-        switch(action) {
-          case 'budget':
-            message = 'Tôi muốn mua điện thoại tầm 5 triệu, có gợi ý gì không?';
-            break;
-          case 'promo':
-            message = 'Cho tôi xem các chương trình khuyến mãi hiện tại';
-            break;
-          case 'compare':
-            message = 'Tôi muốn so sánh các dòng điện thoại';
-            break;
-          case 'warranty':
-            message = 'Chính sách bảo hành như thế nào?';
-            break;
-        }
-        
-        if (message) {
-          document.getElementById('ai-chat-input').value = message;
-          sendMessage();
-        }
-      });
     });
     
     // Lắng nghe sự kiện storage

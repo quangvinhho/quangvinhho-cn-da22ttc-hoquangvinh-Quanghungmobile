@@ -7,11 +7,11 @@ const { pool } = require('../config/database');
 // ============================================================
 router.get('/vouchers/available', async (req, res) => {
   try {
-    console.log('Fetching available vouchers...');
+    
     
     // Debug: Lấy tất cả voucher để kiểm tra
     const [allVouchers] = await pool.query('SELECT code, trang_thai, ngay_bat_dau, ngay_ket_thuc, NOW() as now_time FROM khuyen_mai LIMIT 10');
-    console.log('All vouchers in DB:', allVouchers);
+    
     
     const [vouchers] = await pool.query(`
       SELECT 
@@ -38,7 +38,7 @@ router.get('/vouchers/available', async (req, res) => {
       LIMIT 50
     `);
     
-    console.log('Available vouchers found:', vouchers.length);
+    
 
     res.json({
       success: true,
@@ -580,10 +580,7 @@ async function fetchSlowMoversFromDB() {
   `);
 
   // Log chi tiết để debug
-  console.log('[Slow Movers] Raw products from DB:');
-  products.forEach(p => {
-    console.log(`  - ID: ${p.ma_sp}, Name: ${p.ten_sp}, Image: ${p.anh_dai_dien}, Brand: ${p.ten_hang}`);
-  });
+  // Slow movers loaded from DB
 
   if (products.length === 0) {
     // Fallback: lấy bất kỳ 4 sản phẩm nào
@@ -649,7 +646,7 @@ router.get('/slow-movers', async (req, res) => {
     // Map ảnh cho từng sản phẩm (luôn gọi getSlowMoverImage để đảm bảo ảnh đúng)
     const mappedProducts = products.map(p => {
       const image = getSlowMoverImage(p);
-      console.log(`[Slow Movers] Final mapping: ${p.ten_sp} -> ${image}`);
+      
       return {
         id: p.ma_sp,
         name: p.ten_sp,

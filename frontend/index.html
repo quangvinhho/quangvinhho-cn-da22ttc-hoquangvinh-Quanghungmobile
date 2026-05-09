@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23d70018'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EQH%3C/text%3E%3C/svg%3E">
   <title>QuangHưng Mobile - Điện thoại chính hãng giá tốt</title>
   <meta name="description" content="Mua điện thoại chính hãng, giá tốt nhất thị trường. iPhone, Samsung, Sony Xperia.">
 
@@ -399,6 +400,13 @@
                       <div class="text-base sm:text-lg font-black text-[#d70018] leading-none">${price}</div>
                       <div class="text-[11px] text-gray-400 line-through mb-0.5">${oldPrice}</div>
                     </div>
+                    <div class="bg-gray-50 rounded px-2 py-1.5 mt-1.5 border border-gray-100">
+                      ${(product.shortDescription || 'Giá sốc hôm nay ' + price + ' | Trade-in giảm đến 5 triệu').split('|').map(line => {
+                        let text = line.trim();
+                        text = text.replace(/(\d+(?:\.\d+)*(?:k|đ| đ| triệu| ngày|%|.000đ))/gi, '<strong class="text-[#d70018]">$1</strong>');
+                        return '<p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5 last:mb-0">' + text + '</p>';
+                      }).join('')}
+                    </div>
                     <div class="flex items-center justify-between mt-1">
                       <div class="flex items-center gap-1 text-yellow-400 text-[10px]">${stars}</div>
                       <div class="text-[11px] text-gray-500 hidden sm:block">(${reviewCount} đánh giá)</div>
@@ -526,6 +534,13 @@
                           <div class="price-block flex items-end gap-2 mt-1">
                             <div class="text-base sm:text-lg font-black text-[#d70018] leading-none">${price}</div>
                             <div class="text-[11px] text-gray-400 line-through mb-0.5">${oldPrice}</div>
+                          </div>
+                          <div class="bg-gray-50 rounded px-2 py-1.5 mt-1.5 border border-gray-100">
+                            ${(product.shortDescription || 'Trả góp 0% | Trade-in giảm đến 5 triệu').split('|').map(line => {
+                              let text = line.trim();
+                              text = text.replace(/(\d+(?:\.\d+)*(?:k|đ| đ| triệu| ngày|%|.000đ))/gi, '<strong class="text-[#d70018]">$1</strong>');
+                              return '<p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5 last:mb-0">' + text + '</p>';
+                            }).join('')}
                           </div>
                           <div class="flex items-center justify-between mt-1">
                             <div class="flex items-center gap-1 text-yellow-400 text-[10px]">${stars}</div>
@@ -771,8 +786,11 @@
                             <div class="text-[11px] sm:text-xs text-gray-400 line-through">${oldPrice}</div>
                             
                             <div class="bg-gray-50 rounded px-2 py-1.5 mt-1.5 border border-gray-100">
-                              <p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5">Duy nhất ${new Date().getDate()}/${new Date().getMonth()+1} giá chỉ <strong class="text-[#d70018]">${kPrice}</strong></p>
-                              <p class="text-[10px] md:text-[11px] text-gray-600">Trade-in giảm đến <strong class="text-[#d70018]">5 triệu</strong></p>
+                              ${(product.shortDescription || product.mo_ta_ngan || 'Trả góp 0% | Trade-in giảm đến 5 triệu').split('|').map(line => {
+                                let text = line.trim();
+                                text = text.replace(/(\d+(?:\.\d+)*(?:k|đ| đ| triệu| ngày|%|.000đ))/gi, '<strong class="text-[#d70018]">$1</strong>');
+                                return '<p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5 last:mb-0">' + text + '</p>';
+                              }).join('')}
                             </div>
                             
                             <div class="flex items-center gap-1 mt-2">
@@ -894,8 +912,11 @@
                             <div class="text-[11px] sm:text-xs text-gray-400 line-through">${oldPrice}</div>
                             
                             <div class="bg-gray-50 rounded px-2 py-1.5 mt-1.5 border border-gray-100">
-                              <p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5">Duy nhất ${new Date().getDate()}/${new Date().getMonth()+1} giá chỉ <strong class="text-[#d70018]">${kPrice}</strong></p>
-                              <p class="text-[10px] md:text-[11px] text-gray-600">Đổi trả miễn phí <strong class="text-[#d70018]">30 ngày</strong></p>
+                              ${(product.shortDescription || product.mo_ta_ngan || 'Smember giảm thêm | Trả góp 0% lãi suất').split('|').map(line => {
+                                let text = line.trim();
+                                text = text.replace(/(\d+(?:\.\d+)*(?:k|đ| đ| triệu| ngày|%|.000đ))/gi, '<strong class="text-[#d70018]">$1</strong>');
+                                return '<p class="text-[10px] md:text-[11px] text-gray-600 mb-0.5 last:mb-0">' + text + '</p>';
+                              }).join('')}
                             </div>
                             
                             <div class="flex items-center gap-1 mt-2">
@@ -2193,6 +2214,16 @@
                 </div>
                 <div class="text-[11px] text-gray-500 hidden sm:block">(${product.reviews || 0})</div>
               </div>
+              ${product.shortDescription || true ? `
+              <div class="border border-gray-100 rounded p-1.5 mt-2 bg-gray-50 text-[11px] text-gray-600 min-h-[46px] flex flex-col justify-center">
+                ${(product.shortDescription || 'Duy nhất 27/4 giá chỉ ' + formatPrice(product.price) + ' | Đổi trả miễn phí 30 ngày').split('|').map(line => {
+                  let text = line.trim();
+                  // Highlight numbers/prices in red
+                  text = text.replace(/(\d+(?:\.\d+)*(?:k|đ| đ| triệu| ngày))/gi, '<span class="text-red-500 font-bold">$1</span>');
+                  return `<div class="mb-0.5 last:mb-0">${text}</div>`;
+                }).join('')}
+              </div>
+              ` : ''}
             </div>
           </a>
           <!-- Nút Mua ngay và Thêm vào giỏ -->
@@ -2239,6 +2270,9 @@
     // Load products when page loads
     loadFeaturedProducts();
   </script>
+
+  <!-- Secure Storage - Mã hóa localStorage -->
+  <script src="js/secure-storage.js"></script>
 
   <!-- Main JS - Page Loader -->
   <script src="main.js"></script>

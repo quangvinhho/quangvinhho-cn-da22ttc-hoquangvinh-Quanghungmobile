@@ -256,35 +256,6 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        // 1. Kiểm tra trong bảng admin trước
-        const [admins] = await pool.query(
-            'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?', 
-            [email, email]
-        );
-
-        if (admins.length > 0) {
-            const admin = admins[0];
-            // So sánh mật khẩu (plain text hoặc bcrypt)
-            const isAdminMatch = admin.mat_khau === mat_khau || await bcrypt.compare(mat_khau, admin.mat_khau).catch(() => false);
-            
-            if (isAdminMatch) {
-                return res.json({ 
-                    success: true, 
-                    message: 'Đăng nhập admin thành công',
-                    data: {
-                        ma_admin: admin.ma_admin,
-                        tai_khoan: admin.tai_khoan,
-                        ho_ten: admin.ho_ten,
-                        email: admin.email,
-                        quyen: admin.quyen,
-                        avt: admin.avt,
-                        role: 'admin',
-                        isAdmin: true
-                    }
-                });
-            }
-        }
-
         // 2. Kiểm tra trong bảng khách hàng
         const [users] = await pool.query(
             'SELECT * FROM khach_hang WHERE email = ? OR so_dt = ?', 
@@ -319,21 +290,28 @@ router.post('/login', async (req, res) => {
             });
         }
 
+        const userData = {
+            ma_kh: user.ma_kh,
+            ho_ten: user.ho_ten,
+            email: user.email,
+            so_dt: user.so_dt,
+            dia_chi: user.dia_chi,
+            avt: user.avt,
+            gioi_tinh: user.gioi_tinh,
+            ngay_sinh: user.ngay_sinh,
+            role: 'customer'
+        };
+
+        // Lưu vào session
+        if (req.session) {
+            req.session.user = userData;
+        }
+
         // Return user info (without password)
         res.json({ 
             success: true, 
             message: 'Đăng nhập thành công',
-            data: {
-                ma_kh: user.ma_kh,
-                ho_ten: user.ho_ten,
-                email: user.email,
-                so_dt: user.so_dt,
-                dia_chi: user.dia_chi,
-                avt: user.avt,
-                gioi_tinh: user.gioi_tinh,
-                ngay_sinh: user.ngay_sinh,
-                role: 'customer'
-            }
+            data: userData
         });
 
     } catch (error) {
@@ -379,18 +357,38 @@ router.post('/admin/login', async (req, res) => {
             });
         }
 
-        res.json({ 
-            success: true, 
-            message: 'Đăng nhập admin thành công',
-            data: {
-                ma_admin: admin.ma_admin,
-                tai_khoan: admin.tai_khoan,
-                ho_ten: admin.ho_ten,
-                quyen: admin.quyen,
-                avt: admin.avt,
-                email: admin.email,
-                role: 'admin'
+        const adminData = {
+            ma_admin: admin.ma_admin,
+            tai_khoan: admin.tai_khoan,
+            ho_ten: admin.ho_ten,
+            quyen: admin.quyen,
+            avt: admin.avt,
+            email: admin.email,
+            role: 'admin',
+            vai_tro: 'admin'
+        };
+
+        // Lưu vào session và đảm bảo session được lưu trước khi trả response
+        req.session.user = adminData;
+        
+        // Force save session trước khi trả response
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.status(500).json({ 
+                    success: false, 
+                    message: 'Lỗi lưu phiên đăng nhập' 
+                });
             }
+            
+            console.log('✅ Admin session saved successfully:', req.sessionID);
+            
+            res.json({ 
+                success: true, 
+                message: 'Đăng nhập admin thành công',
+                data: adminData,
+                sessionId: req.sessionID // Debug info
+            });
         });
 
     } catch (error) {
@@ -686,6 +684,37 @@ router.put('/change-password/:id', async (req, res) => {
     }
 });
 
+// GET /api/auth/check - Kiểm tra trạng thái đăng nhập và session
+router.get('/check', (req, res) => {
+    console.log('🔍 Auth check called');
+    console.log('Session ID:', req.sessionID);
+    console.log('Session data:', req.session);
+    console.log('req.user (passport):', req.user);
+    console.log('req.session.user:', req.session?.user);
+    
+    // Ưu tiên session từ Google OAuth (passport)
+    if (req.user) {
+        console.log('✅ Found req.user (passport)');
+        return res.json({ 
+            isAuthenticated: true, 
+            user: { ...req.user, vai_tro: req.user.vai_tro || req.user.role || (req.user.isAdmin ? 'admin' : 'customer') } 
+        });
+    }
+    
+    // Fallback: session đăng nhập thường
+    if (req.session && req.session.user) {
+        console.log('✅ Found req.session.user');
+        return res.json({ 
+            isAuthenticated: true, 
+            user: { ...req.session.user, vai_tro: req.session.user.vai_tro || req.session.user.role || 'customer' } 
+        });
+    }
+    
+    // Nếu không có session
+    console.log('❌ No session found');
+    res.status(401).json({ isAuthenticated: false, message: 'Chưa đăng nhập' });
+});
+
 // ==================== GOOGLE OAUTH ====================
 
 // GET /api/auth/google - Bắt đầu đăng nhập Google (cho khách hàng)
@@ -710,81 +739,134 @@ router.get('/google/register', (req, res, next) => {
 
 // GET /api/auth/google/callback - Callback từ Google
 router.get('/google/callback', (req, res, next) => {
-    // Log để debug
-    console.log('Google callback - Query state:', req.query.state);
-    console.log('Google callback - Session state:', req.session?.googleAuthState);
+    console.log('🔵 Google callback handler started');
+    console.log('Query state:', req.query.state);
+    console.log('Session adminLogin:', req.session?.adminLogin);
     
-    passport.authenticate('google', async (err, user, info) => {
-        // Xóa state khỏi session sau khi sử dụng
-        const authState = req.session?.googleAuthState;
-        if (req.session) {
-            delete req.session.googleAuthState;
-        }
+    passport.authenticate('google', { 
+        failureRedirect: '/login.html?error=google_failed',
+        session: false // Không dùng passport session, tự xử lý
+    }, async (err, user, info) => {
+        console.log('🔵 Passport authenticate callback');
+        console.log('Error:', err);
+        console.log('User:', user);
+        console.log('Info:', info);
         
-        if (err) {
-            console.error('Google OAuth Error:', err);
-            return res.redirect('/login.html?error=google_failed');
-        }
-        
-        if (!user) {
-            // Xử lý các trường hợp lỗi hoặc đăng ký thành công
-            if (info && info.message === 'not_registered') {
-                // User chưa đăng ký → redirect về trang đăng ký với thông báo
-                return res.redirect('/register.html?error=not_registered&message=' + encodeURIComponent('Tài khoản Google chưa được đăng ký. Vui lòng bấm "Đăng ký với Google" trước!'));
-            }
-            if (info && info.message === 'email_exists') {
-                // Email đã tồn tại khi đăng ký
-                return res.redirect('/login.html?error=email_exists&message=' + encodeURIComponent('Email này đã được đăng ký. Vui lòng đăng nhập!'));
-            }
-            if (info && info.message === 'account_locked') {
-                // Tài khoản bị khóa
-                return res.redirect('/login.html?error=account_locked&message=' + encodeURIComponent('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin để được hỗ trợ.'));
-            }
-            if (info && info.message === 'register_success') {
-                // Đăng ký Google thành công → redirect về trang login với thông báo
-                return res.redirect('/login.html?registered=true&google_registered=true&email=' + encodeURIComponent(info.email || ''));
-            }
-            return res.redirect('/login.html?error=google_failed');
-        }
-        
-        // Kiểm tra xem user có phải admin không
         try {
-            const [admins] = await pool.query(
-                'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?',
-                [user.email, user.email]
-            );
+            // Kiểm tra xem có phải admin login không
+            const isAdminLogin = req.query.state === 'admin_login' || req.session?.adminLogin === true;
             
-            if (admins.length > 0) {
-                // User là admin
+            console.log('🔵 isAdminLogin:', isAdminLogin);
+            
+            // Xóa flag khỏi session sau khi sử dụng
+            if (req.session?.adminLogin) {
+                delete req.session.adminLogin;
+            }
+            
+            if (err) {
+                console.error('❌ Google OAuth Error:', err);
+                const redirectUrl = isAdminLogin ? '/admin-login.html?error=google_failed' : '/login.html?error=google_failed';
+                return res.redirect(redirectUrl);
+            }
+            
+            if (!user) {
+                console.log('❌ No user returned from passport');
+                const redirectUrl = isAdminLogin ? '/admin-login.html?error=google_failed' : '/login.html?error=google_failed';
+                return res.redirect(redirectUrl);
+            }
+            
+            const email = user.email;
+            const google_id = user.google_id || user.ma_kh;
+            const ho_ten = user.ho_ten;
+            const avt = user.avt;
+            
+            console.log('🔵 Google OAuth callback - Email:', email, '- isAdminLogin:', isAdminLogin);
+            
+            // Nếu là admin login, kiểm tra xem user có phải admin không
+            if (isAdminLogin) {
+                const [admins] = await pool.query(
+                    'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?',
+                    [email, email]
+                );
+                
+                if (admins.length === 0) {
+                    // Email không phải admin
+                    console.log('❌ Not an admin account:', email);
+                    return res.redirect('/admin-login.html?error=not_admin');
+                }
+                
                 const admin = admins[0];
+                
+                // Cập nhật google_id nếu chưa có
+                await pool.query(
+                    'UPDATE admin SET google_id = COALESCE(google_id, ?), avt = COALESCE(avt, ?) WHERE ma_admin = ?',
+                    [google_id, avt, admin.ma_admin]
+                );
+                
+                // Tạo dữ liệu admin để lưu vào session
                 const adminData = {
                     ma_admin: admin.ma_admin,
                     tai_khoan: admin.tai_khoan,
-                    email: user.email,
-                    ho_ten: admin.ho_ten || user.ho_ten,
-                    avt: admin.avt || user.avt,
+                    email: email,
+                    ho_ten: admin.ho_ten || ho_ten,
+                    avt: admin.avt || avt,
                     quyen: admin.quyen,
                     role: 'admin',
+                    vai_tro: 'admin',
                     isAdmin: true
                 };
                 
-                const userData = encodeURIComponent(JSON.stringify(adminData));
-                return res.redirect(`/login.html?google_success=true&user=${userData}`);
-            }
-        } catch (adminCheckError) {
-            console.error('Error checking admin:', adminCheckError);
-        }
-        
-        // Đăng nhập thành công như khách hàng bình thường
-        req.logIn(user, (loginErr) => {
-            if (loginErr) {
-                console.error('Login Error:', loginErr);
-                return res.redirect('/login.html?error=google_failed');
+                console.log('🔵 Setting admin session data:', adminData);
+                
+                // Lưu trực tiếp vào session (không dùng passport)
+                req.session.user = adminData;
+                
+                // Force save session
+                req.session.save((saveErr) => {
+                    if (saveErr) {
+                        console.error('❌ Session save error:', saveErr);
+                        return res.redirect('/admin-login.html?error=google_failed');
+                    }
+                    
+                    console.log('✅ Admin Google OAuth session saved:', req.sessionID);
+                    console.log('✅ Admin data:', adminData);
+                    // Mã hóa dữ liệu admin thành dạng chuẩn Base64 không qua URI encode nội dung
+                    const adminBase64 = Buffer.from(JSON.stringify(adminData)).toString('base64');
+                    res.redirect(`/admin-login.html?google_success=true&user=${encodeURIComponent(adminBase64)}`);
+                });
+                
+                return;
             }
             
-            const userData = encodeURIComponent(JSON.stringify(user));
-            return res.redirect(`/login.html?google_success=true&user=${userData}`);
-        });
+            // Đăng nhập thành công như khách hàng bình thường
+            const customerData = {
+                ma_kh: user.ma_kh,
+                ho_ten: user.ho_ten,
+                email: user.email,
+                avt: user.avt,
+                so_dt: user.so_dt,
+                dia_chi: user.dia_chi,
+                gioi_tinh: user.gioi_tinh,
+                ngay_sinh: user.ngay_sinh,
+                role: 'customer'
+            };
+            
+            req.session.user = customerData;
+            req.session.save((saveErr) => {
+                if (saveErr) {
+                    console.error('❌ Session save error:', saveErr);
+                }
+                console.log('✅ Customer Google OAuth session saved:', req.sessionID);
+                // Mã hóa dữ liệu user thành dạng chuẩn Base64 không qua URI encode nội dung
+                const userBase64 = Buffer.from(JSON.stringify(customerData)).toString('base64');
+                res.redirect(`/login.html?google_success=true&user=${encodeURIComponent(userBase64)}`);
+            });
+            
+        } catch (error) {
+            console.error('❌ Google OAuth callback error:', error);
+            const redirectUrl = req.query.state === 'admin_login' ? '/admin-login.html?error=google_failed' : '/login.html?error=google_failed';
+            res.redirect(redirectUrl);
+        }
     })(req, res, next);
 });
 
@@ -794,61 +876,17 @@ router.get('/google/callback', (req, res, next) => {
 router.get('/admin/google', (req, res, next) => {
     // Lưu flag admin vào session để callback biết redirect về đâu
     req.session.adminLogin = true;
-    passport.authenticate('google', {
-        scope: ['profile', 'email']
-    })(req, res, next);
-});
-
-// GET /api/auth/admin/google/callback - Callback từ Google cho Admin
-router.get('/admin/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/admin-login.html?error=google_failed' }),
-    async (req, res) => {
-        try {
-            const email = req.user.email;
-            const google_id = req.user.google_id || null;
-            const ho_ten = req.user.ho_ten;
-            const avt = req.user.avt;
-
-            // Kiểm tra xem email có trong bảng admin không
-            const [admins] = await pool.query(
-                'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?',
-                [email, email]
-            );
-
-            if (admins.length === 0) {
-                // Email không phải admin - redirect với lỗi
-                return res.redirect('/admin-login.html?error=not_admin');
-            }
-
-            const admin = admins[0];
-
-            // Cập nhật google_id và avatar nếu chưa có
-            await pool.query(
-                'UPDATE admin SET google_id = COALESCE(google_id, ?), avt = COALESCE(avt, ?), email = COALESCE(email, ?) WHERE ma_admin = ?',
-                [google_id, avt, email, admin.ma_admin]
-            );
-
-            // Tạo dữ liệu admin để trả về frontend
-            const adminData = {
-                ma_admin: admin.ma_admin,
-                tai_khoan: admin.tai_khoan,
-                email: email,
-                ho_ten: admin.ho_ten || ho_ten,
-                avt: admin.avt || avt,
-                quyen: admin.quyen,
-                role: 'admin',
-                isAdmin: true
-            };
-
-            const userData = encodeURIComponent(JSON.stringify(adminData));
-            res.redirect(`/admin-login.html?google_success=true&user=${userData}`);
-
-        } catch (error) {
-            console.error('Admin Google OAuth Error:', error);
-            res.redirect('/admin-login.html?error=google_failed');
+    req.session.save((err) => {
+        if (err) {
+            console.error('Session save error:', err);
         }
-    }
-);
+        console.log('✅ Admin login flag saved to session:', req.sessionID);
+        passport.authenticate('google', {
+            scope: ['profile', 'email'],
+            state: 'admin_login' // Đánh dấu là admin login
+        })(req, res, next);
+    });
+});
 
 // GET /api/auth/google/user - Lấy thông tin user đã đăng nhập
 router.get('/google/user', (req, res) => {
@@ -867,6 +905,23 @@ router.post('/google/logout', (req, res) => {
         }
         res.json({ success: true, message: 'Đăng xuất thành công' });
     });
+});
+
+// POST /api/auth/admin/logout - Đăng xuất admin (hủy session)
+router.post('/admin/logout', (req, res) => {
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Session destroy error:', err);
+                return res.status(500).json({ success: false, message: 'Lỗi đăng xuất' });
+            }
+            res.clearCookie('qh.sid'); // Xóa cookie session
+            console.log('✅ Admin logged out successfully');
+            res.json({ success: true, message: 'Đăng xuất thành công' });
+        });
+    } else {
+        res.json({ success: true, message: 'Đã đăng xuất' });
+    }
 });
 
 module.exports = router;

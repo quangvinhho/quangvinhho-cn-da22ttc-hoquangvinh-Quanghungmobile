@@ -185,41 +185,79 @@ router.post('/chat', async (req, res) => {
     // Prepare history format (for vision model it's better if history is strictly text, but groq handles standard formatting)
     history.push(userMessage);
 
-    // Lấy danh sách sản phẩm từ database để AI có thể gợi ý
-    const products = await getProductsFromDB();
-    const productContext = createProductContext(products);
+    let aiResponse = null;
+
+    // 1. Nếu không có hình ảnh, thử gọi sang Python RAG Service (nếu đang chạy)
+    if (!image) {
+      try {
+        const pyResponse = await fetch('http://127.0.0.1:8000/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: message,
+            userId: userId,
+            conversationId: currentConversationId,
+            history: history.slice(0, -1) // Truyền lịch sử trừ tin nhắn hiện tại
+          })
+        });
+
+        if (pyResponse.ok) {
+          const pyData = await pyResponse.json();
+          aiResponse = pyData.response;
+          console.log('Got response from Python RAG Service');
+        } else {
+          console.log('Python RAG Service returned error, falling back to direct Groq call');
+        }
+      } catch (err) {
+        console.log('Python RAG Service is not running, falling back to direct Groq call:', err.message);
+      }
+    }
+
+    // 2. Nếu Python RAG thất bại hoặc đang xử lý hình ảnh, dùng Groq trực tiếp
+    if (!aiResponse) {
+      // Lấy danh sách sản phẩm từ database để AI có thể gợi ý
+      const products = await getProductsFromDB();
+      const productContext = createProductContext(products);
     
+    let historyInstruction = "";
+    if (history.length > 0 && userId) {
+      historyInstruction = "\n\nLƯU Ý QUAN TRỌNG: Khách hàng ĐÃ ĐĂNG NHẬP và hệ thống hiện đang lưu trữ lịch sử cuộc hội thoại này (xem các tin nhắn chat trước đó). Hãy ĐỌC KỸ LỊCH SỬ để nhớ lại: Sản phẩm họ đã hỏi, ngân sách dự kiến, và sở thích của họ. TỪ ĐÓ CHỦ ĐỘNG GỢI Ý CÁC SẢN PHẨM KHÁC CÙNG TẦM GIÁ HOẶC CẤU HÌNH tương tự trong danh sách CSDL dưới đây. Bắt buộc để ý ngữ cảnh và tạo ra sự liên kết gợi ý thông minh, như một trợ lý biết rõ khách hàng nhé.";
+    } else {
+      historyInstruction = "\n\nLƯU Ý: Khách hàng chưa đăng nhập hoặc chưa có lịch sử, KHÔNG bịa ra lịch sử.";
+    }
+
     let imagePromptExtension = "";
     if (image) {
       imagePromptExtension = "\n\nKHÁCH HÀNG VỪA GỬI 1 HÌNH ẢNH: Hãy nhận diện điện thoại trong ảnh. Nếu sản phẩm đó có trong danh sách, hãy giới thiệu nó bằng mẫu HTML đã cho sẵn. Nếu KHÔNG CÓ TRONG DANH SÁCH website, hãy trả lời lịch sự và thân thiện (ví dụ: 'Dạ, hiện tại cửa hàng bên em chưa kinh doanh dòng sản phẩm này ạ...', rồi tư vấn sản phẩm tương đương có trong danh sách).";
     }
-    const SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + productContext + imagePromptExtension;
+    const SYSTEM_PROMPT = BASE_SYSTEM_PROMPT + historyInstruction + productContext + imagePromptExtension;
 
-    const response = await fetch(GROQ_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: selectedModel,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...history
-        ],
-        temperature: 0.7,
-        max_tokens: 800
-      })
-    });
+      const response = await fetch(GROQ_API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: selectedModel,
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...history
+          ],
+          temperature: 0.7,
+          max_tokens: 800
+        })
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Groq API error:', errorText);
-      return res.status(500).json({ error: 'Lỗi kết nối AI' });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Groq API error:', errorText);
+        return res.status(500).json({ error: 'Lỗi kết nối AI' });
+      }
+
+      const data = await response.json();
+      aiResponse = data.choices[0]?.message?.content || 'Xin lỗi, tôi không thể trả lời lúc này.';
     }
-
-    const data = await response.json();
-    const aiResponse = data.choices[0]?.message?.content || 'Xin lỗi, tôi không thể trả lời lúc này.';
 
     if (userId && currentConversationId) {
       await saveMessage(currentConversationId, userId, 'assistant', String(aiResponse));

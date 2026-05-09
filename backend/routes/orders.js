@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
 
     // Xử lý mã freeship
     if (freeshipVoucher && freeshipVoucher.code) {
-      console.log('Processing freeship voucher:', freeshipVoucher);
+      
       
       // Tìm voucher trong DB (không lọc điều kiện để debug)
       const [allVouchers] = await connection.query(
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
          FROM khuyen_mai WHERE code = ?`,
         [freeshipVoucher.code]
       );
-      console.log('Found freeship vouchers in DB:', allVouchers);
+      
       
       const [vouchers] = await connection.query(
         `SELECT ma_km, code, so_luong, so_luong_da_dung 
@@ -74,7 +74,7 @@ router.post('/', async (req, res) => {
 
     // Xử lý mã giảm giá
     if (discountVoucher && discountVoucher.code) {
-      console.log('Processing discount voucher:', discountVoucher);
+      
       
       // Tìm voucher trong DB (không lọc điều kiện để debug)
       const [allVouchers] = await connection.query(
@@ -82,7 +82,7 @@ router.post('/', async (req, res) => {
          FROM khuyen_mai WHERE code = ?`,
         [discountVoucher.code]
       );
-      console.log('Found discount vouchers in DB:', allVouchers);
+      
       
       const [vouchers] = await connection.query(
         `SELECT ma_km, code, so_luong, so_luong_da_dung 
@@ -485,7 +485,7 @@ router.put('/:orderId/cancel', async (req, res) => {
     }
 
     const order = orders[0];
-    console.log('Found order:', { ma_don: order.ma_don, ma_kh: order.ma_kh, trang_thai: order.trang_thai });
+    
 
     // Kiểm tra quyền sở hữu (nếu có userId)
     if (userId && order.ma_kh && order.ma_kh != userId) {

@@ -124,13 +124,18 @@
             color: white;
         }
 
-        /* Facebook - Xanh dương với vòng tròn kép */
+        /* Facebook - Xanh dương với vòng tròn kép (có hiệu ứng loang) */
         .share-btn.facebook {
             background: #1877f2;
-            box-shadow: 0 0 0 6px rgba(24, 119, 242, 0.3), 0 0 0 12px rgba(24, 119, 242, 0.15);
+            animation: pulse-fb 2s infinite;
         }
         .share-btn.facebook:hover {
-            box-shadow: 0 0 0 8px rgba(24, 119, 242, 0.4), 0 0 0 16px rgba(24, 119, 242, 0.2);
+            transform: scale(1.15);
+        }
+        @keyframes pulse-fb {
+            0% { box-shadow: 0 0 0 0 rgba(24, 119, 242, 0.7), 0 0 0 0 rgba(24, 119, 242, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(24, 119, 242, 0.3), 0 0 0 16px rgba(24, 119, 242, 0.15); }
+            100% { box-shadow: 0 0 0 15px rgba(24, 119, 242, 0), 0 0 0 30px rgba(24, 119, 242, 0); }
         }
 
         /* Messenger - Tím với vòng tròn kép */
@@ -151,28 +156,21 @@
             box-shadow: 0 0 0 8px rgba(100, 100, 100, 0.45), 0 0 0 16px rgba(100, 100, 100, 0.25);
         }
 
-        /* Vòng tròn Zalo */
+        /* Vòng tròn Zalo (có hiệu ứng loang) */
         .share-btn.zalo {
             background: #0068ff;
-            box-shadow: 0 0 0 6px rgba(0, 104, 255, 0.3), 0 0 0 12px rgba(0, 104, 255, 0.15);
+            animation: pulse-zalo 2s infinite;
         }
         .share-btn.zalo:hover {
-            box-shadow: 0 0 0 8px rgba(0, 104, 255, 0.4), 0 0 0 16px rgba(0, 104, 255, 0.2);
+            transform: scale(1.15);
+        }
+        @keyframes pulse-zalo {
+            0% { box-shadow: 0 0 0 0 rgba(0, 104, 255, 0.7), 0 0 0 0 rgba(0, 104, 255, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(0, 104, 255, 0.3), 0 0 0 16px rgba(0, 104, 255, 0.15); }
+            100% { box-shadow: 0 0 0 15px rgba(0, 104, 255, 0), 0 0 0 30px rgba(0, 104, 255, 0); }
         }
 
-        /* Floating animation khi đã hiện */
-        @keyframes floatBtn {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        .share-btn:nth-child(odd) {
-            animation: floatBtn 3s ease-in-out infinite 0.6s;
-        }
-
-        .share-btn:nth-child(even) {
-            animation: floatBtn 3s ease-in-out infinite 0.9s;
-        }
+        /* Bỏ cái float cũ vì đã có pulse */
 
         /* Responsive */
         @media (max-width: 768px) {

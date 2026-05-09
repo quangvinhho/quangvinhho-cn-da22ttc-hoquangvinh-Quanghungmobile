@@ -6,6 +6,50 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+// ==================== MIDDLEWARE XÁC THỰC ADMIN ====================
+// Các route KHÔNG cần xác thực admin (public)
+const publicPaths = [
+    { method: 'POST', path: '/contacts' },     // Form liên hệ từ khách hàng
+    { method: 'GET', path: '/settings/public' }, // Cài đặt hiển thị công khai
+    { method: 'GET', path: '/settings' }         // Cài đặt hiển thị (non-sensitive)
+];
+
+// Middleware kiểm tra quyền admin cho TẤT CẢ routes
+const checkAdmin = (req, res, next) => {
+    // Bỏ qua kiểm tra cho các route public
+    const isPublic = publicPaths.some(p => 
+        req.method === p.method && req.path === p.path
+    );
+    if (isPublic) return next();
+
+    // Kiểm tra session admin
+    if (!req.session || !req.session.user) {
+        console.log('❌ Admin auth failed: No session or user');
+        console.log('Session:', req.session);
+        return res.status(401).json({ 
+            success: false, 
+            message: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.',
+            code: 'AUTH_REQUIRED'
+        });
+    }
+
+    if (req.session.user.vai_tro !== 'admin') {
+        console.log('❌ Admin auth failed: Not admin role');
+        console.log('User role:', req.session.user.vai_tro);
+        return res.status(403).json({ 
+            success: false, 
+            message: 'Bạn không có quyền truy cập chức năng này.',
+            code: 'ADMIN_REQUIRED'
+        });
+    }
+
+    console.log('✅ Admin authenticated:', req.session.user.tai_khoan);
+    next();
+};
+
+// Áp dụng middleware cho TẤT CẢ routes trong router này
+router.use(checkAdmin);
+
 // Cau hinh multer de upload anh
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -723,7 +767,7 @@ router.get('/products', async (req, res) => {
 // POST /api/admin/products - Thêm sản phẩm mới (kèm thông số kỹ thuật)
 router.post('/products', async (req, res) => {
     try {
-        const { ten_sp, ma_hang, gia, gia_giam, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta, anh_dai_dien, cau_hinh } = req.body;
+        const { ten_sp, ma_hang, gia, gia_giam, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta_ngan, mo_ta, anh_dai_dien, cau_hinh } = req.body;
         
         // Validation
         if (!ten_sp || !ten_sp.trim()) {
@@ -759,9 +803,9 @@ router.post('/products', async (req, res) => {
         
         // Thêm sản phẩm (ngay_cap_nhat sẽ tự động set bởi MySQL DEFAULT CURRENT_TIMESTAMP)
         const [result] = await pool.query(
-            `INSERT INTO san_pham (ten_sp, ma_hang, gia, gia_giam, bo_nho, so_luong_ton, mau_sac, mo_ta, anh_dai_dien) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [ten_sp, ma_hang, gia, discountPrice, bo_nho || 128, so_luong_ton || 0, colorData, mo_ta, anh_dai_dien]
+            `INSERT INTO san_pham (ten_sp, ma_hang, gia, gia_giam, bo_nho, so_luong_ton, mau_sac, mo_ta_ngan, mo_ta, anh_dai_dien) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [ten_sp, ma_hang, gia, discountPrice, bo_nho || 128, so_luong_ton || 0, colorData, mo_ta_ngan, mo_ta, anh_dai_dien]
         );
         
         const productId = result.insertId;
@@ -885,7 +929,7 @@ router.put('/products/:id/specs', async (req, res) => {
 router.put('/products/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { ten_sp, ma_hang, gia, gia_giam, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta, anh_dai_dien, cau_hinh } = req.body;
+        const { ten_sp, ma_hang, gia, gia_giam, bo_nho, so_luong_ton, mau_sac, ten_mau_sac, mo_ta_ngan, mo_ta, anh_dai_dien, cau_hinh } = req.body;
         
         // Validation
         if (!ten_sp || !ten_sp.trim()) {
@@ -922,8 +966,8 @@ router.put('/products/:id', async (req, res) => {
         // Cập nhật sản phẩm
         await pool.query(
             `UPDATE san_pham SET ten_sp = ?, ma_hang = ?, gia = ?, gia_giam = ?, bo_nho = ?, 
-             so_luong_ton = ?, mau_sac = ?, mo_ta = ?, anh_dai_dien = ? WHERE ma_sp = ?`,
-            [ten_sp, ma_hang, gia, discountPrice, bo_nho, so_luong_ton, colorData, mo_ta, anh_dai_dien, id]
+             so_luong_ton = ?, mau_sac = ?, mo_ta_ngan = ?, mo_ta = ?, anh_dai_dien = ? WHERE ma_sp = ?`,
+            [ten_sp, ma_hang, gia, discountPrice, bo_nho, so_luong_ton, colorData, mo_ta_ngan, mo_ta, anh_dai_dien, id]
         );
         
         // Cập nhật thông số kỹ thuật nếu có

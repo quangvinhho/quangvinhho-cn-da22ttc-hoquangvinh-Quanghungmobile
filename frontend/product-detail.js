@@ -928,13 +928,44 @@ function switchTab(tabName) {
 function loadDescription() {
   if (!currentProduct) return;
   
-  document.getElementById('productDescription').innerHTML = `
-    <div class="space-y-6">
-      <p class="text-gray-700 leading-relaxed text-base">
+  // Lấy mô tả từ admin (nếu có), nếu không có thì dùng mô tả mặc định
+  const customDescription = currentProduct.description || currentProduct.mo_ta || '';
+  
+  // Nếu admin đã nhập mô tả chi tiết, hiển thị nó
+  let descriptionHTML = '';
+  if (customDescription && customDescription.trim()) {
+    // Chuyển đổi line breaks thành <br> và giữ format
+    const formattedDesc = customDescription
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => `<p class="text-gray-700 leading-relaxed text-base mb-3">${line}</p>`)
+      .join('');
+    
+    descriptionHTML = `
+      <div class="bg-white rounded-xl p-5 border border-gray-200 mb-6">
+        <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <i class="fas fa-info-circle text-red-600"></i> Mô tả sản phẩm
+        </h4>
+        <div class="prose max-w-none">
+          ${formattedDesc}
+        </div>
+      </div>
+    `;
+  } else {
+    // Mô tả mặc định nếu admin chưa nhập
+    descriptionHTML = `
+      <p class="text-gray-700 leading-relaxed text-base mb-6">
         <strong class="text-gray-900">${currentProduct.name}</strong> là sản phẩm cao cấp đến từ thương hiệu 
         <strong class="text-red-600">${currentProduct.brand.toUpperCase()}</strong>, mang đến trải nghiệm tuyệt vời 
         với thiết kế hiện đại và cấu hình mạnh mẽ.
       </p>
+    `;
+  }
+  
+  document.getElementById('productDescription').innerHTML = `
+    <div class="space-y-6">
+      ${descriptionHTML}
       
       <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-5 border border-red-100">
         <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -943,7 +974,7 @@ function loadDescription() {
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
           ${currentProduct.screen ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Màn hình ${currentProduct.screen} sắc nét</span></li>` : ''}
           ${currentProduct.camera ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Camera ${currentProduct.camera} chuyên nghiệp</span></li>` : ''}
-          ${currentProduct.ram ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>RAM ${currentProduct.ram}GB đa nhiệm mượt mà</span></li>` : ''}
+          ${currentProduct.ram ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>RAM ${currentProduct.ram} đa nhiệm mượt mà</span></li>` : ''}
           ${currentProduct.battery ? `<li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Pin ${currentProduct.battery} dùng cả ngày</span></li>` : ''}
           <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Thiết kế sang trọng, cao cấp</span></li>
           <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i><span>Hiệu năng mạnh mẽ</span></li>
@@ -1396,11 +1427,18 @@ function renderRelatedProducts(product) {
       </div>
       <div class="p-3">
         <h3 class="font-semibold text-gray-900 text-sm mb-2 line-clamp-2 group-hover:text-red-600 transition">${p.name}</h3>
-        <div class="flex items-baseline gap-2">
+        <div class="flex items-baseline gap-2 mb-2">
           <span class="font-bold text-red-600">${formatPrice(p.price)}</span>
           ${p.oldPrice ? `<span class="text-xs text-gray-400 line-through">${formatPrice(p.oldPrice)}</span>` : ''}
         </div>
-        ${p.discount ? `<span class="inline-block mt-2 bg-red-100 text-red-600 text-xs font-semibold px-2 py-0.5 rounded">-${p.discount}%</span>` : ''}
+        ${p.discount ? `<span class="inline-block bg-red-100 text-red-600 text-xs font-semibold px-2 py-0.5 rounded">-${p.discount}%</span>` : ''}
+        <div class="border border-gray-100 rounded p-1.5 mt-2 bg-gray-50 text-[11px] text-gray-600 min-h-[46px] flex flex-col justify-center">
+            ${(p.shortDescription || 'Duy nhất 27/4 giá chỉ ' + formatPrice(p.price) + ' | Đổi trả miễn phí 30 ngày').split('|').map(line => {
+                let text = line.trim();
+                text = text.replace(/(\d+(?:\.\d+)*(?:k|đ| đ| triệu| ngày))/gi, '<span class="text-red-500 font-bold">$1</span>');
+                return `<div class="mb-0.5 last:mb-0">${text}</div>`;
+            }).join('')}
+        </div>
       </div>
     </a>
   `;

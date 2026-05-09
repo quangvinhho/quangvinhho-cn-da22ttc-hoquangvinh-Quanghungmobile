@@ -84,10 +84,10 @@ module.exports = function(passport) {
                 }
             }
 
-            // Kiểm tra xem user có phải admin không
+            // Kiểm tra xem user có phải admin không (chỉ để thêm flag, không redirect)
             const [adminCheck] = await pool.query(
-                'SELECT * FROM admin WHERE tai_khoan = ?',
-                [email]
+                'SELECT * FROM admin WHERE tai_khoan = ? OR email = ?',
+                [email, email]
             );
 
             const isAdmin = adminCheck.length > 0;
@@ -105,7 +105,8 @@ module.exports = function(passport) {
                 ngay_sinh: user.ngay_sinh,
                 quyen: adminData?.quyen || null,
                 role: isAdmin ? 'admin' : 'customer',
-                isAdmin: isAdmin
+                isAdmin: isAdmin,
+                google_id: google_id
             });
 
         } catch (error) {

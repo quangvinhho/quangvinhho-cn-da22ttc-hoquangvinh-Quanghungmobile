@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -320,8 +320,8 @@
           <span>Đăng nhập với Google</span>
         </button>
 
-        <!-- Sign Up Link -->
-        <div class="text-center">
+        <!-- Sign Up & Admin Link -->
+        <div class="text-center flex flex-col gap-3">
           <p class="text-gray-600 text-sm">
             Chưa có tài khoản?
             <a href="register.html" class="text-red-600 hover:text-red-700 font-semibold">Đăng ký ngay</a>
@@ -445,13 +445,17 @@
         window.location.href = `${API_URL}/auth/google`;
       }
       
-      // Xử lý callback từ Google OAuth
+      
+      
+      // Xử lý callback từ Google OAuth - GIẢI MÃ DỮ LIỆU TỪ URL
       function handleGoogleCallback() {
         const urlParams = new URLSearchParams(window.location.search);
         const googleSuccess = urlParams.get('google_success');
         const userData = urlParams.get('user');
         const error = urlParams.get('error');
         const justRegistered = urlParams.get('just_registered');
+        
+        console.log('🔍 Google callback:', { googleSuccess, hasUser: !!userData, error });
         
         if (error === 'google_failed') {
           showGoogleErrorMessage('Đăng nhập Google thất bại! Vui lòng thử lại.');
@@ -467,39 +471,74 @@
         
         if (googleSuccess === 'true' && userData) {
           try {
-            const user = JSON.parse(decodeURIComponent(userData));
+            // GIẢI MÃ Base64 - decode URL trước
+            const decodedData = decodeURIComponent(userData);
+            
+            // Hàm giải mã Base64 hỗ trợ tiếng Việt (UTF-8)
+            const decodeBase64UTF8 = (str) => {
+              try {
+                return decodeURIComponent(atob(str).split('').map(function(c) {
+                  return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+              } catch(e) {
+                return atob(str);
+              }
+            };
+            
+            let userJson;
+            // Kiểm tra xem backend trả về JSON thô hay Base64
+            if (decodedData.startsWith('{')) {
+              userJson = decodedData;
+            } else {
+              userJson = decodeBase64UTF8(decodedData);
+            }
+            
+            const user = JSON.parse(userJson);
+            console.log('✅ Got user:', user.email || user.ho_ten);
             
             // Hiển thị thông báo nếu vừa đăng ký xong
             if (justRegistered === 'true') {
               showGoogleSuccessMessage(`Đăng ký thành công! Chào mừng ${user.ho_ten}!`);
             }
             
-            // Hiển thị loader khi chuyển trang
+            // Hiển thị loader
             if (typeof showPageLoader === 'function') {
               showPageLoader();
             }
             
             // Kiểm tra nếu là admin
             if (user.isAdmin || user.role === 'admin') {
-              // Lưu thông tin admin vào adminData
-              localStorage.setItem('adminData', JSON.stringify(user));
+              console.log('👑 Admin login');
+              // Lưu vào secureStorage (đã mã hóa)
+              if (window.secureStorage) {
+                window.secureStorage.setItem('adminData', user);
+                window.secureStorage.setItem('isAdmin', true);
+              } else {
+                localStorage.setItem('adminData', JSON.stringify(user));
+                localStorage.setItem('isAdmin', 'true');
+              }
               localStorage.setItem('adminToken', 'admin-session');
-              localStorage.setItem('isAdmin', 'true');
               localStorage.setItem('isLoggedIn', 'true');
               
               alert(`Xin chào Admin ${user.ho_ten}!`);
               window.location.href = 'admin.html';
             } else {
-              // Lưu thông tin user bình thường
-              localStorage.setItem('user', JSON.stringify(user));
+              console.log('👤 Customer login');
+              // Lưu vào secureStorage
+              if (window.secureStorage) {
+                window.secureStorage.setItem('user', user);
+              } else {
+                localStorage.setItem('user', JSON.stringify(user));
+              }
               localStorage.setItem('isLoggedIn', 'true');
               
-              // Merge giỏ hàng cho customer
+              // Merge giỏ hàng
               mergeGuestCart(user.ma_kh);
               window.location.href = 'index.html';
             }
           } catch (e) {
-            console.error('Error parsing user data:', e);
+            console.error('❌ Error:', e);
+            showGoogleErrorMessage('Có lỗi xảy ra: ' + e.message);
             window.history.replaceState({}, document.title, 'login.html');
           }
         }
@@ -582,6 +621,7 @@
           let response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ email, mat_khau })
           });
 
@@ -595,19 +635,28 @@
             
             // Kiểm tra nếu là admin
             if (data.data.role === 'admin' || data.data.isAdmin) {
-              // Lưu thông tin admin
-              localStorage.setItem('adminData', JSON.stringify(data.data));
+              // Lưu thông tin admin vào secureStorage (đã mã hóa)
+              if (window.secureStorage) {
+                window.secureStorage.setItem('adminData', data.data);
+                window.secureStorage.setItem('isAdmin', true);
+              } else {
+                localStorage.setItem('adminData', JSON.stringify(data.data));
+                localStorage.setItem('isAdmin', 'true');
+              }
               localStorage.setItem('adminToken', 'admin-session');
               localStorage.setItem('isLoggedIn', 'true');
-              localStorage.setItem('isAdmin', 'true');
               
               alert(`Xin chào Admin ${data.data.ho_ten}!`);
               window.location.href = 'admin.html';
               return;
             }
             
-            // Đăng nhập như khách hàng
-            localStorage.setItem('user', JSON.stringify(data.data));
+            // Đăng nhập như khách hàng - Lưu vào secureStorage
+            if (window.secureStorage) {
+              window.secureStorage.setItem('user', data.data);
+            } else {
+              localStorage.setItem('user', JSON.stringify(data.data));
+            }
             localStorage.setItem('isLoggedIn', 'true');
             
             // Merge giỏ hàng guest vào giỏ hàng user
@@ -635,6 +684,9 @@
         }
       }
     </script>
+
+    <!-- Secure Storage - Mã hóa localStorage -->
+    <script src="js/secure-storage.js"></script>
 
     <!-- Main JS - Page Loader -->
     <script src="main.js"></script>

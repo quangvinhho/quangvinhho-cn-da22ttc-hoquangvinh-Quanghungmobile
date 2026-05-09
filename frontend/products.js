@@ -419,6 +419,7 @@ function applyFilters() {
     }
     
     updateFilterTags();
+    currentPage = 1;
     renderProducts();
 }
 
@@ -470,6 +471,7 @@ function clearAllFilters() {
     document.querySelectorAll('.brand-filter, .price-filter').forEach(cb => cb.checked = false);
     
     updateFilterTags();
+    currentPage = 1;
     renderProducts();
 }
 
@@ -483,28 +485,24 @@ function sortProducts(type, event) {
         event.target.classList.add('bg-red-600', 'text-white');
         event.target.classList.remove('hover:bg-gray-100');
     }
+    currentPage = 1;
     renderProducts();
 }
 
 
-// Số sản phẩm hiển thị mỗi lần
+// Số sản phẩm hiển thị mỗi trang
 const PRODUCTS_PER_PAGE = 12;
-let currentDisplayCount = PRODUCTS_PER_PAGE;
+let currentPage = 1;
 let allFilteredProducts = [];
 
 // --- RENDER PRODUCTS ---
-function renderProducts(loadMore = false) {
+function renderProducts() {
     const grid = document.getElementById('productsGrid');
     const countEl = document.getElementById('productCount');
     
     if (!grid) {
         console.error('Products grid not found!');
         return;
-    }
-    
-    // Reset count nếu không phải load more
-    if (!loadMore) {
-        currentDisplayCount = PRODUCTS_PER_PAGE;
     }
     
     // Filter products
@@ -553,6 +551,15 @@ function renderProducts(loadMore = false) {
     // Update product count
     if (countEl) countEl.textContent = allFilteredProducts.length;
     
+    // Tính toán phân trang
+    const totalPages = Math.ceil(allFilteredProducts.length / PRODUCTS_PER_PAGE);
+    // Đảm bảo currentPage hợp lệ
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const endIndex = startIndex + PRODUCTS_PER_PAGE;
+    
     // Render products
     grid.innerHTML = '';
     
@@ -564,59 +571,141 @@ function renderProducts(loadMore = false) {
                 <button onclick="clearAllFilters()" class="mt-4 text-red-600 font-semibold hover:underline">Xóa bộ lọc</button>
             </div>
         `;
-        removeLoadMoreButton();
+        removePagination();
         return;
     }
     
-    // Chỉ hiển thị số lượng sản phẩm theo currentDisplayCount
-    const productsToShow = allFilteredProducts.slice(0, currentDisplayCount);
+    // Chỉ hiển thị sản phẩm của trang hiện tại
+    const productsToShow = allFilteredProducts.slice(startIndex, endIndex);
     productsToShow.forEach(product => {
         grid.appendChild(createProductCard(product));
     });
-    
-    // Thêm hoặc cập nhật nút Xem thêm
-    updateLoadMoreButton();
+    // Render phân trang
+    renderPagination(totalPages);
 }
 
-// Hàm cập nhật nút Xem thêm
-function updateLoadMoreButton() {
-    const container = document.getElementById('loadMoreContainer');
-    const remainingProducts = allFilteredProducts.length - currentDisplayCount;
+// Chuyển đến trang
+function goToPage(page) {
+    const totalPages = Math.ceil(allFilteredProducts.length / PRODUCTS_PER_PAGE);
+    if (page < 1 || page > totalPages) return;
     
-    if (remainingProducts <= 0) {
-        removeLoadMoreButton();
-        return;
+    currentPage = page;
+    renderProducts();
+    
+    // Scroll lên đầu danh sách sản phẩm
+    const grid = document.getElementById('productsGrid');
+    if (grid) {
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+}
+
+// Render thanh phân trang
+function renderPagination(totalPages) {
+    removePagination();
     
-    if (!container) {
-        // Tạo container cho nút Xem thêm
-        const grid = document.getElementById('productsGrid');
-        const loadMoreDiv = document.createElement('div');
-        loadMoreDiv.id = 'loadMoreContainer';
-        loadMoreDiv.className = 'col-span-full flex flex-col items-center justify-center py-8 mt-4';
-        loadMoreDiv.innerHTML = `
-            <p class="text-gray-500 text-sm mb-4">Đang hiển thị <span class="font-semibold text-gray-700">${currentDisplayCount}</span> / <span class="font-semibold text-red-600">${allFilteredProducts.length}</span> sản phẩm</p>
-            <button onclick="loadMoreProducts()" class="load-more-btn group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:from-red-700 hover:to-red-600 transition-all duration-300 transform hover:scale-105">
-                <span>Xem thêm ${remainingProducts} sản phẩm</span>
-                <i class="fas fa-chevron-down group-hover:animate-bounce"></i>
-            </button>
-        `;
-        grid.parentNode.insertBefore(loadMoreDiv, grid.nextSibling);
+    if (totalPages <= 1) return;
+    
+    const grid = document.getElementById('productsGrid');
+    const paginationDiv = document.createElement('div');
+    paginationDiv.id = 'paginationContainer';
+    paginationDiv.className = 'col-span-full flex flex-col items-center justify-center py-6 mt-4 gap-3';
+    
+    const startItem = (currentPage - 1) * PRODUCTS_PER_PAGE + 1;
+    const endItem = Math.min(currentPage * PRODUCTS_PER_PAGE, allFilteredProducts.length);
+    
+    let html = `
+        <p class="text-gray-500 text-sm">
+            Hiển thị <span class="font-semibold text-gray-700">${startItem}-${endItem}</span> 
+            / <span class="font-semibold text-red-600">${allFilteredProducts.length}</span> sản phẩm
+        </p>
+        <div class="flex items-center gap-1.5">
+    `;
+    
+    // Nút Trang trước
+    html += `
+        <button onclick="goToPage(${currentPage - 1})" 
+                class="w-9 h-9 flex items-center justify-center rounded-lg border text-sm transition-all duration-200
+                ${currentPage === 1 
+                    ? 'border-gray-200 text-gray-300 cursor-not-allowed' 
+                    : 'border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-300 hover:text-red-600'}"
+                ${currentPage === 1 ? 'disabled' : ''}>
+            <i class="fas fa-chevron-left text-xs"></i>
+        </button>
+    `;
+    
+    // Logic hiển thị số trang
+    const maxVisible = 5;
+    let startPage, endPage;
+    
+    if (totalPages <= maxVisible) {
+        startPage = 1;
+        endPage = totalPages;
     } else {
-        // Cập nhật nội dung nút
-        container.innerHTML = `
-            <p class="text-gray-500 text-sm mb-4">Đang hiển thị <span class="font-semibold text-gray-700">${currentDisplayCount}</span> / <span class="font-semibold text-red-600">${allFilteredProducts.length}</span> sản phẩm</p>
-            <button onclick="loadMoreProducts()" class="load-more-btn group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:from-red-700 hover:to-red-600 transition-all duration-300 transform hover:scale-105">
-                <span>Xem thêm ${remainingProducts} sản phẩm</span>
-                <i class="fas fa-chevron-down group-hover:animate-bounce"></i>
-            </button>
+        const half = Math.floor(maxVisible / 2);
+        startPage = Math.max(1, currentPage - half);
+        endPage = Math.min(totalPages, startPage + maxVisible - 1);
+        if (endPage - startPage < maxVisible - 1) {
+            startPage = Math.max(1, endPage - maxVisible + 1);
+        }
+    }
+    
+    // Trang 1 + dấu ...
+    if (startPage > 1) {
+        html += `
+            <button onclick="goToPage(1)" 
+                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 text-sm font-medium text-gray-600 hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-all duration-200">1</button>
+        `;
+        if (startPage > 2) {
+            html += `<span class="w-9 h-9 flex items-center justify-center text-gray-400 text-sm">...</span>`;
+        }
+    }
+    
+    // Các trang giữa
+    for (let i = startPage; i <= endPage; i++) {
+        if (i === currentPage) {
+            html += `
+                <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-600 text-white text-sm font-bold shadow-md cursor-default transform scale-105">${i}</button>
+            `;
+        } else {
+            html += `
+                <button onclick="goToPage(${i})" 
+                        class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 text-sm font-medium text-gray-600 hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-all duration-200">${i}</button>
+            `;
+        }
+    }
+    
+    // ... + trang cuối
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            html += `<span class="w-9 h-9 flex items-center justify-center text-gray-400 text-sm">...</span>`;
+        }
+        html += `
+            <button onclick="goToPage(${totalPages})" 
+                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 text-sm font-medium text-gray-600 hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-all duration-200">${totalPages}</button>
         `;
     }
+    
+    // Nút Trang sau
+    html += `
+        <button onclick="goToPage(${currentPage + 1})" 
+                class="w-9 h-9 flex items-center justify-center rounded-lg border text-sm transition-all duration-200
+                ${currentPage === totalPages 
+                    ? 'border-gray-200 text-gray-300 cursor-not-allowed' 
+                    : 'border-gray-300 text-gray-600 hover:bg-red-50 hover:border-red-300 hover:text-red-600'}"
+                ${currentPage === totalPages ? 'disabled' : ''}>
+            <i class="fas fa-chevron-right text-xs"></i>
+        </button>
+    `;
+    
+    html += `</div>`;
+    
+    paginationDiv.innerHTML = html;
+    grid.parentNode.insertBefore(paginationDiv, grid.nextSibling);
 }
 
-// Hàm xóa nút Xem thêm
-function removeLoadMoreButton() {
-    const container = document.getElementById('loadMoreContainer');
+// Hàm xóa phân trang
+function removePagination() {
+    const container = document.getElementById('paginationContainer');
     if (container) {
         container.remove();
     }
@@ -668,10 +757,19 @@ function createProductCard(product) {
                 </div>
                 
                 <div class="mt-auto">
-                    <div class="flex flex-wrap items-baseline gap-2 mb-3">
+                    <div class="flex flex-wrap items-baseline gap-2 mb-2">
                         <span class="text-lg font-black ${isOutOfStock ? 'text-gray-400' : 'text-red-600'}">${formatPrice(product.price)}</span>
                         ${product.oldPrice ? `<span class="text-xs text-gray-400 line-through">${formatPrice(product.oldPrice)}</span>` : ''}
                     </div>
+                </div>
+                
+                <div class="border border-gray-100 rounded p-1.5 mt-2 bg-gray-50 text-[11px] text-gray-600 min-h-[46px] flex flex-col justify-center">
+                    ${(product.shortDescription || 'Duy nhất 27/4 giá chỉ ' + formatPrice(product.price) + ' | Đổi trả miễn phí 30 ngày').split('|').map(line => {
+                        let text = line.trim();
+                        // Highlight numbers/prices in red
+                        text = text.replace(/(\d+(?:\.\d+)*(?:k|đ| đ| triệu| ngày))/gi, '<span class="text-red-600 font-bold">$1</span>');
+                        return `<div class="mb-0.5 last:mb-0">${text}</div>`;
+                    }).join('')}
                 </div>
             </div>
         </div>
@@ -682,10 +780,16 @@ function createProductCard(product) {
                     <i class="fas fa-times-circle"></i> Hết hàng
                 </button>
             ` : `
-                <button onclick="event.stopPropagation(); addToCart(${product.id})" 
-                    class="w-full bg-red-50 text-red-600 border border-red-200 font-bold py-2 rounded-lg hover:bg-red-600 hover:text-white transition-all text-sm flex items-center justify-center gap-2">
-                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="event.stopPropagation(); buyNowFromCard(${product.id})" 
+                        class="flex-1 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold py-2 rounded-lg hover:from-red-700 hover:to-red-600 transition-all text-sm flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md">
+                        <i class="fas fa-bolt text-xs"></i> Mua ngay
+                    </button>
+                    <button onclick="event.stopPropagation(); addToCart(${product.id})" 
+                        class="w-10 shrink-0 bg-red-50 text-red-600 border border-red-200 font-bold py-2 rounded-lg hover:bg-red-600 hover:text-white transition-all text-sm flex items-center justify-center" title="Thêm vào giỏ hàng">
+                        <i class="fas fa-cart-plus"></i>
+                    </button>
+                </div>
             `}
         </div>
     `;
@@ -872,26 +976,19 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// --- LOAD MORE ---
-function loadMoreProducts() {
-    // Tăng số lượng sản phẩm hiển thị thêm 12
-    currentDisplayCount += PRODUCTS_PER_PAGE;
-    
-    // Render lại với flag loadMore = true để không reset count
-    renderProducts(true);
-    
-    // Scroll nhẹ xuống để người dùng thấy sản phẩm mới
-    const grid = document.getElementById('productsGrid');
-    if (grid) {
-        const cards = grid.querySelectorAll('.product-card');
-        if (cards.length > PRODUCTS_PER_PAGE) {
-            // Scroll đến sản phẩm đầu tiên của batch mới
-            const newFirstCard = cards[currentDisplayCount - PRODUCTS_PER_PAGE];
-            if (newFirstCard) {
-                newFirstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
+// --- MUA NGAY TỪ CARD ---
+async function buyNowFromCard(productId) {
+    // Kiểm tra đăng nhập trước
+    if (!isLoggedIn()) {
+        showLoginRequiredModal();
+        return;
     }
+    
+    // Thêm vào giỏ hàng trước
+    await addToCart(productId);
+    
+    // Chuyển đến trang thanh toán
+    window.location.href = 'checkout.html';
 }
 
 // --- MOBILE FILTER ---
@@ -938,35 +1035,37 @@ function hidePageLoader() {
     }
 }
 
-// Hàm điều chỉnh filter sidebar khi scroll - đi theo sản phẩm
+// Hàm điều chỉnh filter sidebar - theo sát danh sách sản phẩm
 function initFilterSidebarScroll() {
-    const sidebar = document.getElementById('filterSidebar');
+    const sidebarInner = document.getElementById('filterSidebarInner');
     const productsGrid = document.getElementById('productsGrid');
     
-    if (!sidebar || !productsGrid) return;
+    if (!sidebarInner || !productsGrid) return;
     
     function adjustSidebar() {
         const windowHeight = window.innerHeight;
         
         // Lấy chiều cao thực của header (fixed header)
         const header = document.querySelector('header.header-wrapper');
-        const headerHeight = header ? header.offsetHeight : 140;
+        const headerHeight = header ? header.offsetHeight : 70;
         
-        // Tính top và max-height
-        const topValue = headerHeight + 20;
-        const maxHeight = windowHeight - headerHeight - 60;
+        // Khoảng cách từ top
+        const topValue = headerHeight + 16;
         
-        sidebar.style.top = `${topValue}px`;
-        sidebar.style.maxHeight = `${maxHeight}px`;
+        // Tính chiều cao tối đa dựa trên viewport
+        const maxHeight = windowHeight - topValue - 20;
+        
+        sidebarInner.style.top = `${topValue}px`;
+        sidebarInner.style.maxHeight = `${maxHeight}px`;
     }
     
-    // Điều chỉnh khi resize và scroll
+    // Điều chỉnh khi resize
     window.addEventListener('resize', adjustSidebar);
-    window.addEventListener('scroll', adjustSidebar);
     
     // Chạy lần đầu sau khi header load xong
     setTimeout(adjustSidebar, 100);
     setTimeout(adjustSidebar, 500);
+    setTimeout(adjustSidebar, 1500);
 }
 
 // --- INITIALIZE ---

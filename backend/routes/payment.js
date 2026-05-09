@@ -107,7 +107,7 @@ router.post('/momo/create', async (req, res) => {
       signature: signature
     };
 
-    console.log('MoMo Request:', JSON.stringify(requestBody, null, 2));
+    // MoMo request sent
 
     // Gọi API MoMo
     const response = await fetch(`${MOMO_CONFIG.endpoint}/create`, {
@@ -120,7 +120,7 @@ router.post('/momo/create', async (req, res) => {
     });
 
     const momoResponse = await response.json();
-    console.log('MoMo Response:', JSON.stringify(momoResponse, null, 2));
+    // MoMo response received
 
     if (momoResponse.resultCode === 0) {
       // Thành công - trả về URL thanh toán
@@ -164,7 +164,7 @@ router.post('/momo/create', async (req, res) => {
  */
 router.post('/momo/ipn', async (req, res) => {
   try {
-    console.log('MoMo IPN Received:', JSON.stringify(req.body, null, 2));
+    // MoMo IPN received
 
     const {
       partnerCode,
@@ -212,9 +212,7 @@ router.post('/momo/ipn', async (req, res) => {
     // Xử lý kết quả thanh toán
     if (resultCode === 0) {
       // Thanh toán thành công
-      console.log(`✅ Đơn hàng ${orderId} đã thanh toán thành công qua MoMo`);
-      console.log(`   Transaction ID: ${transId}`);
-      console.log(`   Số tiền: ${amount.toLocaleString('vi-VN')}đ`);
+      console.log(`✅ Đơn hàng ${orderId} thanh toán thành công qua MoMo`);
       
       // TODO: Cập nhật trạng thái đơn hàng trong database
       // await updateOrderStatus(orderId, 'paid', transId);
@@ -287,7 +285,7 @@ router.post('/momo/check-status', async (req, res) => {
     });
 
     const momoResponse = await response.json();
-    console.log('MoMo Check Status Response:', JSON.stringify(momoResponse, null, 2));
+    // MoMo status checked
 
     res.json({
       success: true,

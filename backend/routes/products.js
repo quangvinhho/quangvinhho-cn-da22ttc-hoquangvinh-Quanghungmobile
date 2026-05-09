@@ -698,9 +698,9 @@ function mapProductToFrontend(row) {
     // Lấy thông số thực tế theo tên sản phẩm
     const realSpecs = getProductSpecsByName(productName);
     
-    // Sử dụng giá từ thông số thực tế nếu có, nếu không dùng giá từ DB
-    const price = realSpecs?.price || parseFloat(row.gia || row.price) || 0;
-    const oldPrice = realSpecs?.oldPrice || (row.oldPrice ? parseFloat(row.oldPrice) : null);
+    // ƯU TIÊN giá từ database (admin nhập), chỉ dùng hardcode làm fallback
+    const price = parseFloat(row.gia || row.price) || realSpecs?.price || 0;
+    const oldPrice = (row.gia_giam ? parseFloat(row.gia_giam) : null) || realSpecs?.oldPrice || null;
     
     // Xác định OS dựa trên brand - QUAN TRỌNG: iPhone chạy iOS, không phải Android!
     const brandLower = brand.toLowerCase();
@@ -839,6 +839,7 @@ function mapProductToFrontend(row) {
         rating: row.rating || 4.5,
         reviews: row.reviews || Math.floor(Math.random() * 200) + 50,
         stock: row.so_luong_ton !== undefined && row.so_luong_ton !== null ? row.so_luong_ton : (row.stock !== undefined && row.stock !== null ? row.stock : 10),
+        shortDescription: row.mo_ta_ngan || row.shortDescription || '',
         description: row.mo_ta || row.description || ''
     };
 }
@@ -936,7 +937,8 @@ router.get('/best-sellers', async (req, res) => {
             totalSold: p.total_sold || 0,
             rating: parseFloat(p.avg_rating) || 0,
             reviewCount: p.review_count || 0,
-            discount: 15
+            discount: 15,
+            shortDescription: p.mo_ta_ngan || ''
         }));
         
         res.json({ success: true, data: formattedProducts });
@@ -991,7 +993,8 @@ router.get('/featured', async (req, res) => {
                 reviewCount: p.review_count || 0,
                 discount: Math.floor(Math.random() * 20) + 10,
                 badge: badges[idx % badges.length],
-                badgeColor: badgeColors[idx % badgeColors.length]
+                badgeColor: badgeColors[idx % badgeColors.length],
+                shortDescription: p.mo_ta_ngan || ''
             };
         });
         
@@ -1046,7 +1049,8 @@ router.get('/daily-deals', async (req, res) => {
                 storage: p.bo_nho,
                 rating: rating,
                 reviewCount: p.review_count || Math.floor(Math.random() * 50) + 10,
-                totalSold: p.total_sold
+                totalSold: p.total_sold,
+                shortDescription: p.mo_ta_ngan || ''
             };
         });
         
@@ -1089,7 +1093,8 @@ router.get('/newest', async (req, res) => {
                 storage: p.bo_nho,
                 rating: rating,
                 reviewCount: p.review_count || 0,
-                isNew: true
+                isNew: true,
+                shortDescription: p.mo_ta_ngan || ''
             };
         });
         

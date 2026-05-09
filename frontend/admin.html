@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
@@ -28,16 +28,18 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     
-    .sidebar-gradient { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-right: 1px solid #e2e8f0; }
+    .sidebar-gradient { background: #334155; border-right: 1px solid #1e293b; }
     .sidebar-item { transition: all 0.2s ease; position: relative; border-radius: 10px; }
     .sidebar-item::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); height: 60%; width: 3px; background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%); border-radius: 0 4px 4px 0; opacity: 0; transition: opacity 0.2s ease; }
-    .sidebar-item:hover { background: #eff6ff; }
-    .sidebar-item.active { background: #eff6ff; }
+    .sidebar-item:hover { background: #475569; }
+    .sidebar-item.active { background: #475569; }
     .sidebar-item.active::before { opacity: 1; }
-    .sidebar-item.active .sidebar-icon { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+    .sidebar-item.active .sidebar-icon { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
     .sidebar-item.active .sidebar-icon i { color: white !important; }
-    .sidebar-item.active span { color: #2563eb; font-weight: 600; }
-    .sidebar-item .sidebar-icon { width: 36px; height: 36px; border-radius: 10px; }
+    .sidebar-item.active span { color: #ffffff; font-weight: 600; }
+    .sidebar-item .sidebar-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .sidebar-item .sidebar-icon i { color: #cbd5e1; transition: all 0.2s ease; }
+    .sidebar-item:hover .sidebar-icon i { color: #f8fafc; }
     
     .stat-card { transition: all 0.2s ease; position: relative; overflow: hidden; }
     .stat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15); }
@@ -102,6 +104,265 @@
       background: #3b82f6;
       color: white;
     }
+              .knowledge-container { /* Chatbot Styles */
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .knowledge-container .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .knowledge-container .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .knowledge-container .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filters select, .filters input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .filters input[type="text"] {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #ed8936;
+            color: white;
+        }
+        
+        .knowledge-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #f7fafc;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        th {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-store { background: #bee3f8; color: #2c5282; }
+        .badge-faq { background: #c6f6d5; color: #22543d; }
+        .badge-policy { background: #fed7d7; color: #742a2a; }
+        .badge-active { background: #48bb78; color: white; }
+        .badge-inactive { background: #cbd5e0; color: #2d3748; }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .actions button {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #718096;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+        
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    
+        /* Overrides to make it look good in main content area */
+        .knowledge-container { /* Chatbot Styles */
+            margin: 0;
+            padding: 0;
+            max-width: none;
+        }
+        .header-section {
+            display: flex;
+            justify-content: flex-end; /* Chỉ giữ lại cụm nút bên phải */
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header-section > div:first-child {
+            display: none; /* Ẩn phần chữ tiêu đề cũ */
+        }
+    
   </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 min-h-screen">
@@ -114,86 +375,97 @@
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside class="flex w-64 sidebar-gradient flex-col flex-shrink-0 shadow-lg relative z-20">
-      <div class="px-5 py-4 border-b border-slate-100">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg shadow-red-500/25 overflow-hidden">
-            <img src="images/Logo.png" alt="Logo" class="w-8 h-8 object-contain" onerror="this.parentElement.innerHTML='<i class=\'fas fa-store text-white\'></i>'">
+      <div class="px-5 h-[84px] flex items-center border-b border-[#1e293b] shrink-0">
+        <div class="flex items-center gap-3 w-full">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25 overflow-hidden">
+            <img src="images/Logo.png" alt="Logo" class="w-8 h-8 object-contain" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-store text-white\\'></i>'">
           </div>
           <div>
-            <h1 class="text-base font-bold text-slate-800">QuangHung</h1>
-            <p class="text-[10px] text-slate-400 font-medium">Admin Panel</p>
+            <h1 class="text-base font-bold text-white">QuangHung</h1>
+            <p class="text-[10px] text-slate-300 font-medium">Admin Panel</p>
           </div>
         </div>
       </div>
       
-      <nav class="flex-1 overflow-y-auto py-4 px-3">
-        <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3 px-3">Menu chính</p>
-        <div class="space-y-1">
-          <a href="#" onclick="showSection('dashboard')" class="sidebar-item active flex items-center px-3 py-2.5 text-slate-700 group" id="nav-dashboard">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-chart-pie text-sm text-slate-500 group-hover:text-blue-500"></i></div>
+      <nav class="flex-1 overflow-y-auto py-4 px-3 sidebar-nav scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-transparent">
+        
+        <!-- HỆ THỐNG QUẢN TRỊ -->
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-1">Hệ thống quản trị</p>
+        <div class="space-y-1 mb-5">
+          <a href="#" onclick="showSection('dashboard')" class="sidebar-item active flex items-center px-3 py-2.5 text-slate-100 group" id="nav-dashboard">
+            <div class="sidebar-icon"><i class="fas fa-chart-pie text-sm"></i></div>
             <span class="text-sm font-medium">Tổng quan</span>
           </a>
-          <a href="#" onclick="showSection('orders')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-orders">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-shopping-bag text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Đơn hàng</span>
-            <span class="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold" id="pending-count">0</span>
-          </a>
-          <a href="#" onclick="showSection('products')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-products">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-box text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Sản phẩm</span>
-          </a>
-          <a href="#" onclick="showSection('inventory')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-inventory">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-warehouse text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Tồn kho</span>
-            <span class="ml-auto bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold" id="low-stock-count">0</span>
-          </a>
-          <a href="#" onclick="showSection('brands')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-brands">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-tags text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Danh mục</span>
-          </a>
-          <a href="#" onclick="showSection('customers')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-customers">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-users text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Khách hàng</span>
-          </a>
-          <a href="#" onclick="showSection('reviews')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-reviews">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-star text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Đánh giá</span>
-          </a>
-          <a href="#" onclick="showSection('promotions')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-promotions">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-percent text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Khuyến mãi</span>
-          </a>
-          <a href="#" onclick="showSection('news')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-news">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-newspaper text-sm text-slate-500 group-hover:text-blue-500"></i></div>
-            <span class="text-sm font-medium">Tin tức</span>
-          </a>
-          <a href="#" onclick="showSection('notifications')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-notifications">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-bell text-sm text-slate-500 group-hover:text-blue-500"></i></div>
+          <a href="#" onclick="showSection('notifications')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-notifications">
+            <div class="sidebar-icon"><i class="fas fa-bell text-sm"></i></div>
             <span class="text-sm font-medium">Thông báo</span>
           </a>
-          <a href="#" onclick="showSection('contacts')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-600 hover:text-slate-800 group" id="nav-contacts">
-            <div class="sidebar-icon bg-slate-100 flex items-center justify-center mr-3 transition-all"><i class="fas fa-envelope text-sm text-slate-500 group-hover:text-blue-500"></i></div>
+          <a href="#" onclick="showSection('chatbot-rag')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-chatbot-rag">
+            <div class="sidebar-icon"><i class="fas fa-robot text-sm"></i></div>
+            <span class="text-sm font-medium">Chatbot RAG</span>
+          </a>
+        </div>
+
+        <!-- VẬN HÀNH & NHÂN VIÊN -->
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-3">Vận hành & Nhân viên</p>
+        <div class="space-y-1">
+          <a href="#" onclick="showSection('orders')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-orders">
+            <div class="sidebar-icon"><i class="fas fa-shopping-bag text-sm"></i></div>
+            <span class="text-sm font-medium">Đơn hàng</span>
+            <span class="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm" id="pending-count">0</span>
+          </a>
+          <a href="#" onclick="showSection('products')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-products">
+            <div class="sidebar-icon"><i class="fas fa-box text-sm"></i></div>
+            <span class="text-sm font-medium">Sản phẩm</span>
+          </a>
+          <a href="#" onclick="showSection('inventory')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-inventory">
+            <div class="sidebar-icon"><i class="fas fa-warehouse text-sm"></i></div>
+            <span class="text-sm font-medium">Tồn kho</span>
+            <span class="ml-auto bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm" id="low-stock-count">0</span>
+          </a>
+          <a href="#" onclick="showSection('brands')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-brands">
+            <div class="sidebar-icon"><i class="fas fa-tags text-sm"></i></div>
+            <span class="text-sm font-medium">Danh mục</span>
+          </a>
+          <a href="#" onclick="showSection('customers')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-customers">
+            <div class="sidebar-icon"><i class="fas fa-users text-sm"></i></div>
+            <span class="text-sm font-medium">Khách hàng</span>
+          </a>
+          <a href="#" onclick="showSection('reviews')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-reviews">
+            <div class="sidebar-icon"><i class="fas fa-star text-sm"></i></div>
+            <span class="text-sm font-medium">Đánh giá</span>
+          </a>
+          <a href="#" onclick="showSection('promotions')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-promotions">
+            <div class="sidebar-icon"><i class="fas fa-percent text-sm"></i></div>
+            <span class="text-sm font-medium">Khuyến mãi</span>
+          </a>
+          <a href="#" onclick="showSection('news')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-news">
+            <div class="sidebar-icon"><i class="fas fa-newspaper text-sm"></i></div>
+            <span class="text-sm font-medium">Tin tức</span>
+          </a>
+          <a href="#" onclick="showSection('contacts')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-contacts">
+            <div class="sidebar-icon"><i class="fas fa-envelope text-sm"></i></div>
             <span class="text-sm font-medium">Liên hệ</span>
-            <span class="ml-auto bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold" id="new-contact-count">0</span>
+            <span class="ml-auto bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm" id="new-contact-count">0</span>
           </a>
         </div>
       </nav>
       
-      <div class="p-3 border-t border-slate-100">
-        <div class="bg-slate-50 rounded-xl p-3">
+      <div class="p-4 border-t border-[#1e293b] bg-[#334155]">
+        <div class="bg-[#1e293b]/50 rounded-xl p-3 border border-[#475569]/50">
           <div class="flex items-center gap-3 mb-3">
             <div class="relative">
-              <div id="admin-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center font-bold text-sm text-white overflow-hidden">
+              <div id="admin-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center font-bold text-sm text-white overflow-hidden shadow-inner">
                 <img src="images/vinh.jpg" alt="Admin" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='AD'">
               </div>
-              <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white"></div>
+              <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#1e293b]"></div>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="font-semibold text-slate-800 text-sm truncate" id="admin-name">Quang Vinh</p>
-              <p class="text-[10px] text-slate-400" id="admin-role">Quản trị viên</p>
+              <p class="font-semibold text-white text-sm truncate" id="admin-name">Quang Vinh</p>
+              <p class="text-[10px] text-slate-300" id="admin-role">Quản trị viên</p>
             </div>
           </div>
-          <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600 rounded-lg text-xs font-medium text-slate-600 transition-all">
+          <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-[#334155] hover:bg-[#475569] border border-[#475569] hover:border-slate-300 hover:text-white rounded-lg text-xs font-medium text-slate-200 transition-all">
             <i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span>
           </button>
         </div>
@@ -203,31 +475,31 @@
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden">
       <!-- Header -->
-      <header class="glass-effect shadow-lg px-4 lg:px-8 py-4 relative z-10">
-        <div class="flex items-center justify-between">
+      <header class="bg-[#334155] border-b border-[#1e293b] px-4 lg:px-8 h-[84px] flex items-center relative z-10 shrink-0">
+        <div class="flex items-center justify-between w-full">
           <div class="flex items-center gap-4">
-            <button class="lg:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600" onclick="toggleMobileMenu()">
+            <button class="lg:hidden p-2 rounded-xl bg-slate-600 hover:bg-slate-500 text-slate-200" onclick="toggleMobileMenu()">
               <i class="fas fa-bars text-lg"></i>
             </button>
             <div>
-              <h2 class="text-2xl font-bold text-dark-800 flex items-center gap-2" id="page-title">
-                <span class="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></span>
+              <h2 class="text-2xl font-bold text-white flex items-center gap-2" id="page-title">
+                <span class="w-2 h-8 bg-gradient-to-b from-blue-400 to-blue-500 rounded-full"></span>
                 Tổng quan
               </h2>
-              <p class="text-sm text-dark-500 mt-0.5" id="welcome-text">Chào mừng trở lại! Đây là Tổng quan hoạt động</p>
+              <p class="text-sm text-slate-300 mt-0.5" id="welcome-text">Chào mừng trở lại! Đây là Tổng quan hoạt động</p>
             </div>
           </div>
           <div class="flex items-center gap-3">
             <!-- Nút cài đặt hiển thị tồn kho -->
-            <button onclick="openSettingsModal()" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors relative" title="Cài đặt">
+            <button onclick="openSettingsModal()" class="p-3 rounded-xl bg-slate-600 hover:bg-slate-500 text-slate-200 transition-colors relative" title="Cài đặt">
               <i class="fas fa-cog"></i>
             </button>
-            <button class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors relative">
+            <button class="p-3 rounded-xl bg-slate-600 hover:bg-slate-500 text-slate-200 transition-colors relative">
               <i class="fas fa-bell"></i>
               <span class="notification-dot"></span>
             </button>
-            <div class="hidden md:flex items-center text-dark-600 bg-gradient-to-r from-blue-50 to-indigo-50 px-5 py-2.5 rounded-xl border border-blue-100">
-              <i class="fas fa-calendar-alt mr-2 text-blue-500"></i>
+            <div class="hidden md:flex items-center text-slate-200 bg-slate-600/50 px-5 py-2.5 rounded-xl border border-slate-500">
+              <i class="fas fa-calendar-alt mr-2 text-blue-400"></i>
               <span class="text-sm font-medium" id="current-date"></span>
             </div>
           </div>
@@ -1178,6 +1450,132 @@
           </div>
         </div>
 
+      
+      <!-- Chatbot RAG Section -->
+      <section id="section-chatbot-rag" class="section-content">
+        
+        
+    <div class="knowledge-container">
+
+        
+        <div class="header-section">
+            <div>
+                <h1>Quản lý Chatbot Knowledge Base</h1>
+                <p style="color: #718096;">Quản lý câu hỏi và câu trả lời cho chatbot RAG</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="openModal()">
+                    ➕ Thêm Knowledge
+                </button>
+                <button class="btn btn-success" onclick="reloadVectorstore()" title="Đồng bộ dữ liệu với RAG AI">
+                    🔄 Đồng bộ RAG
+                </button>
+
+            </div>
+        </div>
+        
+        <div class="stats-cards" id="statsCards">
+            <div class="stat-card">
+                <h3>Tổng số</h3>
+                <div class="number" id="totalCount">0</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                <h3>Đang hoạt động</h3>
+                <div class="number" id="activeCount">0</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);">
+                <h3>Tạm dừng</h3>
+                <div class="number" id="inactiveCount">0</div>
+            </div>
+        </div>
+        
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm câu hỏi hoặc câu trả lời...">
+            <select id="typeFilter">
+                <option value="">Tất cả loại</option>
+                <option value="store_info">Thông tin cửa hàng</option>
+                <option value="faq">Câu hỏi thường gặp</option>
+                <option value="policy">Chính sách</option>
+            </select>
+            <select id="statusFilter">
+                <option value="">Tất cả trạng thái</option>
+                <option value="1">Đang hoạt động</option>
+                <option value="0">Tạm dừng</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadKnowledge()">Lọc</button>
+        </div>
+        
+        <div class="knowledge-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th style="width: 25%;">Câu hỏi / Từ khóa</th>
+                        <th style="width: 35%;">Câu trả lời</th>
+                        <th style="width: 120px;">Loại</th>
+                        <th style="width: 100px;">Trạng thái</th>
+                        <th style="width: 200px;">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="knowledgeList">
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <div>Đang tải dữ liệu...</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Modal thêm/sửa -->
+    <div class="modal" id="knowledgeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Thêm Knowledge</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="knowledgeForm" onsubmit="saveKnowledge(event)">
+                <input type="hidden" id="knowledgeId">
+                
+                <div class="form-group">
+                    <label>Câu hỏi / Từ khóa *</label>
+                    <input type="text" id="question" required placeholder="VD: Địa chỉ cửa hàng">
+                </div>
+                
+                <div class="form-group">
+                    <label>Câu trả lời *</label>
+                    <textarea id="answer" required placeholder="Nhập câu trả lời chi tiết..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Loại thông tin</label>
+                    <select id="type">
+                        <option value="faq">Câu hỏi thường gặp</option>
+                        <option value="store_info">Thông tin cửa hàng</option>
+                        <option value="policy">Chính sách</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isActive" checked>
+                        Kích hoạt ngay
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn" onclick="closeModal()">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    
+      
+      </section>
+
       </main>
     </div>
   </div>
@@ -1732,6 +2130,31 @@
   <script>
     // ==================== GLOBAL VARIABLES ====================
     const API_URL = 'http://localhost:3000/api';
+
+    // Helper: Override fetch để TẤT CẢ API calls đều gửi session cookie
+    let _isRedirecting = false; // Tránh hiện nhiều alert khi đang redirect
+    const _originalFetch = window.fetch;
+    window.fetch = function(url, options = {}) {
+      // Nếu gọi API backend → luôn gửi credentials
+      if (typeof url === 'string' && url.includes('/api/')) {
+        options.credentials = 'include';
+      }
+      return _originalFetch.call(this, url, options).then(async (response) => {
+        // Nếu server trả về 401 (hết session) → redirect đăng nhập (chỉ 1 lần)
+        if (!_isRedirecting && response.status === 401 && typeof url === 'string' && url.includes('/api/admin/')) {
+          const data = await response.clone().json().catch(() => ({}));
+          if (data.code === 'AUTH_REQUIRED') {
+            _isRedirecting = true;
+            localStorage.removeItem('adminData');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'admin-login.html';
+          }
+        }
+        return response;
+      });
+    };
     let revenueChart, ordersStatusChart, topProductsChart, brandRevenueChart;
     let paymentMethodsChart, customerGrowthChart, inventoryByBrandChart, inventoryValueChart;
     let currentRevenuePeriod = 'week';
@@ -1742,20 +2165,89 @@
 
     // ==================== INITIALIZATION ====================
     document.addEventListener('DOMContentLoaded', async () => {
+      console.log('🚀 Admin page loading...');
+      
       try {
-        // Kiểm tra đăng nhập admin
-        const adminData = localStorage.getItem('adminData');
-        const isAdmin = localStorage.getItem('isAdmin');
+        // === XÁC THỰC SERVER-SIDE ===
+        // Kiểm tra session admin trên server (không chỉ dựa vào localStorage)
+        console.log('🔍 Checking server authentication...');
         
-        if (!adminData) {
-          // Chưa đăng nhập admin, chuyển về trang login chính
-          window.location.href = 'login.html';
-          return;
+        try {
+          const authRes = await fetch(`${API_URL}/auth/check`, { credentials: 'include' });
+          console.log('Auth check response status:', authRes.status);
+          
+          if (authRes.ok) {
+            const authData = await authRes.json();
+            console.log('Auth check data:', authData);
+            
+            if (authData.isAuthenticated && authData.user && authData.user.vai_tro === 'admin') {
+              console.log('✅ Server verified admin session');
+              
+              // Cập nhật localStorage với dữ liệu từ server (đảm bảo đồng bộ)
+              const serverAdmin = authData.user;
+              localStorage.setItem('adminData', JSON.stringify(serverAdmin));
+              localStorage.setItem('isAdmin', 'true');
+              localStorage.setItem('isLoggedIn', 'true');
+              
+              // Continue loading dashboard (không return)
+            } else {
+              console.log('❌ Not authenticated or not admin:', authData);
+              // Session không hợp lệ → redirect về login
+              localStorage.removeItem('adminData');
+              localStorage.removeItem('adminToken');
+              localStorage.removeItem('isAdmin');
+              localStorage.removeItem('isLoggedIn');
+              window.location.href = 'admin-login.html';
+              return;
+            }
+          } else {
+            console.log('❌ Auth check failed with status:', authRes.status);
+            // Session hết hạn → redirect về login
+            localStorage.removeItem('adminData');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'admin-login.html';
+            return;
+          }
+        } catch (authError) {
+          console.error('❌ Server auth check failed:', authError);
+          
+          // Kiểm tra localStorage (fallback khi server không chạy)
+          const adminData = localStorage.getItem('adminData');
+          
+          if (!adminData) {
+            console.log('❌ No localStorage data - redirecting to login');
+            window.location.href = 'admin-login.html';
+            return;
+          }
+          
+          // Có localStorage → kiểm tra xem server có đang chạy không
+          try {
+            const healthRes = await fetch(`${API_URL}/health`, { 
+              method: 'GET',
+              cache: 'no-cache'
+            });
+            
+            if (healthRes.ok) {
+              // Server chạy nhưng session hết hạn → redirect
+              console.log('❌ Server running but session expired - redirecting to login');
+              localStorage.removeItem('adminData');
+              localStorage.removeItem('adminToken');
+              localStorage.removeItem('isAdmin');
+              localStorage.removeItem('isLoggedIn');
+              window.location.href = 'admin-login.html';
+              return;
+            }
+          } catch(e) {
+            // Server không chạy → cho phép dùng localStorage tạm thời
+            console.warn('⚠️ Backend not running, using localStorage temporarily');
+          }
         }
         
         // Parse và hiển thị thông tin admin
         try {
-          const admin = JSON.parse(adminData);
+          const admin = JSON.parse(localStorage.getItem('adminData'));
           adminInfo = admin; // Lưu vào biến toàn cục để sử dụng ở các hàm khác
           if (admin.ho_ten) {
             document.getElementById('admin-name').textContent = admin.ho_ten;
@@ -1781,8 +2273,21 @@
         // Initialize charts
         initCharts();
 
+        
+        // Initialize Chatbot Knowledge Base data
+        if (typeof initChatbotKnowledge === 'function') {
+            initChatbotKnowledge();
+        }
+
         // Load dashboard data
+
         await loadDashboardData();
+
+        // Handle URL Hash Navigation
+        const hash = window.location.hash.substring(1);
+        if (hash && document.getElementById(`section-${hash}`)) {
+            showSection(hash);
+        }
       } catch (error) {
         console.error('Error initializing dashboard:', error);
       } finally {
@@ -1793,13 +2298,23 @@
       }
     });
     
-    // Hàm đăng xuất
-    function logout() {
+    // Hàm đăng xuất — Hủy session server-side trước khi xóa localStorage
+    async function logout() {
+      try {
+        // Gọi API hủy session trên server
+        await fetch(`${API_URL}/auth/admin/logout`, { 
+          method: 'POST', 
+          credentials: 'include' 
+        });
+      } catch(e) {
+        console.error('Error calling logout API:', e);
+      }
+      // Xóa localStorage
       localStorage.removeItem('adminData');
       localStorage.removeItem('adminToken');
       localStorage.removeItem('isAdmin');
       localStorage.removeItem('isLoggedIn');
-      window.location.href = 'login.html';
+      window.location.href = 'admin-login.html';
     }
 
     // ==================== CHART INITIALIZATION ====================
@@ -2051,6 +2566,9 @@
         
         // Initialize month filter
         initMonthFilter();
+        
+        // Load settings (gọi ở đây sau khi auth đã verify)
+        loadSettings();
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         // Hiển thị Thông báo lỗi nhưng vẫn cho phép xem giao diện
@@ -2466,6 +2984,7 @@
         reviews: 'Quản lý đánh giá',
         promotions: 'Quản lý Khuyến mãi',
         news: 'Quản lý Tin tức',
+        'chatbot-rag': 'Quản lý Chatbot Knowledge',
         notifications: 'Quản lý Thông báo',
         contacts: 'Quản lý Liên hệ'
       };
@@ -5089,10 +5608,7 @@
       }
     }
     
-    // Load settings khi trang load
-    document.addEventListener('DOMContentLoaded', function() {
-      loadSettings();
-    });
+    // Load settings sẽ được gọi từ loadDashboardData (không gọi riêng để tránh race condition auth)
   </script>
   
   <!-- Settings Modal -->
@@ -5142,5 +5658,6 @@
       </div>
     </div>
   </div>
+<script src="chatbot-knowledge.js"></script>
 </body>
 </html>
