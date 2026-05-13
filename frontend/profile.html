@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -25,76 +25,76 @@
         --red-dark: #c5111a;
       }
       
-      /* Christmas Banner Styles */
-      .christmas-banner {
-        background: linear-gradient(180deg, #0c1445 0%, #1a237e 30%, #1565c0 60%, #4fc3f7 100%);
+      /* Summer Banner Styles */
+      .summer-banner {
+        background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
         position: relative;
         overflow: hidden;
         min-height: 180px;
       }
       
-      /* Stars twinkling */
-      .stars {
+      /* Clouds */
+      .clouds {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        top: 0; left: 0; right: 0; bottom: 0;
         pointer-events: none;
       }
-      
-      .star {
+      .cloud {
         position: absolute;
-        width: 3px;
-        height: 3px;
-        background: #fff;
-        border-radius: 50%;
-        animation: twinkleStar 2s ease-in-out infinite;
+        font-size: 2rem;
+        opacity: 0.8;
+        animation: floatCloud 20s linear infinite;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      }
+      @keyframes floatCloud {
+        0% { transform: translateX(-50px); opacity: 0; }
+        10% { opacity: 0.8; }
+        90% { opacity: 0.8; }
+        100% { transform: translateX(100vw); opacity: 0; }
       }
       
-      @keyframes twinkleStar {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.5); }
-      }
-      
-      /* Moon */
-      .moon {
+      /* Sun */
+      .sun {
         position: absolute;
         top: 15px;
         right: 10%;
         width: 60px;
         height: 60px;
-        background: radial-gradient(circle at 30% 30%, #fffde7, #fff9c4, #fff59d);
+        background: radial-gradient(circle at 30% 30%, #fffde7, #ffeb3b, #fbc02d);
         border-radius: 50%;
-        box-shadow: 0 0 40px rgba(255, 249, 196, 0.8), 0 0 80px rgba(255, 249, 196, 0.4);
+        box-shadow: 0 0 40px rgba(255, 235, 59, 0.8), 0 0 80px rgba(255, 235, 59, 0.4);
         z-index: 1;
+        animation: pulseSun 3s ease-in-out infinite alternate;
+      }
+      @keyframes pulseSun {
+        0% { box-shadow: 0 0 40px rgba(255, 235, 59, 0.8), 0 0 80px rgba(255, 235, 59, 0.4); }
+        100% { box-shadow: 0 0 50px rgba(255, 235, 59, 1), 0 0 100px rgba(255, 235, 59, 0.6); }
       }
       
-      /* Snow ground */
-      .snow-ground {
+      /* Sand ground */
+      .sand-ground {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
         height: 40px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, #fff 100%);
+        background: linear-gradient(180deg, #ffe0b2 0%, #ffcc80 100%);
         border-radius: 100% 100% 0 0;
         z-index: 2;
       }
-      
-      .snow-ground::before {
+      .sand-ground::before {
         content: '';
         position: absolute;
         bottom: 30px;
         left: 5%;
         width: 90%;
         height: 20px;
-        background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.5) 100%);
+        background: linear-gradient(180deg, transparent 0%, rgba(255,204,128,0.5) 100%);
         border-radius: 100%;
       }
       
-      /* Christmas Trees */
-      .trees {
+      /* Palm Trees */
+      .palm-trees {
         position: absolute;
         bottom: 25px;
         left: 0;
@@ -103,220 +103,66 @@
         z-index: 3;
         pointer-events: none;
       }
-      
-      .tree {
+      .palm-tree {
         position: absolute;
         bottom: 0;
-        font-size: 2.5em;
+        font-size: 3em;
         filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        animation: swayTree 3s ease-in-out infinite alternate;
       }
+      @keyframes swayTree {
+        0% { transform: rotate(-2deg); }
+        100% { transform: rotate(5deg); }
+      }
+      .palm-tree:nth-child(1) { left: 5%; font-size: 3em; animation-delay: 0s; }
+      .palm-tree:nth-child(2) { right: 5%; font-size: 2.5em; animation-delay: 0.5s; transform: scaleX(-1); }
       
-      .tree:nth-child(1) { left: 2%; font-size: 2em; }
-      .tree:nth-child(2) { left: 8%; font-size: 3em; }
-      .tree:nth-child(3) { left: 15%; font-size: 2.2em; }
-      .tree:nth-child(4) { right: 3%; font-size: 2.8em; }
-      .tree:nth-child(5) { right: 10%; font-size: 2em; }
-      .tree:nth-child(6) { right: 18%; font-size: 2.5em; }
-      
-      /* Santa Sleigh with Reindeers */
-      .sleigh-container {
+      .pool-float { 
+        position: absolute; bottom: 5px; right: 15%; font-size: 2.5em; z-index: 4; 
+        animation: floatBounce 2s ease-in-out infinite alternate; 
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); 
+      }
+      @keyframes floatBounce { 
+        0% { transform: translateY(0) rotate(-5deg); } 
+        100% { transform: translateY(-5px) rotate(5deg); } 
+      }
+
+      /* Flying Airplane */
+      .airplane-container {
         position: absolute;
         top: 25%;
-        left: -400px;
+        left: -200px;
         z-index: 10;
-        animation: flySleigh 12s linear infinite;
-        filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-      }
-      
-      @keyframes flySleigh {
-        0% { 
-          left: -400px; 
-          top: 30%;
-        }
-        25% { 
-          top: 20%;
-        }
-        50% { 
-          top: 35%;
-        }
-        75% { 
-          top: 25%;
-        }
-        100% { 
-          left: 110%; 
-          top: 30%;
-        }
-      }
-      
-      .sleigh-group {
+        animation: flyAirplane 15s linear infinite;
+        filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
         display: flex;
         align-items: center;
-        gap: 0;
+        flex-direction: row-reverse;
       }
-      
-      .reindeer {
-        font-size: 2.2em;
-        animation: runReindeer 0.3s ease-in-out infinite alternate;
-        display: inline-block;
+      @keyframes flyAirplane {
+        0% { left: -200px; top: 30%; }
+        25% { top: 25%; }
+        50% { top: 35%; }
+        75% { top: 20%; }
+        100% { left: 110vw; top: 30%; }
       }
-      
-      .reindeer:nth-child(2) { animation-delay: 0s; }
-      .reindeer:nth-child(3) { animation-delay: 0.1s; }
-      .reindeer:nth-child(4) { animation-delay: 0.2s; }
-      .reindeer:nth-child(5) { animation-delay: 0.15s; }
-      
-      @keyframes runReindeer {
-        0% { transform: scaleX(-1) translateY(0) rotate(-5deg); }
-        100% { transform: scaleX(-1) translateY(-8px) rotate(5deg); }
-      }
-      
-      .sleigh {
-        font-size: 3em;
-        margin-right: -15px;
-        animation: bounceSleigh 0.5s ease-in-out infinite alternate;
-      }
-      
-      @keyframes bounceSleigh {
-        0% { transform: translateY(0) rotate(-2deg); }
-        100% { transform: translateY(-5px) rotate(2deg); }
-      }
-      
-      .magic-trail {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateX(100%);
-        display: flex;
-        gap: 8px;
-      }
-      
-      .sparkle {
-        font-size: 0.8em;
-        animation: sparkleTrail 0.8s ease-out infinite;
-        opacity: 0;
-      }
-      
-      .sparkle:nth-child(1) { animation-delay: 0s; }
-      .sparkle:nth-child(2) { animation-delay: 0.15s; }
-      .sparkle:nth-child(3) { animation-delay: 0.3s; }
-      .sparkle:nth-child(4) { animation-delay: 0.45s; }
-      .sparkle:nth-child(5) { animation-delay: 0.6s; }
-      
-      @keyframes sparkleTrail {
-        0% { opacity: 1; transform: scale(1); }
-        100% { opacity: 0; transform: scale(0.3) translateX(20px); }
-      }
-      
-      /* Snowfall Effect - Enhanced */
-      .snowflakes {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        overflow: hidden;
-        z-index: 5;
-      }
-      
-      .snowflake {
-        position: absolute;
-        top: -10px;
-        color: #fff;
-        font-size: 1em;
-        text-shadow: 0 0 10px rgba(255,255,255,1);
-        animation: snowfall linear infinite;
-        opacity: 0.95;
-      }
-      
-      @keyframes snowfall {
-        0% {
-          transform: translateY(-10px) rotate(0deg) translateX(0);
-          opacity: 1;
-        }
-        50% {
-          transform: translateY(75px) rotate(180deg) translateX(20px);
-        }
-        100% {
-          transform: translateY(180px) rotate(360deg) translateX(-10px);
-          opacity: 0.5;
-        }
-      }
-      
-      .snowflake:nth-child(1) { left: 3%; animation-duration: 4s; animation-delay: 0s; font-size: 1.2em; }
-      .snowflake:nth-child(2) { left: 10%; animation-duration: 5s; animation-delay: 0.5s; font-size: 0.8em; }
-      .snowflake:nth-child(3) { left: 17%; animation-duration: 4.5s; animation-delay: 1s; font-size: 1.4em; }
-      .snowflake:nth-child(4) { left: 24%; animation-duration: 5.5s; animation-delay: 0.3s; font-size: 0.6em; }
-      .snowflake:nth-child(5) { left: 31%; animation-duration: 4.2s; animation-delay: 1.5s; font-size: 1.1em; }
-      .snowflake:nth-child(6) { left: 38%; animation-duration: 5.2s; animation-delay: 0.8s; font-size: 0.9em; }
-      .snowflake:nth-child(7) { left: 45%; animation-duration: 4.8s; animation-delay: 2s; font-size: 1.3em; }
-      .snowflake:nth-child(8) { left: 52%; animation-duration: 4.3s; animation-delay: 0.2s; font-size: 0.7em; }
-      .snowflake:nth-child(9) { left: 59%; animation-duration: 5.8s; animation-delay: 1.2s; font-size: 1em; }
-      .snowflake:nth-child(10) { left: 66%; animation-duration: 4.6s; animation-delay: 0.7s; font-size: 1.5em; }
-      .snowflake:nth-child(11) { left: 73%; animation-duration: 5.1s; animation-delay: 1.8s; font-size: 0.8em; }
-      .snowflake:nth-child(12) { left: 80%; animation-duration: 4.4s; animation-delay: 2.2s; font-size: 1.2em; }
-      .snowflake:nth-child(13) { left: 87%; animation-duration: 5.4s; animation-delay: 0.4s; font-size: 0.6em; }
-      .snowflake:nth-child(14) { left: 94%; animation-duration: 4.7s; animation-delay: 1.6s; font-size: 1.1em; }
-      .snowflake:nth-child(15) { left: 7%; animation-duration: 5.6s; animation-delay: 2.5s; font-size: 0.9em; }
-      .snowflake:nth-child(16) { left: 21%; animation-duration: 4.1s; animation-delay: 0.9s; font-size: 1.3em; }
-      .snowflake:nth-child(17) { left: 35%; animation-duration: 5.3s; animation-delay: 1.4s; font-size: 0.7em; }
-      .snowflake:nth-child(18) { left: 49%; animation-duration: 4.9s; animation-delay: 2.1s; font-size: 1em; }
-      .snowflake:nth-child(19) { left: 63%; animation-duration: 5.7s; animation-delay: 0.6s; font-size: 1.4em; }
-      .snowflake:nth-child(20) { left: 77%; animation-duration: 4.5s; animation-delay: 1.9s; font-size: 0.8em; }
-      
-      /* Christmas Lights - Enhanced */
-      .christmas-lights {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 25px;
-        z-index: 15;
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-start;
-      }
-      
-      .light-string {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background: linear-gradient(90deg, transparent 0%, #333 5%, #333 95%, transparent 100%);
-        border-radius: 0 0 50% 50%;
-      }
-      
-      .light-bulb {
-        width: 14px;
-        height: 18px;
-        border-radius: 50% 50% 50% 50%;
-        margin-top: 6px;
-        animation: glowLight 1s ease-in-out infinite;
+      .airplane { font-size: 2.5em; transform: rotate(15deg); }
+      .airplane-banner {
+        background: white;
+        color: #d70018;
+        padding: 4px 12px;
+        font-weight: bold;
+        font-size: 14px;
+        border-radius: 4px;
+        margin-right: 10px;
+        margin-left: 0;
         position: relative;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        white-space: nowrap;
       }
-      
-      .light-bulb::before {
-        content: '';
-        position: absolute;
-        top: -4px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 6px;
-        height: 6px;
-        background: #444;
-        border-radius: 2px;
-      }
-      
-      .light-bulb.red { background: radial-gradient(circle at 30% 30%, #ff6b6b, #e41e26); box-shadow: 0 0 15px #ff4444, 0 0 30px rgba(255,68,68,0.5); }
-      .light-bulb.green { background: radial-gradient(circle at 30% 30%, #69f0ae, #00c853); box-shadow: 0 0 15px #44ff44, 0 0 30px rgba(68,255,68,0.5); animation-delay: 0.25s; }
-      .light-bulb.gold { background: radial-gradient(circle at 30% 30%, #ffeb3b, #ffc107); box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255,215,0,0.5); animation-delay: 0.5s; }
-      .light-bulb.blue { background: radial-gradient(circle at 30% 30%, #64b5f6, #1976d2); box-shadow: 0 0 15px #4444ff, 0 0 30px rgba(68,68,255,0.5); animation-delay: 0.75s; }
-      .light-bulb.pink { background: radial-gradient(circle at 30% 30%, #f48fb1, #e91e63); box-shadow: 0 0 15px #ff69b4, 0 0 30px rgba(255,105,180,0.5); animation-delay: 0.33s; }
-      
-      @keyframes glowLight {
-        0%, 100% { opacity: 1; filter: brightness(1.2); }
-        50% { opacity: 0.6; filter: brightness(0.8); }
+      .airplane-banner::before {
+        content: ''; position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+        border-width: 5px; border-style: solid; border-color: transparent transparent transparent white;
       }
       
       .banner-content {
@@ -325,7 +171,7 @@
         text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
       }
       
-      .christmas-icon {
+      .summer-icon {
         display: inline-block;
         animation: bounce 2s ease-in-out infinite;
       }
@@ -338,6 +184,152 @@
       .title-glow {
         text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,215,0,0.6), 2px 2px 4px rgba(0,0,0,0.5);
       }
+    
+    
+    /* Message Style Notifications */
+    .notification-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .notification-item {
+      transition: all 0.3s ease;
+    }
+    
+    .notification-item:hover {
+      transform: translateX(5px);
+    }
+    
+    .notification-item.unread {
+      background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
+      border-left: 4px solid #dc2626;
+    }
+    
+    .notification-item.read {
+      background: #fff;
+      border-left: 4px solid #e5e7eb;
+    }
+    
+    /* Message bubble style */
+    .message-bubble {
+      position: relative;
+      background: #f3f4f6;
+      border-radius: 18px;
+      padding: 12px 16px;
+      margin-left: 12px;
+    }
+    
+    .message-bubble::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 12px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent #f3f4f6 transparent transparent;
+    }
+    
+    .message-bubble.system {
+      background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    }
+    
+    .message-bubble.system::before {
+      border-color: transparent #dbeafe transparent transparent;
+    }
+    
+    .message-bubble.promo {
+      background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+    }
+    
+    .message-bubble.promo::before {
+      border-color: transparent #fef3c7 transparent transparent;
+    }
+    
+    .message-bubble.order {
+      background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+    }
+    
+    .message-bubble.order::before {
+      border-color: transparent #d1fae5 transparent transparent;
+    }
+    
+    .message-bubble.contact {
+      background: linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%);
+    }
+    
+    .message-bubble.contact::before {
+      border-color: transparent #ede9fe transparent transparent;
+    }
+    
+    /* Typing animation */
+    @keyframes typing {
+      0%, 60%, 100% { opacity: 0.3; }
+      30% { opacity: 1; }
+    }
+    
+    .typing-dot {
+      animation: typing 1.4s infinite;
+    }
+    
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    
+    /* Slide in animation */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .notification-item {
+      animation: slideIn 0.3s ease forwards;
+    }
+    
+    /* Filter tabs */
+    .filter-tab {
+      transition: all 0.2s ease;
+    }
+    
+    .filter-tab.active {
+      background: #dc2626;
+      color: white;
+    }
+    
+    .filter-tab:not(.active):hover {
+      background: #fee2e2;
+    }
+    
+    /* Line clamp */
+    .line-clamp-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    /* Responsive */
+    @media (max-width: 640px) {
+      .notification-item {
+        padding: 12px;
+      }
+      
+      .message-bubble {
+        padding: 10px 12px;
+      }
+    }
+  
     </style>
   </head>
   <body class="bg-gray-50">
@@ -348,111 +340,47 @@
     <!-- Spacer for fixed header - Responsive -->
     <div class="h-[70px]"></div>
 
-    <!-- Christmas Banner with Top Red Curve -->
-    <div class="christmas-banner text-white py-8 pt-10">
+    <!-- Summer Banner -->
+    <div class="summer-banner text-white py-8 pt-10">
       
       <!-- Red background connection from header to banner -->
       <div class="w-full absolute left-0 top-0 overflow-hidden h-[120px] flex justify-center z-10 pointer-events-none">
         <div class="w-[200%] h-full bg-[#d70018] rounded-b-[50%] shadow-sm"></div>
       </div>
-      <!-- Stars -->
-      <div class="stars">
-        <div class="star" style="top: 10%; left: 5%;"></div>
-        <div class="star" style="top: 20%; left: 15%; animation-delay: 0.5s;"></div>
-        <div class="star" style="top: 8%; left: 25%; animation-delay: 1s;"></div>
-        <div class="star" style="top: 25%; left: 35%; animation-delay: 0.3s;"></div>
-        <div class="star" style="top: 12%; left: 45%; animation-delay: 0.8s;"></div>
-        <div class="star" style="top: 18%; left: 55%; animation-delay: 1.2s;"></div>
-        <div class="star" style="top: 5%; left: 65%; animation-delay: 0.6s;"></div>
-        <div class="star" style="top: 22%; left: 75%; animation-delay: 1.5s;"></div>
-        <div class="star" style="top: 15%; left: 40%; animation-delay: 0.2s;"></div>
-        <div class="star" style="top: 28%; left: 20%; animation-delay: 0.9s;"></div>
+
+      <!-- Clouds -->
+      <div class="clouds">
+        <div class="cloud" style="top: 10%; left: 5%; animation-duration: 25s; animation-delay: 0s;">☁️</div>
+        <div class="cloud" style="top: 20%; left: 30%; animation-duration: 18s; animation-delay: 2s;">☁️</div>
+        <div class="cloud" style="top: 8%; left: 60%; animation-duration: 22s; animation-delay: 5s;">☁️</div>
+        <div class="cloud" style="top: 25%; left: 80%; animation-duration: 20s; animation-delay: 1s;">☁️</div>
       </div>
       
-      <!-- Moon -->
-      <div class="moon"></div>
+      <!-- Sun -->
+      <div class="sun"></div>
       
-      <!-- Christmas Lights -->
-      <div class="christmas-lights">
-        <div class="light-string"></div>
-        <div class="light-bulb red"></div>
-        <div class="light-bulb green"></div>
-        <div class="light-bulb gold"></div>
-        <div class="light-bulb blue"></div>
-        <div class="light-bulb pink"></div>
-        <div class="light-bulb red"></div>
-        <div class="light-bulb green"></div>
-        <div class="light-bulb gold"></div>
-        <div class="light-bulb blue"></div>
-        <div class="light-bulb pink"></div>
-        <div class="light-bulb red"></div>
-        <div class="light-bulb green"></div>
-        <div class="light-bulb gold"></div>
-        <div class="light-bulb blue"></div>
-        <div class="light-bulb pink"></div>
+      <!-- Flying Airplane -->
+      <div class="airplane-container">
+        <span class="airplane">✈️</span>
+        <div class="airplane-banner">SUMMER SALE</div>
       </div>
       
-      <!-- Santa Sleigh with Reindeers -->
-      <div class="sleigh-container">
-        <div class="sleigh-group">
-          <span class="sleigh">🎅🛷</span>
-          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
-          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
-          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
-          <span class="reindeer" style="transform: scaleX(-1);">🦌</span>
-        </div>
-        <div class="magic-trail">
-          <span class="sparkle">✨</span>
-          <span class="sparkle">⭐</span>
-          <span class="sparkle">✨</span>
-          <span class="sparkle">💫</span>
-          <span class="sparkle">✨</span>
-        </div>
+      <!-- Palm Trees & Beach elements -->
+      <div class="palm-trees">
+        <span class="palm-tree">🌴</span>
+        <span class="palm-tree">🌴</span>
+        <span class="pool-float">🦩</span>
       </div>
       
-      <!-- Snowflakes -->
-      <div class="snowflakes">
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-      </div>
-      
-      <!-- Christmas Trees -->
-      <div class="trees">
-        <span class="tree">🎄</span>
-        <span class="tree">🌲</span>
-        <span class="tree">🎄</span>
-        <span class="tree">🎄</span>
-        <span class="tree">🌲</span>
-        <span class="tree">🎄</span>
-      </div>
-      
-      <!-- Snow Ground -->
-      <div class="snow-ground"></div>
+      <!-- Sand Ground -->
+      <div class="sand-ground"></div>
       
       <div class="container mx-auto px-4 banner-content pt-8">
-        <h1 class="text-3xl font-bold title-glow">
-          <span class="christmas-icon">🎄</span> Tài khoản của tôi <span class="christmas-icon">🎅</span>
+        <h1 class="text-3xl font-bold title-glow text-white">
+          <span class="summer-icon">🏖️</span> Tài khoản của tôi <span class="summer-icon">😎</span>
         </h1>
-        <p class="text-blue-100 mt-2 text-lg">
-          <span class="christmas-icon">🎁</span> Quản lý thông tin và đơn hàng của bạn - Chúc Giáng Sinh An Lành! <span class="christmas-icon">⭐</span>
+        <p class="text-white mt-2 text-lg">
+          <span class="summer-icon">🍉</span> Quản lý thông tin và đơn hàng của bạn - Chào Hè Sôi Động! <span class="summer-icon">☀️</span>
         </p>
       </div>
     </div>
@@ -462,7 +390,7 @@
         <div id="profile-sidebar"></div>
 
         <main class="lg:col-span-3">
-          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div id="profile" class="tab-section bg-white rounded-lg shadow-md p-6 mb-6">
             <div class="flex items-center justify-between mb-6">
               <h2 class="text-2xl font-bold">Thông tin cá nhân</h2>
               <button id="edit-profile-btn" onclick="toggleEditMode(true)" class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition text-sm">
@@ -595,7 +523,7 @@
             </form>
           </div>
 
-          <div id="orders" class="bg-white rounded-lg shadow-md p-6 scroll-mt-32">
+          <div id="orders" class="tab-section hidden bg-white rounded-lg shadow-md p-6 scroll-mt-32">
             <div class="flex items-center justify-between mb-6">
               <h2 class="text-2xl font-bold">Đơn hàng của tôi</h2>
               <span id="orders-count" class="text-gray-500 text-sm">0 đơn hàng</span>
@@ -622,7 +550,7 @@
           </div>
 
           <!-- Địa chỉ nhận hàng -->
-          <div id="address" class="bg-white rounded-lg shadow-md p-6 mb-6 scroll-mt-32">
+          <div id="address" class="tab-section hidden bg-white rounded-lg shadow-md p-6 mb-6 scroll-mt-32">
             <div class="flex items-center justify-between mb-6">
               <h2 class="text-2xl font-bold">Địa chỉ nhận hàng</h2>
               <button onclick="openAddAddressModal()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
@@ -651,7 +579,7 @@
           </div>
 
           <!-- Đổi mật khẩu -->
-          <div id="password" class="bg-white rounded-lg shadow-md p-6 mb-6 scroll-mt-32">
+          <div id="password" class="tab-section hidden bg-white rounded-lg shadow-md p-6 mb-6 scroll-mt-32">
             <div class="flex items-center justify-between mb-6">
               <h2 class="text-2xl font-bold">Đổi mật khẩu</h2>
             </div>
@@ -717,6 +645,89 @@
               </button>
             </form>
           </div>
+        
+          <!-- Thông báo -->
+          <div id="notifications" class="tab-section hidden bg-white rounded-lg shadow-md p-6 mb-6 scroll-mt-32">
+            <div class="notification-container w-full max-w-full">
+            <!-- Header Section -->
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+        <div class="bg-gradient-to-r from-red-600 to-red-700 p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-bell text-2xl"></i>
+              </div>
+              <div>
+                <h1 class="text-2xl font-bold">Thông báo của bạn</h1>
+                <p class="text-red-100 text-sm mt-1">
+                  <span id="unread-count">0</span> thông báo chưa đọc
+                </p>
+              </div>
+            </div>
+            <button onclick="markAllAsRead()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+              <i class="fas fa-check-double"></i>
+              <span class="hidden sm:inline">Đọc tất cả</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Filter Tabs -->
+        <div class="p-4 border-b bg-gray-50 flex flex-wrap gap-2">
+          <button onclick="filterNotifications('all')" class="filter-tab active px-4 py-2 rounded-full text-sm font-medium" data-filter="all">
+            <i class="fas fa-inbox mr-1"></i> Tất cả
+          </button>
+          <button onclick="filterNotifications('unread')" class="filter-tab px-4 py-2 rounded-full text-sm font-medium bg-white border" data-filter="unread">
+            <i class="fas fa-envelope mr-1"></i> Chưa đọc
+          </button>
+          <button onclick="filterNotifications('order_update')" class="filter-tab px-4 py-2 rounded-full text-sm font-medium bg-white border" data-filter="order_update">
+            <i class="fas fa-box mr-1"></i> Đơn hàng
+          </button>
+          <button onclick="filterNotifications('promotion')" class="filter-tab px-4 py-2 rounded-full text-sm font-medium bg-white border" data-filter="promotion">
+            <i class="fas fa-gift mr-1"></i> Khuyến mãi
+          </button>
+          <button onclick="filterNotifications('contact_response')" class="filter-tab px-4 py-2 rounded-full text-sm font-medium bg-white border" data-filter="contact_response">
+            <i class="fas fa-reply mr-1"></i> Phản hồi
+          </button>
+        </div>
+      </div>
+      
+      <!-- Notifications List -->
+      <div id="notifications-list" class="space-y-4">
+        <!-- Loading State -->
+        <div id="loading-state" class="bg-white rounded-2xl p-8 text-center">
+          <div class="flex justify-center gap-1 mb-4">
+            <div class="w-3 h-3 bg-red-500 rounded-full typing-dot"></div>
+            <div class="w-3 h-3 bg-red-500 rounded-full typing-dot"></div>
+            <div class="w-3 h-3 bg-red-500 rounded-full typing-dot"></div>
+          </div>
+          <p class="text-gray-500">Đang tải thông báo...</p>
+        </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div id="empty-state" class="hidden bg-white rounded-2xl p-12 text-center">
+        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="fas fa-bell-slash text-4xl text-gray-300"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-700 mb-2">Chưa có thông báo nào</h3>
+        <p class="text-gray-500 mb-6">Các thông báo về đơn hàng, khuyến mãi sẽ hiển thị ở đây</p>
+        <a href="products.html" class="inline-flex items-center gap-2 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition">
+          <i class="fas fa-shopping-bag"></i> Mua sắm ngay
+        </a>
+      </div>
+      
+      <!-- Load More Button -->
+      <div id="load-more-container" class="hidden text-center mt-6">
+        <button onclick="loadMoreNotifications()" class="bg-white text-red-600 border-2 border-red-600 px-6 py-3 rounded-lg font-medium hover:bg-red-50 transition">
+          <i class="fas fa-chevron-down mr-2"></i> Xem thêm thông báo
+        </button>
+      </div>
+      
+    </div>
+  
+            </div>
+          </div>
+
         </main>
       </div>
     </div>
@@ -1368,22 +1379,31 @@
         }, 300);
       });
       
-      // Xử lý navigation theo hash
+      // Xử lý navigation theo hash (Tab System)
       function handleHashNavigation() {
-        const hash = window.location.hash;
-        if (hash) {
-          const targetElement = document.querySelector(hash);
-          if (targetElement) {
-            // Scroll đến element
-            setTimeout(() => {
-              targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-            
-            // Highlight sidebar link tương ứng
-            updateSidebarActive(hash.replace('#', ''));
-          }
+        const hash = window.location.hash || '#profile';
+        const targetId = hash.replace('#', '');
+        
+        // Hide all tab sections
+        const sections = document.querySelectorAll('.tab-section');
+        sections.forEach(sec => sec.classList.add('hidden'));
+        
+        // Show target section
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.classList.remove('hidden');
+          // Highlight sidebar link tương ứng
+          updateSidebarActive(targetId);
+        } else {
+          // Fallback if hash is invalid
+          const profileEl = document.getElementById('profile');
+          if (profileEl) profileEl.classList.remove('hidden');
+          updateSidebarActive('profile');
         }
       }
+
+      // Lắng nghe sự kiện thay đổi hash (khi người dùng click vào sidebar links)
+      window.addEventListener('hashchange', handleHashNavigation);
       
       // Cập nhật sidebar active state
       function updateSidebarActive(page) {
@@ -1564,7 +1584,7 @@
         }
         
         // Render đơn hàng
-        ordersList.innerHTML = allOrders.map(order => {
+        window.renderOrderHTML = function(order) {
           const statusInfo = getStatusInfo(order.status);
           const items = order.items || [];
           let firstItem = items[0];
@@ -1660,7 +1680,33 @@
               </div>
             </div>
           `;
-        }).join('');
+        };
+
+        window.renderOrdersList = function(limit) {
+          const listToRender = limit ? allLoadedOrders.slice(0, limit) : allLoadedOrders;
+          ordersList.innerHTML = listToRender.map(order => window.renderOrderHTML(order)).join('');
+          
+          if (limit && allLoadedOrders.length > limit) {
+            ordersList.innerHTML += `
+              <div class="text-center mt-4 pb-2" id="view-more-orders-container">
+                <button onclick="window.renderOrdersList()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium transition text-sm inline-flex items-center mx-auto border border-gray-200">
+                  <i class="fas fa-chevron-down mr-2"></i> Xem tất cả ${allLoadedOrders.length} đơn hàng
+                </button>
+              </div>
+            `;
+          } else if (!limit && allLoadedOrders.length > 3) {
+            ordersList.innerHTML += `
+              <div class="text-center mt-4 pb-2" id="view-less-orders-container">
+                <button onclick="window.renderOrdersList(3)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium transition text-sm inline-flex items-center mx-auto border border-gray-200">
+                  <i class="fas fa-chevron-up mr-2"></i> Thu gọn
+                </button>
+              </div>
+            `;
+          }
+        };
+
+        // Render init with limit = 3
+        window.renderOrdersList(3);
       }
       
       // Biến lưu order đang xem và danh sách tất cả orders
@@ -2700,11 +2746,47 @@
       }
     </script>
 
+    <!-- Notification Modal -->
+    <div id="notification-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[80vh] overflow-hidden">
+      <div id="modal-header" class="bg-gradient-to-r from-red-600 to-red-700 p-4 text-white">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div id="modal-icon" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div>
+              <h3 id="modal-title" class="font-bold">Tiêu đề thông báo</h3>
+              <p id="modal-time" class="text-red-100 text-xs">Vừa xong</p>
+            </div>
+          </div>
+          <button onclick="closeNotificationModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="p-6 max-h-[50vh] overflow-y-auto">
+        <div id="modal-content" class="text-gray-700 leading-relaxed">
+          Nội dung thông báo...
+        </div>
+      </div>
+      <div class="p-4 bg-gray-50 border-t flex gap-3">
+        <button onclick="closeNotificationModal()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-300 transition">
+          Đóng
+        </button>
+        <a id="modal-link" href="#" class="flex-1 bg-red-600 text-white py-3 rounded-lg font-medium hover:bg-red-700 transition text-center hidden">
+          <i class="fas fa-external-link-alt mr-2"></i> Xem chi tiết
+        </a>
+      </div>
+    </div>
+  </div>
+
     <!-- AI Chatbot -->
     <link rel="stylesheet" href="components/ai-chatbot.css">
     <script src="components/ai-chatbot.js"></script>
     <script src="components/floating-share.js"></script>
     <!-- Main JS - Page Loader -->
+  <script src="js/notifications.js?v=2"></script>
   <script src="main.js"></script>
 </body>
 </html>

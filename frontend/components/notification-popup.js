@@ -238,7 +238,7 @@ class NotificationPopup {
     if (link) {
       window.location.href = link;
     } else {
-      window.location.href = 'notifications.html';
+      window.location.href = 'profile.html#notifications';
     }
   }
 

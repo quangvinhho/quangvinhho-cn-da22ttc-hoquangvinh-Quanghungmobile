@@ -186,9 +186,47 @@ router.post('/chat', async (req, res) => {
     history.push(userMessage);
 
     let aiResponse = null;
+    let matchedKeyword = false;
 
-    // 1. Nếu không có hình ảnh, thử gọi sang Python RAG Service (nếu đang chạy)
-    if (!image) {
+    // 1. Kiểm tra trực tiếp các từ khóa/FAQ trong database (Keyword matching)
+    if (!image && message) {
+      try {
+        const [knowledgeItems] = await pool.query('SELECT question, answer FROM chatbot_knowledge WHERE is_active = 1');
+        const userMsgLower = message.toLowerCase().trim();
+        
+        for (const item of knowledgeItems) {
+          const keywords = item.question.toLowerCase().split(',').map(k => k.trim()).filter(k => k.length > 0);
+          
+          for (const k of keywords) {
+             // Trùng khớp hoàn toàn chuỗi
+             if (userMsgLower.includes(k)) {
+               aiResponse = item.answer;
+               matchedKeyword = true;
+               break;
+             }
+             
+             // So khớp mờ (Fuzzy match) theo từng từ
+             const kwWords = k.split(/\s+/);
+             let matchCount = 0;
+             for (const w of kwWords) {
+                if (w.length >= 2 && userMsgLower.includes(w)) matchCount++;
+             }
+             // Nếu người dùng nhắc đến > 50% số từ quan trọng trong từ khóa
+             if (kwWords.length >= 2 && matchCount >= Math.ceil(kwWords.length / 2)) {
+                aiResponse = item.answer;
+                matchedKeyword = true;
+                break;
+             }
+          }
+          if (matchedKeyword) break;
+        }
+      } catch (err) {
+        console.error('Lỗi khi kiểm tra từ khóa trực tiếp:', err);
+      }
+    }
+
+    // 2. Nếu không có hình ảnh và chưa match được keyword từ database, thử gọi sang Python RAG Service
+    if (!image && !matchedKeyword) {
       try {
         const pyResponse = await fetch('http://127.0.0.1:8000/api/chat', {
           method: 'POST',

@@ -3,7 +3,7 @@
  * Trang thông báo kiểu tin nhắn
  */
 
-const API_URL = 'http://localhost:3000/api';
+
 
 let allNotifications = [];
 let currentFilter = 'all';
@@ -75,7 +75,18 @@ function showEmpty() {
 
 // Cập nhật số thông báo chưa đọc
 function updateUnreadCount(count) {
-  document.getElementById('unread-count').textContent = count;
+  const mainBadge = document.getElementById('unread-count');
+  if (mainBadge) mainBadge.textContent = count;
+  
+  const sidebarBadge = document.getElementById('sidebar-notification-badge');
+  if (sidebarBadge) {
+    sidebarBadge.textContent = count;
+    if (count > 0) {
+      sidebarBadge.classList.remove('hidden');
+    } else {
+      sidebarBadge.classList.add('hidden');
+    }
+  }
 }
 
 // Lọc thông báo
