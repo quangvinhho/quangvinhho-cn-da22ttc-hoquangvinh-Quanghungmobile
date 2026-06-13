@@ -454,6 +454,18 @@
             <div class="sidebar-icon"><i class="fas fa-user-shield text-sm"></i></div>
             <span class="text-sm font-medium">Nhân viên</span>
           </a>
+          <a href="#" onclick="showSection('shifts')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-shifts">
+            <div class="sidebar-icon"><i class="fas fa-calendar-alt text-sm"></i></div>
+            <span class="text-sm font-medium">Ca làm việc</span>
+          </a>
+          <a href="#" onclick="showSection('attendance')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-attendance">
+            <div class="sidebar-icon"><i class="fas fa-fingerprint text-sm"></i></div>
+            <span class="text-sm font-medium">Chấm công</span>
+          </a>
+          <a href="#" onclick="showSection('audit-logs')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-audit-logs">
+            <div class="sidebar-icon"><i class="fas fa-history text-sm"></i></div>
+            <span class="text-sm font-medium">Lịch sử hoạt động</span>
+          </a>
           <a href="#" onclick="showSection('interests')" class="sidebar-item flex items-center px-3 py-2.5 text-slate-100 group" id="nav-interests">
             <div class="sidebar-icon"><i class="fas fa-heart text-sm"></i></div>
             <span class="text-sm font-medium">Sở thích KH</span>
@@ -481,6 +493,7 @@
             <div class="flex-1 min-w-0">
               <p class="font-semibold text-white text-sm truncate" id="admin-name">Quang Vinh</p>
               <p class="text-[10px] text-slate-300" id="admin-role">Quản trị viên</p>
+              <p class="text-[9px] text-slate-400 mt-0.5 leading-tight hidden" id="last-login-info"></p>
             </div>
           </div>
           <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-[#334155] hover:bg-[#475569] border border-[#475569] hover:border-slate-300 hover:text-white rounded-lg text-xs font-medium text-slate-200 transition-all">
@@ -529,6 +542,106 @@
 
         <!-- ==================== DASHBOARD SECTION ==================== -->
         <div id="section-dashboard" class="section-content active">
+          <!-- ===== KHỐI THỐNG KÊ TỔNG QUAN ===== -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+            <!-- Tổng đơn hàng -->
+            <div class="stat-card bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-5 text-white relative overflow-hidden">
+              <div class="absolute -right-3 -bottom-3 opacity-10 text-7xl"><i class="fas fa-shopping-bag"></i></div>
+              <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+                <i class="fas fa-shopping-bag text-white text-lg"></i>
+              </div>
+              <p class="text-2xl font-extrabold" id="stat-total-orders">0</p>
+              <p class="text-xs text-blue-100 font-medium mt-1">Tổng đơn hàng</p>
+            </div>
+            <!-- Tổng khách hàng -->
+            <div class="stat-card bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl shadow-lg p-5 text-white relative overflow-hidden">
+              <div class="absolute -right-3 -bottom-3 opacity-10 text-7xl"><i class="fas fa-users"></i></div>
+              <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+                <i class="fas fa-users text-white text-lg"></i>
+              </div>
+              <p class="text-2xl font-extrabold" id="stat-total-customers">0</p>
+              <p class="text-xs text-purple-100 font-medium mt-1">Tổng khách hàng</p>
+            </div>
+            <!-- Tổng sản phẩm -->
+            <div class="stat-card bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg p-5 text-white relative overflow-hidden">
+              <div class="absolute -right-3 -bottom-3 opacity-10 text-7xl"><i class="fas fa-box"></i></div>
+              <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+                <i class="fas fa-box text-white text-lg"></i>
+              </div>
+              <p class="text-2xl font-extrabold" id="stat-total-products">0</p>
+              <p class="text-xs text-amber-100 font-medium mt-1">Tổng sản phẩm</p>
+            </div>
+            <!-- Tổng nhân viên -->
+            <div class="stat-card bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg p-5 text-white relative overflow-hidden">
+              <div class="absolute -right-3 -bottom-3 opacity-10 text-7xl"><i class="fas fa-user-shield"></i></div>
+              <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+                <i class="fas fa-user-shield text-white text-lg"></i>
+              </div>
+              <p class="text-2xl font-extrabold" id="stat-total-employees">0</p>
+              <p class="text-xs text-emerald-100 font-medium mt-1">Tổng nhân viên</p>
+            </div>
+          </div>
+
+          <!-- ===== KHỐI TÀI CHÍNH: DOANH THU & LỢI NHUẬN ===== -->
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5 mb-6">
+            <!-- Doanh thu -->
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-5">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-wallet text-white"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold text-slate-700">Doanh thu</h3>
+                    <p class="text-xs text-slate-400">Tổng tiền bán hàng</p>
+                  </div>
+                </div>
+                <div class="flex bg-slate-100 rounded-lg p-0.5 gap-0.5">
+                  <button onclick="loadFinancialStat('revenue', 'today')" class="fin-tab-revenue px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:bg-white transition-all" data-period="today">Hôm nay</button>
+                  <button onclick="loadFinancialStat('revenue', 'month')" class="fin-tab-revenue px-3 py-1.5 rounded-md text-xs font-medium bg-white text-blue-600 shadow-sm transition-all active" data-period="month">Tháng này</button>
+                  <button onclick="loadFinancialStat('revenue', 'year')" class="fin-tab-revenue px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:bg-white transition-all" data-period="year">Năm nay</button>
+                </div>
+              </div>
+              <p class="text-3xl font-extrabold text-slate-800 mb-2" id="fin-revenue-value">0đ</p>
+              <div class="flex items-center gap-2 text-sm">
+                <span class="text-slate-400">So kỳ trước:</span>
+                <span class="font-semibold text-slate-600" id="fin-revenue-prev">0đ</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-600" id="fin-revenue-change">+0%</span>
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-100">
+                <p class="text-xs text-slate-400">Công thức: Doanh thu = Tổng tiền bán hàng</p>
+              </div>
+            </div>
+            <!-- Lợi nhuận -->
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-5" id="profit-card">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg shadow-green-500/30">
+                    <i class="fas fa-hand-holding-usd text-white"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold text-slate-700">Lợi nhuận</h3>
+                    <p class="text-xs text-slate-400">Doanh thu − Giá vốn nhập hàng</p>
+                  </div>
+                </div>
+                <div class="flex bg-slate-100 rounded-lg p-0.5 gap-0.5">
+                  <button onclick="loadFinancialStat('profit', 'today')" class="fin-tab-profit px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:bg-white transition-all" data-period="today">Hôm nay</button>
+                  <button onclick="loadFinancialStat('profit', 'month')" class="fin-tab-profit px-3 py-1.5 rounded-md text-xs font-medium bg-white text-green-600 shadow-sm transition-all active" data-period="month">Tháng này</button>
+                  <button onclick="loadFinancialStat('profit', 'year')" class="fin-tab-profit px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:bg-white transition-all" data-period="year">Năm nay</button>
+                </div>
+              </div>
+              <p class="text-3xl font-extrabold text-green-600 mb-2" id="fin-profit-value">0đ</p>
+              <div class="flex items-center gap-2 text-sm">
+                <span class="text-slate-400">So kỳ trước:</span>
+                <span class="font-semibold text-slate-600" id="fin-profit-prev">0đ</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-600" id="fin-profit-change">+0%</span>
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-100">
+                <p class="text-xs text-slate-400">Ví dụ: SP 6tr bán, nhập 5tr → Lợi nhuận = 1tr</p>
+              </div>
+            </div>
+          </div>
+
           <!-- Row 1: Stat Cards -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 mb-6">
             <!-- Tổng doanh thu -->
@@ -1230,6 +1343,10 @@
               <option value="VNPAY">VNPay</option>
               <option value="ZaloPay">ZaloPay</option>
             </select>
+            <label id="my-orders-filter-container" class="hidden items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-white cursor-pointer select-none">
+              <input type="checkbox" id="my-orders-only" class="rounded text-blue-500 focus:ring-blue-500 h-4 w-4" onchange="filterOrders()">
+              <span class="text-slate-700 font-medium">Đơn hàng của tôi</span>
+            </label>
             <button onclick="loadOrders()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-medium text-slate-700">
               <i class="fas fa-sync-alt mr-2"></i>Làm mới
             </button>
@@ -1245,9 +1362,22 @@
         <div id="section-products" class="section-content">
           <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-4">
-              <input type="text" id="product-search" placeholder="Tìm kiếm Sản phẩm..." class="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64" onkeyup="searchProducts()">
-              <select id="product-brand-filter" onchange="filterProducts()" class="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="text" id="product-search" placeholder="Tìm theo tên / mã..." class="px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" onkeyup="applyProductFilters()">
+              <select id="product-brand-filter" onchange="applyProductFilters()" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Tất cả hãng</option>
+              </select>
+              <select id="product-status-filter" onchange="applyProductFilters()" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Mọi trạng thái</option>
+                <option value="active">Còn hàng</option>
+                <option value="out_of_stock">Hết hàng</option>
+                <option value="discontinued">Ngừng kinh doanh</option>
+              </select>
+              <select id="product-price-filter" onchange="applyProductFilters()" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Mọi mức giá</option>
+                <option value="0-10000000">Dưới 10 triệu</option>
+                <option value="10000000-20000000">10 – 20 triệu</option>
+                <option value="20000000-30000000">20 – 30 triệu</option>
+                <option value="30000000-999999999">Trên 30 triệu</option>
               </select>
             </div>
             <button onclick="showAddProductModal()" class="btn-primary px-4 py-2 text-white rounded-xl text-sm font-medium flex items-center gap-2">
@@ -1353,6 +1483,46 @@
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+
+        <!-- ==================== AUDIT LOGS SECTION ==================== -->
+        <div id="section-audit-logs" class="section-content">
+          <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <h3 class="text-lg font-bold text-slate-700"><i class="fas fa-history mr-2 text-blue-500"></i>Lịch sử hoạt động</h3>
+            <div class="flex gap-2 flex-wrap">
+              <input type="text" id="audit-search-filter" placeholder="Tìm kiếm..." onkeyup="if(event.key==='Enter')window._loadAuditLogs(1)" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 w-48">
+              <select id="audit-action-filter" onchange="window._loadAuditLogs(1)" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500">
+                <option value="">Tất cả hành động</option>
+                <option value="Thêm">Thêm</option>
+                <option value="Cập nhật">Cập nhật</option>
+                <option value="Xóa">Xóa</option>
+                <option value="Phân công">Đơn hàng</option>
+                <option value="Phản hồi">Đánh giá</option>
+              </select>
+              <button onclick="window._loadAuditLogs(1)" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700"><i class="fas fa-search mr-1"></i>Lọc</button>
+            </div>
+          </div>
+          <div class="chart-card rounded-2xl shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50">
+                  <tr class="text-left text-slate-600 text-xs">
+                    <th class="px-4 py-3 font-semibold">ID</th>
+                    <th class="px-4 py-3 font-semibold">Người thực hiện</th>
+                    <th class="px-4 py-3 font-semibold">Hành động</th>
+                    <th class="px-4 py-3 font-semibold">Đối tượng</th>
+                    <th class="px-4 py-3 font-semibold">Chi tiết</th>
+                    <th class="px-4 py-3 font-semibold">IP</th>
+                    <th class="px-4 py-3 font-semibold">Thời gian</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-logs-table-body">
+                  <tr><td colspan="7" class="py-8 text-center text-slate-400">Bấm "Lọc" để tải dữ liệu</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="audit-logs-pagination" class="flex items-center justify-center gap-3 py-4 border-t border-slate-100"></div>
           </div>
         </div>
 
@@ -1960,6 +2130,163 @@
     </div>
   </div>
 
+  <!-- ==================== SHIFTS SECTION ==================== -->
+  <div id="section-shifts" class="section-content">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+          <i class="fas fa-calendar-alt text-blue-500"></i>Quản lý Ca làm việc
+        </h2>
+        <p class="text-slate-500 text-sm mt-1">Tạo ca làm việc và phân công lịch làm cho nhân viên.</p>
+      </div>
+      <button onclick="openShiftModal()" class="btn-primary px-5 py-2.5 rounded-xl text-white font-medium flex items-center gap-2 shadow-lg shadow-blue-500/30 transition-all hover:scale-105">
+        <i class="fas fa-plus"></i> Tạo ca mới
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <!-- Danh sách ca -->
+      <div class="xl:col-span-1">
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+          <div class="px-5 py-4 border-b border-slate-100 bg-slate-50">
+            <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fas fa-clock text-blue-500"></i>Danh sách ca</h3>
+          </div>
+          <div class="p-4 space-y-3" id="shifts-list">
+            <div class="text-center py-8 text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phân công ca -->
+      <div class="xl:col-span-2">
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden mb-4">
+          <div class="px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fas fa-user-clock text-blue-500"></i>Phân công ca làm việc</h3>
+          </div>
+          <div class="p-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nhân viên</label>
+                <select id="assign-employee" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 bg-white">
+                  <option value="">-- Chọn nhân viên --</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Ngày làm việc</label>
+                <input type="date" id="assign-date" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Ca làm việc</label>
+                <select id="assign-shift" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 bg-white">
+                  <option value="">-- Chọn ca --</option>
+                </select>
+              </div>
+            </div>
+            <button onclick="assignShift()" class="btn-primary px-5 py-2.5 rounded-xl text-white text-sm font-medium flex items-center gap-2">
+              <i class="fas fa-check"></i> Lưu phân công
+            </button>
+          </div>
+        </div>
+
+        <!-- Lịch phân công -->
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+          <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fas fa-table text-emerald-500"></i>Lịch phân công</h3>
+            <div class="flex gap-2">
+              <input type="date" id="schedule-filter-date" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm" onchange="loadSchedule()">
+              <button onclick="loadSchedule()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm font-medium text-slate-700"><i class="fas fa-sync-alt"></i></button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50">
+                <tr class="text-left text-slate-500 text-xs">
+                  <th class="px-4 py-3 font-semibold">Nhân viên</th>
+                  <th class="px-4 py-3 font-semibold">Ngày</th>
+                  <th class="px-4 py-3 font-semibold">Ca</th>
+                  <th class="px-4 py-3 font-semibold">Giờ làm</th>
+                  <th class="px-4 py-3 font-semibold text-center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="schedule-table-body" class="divide-y divide-slate-100">
+                <tr><td colspan="5" class="py-8 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ATTENDANCE SECTION ==================== -->
+  <div id="section-attendance" class="section-content">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+          <i class="fas fa-fingerprint text-blue-500"></i>Chấm công khuôn mặt
+        </h2>
+        <p class="text-slate-500 text-sm mt-1">Theo dõi chấm công nhân viên, kiểm tra đi trễ và gửi thông báo.</p>
+      </div>
+      <div class="flex gap-2">
+        <input type="date" id="attendance-filter-date" class="px-4 py-2 border border-slate-200 rounded-xl text-sm" onchange="loadAttendanceRecords()">
+        <button onclick="loadAttendanceRecords()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-medium text-slate-700">
+          <i class="fas fa-sync-alt mr-1"></i>Làm mới
+        </button>
+      </div>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center"><i class="fas fa-check text-emerald-600"></i></div>
+          <div><p class="text-xs text-slate-500">Đúng giờ</p><p class="text-xl font-bold text-emerald-600" id="att-ontime">0</p></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center"><i class="fas fa-clock text-amber-600"></i></div>
+          <div><p class="text-xs text-slate-500">Đi trễ</p><p class="text-xl font-bold text-amber-600" id="att-late">0</p></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center"><i class="fas fa-times text-red-600"></i></div>
+          <div><p class="text-xs text-slate-500">Vắng mặt</p><p class="text-xl font-bold text-red-600" id="att-absent">0</p></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center"><i class="fas fa-users text-blue-600"></i></div>
+          <div><p class="text-xs text-slate-500">Tổng chấm công</p><p class="text-xl font-bold text-blue-600" id="att-total">0</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bảng chấm công -->
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50">
+            <tr class="text-left text-slate-500 text-xs">
+              <th class="px-4 py-3 font-semibold">Nhân viên</th>
+              <th class="px-4 py-3 font-semibold">Ca làm việc</th>
+              <th class="px-4 py-3 font-semibold">Giờ bắt đầu ca</th>
+              <th class="px-4 py-3 font-semibold">Giờ check-in</th>
+              <th class="px-4 py-3 font-semibold">Vị trí GPS</th>
+              <th class="px-4 py-3 font-semibold">Trạng thái</th>
+              <th class="px-4 py-3 font-semibold">Thông báo</th>
+            </tr>
+          </thead>
+          <tbody id="attendance-table-body" class="divide-y divide-slate-100">
+            <tr><td colspan="7" class="py-8 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i>Đang tải...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== WARRANTIES SECTION ==================== -->
   <div id="section-warranties" class="section-content">
     <div class="flex justify-between items-center mb-6">
@@ -2108,13 +2435,23 @@
                 <input type="number" id="product-discount-price" min="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="VD: 29990000">
               </div>
               <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Số lượng tồn</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Số lượng tồn <span class="text-xs font-normal text-purple-500" id="stock-sync-hint"></span></label>
                 <input type="number" id="product-stock" min="0" value="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
             </div>
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Màu sắc (phân cách bằng dấu phẩy)</label>
-              <input type="text" id="product-colors" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="VD: Đen, Trắng, Xanh">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="md:col-span-2">
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Màu sắc <span class="text-xs font-normal text-purple-500" id="colors-sync-hint"></span></label>
+                <input type="text" id="product-colors" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="VD: Đen, Trắng, Xanh">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Trạng thái <span class="text-red-500">*</span></label>
+                <select id="product-status" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="active">Còn hàng</option>
+                  <option value="out_of_stock">Hết hàng</option>
+                  <option value="discontinued">Ngừng kinh doanh</option>
+                </select>
+              </div>
             </div>
             <div>
               <label class="block text-sm font-semibold text-slate-700 mb-2">Ảnh đại diện</label>
@@ -2188,12 +2525,92 @@
             </div>
           </div>
         </div>
+
+        <!-- ============== BIẾN THỂ (Màu × Dung lượng × Tồn kho) ============== -->
+        <div class="mt-6 border-t pt-6">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h4 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fas fa-layer-group text-purple-500"></i>
+                Quản lý Biến thể (Màu × Dung lượng)
+                <span id="variants-total-badge" class="ml-2 inline-block px-2 py-0.5 text-xs rounded-full bg-purple-100 text-purple-700">Tổng: 0</span>
+              </h4>
+              <p class="text-xs text-slate-500 mt-1">Mỗi dòng = 1 <b>màu</b> + 1 <b>dung lượng</b> + <b>số lượng tồn kho riêng</b>. Khi khách hàng xem sản phẩm, màu nào hết hàng sẽ tự động hiện "Hết hàng".</p>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button type="button" onclick="openAutoGenerateVariants()" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-medium" title="Tự sinh biến thể từ danh sách màu × dung lượng">
+                <i class="fas fa-magic mr-1"></i>Auto-generate
+              </button>
+              <button type="button" onclick="addVariantRow()" class="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm font-medium">
+                <i class="fas fa-plus mr-1"></i>Thêm biến thể
+              </button>
+            </div>
+          </div>
+          <!-- Hướng dẫn nhanh -->
+          <div class="bg-purple-50 border border-purple-200 rounded-lg px-4 py-3 mb-3 text-xs text-purple-800 space-y-1">
+            <p class="font-semibold flex items-center gap-1"><i class="fas fa-info-circle text-purple-500"></i> Ví dụ: iPhone 15 Pro Max có 3 màu × 2 dung lượng = <b>6 biến thể</b></p>
+            <div class="flex flex-wrap gap-x-6 gap-y-1 ml-4 text-purple-700">
+              <span>• Titan Đen — 256GB — <b>10 chiếc</b></span>
+              <span>• Titan Đen — 512GB — <b>5 chiếc</b></span>
+              <span>• Titan Trắng — 256GB — <b>8 chiếc</b></span>
+              <span>• Titan Trắng — 512GB — <b>0 chiếc</b> <span class="text-red-500">(→ hiện "Hết hàng")</span></span>
+            </div>
+            <p class="text-purple-600 mt-1"><i class="fas fa-sync-alt mr-1"></i> Ô <b>"Số lượng tồn"</b> và <b>"Màu sắc"</b> ở trên sẽ <b>tự đồng bộ</b> từ bảng này — không cần nhập tay.</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border border-slate-200 rounded-lg">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="px-2 py-2 text-left font-semibold">Tên màu <span class="text-red-400">*</span></th>
+                  <th class="px-2 py-2 text-left font-semibold">Mã hex</th>
+                  <th class="px-2 py-2 text-left font-semibold">Dung lượng <span class="text-red-400">*</span></th>
+                  <th class="px-2 py-2 text-right font-semibold">Số lượng tồn</th>
+                  <th class="px-2 py-2 text-right font-semibold">Giá chênh (±)</th>
+                  <th class="px-2 py-2 text-left font-semibold">SKU</th>
+                  <th class="px-2 py-2 text-center font-semibold">Trạng thái</th>
+                  <th class="px-2 py-2"></th>
+                </tr>
+              </thead>
+              <tbody id="variants-tbody" class="divide-y divide-slate-100">
+                <tr id="variants-empty">
+                  <td colspan="8" class="px-3 py-6 text-center text-slate-400 text-sm">Chưa có biến thể nào. Bấm "<b>Thêm biến thể</b>" để bắt đầu.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </form>
       <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
         <button type="button" onclick="closeProductModal()" class="px-6 py-2.5 border border-slate-300 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-100">Hủy</button>
         <button type="button" onclick="saveProduct()" class="btn-primary px-6 py-2.5 text-white rounded-xl text-sm font-medium">
           <i class="fas fa-save mr-2"></i>Lưu Sản phẩm
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Quản lý ảnh theo MÀU -->
+  <div id="color-images-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-blue-500 to-blue-600">
+        <h3 class="text-lg font-bold text-white" id="color-images-modal-title">Ảnh theo màu</h3>
+        <button onclick="closeColorImagesModal()" class="text-white/80 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="border-2 border-dashed border-slate-300 rounded-xl p-4">
+          <input type="file" id="color-images-input" accept="image/*" multiple class="hidden" onchange="uploadColorImages(this)">
+          <button type="button" onclick="document.getElementById('color-images-input').click()" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl text-sm font-medium text-blue-600">
+            <i class="fas fa-upload mr-2"></i>Thêm ảnh cho màu này
+          </button>
+          <span class="text-xs text-slate-500 ml-3">Có thể chọn nhiều ảnh cùng lúc</span>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-700 mb-2">Ảnh hiện có:</p>
+          <div id="color-images-list" class="flex flex-wrap gap-3"></div>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
+        <button type="button" onclick="closeColorImagesModal()" class="px-6 py-2.5 border border-slate-300 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-100">Đóng</button>
       </div>
     </div>
   </div>
@@ -2618,54 +3035,93 @@
 
   <!-- Modal Nhân Viên -->
   <div id="employee-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md my-8 relative animate-[fadeSlideIn_0.3s_ease-out]">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl my-8 relative animate-[fadeSlideIn_0.3s_ease-out]">
       <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-blue-500 to-blue-600 rounded-t-2xl">
-        <h3 class="text-lg font-bold text-white">Thêm Nhân viên mới</h3>
+        <div>
+          <h3 class="text-lg font-bold text-white" id="employee-modal-title">Thêm Nhân viên mới</h3>
+          <p class="text-white/70 text-xs mt-0.5">Hồ sơ nhân viên đầy đủ</p>
+        </div>
         <button onclick="closeEmployeeModal()" class="text-white/80 hover:text-white"><i class="fas fa-times text-xl"></i></button>
       </div>
-      <div class="p-6">
+      <div class="p-6 max-h-[80vh] overflow-y-auto">
         <form id="employee-form" onsubmit="saveEmployee(event)">
           <input type="hidden" id="emp-id" value="">
-          <div class="space-y-4">
+          <!-- 2 cột -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Tài khoản -->
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">Tài khoản <span class="text-red-500">*</span></label>
-              <input type="text" id="emp-username" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              <input type="text" id="emp-username" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="VD: nguyenvana">
             </div>
+            <!-- Mã nhân viên -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Mã nhân viên</label>
+              <input type="text" id="emp-code" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="VD: NV001 (tự động nếu trống)">
+            </div>
+            <!-- Họ và tên -->
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">Họ và tên <span class="text-red-500">*</span></label>
-              <input type="text" id="emp-fullname" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              <input type="text" id="emp-fullname" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="VD: Nguyễn Văn A">
             </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu <span class="text-red-500" id="emp-password-req">*</span></label>
-                <input type="password" id="emp-password" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Nhập mật khẩu">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                <input type="email" id="emp-email" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-              </div>
+            <!-- Ngày sinh -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Ngày sinh</label>
+              <input type="date" id="emp-dob" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
             </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Điện thoại</label>
-                <input type="text" id="emp-phone" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Lương cơ bản (VNĐ)</label>
-                <input type="number" id="emp-salary" value="0" min="0" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-              </div>
+            <!-- Mật khẩu -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu <span class="text-red-500" id="emp-password-req">*</span></label>
+              <input type="password" id="emp-password" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Nhập mật khẩu">
             </div>
+            <!-- Email -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+              <input type="email" id="emp-email" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="vd@email.com">
+            </div>
+            <!-- Số điện thoại -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Số điện thoại</label>
+              <input type="text" id="emp-phone" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="0901234567">
+            </div>
+            <!-- Chức vụ -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Chức vụ</label>
+              <select id="emp-position" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
+                <option value="Nhân viên bán hàng">Nhân viên bán hàng</option>
+                <option value="Nhân viên kho">Nhân viên kho</option>
+                <option value="Nhân viên kỹ thuật">Nhân viên kỹ thuật</option>
+                <option value="Nhân viên bảo vệ">Nhân viên bảo vệ</option>
+                <option value="Trưởng ca">Trưởng ca</option>
+                <option value="Quản lý">Quản lý</option>
+              </select>
+            </div>
+            <!-- Quyền hạn -->
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">Quyền hạn <span class="text-red-500">*</span></label>
-              <select id="emp-role" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white">
+              <select id="emp-role" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
                 <option value="nhanvien">Nhân viên (Chỉ xem/xử lý đơn)</option>
                 <option value="superadmin">Chủ cửa hàng (Toàn quyền)</option>
               </select>
             </div>
+            <!-- Ngày vào làm -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Ngày vào làm</label>
+              <input type="date" id="emp-start-date" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+            </div>
+            <!-- Lương cơ bản -->
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Lương cơ bản (VNĐ)</label>
+              <input type="number" id="emp-salary" value="0" min="0" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+            </div>
+          </div>
+          <!-- Địa chỉ (full width) -->
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-slate-700 mb-1">Địa chỉ</label>
+            <input type="text" id="emp-address" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành...">
           </div>
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" onclick="closeEmployeeModal()" class="px-4 py-2 border border-slate-300 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition-colors">Hủy</button>
-            <button type="submit" class="px-5 py-2 btn-primary text-white rounded-xl font-medium shadow-lg shadow-blue-500/30">Lưu lại</button>
+            <button type="submit" class="px-5 py-2 btn-primary text-white rounded-xl font-medium shadow-lg shadow-blue-500/30"><i class="fas fa-save mr-1"></i>Lưu hồ sơ</button>
           </div>
         </form>
       </div>
@@ -2702,6 +3158,52 @@
         <button id="notify-send-btn" onclick="confirmSendNotifyEmails()" disabled class="px-5 py-2 bg-amber-500 hover:bg-amber-600 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-medium shadow-lg">
           <i class="fas fa-paper-plane mr-1"></i>Gửi email ngay
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tạo Ca làm việc -->
+  <div id="shift-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-blue-500 to-blue-600 rounded-t-2xl">
+        <h3 class="text-lg font-bold text-white" id="shift-modal-title">Tạo ca làm việc mới</h3>
+        <button onclick="closeShiftModal()" class="text-white/80 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <div class="p-6">
+        <form id="shift-form" onsubmit="saveShift(event)" class="space-y-4">
+          <input type="hidden" id="shift-id">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Tên ca <span class="text-red-500">*</span></label>
+            <input type="text" id="shift-name" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="VD: Ca sáng, Ca chiều, Ca tối...">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Giờ bắt đầu <span class="text-red-500">*</span></label>
+              <input type="time" id="shift-start" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Giờ kết thúc <span class="text-red-500">*</span></label>
+              <input type="time" id="shift-end" required class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Mô tả</label>
+            <input type="text" id="shift-desc" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Mô tả thêm về ca này...">
+          </div>
+          <!-- Preset buttons -->
+          <div>
+            <p class="text-xs text-slate-500 mb-2">Chọn nhanh:</p>
+            <div class="flex gap-2 flex-wrap">
+              <button type="button" onclick="setShiftPreset('Ca sáng','08:00','12:00')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 rounded-lg text-xs font-medium">☀️ Ca sáng (08-12)</button>
+              <button type="button" onclick="setShiftPreset('Ca chiều','13:00','17:00')" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-lg text-xs font-medium">🌤️ Ca chiều (13-17)</button>
+              <button type="button" onclick="setShiftPreset('Ca tối','17:00','21:00')" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 rounded-lg text-xs font-medium">🌙 Ca tối (17-21)</button>
+            </div>
+          </div>
+          <div class="flex justify-end gap-3 pt-2">
+            <button type="button" onclick="closeShiftModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-100">Hủy</button>
+            <button type="submit" class="px-5 py-2 btn-primary text-white rounded-xl text-sm font-medium"><i class="fas fa-save mr-1"></i>Lưu ca</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -2833,6 +3335,13 @@
           adminInfo = admin; // Lưu vào biến toàn cục để sử dụng ở các hàm khác
           if (admin.ho_ten) {
             document.getElementById('admin-name').textContent = admin.ho_ten;
+          }
+          if (admin && admin.isEmployee) {
+            const container = document.getElementById('my-orders-filter-container');
+            if (container) {
+              container.classList.remove('hidden');
+              container.classList.add('flex');
+            }
           }
           if (admin.quyen) {
             document.getElementById('admin-role').textContent = admin.quyen === 'superadmin' ? 'Super Admin' : 'Quản trị viên';
@@ -3715,6 +4224,9 @@
       if (sectionId === 'interests') {
         loadAdminInterests();
       }
+      if (sectionId === 'audit-logs') {
+        if (typeof window._loadAuditLogs === 'function') window._loadAuditLogs(1);
+      }
       if (sectionId === 'chatbot-rag') {
         if (typeof initChatbotKnowledge === 'function') {
           initChatbotKnowledge();
@@ -3736,7 +4248,8 @@
         notifications: 'Quản lý Thông báo',
         contacts: 'Quản lý Liên hệ',
         employees: 'Quản lý Nhân viên',
-        interests: 'Sở thích Khách hàng'
+        interests: 'Sở thích Khách hàng',
+        'audit-logs': 'Lịch sử hoạt động'
       };
       document.getElementById('page-title').innerHTML = `<span class="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></span>${titles[sectionId] || 'Tổng quan'}`;
     }
@@ -3971,6 +4484,7 @@
         const data = await res.json();
         if (data.success) {
           allOrders = data.data;
+          window.allOrders = allOrders;
           updateOrderCounts();
           renderOrdersList(getFilteredOrders());
         }
@@ -4027,6 +4541,15 @@
       const payment = document.getElementById('order-payment-filter')?.value || '';
       if (payment) {
         filtered = filtered.filter(o => o.phuong_thuc && o.phuong_thuc.toUpperCase().includes(payment.toUpperCase()));
+      }
+
+      // Filter by "Đơn hàng của tôi" if logged in as employee
+      const myOrdersOnly = document.getElementById('my-orders-only')?.checked;
+      if (myOrdersOnly && adminInfo) {
+        const myId = adminInfo.ma_nv || adminInfo.ma_admin;
+        if (myId) {
+          filtered = filtered.filter(o => Number(o.ma_nv_xu_ly) === Number(myId));
+        }
       }
       
       return filtered;
@@ -4088,6 +4611,9 @@
               </div>
               <div class="flex items-center gap-2">
                 ${depositBadge}
+                <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${order.ma_nv_xu_ly ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-slate-100 text-slate-500 border border-slate-200'}">
+                  <i class="fas fa-user-cog mr-1"></i>${order.ten_nhan_vien_xu_ly || 'Chưa gán'}
+                </span>
                 <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.bgClass} ${statusConfig.textClass}">
                   <i class="${statusConfig.icon} mr-1"></i>${statusConfig.label}
                 </span>
@@ -4148,6 +4674,11 @@
                 </p>
                 <div class="flex items-center gap-2">
                   ${getQuickActionButtons(order)}
+                  ${(!adminInfo || !adminInfo.isEmployee) ? `
+                    <button onclick="window._assignOrder(${order.ma_don})" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors">
+                      <i class="fas fa-user-plus mr-1"></i>Phân công
+                    </button>
+                  ` : ''}
                   <button onclick="viewOrderDetail(${order.ma_don})" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors">
                     <i class="fas fa-eye mr-1"></i>Chi tiết
                   </button>
@@ -4476,17 +5007,41 @@
       `).join('');
     }
 
-    function searchProducts() {
-      const search = document.getElementById('product-search').value.toLowerCase();
-      const filtered = allProducts.filter(p => p.ten_sp.toLowerCase().includes(search));
+    function applyProductFilters() {
+      const search = (document.getElementById('product-search')?.value || '').toLowerCase().trim();
+      const brand = document.getElementById('product-brand-filter')?.value || '';
+      const status = document.getElementById('product-status-filter')?.value || '';
+      const priceRange = document.getElementById('product-price-filter')?.value || '';
+
+      let [minPrice, maxPrice] = [0, Infinity];
+      if (priceRange) {
+        const [lo, hi] = priceRange.split('-').map(Number);
+        minPrice = lo || 0;
+        maxPrice = hi || Infinity;
+      }
+
+      const filtered = (allProducts || []).filter(p => {
+        // Search theo tên hoặc mã
+        if (search) {
+          const name = (p.ten_sp || '').toLowerCase();
+          const code = String(p.ma_sp || '');
+          if (!name.includes(search) && !code.includes(search)) return false;
+        }
+        if (brand && p.brand !== brand && String(p.ma_hang) !== String(brand)) return false;
+        if (status) {
+          const ps = p.trang_thai || 'active';
+          if (ps !== status) return false;
+        }
+        const price = parseFloat(p.gia) || 0;
+        if (price < minPrice || price > maxPrice) return false;
+        return true;
+      });
       renderProducts(filtered);
     }
 
-    function filterProducts() {
-      const brand = document.getElementById('product-brand-filter').value;
-      const filtered = brand ? allProducts.filter(p => p.brand === brand) : allProducts;
-      renderProducts(filtered);
-    }
+    // Giữ lại tên cũ để các listener inline (nếu có nơi gọi cũ) vẫn hoạt động
+    function searchProducts() { applyProductFilters(); }
+    function filterProducts() { applyProductFilters(); }
 
     async function deleteProduct(productId) {
       if (!confirm('Bạn có chắc muốn xóa Sản phẩm này?')) return;
@@ -4514,9 +5069,11 @@
       galleryFiles = [];
       existingGalleryImages = [];
       document.getElementById('product-gallery-preview').innerHTML = '';
+      // Reset bảng biến thể
+      if (typeof renderVariantsTable === 'function') renderVariantsTable([]);
       // Load brands vào select
       const brandSelect = document.getElementById('product-brand');
-      brandSelect.innerHTML = '<option value="">Chọn hãng</option>' + 
+      brandSelect.innerHTML = '<option value="">Chọn hãng</option>' +
         allBrands.map(b => `<option value="${b.ma_hang}">${b.ten_hang}</option>`).join('');
       document.getElementById('product-modal').classList.remove('hidden');
       document.getElementById('product-modal').classList.add('flex');
@@ -4685,6 +5242,7 @@
       const storage = document.getElementById('product-storage').value;
       const colors = document.getElementById('product-colors').value;
       const description = document.getElementById('product-description').value;
+      const status = document.getElementById('product-status')?.value || 'active';
       
       // Cấu hình
       const ram = document.getElementById('product-ram').value;
@@ -4721,6 +5279,7 @@
         mau_sac: JSON.stringify(colorArray),
         mo_ta: description,
         anh_dai_dien: imageUrl,
+        trang_thai: status,
         cau_hinh: { ram, chip, man_hinh: screen, camera, pin: battery, he_dieu_hanh: os },
         gallery_images: existingGalleryImages // Gửi danh sách ảnh gallery hiện có
       };
@@ -4738,7 +5297,7 @@
         
         if (data.success) {
           const productId = id || data.data?.id || data.productId;
-          
+
           // Cập nhật gallery: xóa ảnh cũ không còn trong danh sách và thêm ảnh mới
           if (id) {
             // Cập nhật danh sách ảnh gallery hiện có (đã xóa bớt)
@@ -4748,12 +5307,17 @@
               body: JSON.stringify({ images: existingGalleryImages })
             });
           }
-          
+
           // Upload ảnh gallery mới nếu có
           if (galleryFiles.length > 0 && productId) {
             await uploadGalleryImages(productId);
           }
-          
+
+          // Lưu biến thể (nếu có) — fail-soft, không phá flow lưu sản phẩm
+          if (productId) {
+            try { await saveVariantsForProduct(productId); } catch (e) { console.warn('Variant save failed:', e); }
+          }
+
           alert(id ? 'Cập nhật Sản phẩm thành công!' : 'Thêm Sản phẩm thành công!');
           adminAutoSave.clearDraft('product');
           closeProductModal();
@@ -4814,18 +5378,34 @@
           // Không hiển thị lỗi, chỉ bỏ qua
         }
 
-        // Xử lý màu sắc
+        // Xử lý màu sắc — đọc đúng cấu trúc đã chuẩn hóa ở backend:
+        //   {colorNames:["Đen","Trắng"], colors:["#000","#fff"]}  ← format mới
+        //   ["Đen","Trắng"]                                       ← format cũ (array)
+        //   "Đen, Trắng"                                          ← format raw string
+        // Ưu tiên colorNames (tên hiển thị), fallback dần xuống các format khác.
         let colors = '';
         if (product.mau_sac) {
           try {
             const colorData = JSON.parse(product.mau_sac);
-            if (colorData.colorNames) colors = colorData.colorNames.join(', ');
-            else if (Array.isArray(colorData)) colors = colorData.join(', ');
+            if (colorData && Array.isArray(colorData.colorNames) && colorData.colorNames.length > 0) {
+              colors = colorData.colorNames.join(', ');
+            } else if (colorData && Array.isArray(colorData.colors) && colorData.colors.length > 0) {
+              // Legacy: nếu "colors" chứa tên (không bắt đầu bằng #) thì dùng luôn
+              const looksLikeNames = colorData.colors.every(c => typeof c === 'string' && !c.startsWith('#'));
+              colors = looksLikeNames ? colorData.colors.join(', ') : '';
+            } else if (Array.isArray(colorData)) {
+              colors = colorData.join(', ');
+            }
           } catch(e) {
-            colors = product.mau_sac;
+            // Không phải JSON → string raw
+            colors = String(product.mau_sac);
           }
         }
         document.getElementById('product-colors').value = colors;
+
+        // Set trạng thái sản phẩm (default 'active' nếu cột chưa có dữ liệu)
+        const statusEl = document.getElementById('product-status');
+        if (statusEl) statusEl.value = product.trang_thai || 'active';
 
         // Lấy cấu hình
         try {
@@ -4845,12 +5425,332 @@
           // Bỏ qua lỗi specs
         }
 
+        // Load biến thể (variants) — luôn reset bảng, kể cả khi không có
+        try {
+          await loadVariantsForProduct(productId);
+        } catch (e) {
+          renderVariantsTable([]);
+        }
+
         document.getElementById('product-modal').classList.remove('hidden');
         document.getElementById('product-modal').classList.add('flex');
       } catch (error) {
         console.error('Error loading product:', error);
         alert('Lỗi tải thông tin Sản phẩm');
       }
+    }
+
+    // ============== VARIANT MANAGER (Biến thể: màu × dung lượng × tồn kho) ==============
+    const VARIANT_STORAGE_OPTIONS = ['64GB', '128GB', '256GB', '512GB', '1TB'];
+
+    function getVariantRowsFromUI() {
+      const rows = document.querySelectorAll('#variants-tbody tr.variant-row');
+      const items = [];
+      rows.forEach(tr => {
+        const mau = tr.querySelector('[data-vfield="mau_sac"]').value.trim();
+        if (!mau) return;
+        const dl = tr.querySelector('[data-vfield="dung_luong"]').value.trim();
+        if (!dl) return;
+        items.push({
+          mau_sac: mau,
+          mau_hex: tr.querySelector('[data-vfield="mau_hex"]').value.trim() || null,
+          dung_luong: dl,
+          so_luong: parseInt(tr.querySelector('[data-vfield="so_luong"]').value) || 0,
+          gia_chenh: parseFloat(tr.querySelector('[data-vfield="gia_chenh"]').value) || 0,
+          sku: tr.querySelector('[data-vfield="sku"]').value.trim() || null,
+          trang_thai: tr.querySelector('[data-vfield="trang_thai"]').value
+        });
+      });
+      return items;
+    }
+
+    function updateVariantTotalBadge() {
+      const items = getVariantRowsFromUI();
+      const activeItems = items.filter(v => v.trang_thai === 'active');
+      const total = activeItems.reduce((s, v) => s + (parseInt(v.so_luong) || 0), 0);
+      const badge = document.getElementById('variants-total-badge');
+      if (badge) badge.textContent = `Tổng: ${total} (${activeItems.length} biến thể)`;
+      
+      const stockInput = document.getElementById('product-stock');
+      const colorsInput = document.getElementById('product-colors');
+      const stockHint = document.getElementById('stock-sync-hint');
+      const colorsHint = document.getElementById('colors-sync-hint');
+
+      if (items.length > 0) {
+        // Tự sync vào ô product-stock và khóa lại
+        if (stockInput) {
+          stockInput.value = total;
+          stockInput.readOnly = true;
+          stockInput.classList.add('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+        }
+        if (stockHint) stockHint.innerHTML = '<i class="fas fa-sync-alt mr-0.5"></i>tự đồng bộ từ biến thể ↓';
+        // Tự sync danh sách màu và khóa lại
+        if (colorsInput) {
+          const uniqueColors = Array.from(new Set(items.map(v => v.mau_sac).filter(Boolean)));
+          colorsInput.value = uniqueColors.join(', ');
+          colorsInput.readOnly = true;
+          colorsInput.classList.add('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+        }
+        if (colorsHint) colorsHint.innerHTML = '<i class="fas fa-sync-alt mr-0.5"></i>tự đồng bộ từ biến thể ↓';
+      } else {
+        // Mở khóa nếu không dùng biến thể
+        if (stockInput) {
+          stockInput.readOnly = false;
+          stockInput.classList.remove('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+        }
+        if (stockHint) stockHint.textContent = '';
+        if (colorsInput) {
+          colorsInput.readOnly = false;
+          colorsInput.classList.remove('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+        }
+        if (colorsHint) colorsHint.textContent = '';
+      }
+    }
+
+    function renderVariantsTable(variants) {
+      const tbody = document.getElementById('variants-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      if (!variants || variants.length === 0) {
+        tbody.innerHTML = '<tr id="variants-empty"><td colspan="8" class="px-3 py-6 text-center text-slate-400 text-sm">Chưa có biến thể nào. Bấm "Thêm biến thể" để bắt đầu.</td></tr>';
+        updateVariantTotalBadge();
+        return;
+      }
+      variants.forEach(v => {
+        tbody.appendChild(buildVariantRow(v));
+      });
+      updateVariantTotalBadge();
+    }
+
+    function buildVariantRow(v) {
+      v = v || {};
+      const tr = document.createElement('tr');
+      tr.className = 'variant-row hover:bg-slate-50';
+      const storageOptions = VARIANT_STORAGE_OPTIONS
+        .map(s => `<option value="${s}" ${s === v.dung_luong ? 'selected' : ''}>${s}</option>`).join('');
+      const escAttr = (s) => String(s == null ? '' : s).replace(/"/g, '&quot;').replace(/</g, '&lt;');
+      tr.innerHTML = `
+        <td class="px-2 py-2"><input type="text" data-vfield="mau_sac" value="${escAttr(v.mau_sac)}" placeholder="VD: Titan Đen" class="w-32 px-2 py-1.5 border border-slate-200 rounded text-sm" oninput="updateVariantTotalBadge()"></td>
+        <td class="px-2 py-2">
+          <div class="flex items-center gap-1">
+            <input type="color" data-vfield="mau_hex" value="${escAttr(v.mau_hex || '#000000')}" class="w-8 h-8 rounded border border-slate-200">
+          </div>
+        </td>
+        <td class="px-2 py-2">
+          <select data-vfield="dung_luong" class="w-24 px-2 py-1.5 border border-slate-200 rounded text-sm" onchange="updateVariantTotalBadge()">
+            <option value="">--</option>${storageOptions}
+          </select>
+        </td>
+        <td class="px-2 py-2 text-right"><input type="number" data-vfield="so_luong" value="${parseInt(v.so_luong) || 0}" min="0" class="w-20 px-2 py-1.5 border border-slate-200 rounded text-sm text-right" oninput="updateVariantTotalBadge()"></td>
+        <td class="px-2 py-2 text-right"><input type="number" data-vfield="gia_chenh" value="${parseFloat(v.gia_chenh) || 0}" step="100000" class="w-28 px-2 py-1.5 border border-slate-200 rounded text-sm text-right" title="Chênh lệch giá so với giá gốc (có thể âm)"></td>
+        <td class="px-2 py-2"><input type="text" data-vfield="sku" value="${escAttr(v.sku)}" placeholder="SKU" class="w-28 px-2 py-1.5 border border-slate-200 rounded text-sm"></td>
+        <td class="px-2 py-2 text-center">
+          <select data-vfield="trang_thai" class="px-2 py-1.5 border border-slate-200 rounded text-sm" onchange="updateVariantTotalBadge()">
+            <option value="active" ${v.trang_thai !== 'inactive' ? 'selected' : ''}>Bán</option>
+            <option value="inactive" ${v.trang_thai === 'inactive' ? 'selected' : ''}>Ẩn</option>
+          </select>
+        </td>
+        <td class="px-2 py-2 text-center">
+          <button type="button" class="text-blue-500 hover:text-blue-700 mr-1" onclick="openColorImagesModal(this)" title="Quản lý ảnh theo màu">
+            <i class="fas fa-camera"></i>
+          </button>
+          <button type="button" class="text-red-500 hover:text-red-700" onclick="removeVariantRow(this)" title="Xoá">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      `;
+      return tr;
+    }
+
+    function addVariantRow() {
+      const empty = document.getElementById('variants-empty');
+      if (empty) empty.remove();
+      const tbody = document.getElementById('variants-tbody');
+      // Tự gợi ý màu từ ô "Màu sắc" nếu có
+      const colorHint = (document.getElementById('product-colors').value || '').split(',').map(s => s.trim()).filter(Boolean);
+      const used = Array.from(tbody.querySelectorAll('[data-vfield="mau_sac"]')).map(i => i.value);
+      const nextColor = colorHint.find(c => !used.includes(c)) || '';
+      const defaultStorage = document.getElementById('product-storage').value || '128GB';
+      tbody.appendChild(buildVariantRow({ mau_sac: nextColor, dung_luong: defaultStorage, so_luong: 0, trang_thai: 'active' }));
+      updateVariantTotalBadge();
+    }
+
+    function removeVariantRow(btn) {
+      const tr = btn.closest('tr.variant-row');
+      if (tr) tr.remove();
+      const tbody = document.getElementById('variants-tbody');
+      if (tbody.children.length === 0) {
+        tbody.innerHTML = '<tr id="variants-empty"><td colspan="8" class="px-3 py-6 text-center text-slate-400 text-sm">Chưa có biến thể nào. Bấm "Thêm biến thể" để bắt đầu.</td></tr>';
+      }
+      updateVariantTotalBadge();
+    }
+
+    // Auto-generate variants từ danh sách màu × dung lượng — nhập nhanh nhiều biến thể cùng lúc
+    function openAutoGenerateVariants() {
+      const colorHint = (document.getElementById('product-colors').value || '')
+        .split(',').map(s => s.trim()).filter(Boolean).join(', ');
+      const defaultStorage = document.getElementById('product-storage').value || '128GB';
+      const colorsRaw = prompt('Nhập danh sách MÀU SẮC (phân cách bằng dấu phẩy):\nVD: Titan Đen, Titan Trắng, Titan Xanh', colorHint);
+      if (colorsRaw === null) return;
+      const storagesRaw = prompt('Nhập danh sách DUNG LƯỢNG (phân cách bằng dấu phẩy):\nVD: 128GB, 256GB, 512GB', defaultStorage);
+      if (storagesRaw === null) return;
+
+      const colors = colorsRaw.split(',').map(s => s.trim()).filter(Boolean);
+      const storages = storagesRaw.split(',').map(s => s.trim()).filter(Boolean);
+      if (colors.length === 0 || storages.length === 0) {
+        alert('Cần nhập ít nhất 1 màu và 1 dung lượng');
+        return;
+      }
+      const total = colors.length * storages.length;
+      if (!confirm(`Sẽ tạo ${total} biến thể (${colors.length} màu × ${storages.length} dung lượng). Các biến thể trùng tên + dung lượng đã có sẽ được giữ nguyên. Tiếp tục?`)) {
+        return;
+      }
+
+      const empty = document.getElementById('variants-empty');
+      if (empty) empty.remove();
+      const tbody = document.getElementById('variants-tbody');
+
+      // Lấy các biến thể đã tồn tại để tránh trùng (mau_sac + dung_luong)
+      const existing = new Set();
+      tbody.querySelectorAll('tr.variant-row').forEach(tr => {
+        const mau = tr.querySelector('[data-vfield="mau_sac"]')?.value?.trim() || '';
+        const dl = tr.querySelector('[data-vfield="dung_luong"]')?.value || '';
+        if (mau && dl) existing.add(`${mau}|${dl}`);
+      });
+
+      let added = 0;
+      colors.forEach(c => {
+        storages.forEach(s => {
+          const key = `${c}|${s}`;
+          if (existing.has(key)) return;
+          tbody.appendChild(buildVariantRow({
+            mau_sac: c, dung_luong: s, so_luong: 0, gia_chenh: 0, trang_thai: 'active'
+          }));
+          existing.add(key);
+          added++;
+        });
+      });
+      updateVariantTotalBadge();
+      alert(`Đã thêm ${added} biến thể mới.`);
+    }
+
+    // ============== COLOR IMAGES MODAL ==============
+    let _currentColorImagesProductId = null;
+    let _currentColorImagesColor = null;
+
+    async function openColorImagesModal(btn) {
+      const tr = btn.closest('tr.variant-row');
+      const color = tr?.querySelector('[data-vfield="mau_sac"]')?.value?.trim();
+      const productId = document.getElementById('product-id').value;
+      if (!productId) {
+        alert('Vui lòng lưu sản phẩm trước khi upload ảnh theo màu.');
+        return;
+      }
+      if (!color) {
+        alert('Vui lòng nhập tên màu trước.');
+        return;
+      }
+      _currentColorImagesProductId = productId;
+      _currentColorImagesColor = color;
+      document.getElementById('color-images-modal-title').textContent = `Ảnh cho màu: ${color}`;
+      document.getElementById('color-images-modal').classList.remove('hidden');
+      document.getElementById('color-images-modal').classList.add('flex');
+      await refreshColorImagesList();
+    }
+
+    function closeColorImagesModal() {
+      document.getElementById('color-images-modal').classList.add('hidden');
+      document.getElementById('color-images-modal').classList.remove('flex');
+      _currentColorImagesProductId = null;
+      _currentColorImagesColor = null;
+    }
+
+    async function refreshColorImagesList() {
+      const list = document.getElementById('color-images-list');
+      list.innerHTML = '<p class="text-slate-400 text-sm">Đang tải...</p>';
+      try {
+        const url = `${API_URL}/admin/products/${_currentColorImagesProductId}/color-images?color=${encodeURIComponent(_currentColorImagesColor)}`;
+        const res = await fetch(url, { credentials: 'include' });
+        const json = await res.json();
+        const items = (json.data || []);
+        if (items.length === 0) {
+          list.innerHTML = '<p class="text-slate-400 text-sm">Chưa có ảnh nào cho màu này.</p>';
+          return;
+        }
+        list.innerHTML = items.map(img => `
+          <div class="relative w-24 h-24 rounded-lg overflow-hidden border border-slate-200 group">
+            <img src="${img.duong_dan}" class="w-full h-full object-cover" onerror="this.src='images/placeholder.svg'">
+            <button type="button" onclick="deleteColorImage(${img.ma_anh})" class="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-500 text-white text-xs opacity-0 group-hover:opacity-100 transition">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `).join('');
+      } catch (e) {
+        list.innerHTML = '<p class="text-red-500 text-sm">Lỗi tải ảnh.</p>';
+      }
+    }
+
+    async function uploadColorImages(input) {
+      if (!input.files || input.files.length === 0) return;
+      const productId = _currentColorImagesProductId;
+      const color = _currentColorImagesColor;
+      for (const file of input.files) {
+        const form = new FormData();
+        form.append('image', file);
+        form.append('color', color);
+        try {
+          await fetch(`${API_URL}/admin/products/${productId}/color-images`, {
+            method: 'POST',
+            credentials: 'include',
+            body: form
+          });
+        } catch (e) {
+          console.error('Upload color image failed:', e);
+        }
+      }
+      input.value = '';
+      await refreshColorImagesList();
+    }
+
+    async function deleteColorImage(imageId) {
+      if (!confirm('Xoá ảnh này?')) return;
+      try {
+        await fetch(`${API_URL}/admin/products/${_currentColorImagesProductId}/color-images/${imageId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        await refreshColorImagesList();
+      } catch (e) {
+        alert('Xoá thất bại');
+      }
+    }
+
+    async function loadVariantsForProduct(productId) {
+      try {
+        const res = await fetch(`${API_URL}/admin/products/${productId}/variants`, { credentials: 'include' });
+        if (!res.ok) { renderVariantsTable([]); return; }
+        const json = await res.json();
+        renderVariantsTable(json.data || []);
+      } catch (e) {
+        renderVariantsTable([]);
+      }
+    }
+
+    async function saveVariantsForProduct(productId) {
+      const variants = getVariantRowsFromUI();
+      const syncStock = variants.length > 0;
+      // Cho phép xoá hết biến thể: vẫn gửi mảng rỗng để xoá DB
+      const res = await fetch(`${API_URL}/admin/products/${productId}/variants`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ variants, syncStock })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Save variants failed');
+      }
+      return res.json();
     }
 
     // ==================== BRANDS SECTION ====================
@@ -5231,18 +6131,33 @@
         tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">Không có đánh giá nào</td></tr>';
         return;
       }
-      tbody.innerHTML = reviews.map(r => `
-        <tr class="border-b border-slate-100 hover:bg-slate-50">
-          <td class="px-4 py-3 font-medium">${r.ho_ten || 'Ẩn danh'}</td>
+      tbody.innerHTML = reviews.map(r => {
+        const isHidden = r.an ? true : false;
+        const hiddenBadge = isHidden ? '<span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded text-[10px] font-semibold">Đã ẩn</span>' : '';
+        const shopReply = r.phan_hoi_shop ? `<div class="mt-1 p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs"><i class="fas fa-reply text-emerald-500 mr-1"></i><strong>Shop:</strong> ${truncateText(r.phan_hoi_shop, 80)}</div>` : '';
+        const reviewContent = r.binh_luan || r.noi_dung || '';
+        const hideIcon = isHidden ? 'fa-eye' : 'fa-eye-slash';
+        const hideTitle = isHidden ? 'Hiện đánh giá' : 'Ẩn đánh giá';
+        return `
+        <tr class="border-b border-slate-100 hover:bg-slate-50 ${isHidden ? 'opacity-50' : ''}">
+          <td class="px-4 py-3 font-medium">${r.ho_ten || 'Ẩn danh'}${hiddenBadge}</td>
           <td class="px-4 py-3">${truncateText(r.ten_sp, 30)}</td>
           <td class="px-4 py-3">${'⭐'.repeat(r.so_sao)}</td>
-          <td class="px-4 py-3 text-slate-600">${truncateText(r.noi_dung, 50)}</td>
+          <td class="px-4 py-3 text-slate-600">
+            <div>${truncateText(reviewContent, 80)}</div>
+            ${shopReply}
+          </td>
           <td class="px-4 py-3 text-slate-500 text-xs">${formatDate(r.ngay_danh_gia)}</td>
           <td class="px-4 py-3">
-            <button onclick="deleteReview(${r.ma_dg})" class="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"><i class="fas fa-trash"></i></button>
+            <div class="flex gap-1">
+              <button onclick="window._showReplyModal(${r.ma_dg})" class="px-2 py-1 bg-emerald-500 text-white rounded text-xs hover:bg-emerald-600" title="Phản hồi"><i class="fas fa-reply"></i></button>
+              <button onclick="window._toggleReviewVisibility(${r.ma_dg})" class="px-2 py-1 bg-amber-500 text-white rounded text-xs hover:bg-amber-600" title="${hideTitle}"><i class="fas ${hideIcon}"></i></button>
+              <button onclick="deleteReview(${r.ma_dg})" class="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600" title="Xóa"><i class="fas fa-trash"></i></button>
+            </div>
           </td>
         </tr>
-      `).join('');
+      `;
+      }).join('');
     }
 
     function filterReviews() {
@@ -7075,8 +7990,361 @@
     }
   </script>
 
+  <script>
+    // ==================== PHASE 1: DASHBOARD COUNTS + FINANCIAL STATS ====================
+
+    // Load tổng quan đếm số (Tổng đơn, Tổng KH, Tổng SP, Tổng NV)
+    async function loadDashboardCounts() {
+      try {
+        const res = await fetch(`${API_URL}/admin/dashboard/counts`);
+        const data = await res.json();
+        if (data.success) {
+          const d = data.data;
+          const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val.toLocaleString('vi-VN'); };
+          setEl('stat-total-orders', d.totalOrders || 0);
+          setEl('stat-total-customers', d.totalCustomers || 0);
+          setEl('stat-total-products', d.totalProducts || 0);
+          setEl('stat-total-employees', d.totalEmployees || 0);
+        }
+      } catch(e) {
+        console.error('Error loading counts:', e);
+      }
+    }
+
+    // Financial stat block: Doanh thu / Lợi nhuận theo kỳ
+    async function loadFinancialStat(type, period) {
+      // Update tab styles
+      document.querySelectorAll(`.fin-tab-${type}`).forEach(btn => {
+        if (btn.dataset.period === period) {
+          btn.className = btn.className.replace('text-slate-500', '');
+          if (type === 'revenue') btn.classList.add('bg-white', 'text-blue-600', 'shadow-sm');
+          else btn.classList.add('bg-white', 'text-green-600', 'shadow-sm');
+        } else {
+          btn.classList.remove('bg-white', 'text-blue-600', 'text-green-600', 'shadow-sm');
+          btn.classList.add('text-slate-500');
+        }
+      });
+
+      try {
+        const res = await fetch(`${API_URL}/admin/dashboard/financial?period=${period}`);
+        const data = await res.json();
+        if (data.success) {
+          const d = data.data;
+          if (type === 'revenue') {
+            document.getElementById('fin-revenue-value').textContent = formatCurrency(d.revenue || 0);
+            document.getElementById('fin-revenue-prev').textContent = formatCurrency(d.prevRevenue || 0);
+            const chg = d.revenueChange || 0;
+            const el = document.getElementById('fin-revenue-change');
+            el.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(1) + '%';
+            el.className = `px-2 py-0.5 rounded-full text-xs font-bold ${chg >= 0 ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`;
+          } else {
+            document.getElementById('fin-profit-value').textContent = formatCurrency(d.profit || 0);
+            document.getElementById('fin-profit-prev').textContent = formatCurrency(d.prevProfit || 0);
+            const chg = d.profitChange || 0;
+            const el = document.getElementById('fin-profit-change');
+            el.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(1) + '%';
+            el.className = `px-2 py-0.5 rounded-full text-xs font-bold ${chg >= 0 ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`;
+          }
+        }
+      } catch(e) {
+        console.error('Error loading financial stat:', e);
+      }
+    }
+
+    // Load dashboard counts and financial stats khi tải trang
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        loadDashboardCounts();
+        loadFinancialStat('revenue', 'month');
+        loadFinancialStat('profit', 'month');
+        // Set today's date for schedule filter
+        const today = new Date().toISOString().split('T')[0];
+        const sf = document.getElementById('schedule-filter-date');
+        if (sf) sf.value = today;
+        const af = document.getElementById('attendance-filter-date');
+        if (af) af.value = today;
+        const ad = document.getElementById('assign-date');
+        if (ad) ad.value = today;
+      }, 2000);
+    });
+
+    // ==================== PHASE 3: SHIFTS + SCHEDULE ====================
+
+    let allShiftsData = [];
+
+    function openShiftModal(shiftId = null) {
+      document.getElementById('shift-id').value = shiftId || '';
+      document.getElementById('shift-name').value = '';
+      document.getElementById('shift-start').value = '';
+      document.getElementById('shift-end').value = '';
+      document.getElementById('shift-desc').value = '';
+      document.getElementById('shift-modal-title').textContent = shiftId ? 'Sửa ca làm việc' : 'Tạo ca làm việc mới';
+
+      if (shiftId) {
+        const shift = allShiftsData.find(s => s.id == shiftId);
+        if (shift) {
+          document.getElementById('shift-name').value = shift.ten_ca || '';
+          document.getElementById('shift-start').value = shift.gio_bat_dau || '';
+          document.getElementById('shift-end').value = shift.gio_ket_thuc || '';
+          document.getElementById('shift-desc').value = shift.mo_ta || '';
+        }
+      }
+
+      const modal = document.getElementById('shift-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeShiftModal() {
+      const modal = document.getElementById('shift-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function setShiftPreset(name, start, end) {
+      document.getElementById('shift-name').value = name;
+      document.getElementById('shift-start').value = start;
+      document.getElementById('shift-end').value = end;
+    }
+
+    async function saveShift(e) {
+      e.preventDefault();
+      const id = document.getElementById('shift-id').value;
+      const body = {
+        ten_ca: document.getElementById('shift-name').value.trim(),
+        gio_bat_dau: document.getElementById('shift-start').value,
+        gio_ket_thuc: document.getElementById('shift-end').value,
+        mo_ta: document.getElementById('shift-desc').value.trim()
+      };
+      try {
+        const url = id ? `${API_URL}/admin/shifts/${id}` : `${API_URL}/admin/shifts`;
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const data = await res.json();
+        if (data.success) {
+          showToast(id ? 'Đã cập nhật ca làm việc' : 'Đã tạo ca mới', 'success');
+          closeShiftModal();
+          loadShifts();
+        } else {
+          showToast(data.message || 'Lỗi lưu ca', 'error');
+        }
+      } catch(err) {
+        showToast('Lỗi kết nối máy chủ', 'error');
+      }
+    }
+
+    async function deleteShift(id) {
+      if (!confirm('Bạn có chắc muốn xóa ca này không?')) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/shifts/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) { showToast('Đã xóa ca', 'success'); loadShifts(); }
+        else showToast(data.message || 'Lỗi xóa ca', 'error');
+      } catch { showToast('Lỗi kết nối', 'error'); }
+    }
+
+    async function loadShifts() {
+      try {
+        const res = await fetch(`${API_URL}/admin/shifts`);
+        const data = await res.json();
+        const container = document.getElementById('shifts-list');
+        const assignShiftSel = document.getElementById('assign-shift');
+
+        if (data.success && data.data.length > 0) {
+          allShiftsData = data.data;
+          container.innerHTML = data.data.map(s => {
+            const colors = { 'Ca sáng': 'amber', 'Ca chiều': 'blue', 'Ca tối': 'indigo' };
+            const c = colors[s.ten_ca] || 'slate';
+            return `
+              <div class="flex items-center justify-between p-3 bg-${c}-50 border border-${c}-200 rounded-xl">
+                <div>
+                  <p class="font-semibold text-${c}-700 text-sm">${s.ten_ca}</p>
+                  <p class="text-xs text-${c}-500">${s.gio_bat_dau} – ${s.gio_ket_thuc}</p>
+                  ${s.mo_ta ? `<p class="text-xs text-slate-400 mt-0.5">${s.mo_ta}</p>` : ''}
+                </div>
+                <div class="flex gap-1">
+                  <button onclick="openShiftModal(${s.id})" class="p-1.5 hover:bg-white rounded-lg text-slate-500 hover:text-blue-600 transition-colors"><i class="fas fa-edit text-sm"></i></button>
+                  <button onclick="deleteShift(${s.id})" class="p-1.5 hover:bg-white rounded-lg text-slate-500 hover:text-red-500 transition-colors"><i class="fas fa-trash text-sm"></i></button>
+                </div>
+              </div>`;
+          }).join('');
+
+          // Update assign-shift dropdown
+          if (assignShiftSel) {
+            assignShiftSel.innerHTML = '<option value="">-- Chọn ca --</option>' +
+              data.data.map(s => `<option value="${s.id}">${s.ten_ca} (${s.gio_bat_dau}–${s.gio_ket_thuc})</option>`).join('');
+          }
+        } else {
+          allShiftsData = [];
+          container.innerHTML = `<div class="text-center py-6 text-slate-400">
+            <i class="fas fa-calendar-plus text-3xl mb-2 block"></i>
+            <p class="text-sm">Chưa có ca nào. Nhấn "Tạo ca mới" để bắt đầu.</p>
+          </div>`;
+        }
+      } catch(e) {
+        document.getElementById('shifts-list').innerHTML = '<div class="text-center py-6 text-red-400">Lỗi tải ca làm việc</div>';
+      }
+    }
+
+    async function loadEmployeesForAssign() {
+      try {
+        const res = await fetch(`${API_URL}/admin/employees`);
+        const data = await res.json();
+        const sel = document.getElementById('assign-employee');
+        if (sel && data.success) {
+          sel.innerHTML = '<option value="">-- Chọn nhân viên --</option>' +
+            data.employees.map(e => `<option value="${e.ma_tai_khoan}">${e.ho_ten || e.tai_khoan} (${e.tai_khoan})</option>`).join('');
+        }
+      } catch {}
+    }
+
+    async function assignShift() {
+      const empId = document.getElementById('assign-employee').value;
+      const date = document.getElementById('assign-date').value;
+      const shiftId = document.getElementById('assign-shift').value;
+
+      if (!empId || !date || !shiftId) {
+        showToast('Vui lòng chọn đầy đủ nhân viên, ngày và ca', 'warning');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/admin/schedules`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ma_tai_khoan: empId, ngay_lam: date, ca_id: shiftId })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Đã phân công ca thành công', 'success');
+          loadSchedule();
+        } else {
+          showToast(data.message || 'Lỗi phân công ca', 'error');
+        }
+      } catch { showToast('Lỗi kết nối', 'error'); }
+    }
+
+    async function loadSchedule() {
+      const date = document.getElementById('schedule-filter-date')?.value || '';
+      try {
+        const res = await fetch(`${API_URL}/admin/schedules${date ? `?date=${date}` : ''}`);
+        const data = await res.json();
+        const tbody = document.getElementById('schedule-table-body');
+        if (!tbody) return;
+
+        if (data.success && data.data.length > 0) {
+          tbody.innerHTML = data.data.map(s => `
+            <tr class="hover:bg-slate-50">
+              <td class="px-4 py-3">
+                <p class="font-medium text-slate-800">${s.ho_ten || s.tai_khoan}</p>
+                <p class="text-xs text-slate-400">${s.tai_khoan}</p>
+              </td>
+              <td class="px-4 py-3 text-slate-600">${new Date(s.ngay_lam).toLocaleDateString('vi-VN')}</td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">${s.ten_ca}</span>
+              </td>
+              <td class="px-4 py-3 text-slate-600">${s.gio_bat_dau} – ${s.gio_ket_thuc}</td>
+              <td class="px-4 py-3 text-center">
+                <button onclick="deleteSchedule(${s.id})" class="p-1.5 hover:bg-red-50 rounded-lg text-slate-400 hover:text-red-500 transition-colors"><i class="fas fa-trash text-sm"></i></button>
+              </td>
+            </tr>`).join('');
+        } else {
+          tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400"><i class="fas fa-calendar-times mr-2"></i>Chưa có phân công nào cho ngày này</td></tr>';
+        }
+      } catch { document.getElementById('schedule-table-body').innerHTML = '<tr><td colspan="5" class="py-6 text-center text-red-400">Lỗi tải lịch phân công</td></tr>'; }
+    }
+
+    async function deleteSchedule(id) {
+      if (!confirm('Xóa phân công này?')) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/schedules/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) { showToast('Đã xóa phân công', 'success'); loadSchedule(); }
+      } catch {}
+    }
+
+    // ==================== PHASE 4: ATTENDANCE ====================
+
+    async function loadAttendanceRecords() {
+      const date = document.getElementById('attendance-filter-date')?.value || '';
+      try {
+        const res = await fetch(`${API_URL}/admin/attendance${date ? `?date=${date}` : ''}`);
+        const data = await res.json();
+        const tbody = document.getElementById('attendance-table-body');
+        if (!tbody) return;
+
+        if (data.success) {
+          const records = data.data || [];
+          // Update stat cards
+          const ontime = records.filter(r => r.trang_thai === 'on_time').length;
+          const late = records.filter(r => r.trang_thai === 'late').length;
+          const total = records.length;
+          // Count absent from scheduled employees
+          const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+          setEl('att-ontime', ontime);
+          setEl('att-late', late);
+          setEl('att-total', total);
+          setEl('att-absent', data.absentCount || 0);
+
+          if (records.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-400"><i class="fas fa-user-clock text-3xl block mb-2"></i>Chưa có dữ liệu chấm công ngày này</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = records.map(r => {
+            const statusConfig = {
+              on_time: { label: 'Đúng giờ', cls: 'bg-emerald-100 text-emerald-700' },
+              late: { label: `Đi trễ ${r.phut_tre || 0} phút`, cls: 'bg-amber-100 text-amber-700' },
+              absent: { label: 'Vắng mặt', cls: 'bg-red-100 text-red-700' }
+            };
+            const st = statusConfig[r.trang_thai] || { label: r.trang_thai, cls: 'bg-slate-100 text-slate-700' };
+            const checkInTime = r.gio_checkin ? new Date(r.gio_checkin).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '—';
+            const gpsInfo = (r.lat && r.lng) ? `<a href="https://maps.google.com/?q=${r.lat},${r.lng}" target="_blank" class="text-blue-600 hover:underline text-xs"><i class="fas fa-map-marker-alt mr-1"></i>${parseFloat(r.lat).toFixed(4)}, ${parseFloat(r.lng).toFixed(4)}</a>` : '<span class="text-slate-400 text-xs">—</span>';
+
+            return `
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-4 py-3">
+                  <p class="font-medium text-slate-800">${r.ho_ten || r.tai_khoan || '—'}</p>
+                  <p class="text-xs text-slate-400">${r.ma_nv || r.tai_khoan || ''}</p>
+                </td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">${r.ten_ca || '—'}</span></td>
+                <td class="px-4 py-3 text-slate-600 text-sm">${r.gio_bat_dau || '—'}</td>
+                <td class="px-4 py-3 text-slate-600 font-medium text-sm">${checkInTime}</td>
+                <td class="px-4 py-3">${gpsInfo}</td>
+                <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${st.cls}">${st.label}</span></td>
+                <td class="px-4 py-3 text-xs text-slate-500">
+                  ${r.trang_thai === 'late' ? `<span class="text-amber-600 font-medium"><i class="fas fa-bell mr-1"></i>Đã thông báo Admin</span>` : '—'}
+                </td>
+              </tr>`;
+          }).join('');
+        }
+      } catch(e) {
+        document.getElementById('attendance-table-body').innerHTML = '<tr><td colspan="7" class="py-6 text-center text-red-400">Lỗi tải dữ liệu chấm công</td></tr>';
+      }
+    }
+
+    // Load shifts khi switch sang section shifts
+    const _origShowSection = typeof showSection === 'function' ? showSection : null;
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.substring(1);
+      if (hash === 'shifts') { loadShifts(); loadEmployeesForAssign(); loadSchedule(); }
+      if (hash === 'attendance') { loadAttendanceRecords(); }
+    });
+
+    // Patch showSection để load data đúng lúc
+    if (typeof showSection === 'function') {
+      const originalShowSection = showSection;
+      window.showSection = function(sectionName) {
+        originalShowSection(sectionName);
+        if (sectionName === 'shifts') { setTimeout(() => { loadShifts(); loadEmployeesForAssign(); loadSchedule(); }, 100); }
+        if (sectionName === 'attendance') { setTimeout(() => loadAttendanceRecords(), 100); }
+      };
+    }
+  </script>
+
 <script src="js/admin-autosave.js"></script>
 <script src="chatbot-knowledge.js"></script>
 <script src="js/admin-chatbot.js"></script>
+<script src="js/admin-audit-assign.js"></script>
 </body>
 </html>

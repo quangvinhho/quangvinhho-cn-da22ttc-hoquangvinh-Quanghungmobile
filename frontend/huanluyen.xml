@@ -1,0 +1,18 @@
+1: cập nhật lại logic xử lí bảo hành ( chỉ có tài khoản và đã mua hang mới check và gửi yêu cầu về sửa chữa bảo hành sản phẩm đó)
+2: đọc kỹ lại dự án phần xử lí chatbot AI
+3: xem lại phần quản lí màu cho admin chổ quản lí tồn kho (thêm sản phẩm còn lỗi)
+4: them phần chức năng cho nhân viên ( Admin quản lí)
+5: tìm hiểu thêm các tính năng mới cho hệ thống
+6: fix lại các chức năng chính và logic xử lí cửa từng thành phần.
+7: xem lại phần xử lí của chatbot AI nó đang xử lí sai á " đầu tiên tôi nhập lieu cần thiết bên tri thức chatbot rồi AI học ở đó xong nếu khách hangf hỏi những câu hỏi mà không có thì chatbot sẽ trả lời kết hợp với mô hình pp dung RAG"
+8: lên kế hoặc để áp dung trước đùng đụng vào code chính.
+9: cập nhật lại toàn bộ logic
+10: xem xử lí tiêp phần  Crunched for 12m 44s
+
+  14 tasks (4 done, 1 in progress, 9 open)
+  ◼ P1.5: Q&A Hỏi-Đáp trên SP
+  ◻ P1.6: UI Admin quản lý review + reply
+  ◻ P2.1: Audit log admin/nhân viên
+  ◻ P2.2: Last login + session timeout
+  ◻ P2.3: Assignment đơn hàng cho NV
+   … +5 pending, 4 completed

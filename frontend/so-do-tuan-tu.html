@@ -10,6 +10,9 @@
         mermaid.initialize({ 
             startOnLoad: true, 
             theme: 'base',
+            sequence: {
+                mirrorActors: false
+            },
             themeVariables: {
                 primaryColor: '#ffffff',
                 secondaryColor: '#f4f4f4',
@@ -43,29 +46,33 @@
 
     <!-- QUY TRÌNH 1 -->
     <div class="diagram-card">
-        <h2>1. Quy trình Đăng Ký và Đăng Nhập</h2>
-        <div class="desc">Mô tả luồng tương tác khi khách hàng điền thông tin đăng ký hoặc đăng nhập. Node.js backend xử lý mã hóa mật khẩu, kiểm tra database và cấp phát Access Token.</div>
+        <h2>1. Quy trình Đăng Ký Tài Khoản (Xác thực OTP)</h2>
+        <div class="desc">Mô tả luồng tương tác khi khách hàng điền thông tin đăng ký. Backend sẽ gửi OTP qua email để xác thực trước khi tạo tài khoản.</div>
         <div class="mermaid">
             sequenceDiagram
                 autonumber
-                actor User as Khách Hàng
-                participant FE as Frontend (Website)
-                participant BE as Backend (Node.js)
-                participant DB as Database (MySQL)
+                participant User
+                participant Frontend
+                participant Backend
+                participant Database
+                participant Email
 
-                User->>FE: Nhập thông tin (Email, Password)
-                FE->>BE: POST /api/auth/login
-                activate BE
-                BE->>DB: SELECT * FROM users WHERE email = ?
-                activate DB
-                DB-->>BE: Trả về thông tin User chứa Hash Password
-                deactivate DB
-                BE->>BE: So sánh (Bcrypt.compare)
-                BE->>BE: Tạo JWT Token (Access Token)
-                BE-->>FE: HTTP 200 OK (Kèm Token & User Info)
-                deactivate BE
-                FE->>FE: Lưu Token vào LocalStorage / Cookie
-                FE-->>User: Chuyển hướng tới Trang Chủ
+                User->>Frontend: Nhập thông tin đăng ký
+                Frontend->>Backend: POST /api/auth/send-otp
+                Backend->>Database: SELECT email
+                Database-->>Backend: Result
+                Backend->>Backend: bcrypt.hash()
+                Backend->>Database: INSERT xac_thuc_email
+                Backend->>Email: sendVerificationEmail()
+                Email-->>Backend: Success
+                Backend-->>Frontend: {success: true}
+                Frontend-->>User: Hiển thị form nhập OTP
+                User->>Frontend: Nhập mã OTP
+                Frontend->>Backend: POST /api/auth/verify-otp
+                Backend->>Database: SELECT xac_thuc_email
+                Backend->>Database: INSERT khach_hang
+                Backend->>Backend: jwt.sign()
+                Backend-->>Frontend: {token, user}
         </div>
     </div>
 
@@ -299,6 +306,78 @@
                 FE->>BE: Cập nhật "Delivered"
                 BE->>DB: Update Status
                 BE-->>User: Gửi Thông báo "Cảm ơn bạn đã mua hàng, hãy Review nhé."
+        </div>
+    </div>
+
+    <!-- QUY TRÌNH 9 -->
+    <div class="diagram-card">
+        <h2>9. Quy trình Khôi Phục Mật Khẩu (Quên Mật Khẩu)</h2>
+        <div class="desc">Khách hàng yêu cầu đặt lại mật khẩu khi quên. Hệ thống xác minh qua Email và cập nhật mật khẩu mới vào cơ sở dữ liệu.</div>
+        <div class="mermaid">
+            sequenceDiagram
+                autonumber
+                participant User
+                participant Frontend
+                participant Backend
+                participant Database
+                participant Email
+
+                User->>Frontend: Chọn "Quên mật khẩu", Nhập Email
+                Frontend->>Backend: POST /api/auth/forgot-password
+                activate Backend
+                Backend->>Database: Kiểm tra Email tồn tại không?
+                Database-->>Backend: Result (Tồn tại)
+                Backend->>Backend: Tạo mã OTP / Reset Token
+                Backend->>Database: Lưu OTP (Có thời hạn sử dụng)
+                Backend->>Email: Gửi Email chứa mã OTP
+                Email-->>Backend: Success
+                Backend-->>Frontend: {success: true, message: "Đã gửi Email"}
+                deactivate Backend
+                Frontend-->>User: Hiển thị giao diện nhập mã xác thực
+                
+                User->>Frontend: Nhập mã OTP và Mật khẩu mới
+                Frontend->>Backend: POST /api/auth/reset-password
+                activate Backend
+                Backend->>Database: Kiểm tra OTP (so khớp & còn hạn)
+                Database-->>Backend: Hợp lệ
+                Backend->>Backend: bcrypt.hash(Mật khẩu mới)
+                Backend->>Database: Cập nhật mật khẩu mới vào users
+                Database-->>Backend: Update Success
+                Backend-->>Frontend: {success: true}
+                deactivate Backend
+                Frontend-->>User: Chuyển hướng trang Đăng nhập
+        </div>
+    </div>
+
+    <!-- QUY TRÌNH 10 -->
+    <div class="diagram-card">
+        <h2>10. Quy trình Thêm Mới Sản Phẩm Điện Thoại (Admin)</h2>
+        <div class="desc">Admin đăng một dòng điện thoại mới lên website. Cập nhật vào DB và Hệ thống AI cũng tự động đồng bộ để có thể tư vấn sản phẩm này.</div>
+        <div class="mermaid">
+            sequenceDiagram
+                autonumber
+                participant Admin
+                participant Frontend Panel
+                participant Backend
+                participant Database
+                participant PyRAG as Python Service (AI)
+
+                Admin->>Frontend Panel: Điền form sản phẩm (Tên, Giá, Cấu hình, Hình ảnh)
+                Frontend Panel->>Backend: POST /api/admin/products (Kèm File Upload)
+                activate Backend
+                Backend->>Backend: Lưu Hình Ảnh (Upload folder / Cloudinary)
+                Backend->>Database: INSERT dữ liệu vào bảng Products
+                Database-->>Backend: Trả về Product_ID
+                Backend->>PyRAG: Gửi thông số máy báo cập nhật vào AI (Webhook)
+                activate PyRAG
+                PyRAG->>PyRAG: Trích xuất text Text mô tả, Cấu hình
+                PyRAG->>PyRAG: Chuyển thành Vector (Embedding)
+                PyRAG->>PyRAG: Lưu vào Vector DB (Chroma) để Bot học
+                PyRAG-->>Backend: Index Success
+                deactivate PyRAG
+                Backend-->>Frontend Panel: {success: true}
+                deactivate Backend
+                Frontend Panel-->>Admin: Hiển thị thông báo Thêm thành công
         </div>
     </div>
 

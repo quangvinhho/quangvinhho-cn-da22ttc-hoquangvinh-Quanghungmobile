@@ -3,15 +3,26 @@ from sklearn.neighbors import NearestNeighbors
 from mlxtend.frequent_patterns import apriori, association_rules
 import random
 import os
+import time
 import mysql.connector
 from dotenv import load_dotenv
 
 load_dotenv(dotenv_path="../backend/.env")
 
+_IS_PROD = os.getenv("NODE_ENV") == "production" or os.getenv("ENV") == "production"
+if _IS_PROD and not os.getenv("DB_PASSWORD"):
+    raise SystemExit("FATAL: DB_PASSWORD chưa set ở production (recommend_engine).")
+if not os.getenv("DB_PASSWORD"):
+    print("WARN: DB_PASSWORD chưa set — recommend_engine dùng default dev. Không an toàn cho production.")
+
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_USER = os.getenv("DB_USER", "root")
 DB_PASS = os.getenv("DB_PASSWORD", "Vinh123456789@")
 DB_NAME = os.getenv("DB_NAME", "QHUNG")
+
+# Cache cho brand map — tránh DB hit mỗi lần recommend
+_BRAND_MAP_CACHE = {"data": {}, "ts": 0.0}
+_BRAND_MAP_TTL = 300  # 5 phút
 
 def train_knn_model(user_item_matrix):
     """
@@ -275,17 +286,27 @@ def _normalize_pid(item):
         return item
 
 def _fetch_brand_map(pids):
-    """Lấy {pid: ten_hang} cho list product_id — dùng để diversity round-robin."""
+    """Lấy {pid: ten_hang} cho list product_id — dùng để diversity round-robin.
+    Có cache 5 phút tránh DB hit mỗi recommend call.
+    """
     if not pids:
         return {}
+    # Lọc chỉ pid integer
+    int_pids = [p for p in pids if isinstance(p, int)]
+    if not int_pids:
+        return {}
+
+    now = time.time()
+    cached = _BRAND_MAP_CACHE["data"]
+    fresh = (now - _BRAND_MAP_CACHE["ts"]) < _BRAND_MAP_TTL
+
+    # Nếu cache còn fresh và đủ tất cả pid yêu cầu thì trả luôn
+    if fresh and all(p in cached for p in int_pids):
+        return {p: cached[p] for p in int_pids}
+
     try:
         conn = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME)
         cursor = conn.cursor(dictionary=True)
-        # Lọc chỉ pid integer (Apriori có thể trả string dummy)
-        int_pids = [p for p in pids if isinstance(p, int)]
-        if not int_pids:
-            cursor.close(); conn.close()
-            return {}
         placeholders = ','.join(['%s'] * len(int_pids))
         cursor.execute(
             f"SELECT sp.ma_sp, hsx.ten_hang FROM san_pham sp "
@@ -296,7 +317,11 @@ def _fetch_brand_map(pids):
         rows = cursor.fetchall()
         cursor.close()
         conn.close()
-        return {r['ma_sp']: (r['ten_hang'] or 'unknown') for r in rows}
+        result = {r['ma_sp']: (r['ten_hang'] or 'unknown') for r in rows}
+        # Cập nhật cache (merge với data cũ để tăng dần coverage)
+        cached.update(result)
+        _BRAND_MAP_CACHE["ts"] = now
+        return result
     except Exception as e:
         print(f"[Diversity] Lỗi fetch brand map: {e}")
         return {}

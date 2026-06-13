@@ -2,7 +2,9 @@
 // QuangHưng Mobile - Modern E-commerce 2025
 
 // ===== GLOBAL VARIABLES =====
-const API_URL = 'http://localhost:3000/api';
+// API_URL ưu tiên window.API_BASE_URL (đặt trong main.js), fallback localhost cho dev
+const API_URL = window.API_BASE_URL || 'http://localhost:3000/api';
+const SHIPPING_COST = { standard: 0, express: 30000 };
 let cart = [];
 let subtotal = 0;
 let shippingFee = 0;
@@ -11,6 +13,12 @@ let freeshipDiscount = 0; // Giảm phí ship
 let percentDiscount = 0;  // Giảm theo % hoặc số tiền cố định
 let selectedShipping = 'standard';
 let selectedPayment = 'cod';
+let addressesLoaded = false;
+let isPlacingOrder = false;
+
+// Helper escape (fallback nếu main.js chưa load)
+const _esc = (s) => (window.escapeHtml ? window.escapeHtml(s) : String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'));
 
 // Voucher đã áp dụng
 let appliedFreeshipVoucher = null;
@@ -29,9 +37,10 @@ function formatPrice(price) {
 function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `fixed top-24 right-6 z-50 px-6 py-4 rounded-lg shadow-xl text-white font-semibold animate-slide-in ${type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`;
-  toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-2"></i>${message}`;
+  const iconName = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+  toast.innerHTML = `<i class="fas fa-${iconName} mr-2"></i>${_esc(message)}`;
   document.body.appendChild(toast);
-  
+
   setTimeout(() => {
     toast.style.opacity = '0';
     setTimeout(() => toast.remove(), 300);
@@ -177,15 +186,19 @@ function renderCart() {
       }
     }
     
+    const safeName = _esc(item.name);
+    const safeColor = _esc(itemColor);
+    const safeStorage = _esc(item.storage);
+    const safeImg = _esc(itemImage);
     return `
     <div class="flex gap-3 pb-4 border-b border-gray-100 last:border-0 last:pb-0">
-      <img src="${itemImage}" alt="${item.name}" class="w-16 h-16 object-contain rounded-lg border border-gray-200" onerror="this.src='images/15-256.avif'">
+      <img src="${safeImg}" alt="${safeName}" class="w-16 h-16 object-contain rounded-lg border border-gray-200" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='images/15-256.avif';}">
       <div class="flex-1">
-        <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">${item.name}</h4>
-        ${itemColor ? `<p class="text-xs text-gray-600">Màu: ${itemColor}</p>` : ''}
-        ${item.storage ? `<p class="text-xs text-gray-600">Dung lượng: ${item.storage}</p>` : ''}
+        <h4 class="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">${safeName}</h4>
+        ${itemColor ? `<p class="text-xs text-gray-600">Màu: ${safeColor}</p>` : ''}
+        ${item.storage ? `<p class="text-xs text-gray-600">Dung lượng: ${safeStorage}</p>` : ''}
         <div class="flex items-center justify-between mt-2">
-          <span class="text-xs text-gray-600">SL: ${item.quantity}</span>
+          <span class="text-xs text-gray-600">SL: ${Number(item.quantity) || 0}</span>
           <span class="font-bold text-red-600 text-sm">${formatPrice(item.price * item.quantity)}</span>
         </div>
       </div>
@@ -919,13 +932,27 @@ let currentOrderId = null;
 // ===== PLACE ORDER =====
 function placeOrder() {
   // Validate form
-  if (!validateForm()) {
+  // Chống duplicate submit — bấm 2 lần / tạo 2 đơn
+  if (isPlacingOrder) {
+    showToast('Đang xử lý đơn hàng, vui lòng đợi...', 'info');
     return;
   }
-  
-  // Check if cart is empty
+  isPlacingOrder = true;
+  const submitBtn = document.querySelector('[data-place-order-btn], #placeOrderBtn, .btn-place-order, #place-order-btn');
+  if (submitBtn) submitBtn.disabled = true;
+  // Đảm bảo unlock khi xử lý xong / lỗi (timeout 30s phòng hờ)
+  setTimeout(() => { isPlacingOrder = false; if (submitBtn) submitBtn.disabled = false; }, 30000);
+
+  if (!validateForm()) {
+    isPlacingOrder = false;
+    if (submitBtn) submitBtn.disabled = false;
+    return;
+  }
+
   if (cart.length === 0) {
     showToast('Giỏ hàng trống! Vui lòng thêm sản phẩm.', 'error');
+    isPlacingOrder = false;
+    if (submitBtn) submitBtn.disabled = false;
     return;
   }
   
@@ -1938,9 +1965,17 @@ async function completeOrder(orderData) {
         remainingAmount: remainingAmount
       })
     });
-    
-    const result = await response.json();
-    
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const msg = (result && result.message) || 'Đặt hàng không thành công, vui lòng thử lại.';
+      showToast(msg, 'error');
+      isPlacingOrder = false;
+      const btn = document.querySelector('[data-place-order-btn], #placeOrderBtn, .btn-place-order, #place-order-btn');
+      if (btn) btn.disabled = false;
+      return;
+    }
+
     if (result.success) {
       // Cập nhật orderId từ database
       orderData.dbOrderId = result.data.orderId;
@@ -2527,29 +2562,33 @@ async function openSelectAddressModal() {
       allUserAddresses = data.data;
       if (emptyEl) emptyEl.classList.add('hidden');
       
-      // Render danh sách địa chỉ
-      listEl.innerHTML = data.data.map(addr => `
-        <div class="border rounded-lg p-4 hover:shadow-md transition cursor-pointer ${addr.ma_dia_chi === selectedAddressData?.ma_dia_chi ? 'border-red-500 bg-red-50' : 'bg-gray-50 hover:border-red-300'}"
-             onclick="selectAddressFromModal(${addr.ma_dia_chi})">
+      // Render danh sách địa chỉ — escape các trường text user-controlled
+      listEl.innerHTML = data.data.map(addr => {
+        const idNum = Number(addr.ma_dia_chi) || 0;
+        const isSel = idNum === Number(selectedAddressData?.ma_dia_chi);
+        return `
+        <div class="border rounded-lg p-4 hover:shadow-md transition cursor-pointer ${isSel ? 'border-red-500 bg-red-50' : 'bg-gray-50 hover:border-red-300'}"
+             onclick="selectAddressFromModal(${idNum})">
           <div class="flex items-start gap-3">
             <div class="mt-1">
-              ${addr.ma_dia_chi === selectedAddressData?.ma_dia_chi 
-                ? '<i class="fas fa-check-circle text-red-600 text-lg"></i>' 
+              ${isSel
+                ? '<i class="fas fa-check-circle text-red-600 text-lg"></i>'
                 : '<i class="far fa-circle text-gray-400 text-lg"></i>'}
             </div>
             <div class="flex-1">
               <div class="flex items-center gap-2 mb-1 flex-wrap">
-                <span class="font-semibold text-gray-800">${addr.ho_ten_nguoi_nhan}</span>
+                <span class="font-semibold text-gray-800">${_esc(addr.ho_ten_nguoi_nhan)}</span>
                 <span class="text-gray-400">|</span>
-                <span class="text-gray-600">${addr.so_dien_thoai}</span>
+                <span class="text-gray-600">${_esc(addr.so_dien_thoai)}</span>
                 ${addr.mac_dinh ? '<span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded">Mặc định</span>' : ''}
               </div>
-              <p class="text-gray-600 text-sm">${addr.dia_chi_cu_the}</p>
-              <p class="text-gray-500 text-sm">${addr.phuong_xa}, ${addr.quan_huyen}, ${addr.tinh_thanh}</p>
+              <p class="text-gray-600 text-sm">${_esc(addr.dia_chi_cu_the)}</p>
+              <p class="text-gray-500 text-sm">${_esc(addr.phuong_xa)}, ${_esc(addr.quan_huyen)}, ${_esc(addr.tinh_thanh)}</p>
             </div>
           </div>
         </div>
-      `).join('');
+      `;}).join('');
+      addressesLoaded = true;
     } else {
       listEl.innerHTML = '';
       if (emptyEl) emptyEl.classList.remove('hidden');

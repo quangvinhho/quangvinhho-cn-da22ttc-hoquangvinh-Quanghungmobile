@@ -158,9 +158,9 @@ router.get('/autocomplete', async (req, res) => {
                     WHEN LOWER(ten_sp) LIKE ? THEN 2
                     ELSE 3
                 END as priority
-             FROM san_pham 
+             FROM san_pham
              WHERE LOWER(ten_sp) LIKE ? OR LOWER(ten_sp) LIKE ?
-             ORDER BY priority, ten_sp
+             ORDER BY priority, suggestion
              LIMIT ?`,
             [startWith, contains, startWith, contains, limit]
         );

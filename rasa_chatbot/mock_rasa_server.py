@@ -1,3 +1,14 @@
+"""
+⚠️ MOCK RASA SERVER — KHÔNG DÙNG PRODUCTION
+=============================================
+File này chỉ là mock đơn giản dùng cho local dev.
+- Sessions lưu trong memory dict → mất hết khi restart.
+- Không có NLU intent classification thật.
+- Backend chính (routes/chatbot.js) đã được cấu hình BỎ QUA gateway này
+  và gọi trực tiếp tới rag_service. Mock vẫn được giữ để tham chiếu / test cục bộ.
+- Trước khi đưa vào production: hoặc deploy Rasa server thật + train pipeline,
+  hoặc gỡ hoàn toàn module rasa_chatbot.
+"""
 import os
 import sys
 import io
@@ -12,7 +23,11 @@ import uvicorn
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-app = FastAPI(title="Rasa Mock Server & Dialogue Gateway")
+_IS_PROD = os.getenv("NODE_ENV") == "production" or os.getenv("ENV") == "production"
+if _IS_PROD:
+    raise SystemExit("FATAL: mock_rasa_server.py không được phép chạy ở production.")
+
+app = FastAPI(title="Rasa Mock Server & Dialogue Gateway (DEV ONLY)")
 
 # Store session states in memory: {sender_id: {"state": "...", "phone_brand": "...", "budget_range": "...", "main_usage": "..."}}
 sessions = {}
@@ -26,9 +41,13 @@ for path in env_paths:
         load_dotenv(dotenv_path=path)
         break
 
+_DB_PASS_RAW = os.getenv("DB_PASSWORD") or os.getenv("DB_PASS")
+if not _DB_PASS_RAW:
+    print("WARN: DB_PASSWORD chưa set — mock_rasa_server dùng default dev.")
+
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_USER = os.getenv("DB_USER", "root")
-DB_PASS = os.getenv("DB_PASS", "Vinh123456789@")
+DB_PASS = _DB_PASS_RAW or "Vinh123456789@"
 DB_NAME = os.getenv("DB_NAME", "QHUNG")
 
 def get_delivery_address(user_id: str) -> str:

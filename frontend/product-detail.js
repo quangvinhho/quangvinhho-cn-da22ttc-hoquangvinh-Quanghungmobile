@@ -7,7 +7,7 @@ let selectedRating = 0;
 let reviewImages = []; // Lưu base64 của ảnh đánh giá
 let shopSettings = { hideStockFromCustomer: false }; // Cài đặt shop
 let currentStock = 0; // Lưu số lượng tồn kho thực tế
-const API_URL = 'http://localhost:3000/api';
+const API_URL = window.API_BASE_URL || 'http://localhost:3000/api';
 
 // Brand logos fallback
 const BRAND_LOGOS = {
@@ -108,7 +108,10 @@ async function loadProductDetail(productId) {
         currentProduct = product;
         PRODUCTS = [product]; // Lưu vào mảng để các hàm khác sử dụng
         renderProductDetail(productId);
-        
+
+        // Load biến thể (variant: màu × dung lượng × tồn kho). Fail-soft, không block render.
+        loadProductVariants(productId).catch(() => {});
+
         // Load thêm tất cả sản phẩm và render lại phần liên quan
         await loadRelatedProducts();
         // Render lại sản phẩm liên quan sau khi đã load xong
@@ -316,7 +319,12 @@ function renderProductDetail(productId) {
   
   // Lưu số lượng tồn kho thực tế để kiểm tra
   currentStock = stock;
-  
+
+  // Render urgency banner cho sản phẩm chưa có biến thể (variant flow gọi riêng)
+  if (typeof renderUrgencyBanner === 'function') {
+    try { renderUrgencyBanner(stock); } catch (e) { /* ignore */ }
+  }
+
   // Kiểm tra cài đặt ẩn tồn kho
   if (shopSettings.hideStockFromCustomer) {
     // Ẩn phần hiển thị số lượng tồn kho
@@ -395,37 +403,17 @@ async function loadProductRatingStats(productId) {
   }
 }
 
-// Render thumbnails with multiple images
-function renderThumbnails(product) {
-  const container = document.getElementById('thumbnailsContainer');
-  const wrapper = document.getElementById('thumbnailsWrapper');
-  if (!container) return;
-  
-  container.innerHTML = '';
-  
-  // Chỉ hiển thị ảnh từ API (admin thêm), không tạo ảnh giả
-  let images = [];
-  
-  if (product.images && product.images.length > 0) {
-    images = [...product.images];
-  } else if (product.image) {
-    // Chỉ dùng ảnh chính duy nhất
-    images = [product.image];
-  }
-  
-  // Lọc bỏ các ảnh không hợp lệ và ảnh banner
+// Helper: chuẩn hoá + lọc danh sách ảnh (loại banner, ảnh rác, prefix 'images/')
+function _normalizeImageList(rawList) {
+  let images = (rawList || []).filter(Boolean);
   images = images.filter(img => {
-    if (!img || img.trim() === '') return false;
-    
-    const imgLower = img.toLowerCase().trim();
-    
+    if (!img || String(img).trim() === '') return false;
+    const imgLower = String(img).toLowerCase().trim();
     if (imgLower === 'images/' || imgLower === 'images') return false;
-    
     const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif', '.svg'];
     const hasValidExtension = validExtensions.some(ext => imgLower.includes(ext));
     if (!hasValidExtension && !imgLower.startsWith('http')) return false;
-    
-    // Loại bỏ ảnh banner
+    // Loại bỏ ảnh banner / quảng cáo
     if (imgLower.includes('h1_1440x242')) return false;
     if (imgLower.includes('banner')) return false;
     if (imgLower.includes('1440x242')) return false;
@@ -435,37 +423,69 @@ function renderThumbnails(product) {
     if (imgLower.includes('sale')) return false;
     if (imgLower.includes('_ad')) return false;
     if (/\d{3,4}x\d{2,3}/.test(imgLower)) return false;
-    
     return true;
   });
-  
-  // Đảm bảo đường dẫn ảnh đúng và loại bỏ trùng lặp
-  images = [...new Set(images.map(img => {
+  return [...new Set(images.map(img => {
     if (!img) return null;
     if (img.startsWith('http')) return img;
     return img.startsWith('images/') ? img : `images/${img}`;
-  }).filter(img => img !== null))];
-  
-  // ẨN HOÀN TOÀN phần thumbnails nếu chỉ có 0 hoặc 1 ảnh
+  }).filter(Boolean))];
+}
+
+// Render dải thumbnail (overload):
+//   renderThumbnails(productObject)                     ← luồng mặc định (sản phẩm gốc)
+//   renderThumbnails({ images: [...], colorBadge: '…' }) ← khi đổi màu hiển thị bộ ảnh per màu
+function renderThumbnails(input) {
+  const container = document.getElementById('thumbnailsContainer');
+  const wrapper = document.getElementById('thumbnailsWrapper');
+  if (!container) return;
+  container.innerHTML = '';
+
+  let rawImages = [];
+  let colorBadge = '';
+
+  // Phân biệt input shape
+  if (Array.isArray(input)) {
+    rawImages = input;
+  } else if (input && Array.isArray(input.images) && !input.ten_sp && !input.name) {
+    // Object kiểu { images: [...], colorBadge: '...' } — chỉ khi KHÔNG phải product object
+    rawImages = input.images;
+    colorBadge = input.colorBadge || '';
+  } else if (input && typeof input === 'object') {
+    // Product object
+    if (input.images && input.images.length > 0) {
+      rawImages = [...input.images];
+    } else if (input.image) {
+      rawImages = [input.image];
+    }
+  }
+
+  const images = _normalizeImageList(rawImages);
+
+  // Lưu pool ảnh hiện hành ra global cho navigateImage + lightbox sử dụng
+  window.CURRENT_GALLERY_IMAGES = images;
+
+  // Có 0 ảnh → ẩn dải; 1 ảnh vẫn ẩn (không cần thumbnail)
   if (images.length <= 1) {
     if (wrapper) wrapper.style.display = 'none';
     return;
   }
-  
-  // Hiển thị thumbnails nếu có nhiều ảnh
+
   if (wrapper) wrapper.style.display = 'block';
-  
-  // Render thumbnails liền kề - style CellphoneS
+
   images.forEach((img, i) => {
     const isFirst = i === 0;
     const thumb = document.createElement('div');
     thumb.className = `thumb-item flex-shrink-0 cursor-pointer border-2 rounded-xl overflow-hidden transition-all ${isFirst ? 'border-red-500' : 'border-gray-200 hover:border-red-300'}`;
-    thumb.style.cssText = 'width: 90px; height: 90px; padding: 6px; background: white;';
+    thumb.style.cssText = 'width: 90px; height: 90px; padding: 6px; background: white; position: relative;';
     thumb.setAttribute('data-index', i);
     thumb.onclick = () => selectThumbnail(i, img);
-    
-    // Thêm badge "Tính năng nổi bật" cho ảnh đầu tiên
-    if (isFirst) {
+
+    const safeBadge = colorBadge
+      ? `<div class="absolute -top-1 -right-1 max-w-[80px] truncate px-1.5 py-0.5 rounded bg-red-500 text-white text-[10px] font-semibold shadow" title="${colorBadge}">${colorBadge}</div>`
+      : '';
+
+    if (isFirst && !colorBadge) {
       thumb.innerHTML = `
         <div class="relative w-full h-full">
           <img src="${img}" alt="Ảnh ${i + 1}" class="w-full h-full object-contain" onerror="this.parentElement.parentElement.style.display='none'" />
@@ -475,13 +495,12 @@ function renderThumbnails(product) {
         </div>
       `;
     } else {
-      thumb.innerHTML = `<img src="${img}" alt="Ảnh ${i + 1}" class="w-full h-full object-contain" onerror="this.parentElement.style.display='none'" />`;
+      thumb.innerHTML = `${safeBadge}<img src="${img}" alt="Ảnh ${i + 1}" class="w-full h-full object-contain" onerror="this.parentElement.style.display='none'" />`;
     }
-    
+
     container.appendChild(thumb);
   });
-  
-  // Cập nhật hiển thị nút scroll
+
   updateScrollButtons();
 }
 
@@ -843,13 +862,17 @@ async function addToCart() {
     return;
   }
   
-  // Lấy màu đang được chọn từ color card
-  const selectedColorCard = document.querySelector('.color-option-card.active');
+  // Ưu tiên variant đã chọn (mới) — nếu sản phẩm có biến thể
+  const variantSel = (typeof window.getSelectedVariantForCart === 'function') ? window.getSelectedVariantForCart() : null;
+  const selectedColorCard = document.querySelector('.color-option-card.active') || document.querySelector('.variant-color-card.active');
   const selectedStorage = document.querySelector('.storage-option.active .storage-size');
   const colorCode = selectedColorCard ? selectedColorCard.getAttribute('data-color') : (currentProduct.colors?.[0] || '#000000');
-  const colorName = selectedColorCard ? selectedColorCard.getAttribute('data-name') : (currentProduct.colorNames?.[0] || 'Mặc định');
-  const storage = selectedStorage ? selectedStorage.textContent : (currentProduct.storage ? `${currentProduct.storage}GB` : '128GB');
-  
+  const colorName = (variantSel && variantSel.color)
+    || (selectedColorCard ? selectedColorCard.getAttribute('data-name') : null)
+    || (currentProduct.colorNames?.[0] || 'Mặc định');
+  const storage = (variantSel && variantSel.storage)
+    || (selectedStorage ? selectedStorage.textContent : (currentProduct.storage ? `${currentProduct.storage}GB` : '128GB'));
+
   try {
     // Gọi API thêm vào giỏ hàng
     const response = await fetch(`${API_URL}/cart`, {
@@ -858,7 +881,10 @@ async function addToCart() {
       body: JSON.stringify({
         userId: user.ma_kh,
         productId: currentProduct.id,
-        quantity: quantity
+        quantity: quantity,
+        variantId: variantSel ? variantSel.variantId : null,
+        color: colorName,
+        storage: storage
       })
     });
     const data = await response.json();
@@ -1229,6 +1255,15 @@ async function loadReviews() {
                     `).join('')}
                   </div>
                 ` : ''}
+                ${review.shopReply ? `
+                  <div class="mt-3 ml-2 pl-3 border-l-4 border-red-200 bg-red-50/40 py-2 pr-3 rounded-r-lg">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-xs font-bold text-red-700"><i class="fas fa-store mr-1"></i>Phản hồi từ Shop</span>
+                      ${review.shopReplyDate ? `<span class="text-[11px] text-gray-500">${formatReviewDate(review.shopReplyDate)}</span>` : ''}
+                    </div>
+                    <p class="text-sm text-gray-700 leading-relaxed">${review.shopReply}</p>
+                  </div>
+                ` : ''}
               </div>
             </div>
           </div>
@@ -1482,48 +1517,128 @@ async function submitReview() {
 function renderRelatedProducts(product) {
   if (!product) return;
   
-  // Thuật toán: Tính điểm tương đồng cho các sản phẩm khác
-  const scoredProducts = PRODUCTS.filter(p => p.id != product.id).map(p => {
-    let score = 0;
-    
-    // 1. Điểm về Giá (Price Similarity)
-    if (product.price && p.price) {
-        const priceDiff = Math.abs(p.price - product.price);
-        const priceRatio = priceDiff / product.price;
-        
-        if (priceRatio <= 0.1) score += 20;      // Chênh lệch giá <= 10%
-        else if (priceRatio <= 0.2) score += 10; // Chênh lệch giá <= 20%
-        else if (priceRatio <= 0.3) score += 5;  // Chênh lệch giá <= 30%
-    }
+  let related = [];
+  
+  if (product.category === 'phukien') {
+      // 1. Lọc và chấm điểm các Điện thoại tương thích (lấy tối đa 2 điện thoại)
+      const compatiblePhones = PRODUCTS.filter(p => p.id != product.id && p.category === 'dienthoai').map(p => {
+          let score = 0;
+          const phoneNameLower = p.name.toLowerCase();
+          const accNameLower = product.name.toLowerCase();
+          
+          // Lấy từ khóa đại diện dòng máy (ví dụ: "16 pro max" từ "iPhone 16 Pro Max")
+          const modelKeywords = p.name.replace(/iPhone|Samsung|Xiaomi|Oppo|Vivo|Asus|Sony|Realme/gi, '').trim().toLowerCase();
+          if (modelKeywords && modelKeywords.length > 2 && accNameLower.includes(modelKeywords)) {
+              score += 30;
+          }
+          
+          // Cùng thương hiệu -> +15đ
+          if (p.brand && product.brand && p.brand === product.brand) {
+              score += 15;
+          }
+          
+          return { ...p, score };
+      })
+      .filter(p => p.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 2);
 
-    // 2. Điểm về Hãng (Brand)
-    if (p.brand && product.brand && p.brand === product.brand) {
-        score += 15;
-    }
+      // 2. Lọc và chấm điểm các Phụ kiện khác (lấy tối đa 3 phụ kiện)
+      const relatedAccessories = PRODUCTS.filter(p => p.id != product.id && p.category === 'phukien' && !compatiblePhones.some(ph => ph.id === p.id)).map(p => {
+          let score = 0;
+          
+          // Cùng thương hiệu -> +15đ
+          if (p.brand && product.brand && p.brand === product.brand) {
+              score += 15;
+          }
+          // Cùng loại phụ kiện (ví dụ: cùng là oplung) -> +20đ
+          if (p.type && product.type && p.type === product.type) {
+              score += 20;
+          }
+          // Khoảng giá gần nhau
+          if (product.price && p.price) {
+              const priceDiff = Math.abs(p.price - product.price);
+              const priceRatio = priceDiff / product.price;
+              if (priceRatio <= 0.2) score += 10;
+              else if (priceRatio <= 0.5) score += 5;
+          }
+          
+          return { ...p, score };
+      })
+      .filter(p => p.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
 
-    // 3. Điểm về Cấu hình (Specs)
-    if (p.ram && product.ram && p.ram.toString().trim() === product.ram.toString().trim()) {
-        score += 5; // Cùng dung lượng RAM
-    }
-    if (p.storage && product.storage && p.storage.toString().trim() === product.storage.toString().trim()) {
-        score += 5; // Cùng dung lượng lưu trữ (ROM)
-    }
-    
-    return { ...p, score };
-  });
+      related = [...compatiblePhones, ...relatedAccessories];
+  } else {
+      // Current product is a Phone (dienthoai)
+      // 1. Lọc và chấm điểm các Điện thoại tương tự (lấy tối đa 3 điện thoại)
+      const relatedPhones = PRODUCTS.filter(p => p.id != product.id && p.category === 'dienthoai').map(p => {
+          let score = 0;
+          
+          // Cùng thương hiệu -> +15đ
+          if (p.brand && product.brand && p.brand === product.brand) {
+              score += 15;
+          }
+          // Khoảng giá gần nhau
+          if (product.price && p.price) {
+              const priceDiff = Math.abs(p.price - product.price);
+              const priceRatio = priceDiff / product.price;
+              if (priceRatio <= 0.1) score += 20;
+              else if (priceRatio <= 0.2) score += 10;
+              else if (priceRatio <= 0.3) score += 5;
+          }
+          // Cùng cấu hình RAM/ROM
+          if (p.ram && product.ram && p.ram.toString().trim() === product.ram.toString().trim()) {
+              score += 5;
+          }
+          if (p.storage && product.storage && p.storage.toString().trim() === product.storage.toString().trim()) {
+              score += 5;
+          }
+          
+          return { ...p, score };
+      })
+      .filter(p => p.score >= 5)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
 
-  // Lọc sản phẩm có điểm tương đồng (score > 0), sắp xếp giảm dần, lấy top 5
-  let related = scoredProducts
-    .filter(p => p.score >= 5)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5);
-    
-  // Nếu thuật toán không tìm đủ 5 sản phẩm tương đồng, lấy bù thêm (ưu tiên cùng danh mục hoặc bất kỳ)
+      // 2. Lọc và chấm điểm các Phụ kiện tương thích (lấy tối đa 2 phụ kiện)
+      const compatibleAccessories = PRODUCTS.filter(p => p.id != product.id && p.category === 'phukien' && !relatedPhones.some(rp => rp.id === p.id)).map(p => {
+          let score = 0;
+          const accNameLower = p.name.toLowerCase();
+          
+          // Lấy các từ khóa đại diện dòng máy (ví dụ: "16 pro max" từ "iPhone 16 Pro Max")
+          const modelKeywords = product.name.replace(/iPhone|Samsung|Xiaomi|Oppo|Vivo|Asus|Sony|Realme/gi, '').trim().toLowerCase();
+          if (modelKeywords && modelKeywords.length > 2 && accNameLower.includes(modelKeywords)) {
+              score += 30;
+          }
+          
+          // Cùng thương hiệu -> +15đ
+          if (p.brand && product.brand && p.brand === product.brand) {
+              score += 15;
+          }
+          
+          return { ...p, score };
+      })
+      .filter(p => p.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 2);
+
+      related = [...relatedPhones, ...compatibleAccessories];
+  }
+
+  // Fallback nếu không đủ 5 sản phẩm đề xuất
   if (related.length < 5) {
       const existingIds = related.map(r => r.id);
       const fallbacks = PRODUCTS
           .filter(p => p.id != product.id && !existingIds.includes(p.id))
-          .sort((a, b) => (a.brand === product.brand ? -1 : 1)) // Ưu tiên cùng hãng nếu phải bù thêm
+          .sort((a, b) => {
+              if (a.category === product.category && b.category !== product.category) return -1;
+              if (a.category !== product.category && b.category === product.category) return 1;
+              if (a.brand === product.brand && b.brand !== product.brand) return -1;
+              if (a.brand !== product.brand && b.brand === product.brand) return 1;
+              return 0;
+          })
           .slice(0, 5 - related.length);
       related = [...related, ...fallbacks];
   }
@@ -1678,5 +1793,492 @@ async function loadRecommendations(productId) {
         const recContainer = document.getElementById('ml-recommendations');
         if (recContainer) recContainer.style.display = 'none';
     }
+}
+
+// ============== BIẾN THỂ SẢN PHẨM (Variant: màu × dung lượng × tồn kho) ==============
+// Backward-compat: nếu sản phẩm chưa có biến thể → không hiện UI riêng, dùng currentStock cũ.
+window.PRODUCT_VARIANTS = { hasVariants: false, items: [], colors: [], storages: [], selectedVariant: null };
+
+async function loadProductVariants(productId) {
+    try {
+        const res = await fetch(`${API_URL}/products/${productId}/variants`);
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!json || !json.success || !json.data || !json.data.hasVariants) return;
+
+        window.PRODUCT_VARIANTS = {
+            hasVariants: true,
+            items: json.data.variants,
+            colors: json.data.colors,
+            storages: json.data.storages,
+            selectedVariant: null
+        };
+
+        // Khi đã có variant data, override UI màu + dung lượng theo dữ liệu thật
+        renderVariantSelectors();
+        // Tự chọn variant đầu tiên còn hàng
+        const firstAvail = json.data.variants.find(v => v.stock > 0) || json.data.variants[0];
+        if (firstAvail) selectVariant(firstAvail.color, firstAvail.storage);
+    } catch (e) {
+        // im lặng — fallback UI cũ
+    }
+}
+
+function renderVariantSelectors() {
+    const data = window.PRODUCT_VARIANTS;
+    if (!data.hasVariants) return;
+
+    // Hiển thị các section chứa biến thể
+    const storageSection = document.getElementById('storageSection');
+    if (storageSection) storageSection.classList.remove('hidden');
+    const colorSection = document.getElementById('colorSection');
+    if (colorSection) colorSection.classList.remove('hidden');
+
+    // === Render MÀU SẮC — mỗi nút hiện tồn kho tổng của màu đó ===
+    const colorContainer = document.getElementById('colorOptions') || document.getElementById('color-options-container');
+    if (colorContainer) {
+        colorContainer.innerHTML = data.colors.map(c => {
+            const hex = c.hex || '#9ca3af';
+            const safe = String(c.name || '').replace(/'/g, "\\'");
+            // Tính tổng tồn kho TẤT CẢ dung lượng của màu này
+            const totalStock = data.items
+                .filter(v => v.color === c.name)
+                .reduce((sum, v) => sum + (parseInt(v.stock) || 0), 0);
+            const isOOS = totalStock <= 0;
+            const isLow = totalStock > 0 && totalStock <= 5;
+            const oosClass = isOOS ? 'variant-oos' : (isLow ? 'variant-low' : '');
+            return `
+                <button type="button"
+                    class="variant-color-card color-option-card border-2 rounded-lg p-2 flex items-center gap-2 transition ${oosClass}"
+                    data-color="${safe}"
+                    data-stock="${totalStock}"
+                    onclick="selectVariant('${safe}', null)">
+                  <span class="inline-block w-5 h-5 rounded-full border border-gray-300 flex-shrink-0" style="background:${hex}"></span>
+                  <div class="flex flex-col items-start leading-tight">
+                    <span class="text-sm font-medium">${safe}</span>
+                    ${isOOS
+                      ? '<span class="variant-oos-tag"><i class="fas fa-times-circle mr-0.5"></i>Hết hàng</span>'
+                      : isLow
+                        ? `<span class="variant-low-tag"><i class="fas fa-exclamation-circle mr-0.5"></i>Còn ${totalStock}</span>`
+                        : `<span class="text-xs text-gray-400">Còn ${totalStock}</span>`
+                    }
+                  </div>
+                </button>`;
+        }).join('');
+    }
+
+    // === Render DUNG LƯỢNG — ban đầu hiện stock tổng, sẽ cập nhật khi chọn màu ===
+    const storageContainer = document.getElementById('storageOptions');
+    if (storageContainer) {
+        storageContainer.innerHTML = data.storages.map(s => {
+            const totalStock = data.items
+                .filter(v => v.storage === s)
+                .reduce((sum, v) => sum + (parseInt(v.stock) || 0), 0);
+            const isOOS = totalStock <= 0;
+            const oosClass = isOOS ? 'variant-oos' : '';
+            return `
+                <button type="button"
+                    class="variant-storage-card storage-option-card border-2 rounded-lg px-4 py-2 transition ${oosClass}"
+                    data-storage="${s}"
+                    data-stock="${totalStock}"
+                    onclick="selectVariant(null, '${s}')">
+                  <div class="storage-size font-bold text-gray-900">${s}</div>
+                  ${isOOS
+                    ? '<span class="variant-oos-tag"><i class="fas fa-times-circle mr-0.5"></i>Hết hàng</span>'
+                    : ''
+                  }
+                </button>`;
+        }).join('');
+    }
+}
+
+// Cập nhật trạng thái các nút dung lượng theo màu đang chọn
+function updateStorageButtonsForColor(selectedColor) {
+    const data = window.PRODUCT_VARIANTS;
+    if (!data.hasVariants) return;
+
+    document.querySelectorAll('.variant-storage-card').forEach(btn => {
+        const storage = btn.dataset.storage;
+        // Tìm variant chính xác (màu đang chọn + dung lượng này)
+        const variant = data.items.find(v => v.color === selectedColor && v.storage === storage);
+        const stock = variant ? (parseInt(variant.stock) || 0) : 0;
+        btn.dataset.stock = stock;
+
+        // Cập nhật class oos
+        btn.classList.remove('variant-oos');
+        // Xóa tag cũ
+        const oldTag = btn.querySelector('.variant-oos-tag');
+        if (oldTag) oldTag.remove();
+
+        if (stock <= 0) {
+            btn.classList.add('variant-oos');
+            const tag = document.createElement('span');
+            tag.className = 'variant-oos-tag';
+            tag.innerHTML = '<i class="fas fa-times-circle mr-0.5"></i>Hết hàng';
+            btn.appendChild(tag);
+        }
+    });
+}
+
+function selectVariant(color, storage) {
+    const data = window.PRODUCT_VARIANTS;
+    if (!data.hasVariants) return;
+
+    const cur = data.selectedVariant || {};
+    const targetColor = color || cur.color || (data.colors[0] && data.colors[0].name);
+    const targetStorage = storage || cur.storage || data.storages[0];
+
+    // Tìm variant chính xác (màu + dung lượng)
+    let variant = data.items.find(v => v.color === targetColor && v.storage === targetStorage);
+
+    // Nếu cặp không tồn tại → fallback: ưu tiên cùng màu còn hàng, rồi cùng dung lượng
+    if (!variant) {
+        variant = data.items.find(v => v.color === targetColor)
+                || data.items.find(v => v.storage === targetStorage)
+                || data.items[0];
+    }
+    if (!variant) return;
+
+    data.selectedVariant = variant;
+
+    // === Cập nhật trạng thái nút MÀU (active / không active) ===
+    document.querySelectorAll('.variant-color-card').forEach(b => {
+        const isActive = b.dataset.color === variant.color;
+        b.classList.toggle('active', isActive);
+        b.classList.toggle('border-red-500', isActive && !b.classList.contains('variant-oos'));
+    });
+
+    // Cập nhật dung lượng theo màu đang chọn (hiện đúng stock cho từng cặp)
+    updateStorageButtonsForColor(variant.color);
+
+    // === Cập nhật trạng thái nút DUNG LƯỢNG ===
+    document.querySelectorAll('.variant-storage-card').forEach(b => {
+        const isActive = b.dataset.storage === variant.storage;
+        b.classList.toggle('active', isActive);
+        b.classList.toggle('border-red-500', isActive && !b.classList.contains('variant-oos'));
+    });
+
+    // === Cập nhật tồn kho hiển thị ===
+    const stock = parseInt(variant.stock) || 0;
+    currentStock = stock;
+    updateStockDisplayFromVariant(variant);
+
+    // === Cập nhật giá (giá gốc + chênh lệch) ===
+    const priceDiff = parseFloat(variant.priceDiff) || 0;
+    if (currentProduct) {
+        const newPrice = currentProduct.price + priceDiff;
+        const curEl = document.getElementById('currentPrice');
+        const sticky = document.getElementById('stickyPrice');
+        if (curEl) curEl.textContent = formatPrice(newPrice);
+        if (sticky) sticky.textContent = formatPrice(newPrice);
+    }
+
+    // === Cập nhật nút MUA / THÊM GIỎ HÀNG ===
+    updateBuyButtonsForVariant(stock);
+
+    // === Cập nhật ẢNH theo màu nếu có ảnh upload riêng cho màu ===
+    if (color) {
+        loadColorImagesForCurrentProduct(variant.color);
+    }
+}
+
+// Cache ảnh per màu để tránh fetch lặp
+const _colorImagesCache = {};
+
+// Lấy mảng ảnh "gốc" của sản phẩm (avatar + gallery chung) để fallback khi màu chưa có ảnh
+function _getProductBaseImages() {
+    if (!currentProduct) return [];
+    const base = [];
+    if (currentProduct.image) base.push(currentProduct.image);
+    if (Array.isArray(currentProduct.images)) base.push(...currentProduct.images);
+    return base;
+}
+
+async function loadColorImagesForCurrentProduct(colorName) {
+    if (!currentProduct || !currentProduct.id) return;
+    const cacheKey = `${currentProduct.id}::${colorName}`;
+    let images = _colorImagesCache[cacheKey];
+    if (!images) {
+        try {
+            const res = await fetch(`${API_URL}/products/${currentProduct.id}/color-images?color=${encodeURIComponent(colorName)}`);
+            if (res.ok) {
+                const json = await res.json();
+                images = (json && json.data) ? json.data.map(i => i.duong_dan).filter(Boolean) : [];
+            } else {
+                images = [];
+            }
+            _colorImagesCache[cacheKey] = images;
+        } catch (e) {
+            images = [];
+        }
+    }
+
+    let badge = colorName || '';
+    let gallery;
+    if (!images || images.length === 0) {
+        // Màu chưa có ảnh upload riêng → fallback ảnh sản phẩm gốc (không badge)
+        gallery = _getProductBaseImages();
+        badge = '';
+    } else {
+        // Apple-style: ưu tiên ảnh per màu, GỘP thêm ảnh gốc làm dự phòng nếu admin chỉ upload 1 ảnh per màu
+        // (tránh trường hợp dải thumbnail bị ẩn vì chỉ có 1 ảnh)
+        gallery = [...images, ..._getProductBaseImages()];
+        // dedupe đã xử lý trong _normalizeImageList
+    }
+
+    // Đổi ảnh chính (luôn lấy ảnh đầu của gallery sau khi quyết định)
+    const mainImage = document.getElementById('mainProductImage');
+    const newMainSrc = gallery[0];
+    if (mainImage && newMainSrc) {
+        mainImage.style.opacity = '0';
+        setTimeout(() => {
+            // Chuẩn hoá prefix
+            mainImage.src = newMainSrc.startsWith('http') || newMainSrc.startsWith('images/')
+                ? newMainSrc
+                : `images/${newMainSrc}`;
+            mainImage.style.opacity = '1';
+        }, 150);
+    }
+
+    // Render lại dải thumbnail với badge tên màu (chỉ khi có ảnh per màu)
+    if (typeof renderThumbnails === 'function') {
+        try { renderThumbnails({ images: gallery, colorBadge: badge }); } catch (e) { /* ignore */ }
+    }
+}
+
+// Bật/tắt nút mua hàng khi chuyển biến thể
+function updateBuyButtonsForVariant(stock) {
+    const isOOS = stock <= 0;
+    const buyNowBtns = document.querySelectorAll('button[onclick*="buyNow"]');
+    const addCartBtns = document.querySelectorAll('button[onclick*="addToCart"]');
+    const quantityEl = document.getElementById('quantity');
+    const banner = document.getElementById('out-of-stock-banner');
+
+    if (isOOS) {
+        buyNowBtns.forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove('bg-gradient-to-r', 'from-red-600', 'to-red-500', 'hover:from-red-700', 'hover:to-red-600', 'bg-red-600', 'hover:bg-red-700', 'hover:scale-[1.02]');
+            btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            btn.innerHTML = '<i class="fas fa-times-circle"></i> HẾT HÀNG';
+        });
+        addCartBtns.forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove('border-red-500', 'text-red-600', 'hover:bg-red-50');
+            btn.classList.add('border-gray-300', 'text-gray-400', 'bg-gray-100', 'cursor-not-allowed');
+            btn.innerHTML = '<i class="fas fa-times-circle"></i> Hết hàng';
+        });
+        if (quantityEl) { quantityEl.disabled = true; quantityEl.value = 0; }
+    } else {
+        // KHÔI PHỤC nút khi chọn variant còn hàng
+        buyNowBtns.forEach(btn => {
+            btn.disabled = false;
+            btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+            btn.classList.add('bg-gradient-to-r', 'from-red-600', 'to-red-500', 'hover:from-red-700', 'hover:to-red-600', 'hover:scale-[1.02]');
+            btn.innerHTML = '<i class="fas fa-bolt"></i> MUA NGAY';
+        });
+        addCartBtns.forEach(btn => {
+            btn.disabled = false;
+            btn.classList.remove('border-gray-300', 'text-gray-400', 'bg-gray-100', 'cursor-not-allowed');
+            btn.classList.add('border-red-500', 'text-red-600', 'hover:bg-red-50');
+            btn.innerHTML = '<i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng';
+        });
+        if (quantityEl) { quantityEl.disabled = false; quantityEl.value = 1; quantityEl.max = stock; }
+        // Xóa banner hết hàng nếu có
+        if (banner) banner.remove();
+    }
+}
+
+// Render urgency banner: "Còn N chiếc" + "X người đang xem"
+// stock < 0 hoặc null → ẩn banner
+function renderUrgencyBanner(stock) {
+    const banner = document.getElementById('urgencyBanner');
+    if (!banner) return;
+    const items = [];
+
+    const stockNum = parseInt(stock);
+    if (Number.isFinite(stockNum) && stockNum > 0 && stockNum <= 10) {
+        items.push(`
+            <div class="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-700 text-sm">
+                <i class="fas fa-fire text-amber-500"></i>
+                <span><b>Sắp hết hàng!</b> Chỉ còn ${stockNum} chiếc — đặt sớm kẻo lỡ.</span>
+            </div>
+        `);
+    }
+
+    // Số người đang xem — pseudo random theo product id để stable trong phiên
+    if (currentProduct && currentProduct.id) {
+        const seed = parseInt(currentProduct.id) || 1;
+        const viewers = 6 + ((seed * 7 + Date.now() / 600000 | 0) % 17); // 6..22, đổi mỗi 10 phút
+        items.push(`
+            <div class="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 text-sm">
+                <i class="fas fa-eye text-blue-500"></i>
+                <span><b>${viewers}</b> khách đang xem sản phẩm này</span>
+            </div>
+        `);
+    }
+
+    if (items.length === 0) {
+        banner.classList.add('hidden');
+        banner.innerHTML = '';
+    } else {
+        banner.classList.remove('hidden');
+        banner.innerHTML = items.join('');
+    }
+}
+
+function updateStockDisplayFromVariant(variant) {
+    const el = document.getElementById('stockCount');
+    // Cập nhật urgency banner ngay cả khi stockCount không tồn tại
+    renderUrgencyBanner(variant && variant.stock);
+    if (!el) return;
+    const wrap = el.closest('span') || el.parentElement;
+    if (shopSettings && shopSettings.hideStockFromCustomer) {
+        wrap.innerHTML = variant.stock > 0
+            ? '<i class="fas fa-check-circle text-green-500 mr-1"></i><span class="text-green-600 font-medium">Còn hàng</span>'
+            : '<i class="fas fa-times-circle text-red-500 mr-1"></i><span class="text-red-600 font-medium">Hết hàng</span>';
+    } else {
+        const stock = parseInt(variant.stock) || 0;
+        el.textContent = stock;
+        if (stock <= 0) {
+            wrap.innerHTML = '<i class="fas fa-times-circle text-red-500 mr-1"></i><span class="text-red-600 font-medium">Hết hàng</span>';
+        } else if (stock <= 5) {
+            wrap.innerHTML = `<i class="fas fa-exclamation-triangle text-amber-500 mr-1"></i><span class="text-amber-600 font-medium">Chỉ còn ${stock} chiếc <span class="text-gray-400">(${variant.color} - ${variant.storage})</span></span>`;
+        } else {
+            wrap.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-1"></i><span class="text-green-600 font-medium">Còn ${stock} chiếc <span class="text-gray-400">(${variant.color} - ${variant.storage})</span></span>`;
+        }
+    }
+}
+
+// Helper export ra global để cart/checkout có thể đọc variant đang chọn
+window.getSelectedVariantForCart = function() {
+    const data = window.PRODUCT_VARIANTS;
+    if (!data.hasVariants || !data.selectedVariant) return null;
+    const v = data.selectedVariant;
+    return { variantId: v.id, color: v.color, storage: v.storage };
+};
+window.selectVariant = selectVariant;
+window.loadProductVariants = loadProductVariants;
+
+// ============== GALLERY NAVIGATION + LIGHTBOX + ZOOM HOVER ==============
+
+// Chuyển ảnh chính tới/lui trong pool ảnh đang hiển thị
+function navigateImage(delta) {
+    const list = window.CURRENT_GALLERY_IMAGES || [];
+    if (list.length === 0) return;
+    const mainImage = document.getElementById('mainProductImage');
+    if (!mainImage) return;
+    const curSrc = mainImage.getAttribute('src') || '';
+    let idx = list.findIndex(p => curSrc.endsWith(p) || p.endsWith(curSrc));
+    if (idx < 0) idx = 0;
+    idx = (idx + delta + list.length) % list.length;
+    selectThumbnail(idx, list[idx]);
+    // Cuộn dải thumbnail đến vị trí mới nếu khả dụng
+    const thumb = document.querySelector(`.thumb-item[data-index="${idx}"]`);
+    if (thumb && thumb.scrollIntoView) {
+        try { thumb.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' }); } catch (_) {}
+    }
+}
+window.navigateImage = navigateImage;
+
+// Lightbox: tạo overlay 1 lần, tái sử dụng
+function _ensureLightbox() {
+    let overlay = document.getElementById('lightboxOverlay');
+    if (overlay) return overlay;
+    overlay = document.createElement('div');
+    overlay.id = 'lightboxOverlay';
+    overlay.innerHTML = `
+        <button type="button" class="lightbox-btn lightbox-close" onclick="closeLightbox()" aria-label="Đóng">
+            <i class="fas fa-times"></i>
+        </button>
+        <button type="button" class="lightbox-btn lightbox-prev" onclick="lightboxNav(-1)" aria-label="Ảnh trước">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <img id="lightboxImage" src="" alt="Xem ảnh lớn" />
+        <button type="button" class="lightbox-btn lightbox-next" onclick="lightboxNav(1)" aria-label="Ảnh kế">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="lightbox-counter"><span id="lightboxCounter">1 / 1</span></div>
+    `;
+    overlay.addEventListener('click', (e) => {
+        // Click nền (không phải nút/ảnh) → đóng
+        if (e.target === overlay) closeLightbox();
+    });
+    document.body.appendChild(overlay);
+    return overlay;
+}
+
+function openLightbox(initialSrc) {
+    const overlay = _ensureLightbox();
+    const list = window.CURRENT_GALLERY_IMAGES || [];
+    const img = document.getElementById('lightboxImage');
+    let idx = list.findIndex(p => initialSrc && (initialSrc.endsWith(p) || p.endsWith(initialSrc)));
+    if (idx < 0) idx = 0;
+    overlay._currentIndex = idx;
+    if (img) img.src = list[idx] || initialSrc || '';
+    const counter = document.getElementById('lightboxCounter');
+    if (counter) counter.textContent = `${idx + 1} / ${Math.max(1, list.length)}`;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    // Hỗ trợ ESC + ← → trên bàn phím
+    document.addEventListener('keydown', _lightboxKeyHandler);
+}
+window.openLightbox = openLightbox;
+
+function closeLightbox() {
+    const overlay = document.getElementById('lightboxOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', _lightboxKeyHandler);
+}
+window.closeLightbox = closeLightbox;
+
+function lightboxNav(delta) {
+    const overlay = document.getElementById('lightboxOverlay');
+    if (!overlay) return;
+    const list = window.CURRENT_GALLERY_IMAGES || [];
+    if (list.length === 0) return;
+    let idx = (overlay._currentIndex || 0) + delta;
+    idx = (idx + list.length) % list.length;
+    overlay._currentIndex = idx;
+    const img = document.getElementById('lightboxImage');
+    if (img) img.src = list[idx];
+    const counter = document.getElementById('lightboxCounter');
+    if (counter) counter.textContent = `${idx + 1} / ${list.length}`;
+}
+window.lightboxNav = lightboxNav;
+
+function _lightboxKeyHandler(e) {
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') lightboxNav(-1);
+    else if (e.key === 'ArrowRight') lightboxNav(1);
+}
+
+// Zoom-hover ảnh chính theo vị trí cursor + click mở lightbox
+function _initMainImageInteractions() {
+    const container = document.querySelector('.main-image-container');
+    const mainImage = document.getElementById('mainProductImage');
+    if (!container || !mainImage || container._zoomInit) return;
+    container._zoomInit = true;
+
+    container.addEventListener('mouseenter', () => container.classList.add('zoom-active'));
+    container.addEventListener('mouseleave', () => {
+        container.classList.remove('zoom-active');
+        mainImage.style.transformOrigin = 'center center';
+    });
+    container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        mainImage.style.transformOrigin = `${x}% ${y}%`;
+    });
+    mainImage.addEventListener('click', () => openLightbox(mainImage.src));
+}
+
+// Auto-init khi DOM ready (an toàn cả khi script load sau hoặc trước)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _initMainImageInteractions);
+} else {
+    _initMainImageInteractions();
 }
 

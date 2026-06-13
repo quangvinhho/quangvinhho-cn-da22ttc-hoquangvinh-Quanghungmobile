@@ -11,6 +11,12 @@ const crypto = require('crypto');
 const { pool } = require('../config/database');
 
 // MoMo Configuration từ .env
+// Default keys là của sandbox MoMo (test environment) — KHÔNG dùng cho production.
+// Production phải set env riêng; server.js đã check fail-fast nếu thiếu trong production.
+const IS_PROD = process.env.NODE_ENV === 'production';
+if (!IS_PROD && (!process.env.MOMO_SECRET_KEY || !process.env.MOMO_ACCESS_KEY)) {
+  console.warn('⚠️  MoMo đang dùng key sandbox. Set MOMO_SECRET_KEY/MOMO_ACCESS_KEY trong .env cho production.');
+}
 const MOMO_CONFIG = {
   partnerCode: process.env.MOMO_PARTNER_CODE || 'MOMO',
   accessKey: process.env.MOMO_ACCESS_KEY || 'F8BBA842ECF85',

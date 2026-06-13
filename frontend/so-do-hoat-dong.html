@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sơ Đồ Hoạt Động - Hệ Thống Cửa Hàng Điện Thoại GDDA</title>
+    <title>Sơ Đồ Hoạt Động UML - Hệ Thống Cửa Hàng Điện Thoại GDDA</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             background: #f4f4f4;
             padding: 20px;
             color: #333;
@@ -36,148 +36,39 @@
         .toc li:last-child { border-bottom: none; }
         .toc a { color: #0056b3; text-decoration: none; }
         .toc a:hover { text-decoration: underline; }
-        .diagram-section { margin-bottom: 50px; page-break-inside: avoid; }
+        .diagram-section { margin-bottom: 30px; page-break-inside: avoid; }
         .diagram-title {
             background: #eee;
             color: #333;
-            padding: 12px 20px;
+            padding: 10px 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            margin-bottom: 15px;
-            font-size: 1.6em;
+            margin-bottom: 12px;
+            font-size: 1.3em;
         }
         .diagram-description {
             background: #fafafa;
-            padding: 15px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
+            font-size: 0.95em;
         }
         .diagram {
             background: #fff;
             border: 1px solid #ccc;
             border-radius: 5px;
-            padding: 30px;
+            padding: 12px;
             overflow-x: auto;
-        }
-        .activity-diagram {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            min-width: 600px;
-        }
-        
-        .start-end {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: black;
-            font-size: 0.9em;
-            gap: 8px;
-        }
-
-        .activity-diagram > .start-end:first-of-type::before {
-            content: '';
-            display: block;
-            width: 28px;
-            height: 28px;
-            background: black;
-            border-radius: 50%;
-        }
-
-        .activity-diagram > .start-end:last-of-type {
-            flex-direction: column-reverse;
-        }
-
-        .activity-diagram > .start-end:last-of-type::after {
-            content: '';
-            display: block;
-            width: 20px;
-            height: 20px;
-            background: black;
-            border-radius: 50%;
-            box-shadow: 0 0 0 3px white, 0 0 0 4.5px black;
-            margin: 5px;
-        }
-
-        .activity {
-            background: white;
-            color: black;
-            border: 1px solid black;
-            padding: 12px 25px;
-            border-radius: 20px;
-            min-width: 200px;
-            text-align: center;
-            font-size: 0.95em;
-        }
-
-        .decision {
-            width: 80px;
-            height: 80px;
-            background: white;
-            border: 1px solid black;
-            transform: rotate(45deg);
-            display: flex;
-            align-items: center;
             justify-content: center;
-            position: relative;
-            margin: 15px 0;
         }
-
-        .decision-text {
-            transform: rotate(-45deg);
-            text-align: center;
-            font-size: 0.85em;
-            width: 100px;
-            position: absolute;
-        }
-
-        .arrow {
-            width: 1px;
-            height: 35px;
-            background: black;
-            position: relative;
-        }
-
-        .arrow::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 7px solid black;
-        }
-
-        .arrow-label {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.85em;
-            color: black;
-            white-space: nowrap;
-        }
-        .parallel-split {
-            width: 250px;
-            height: 4px;
-            background: black;
-        }
-        .parallel-container {
-            display: flex;
-            gap: 40px;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .parallel-branch {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
+        /* SVG vector tự scale, max-width nhỏ để dễ chụp gọn trong 1 màn hình */
+        .diagram svg {
+            display: block;
+            max-width: 560px;
+            width: 100%;
+            height: auto;
         }
         .note {
             background: #fafafa;
@@ -186,6 +77,46 @@
             font-size: 0.9em;
             border-radius: 5px;
             margin-top: 10px;
+        }
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+        /* Style cho SVG - chuẩn Visual Paradigm */
+        .uml text {
+            font-family: Arial, Helvetica, sans-serif;
+            fill: #000;
+        }
+        .uml .activity-rect {
+            fill: #ffffff;
+            stroke: #000;
+            stroke-width: 1.2;
+        }
+        .uml .decision {
+            fill: #ffffff;
+            stroke: #000;
+            stroke-width: 1.2;
+        }
+        .uml .bar {
+            fill: #000;
+        }
+        .uml .flow {
+            stroke: #000;
+            stroke-width: 1.2;
+            fill: none;
+        }
+        .uml .guard {
+            font-size: 14px;
+            font-style: italic;
+            fill: #000;
+        }
+        .uml .label {
+            font-size: 15px;
+            text-anchor: middle;
         }
         @media print {
             body { background: white; padding: 0; }
@@ -196,390 +127,864 @@
 </head>
 <body>
     <div class="container">
-        <h1>📱 SƠ ĐỒ HOẠT ĐỘNG DA GDDA</h1>
-        <div class="subtitle">Hệ Thống Bán Lẻ Điện Thoại & Cửa Hàng Điện Tử Tích Hợp AI</div>
+        <h1>SƠ ĐỒ HOẠT ĐỘNG UML – GDDA</h1>
+        <div class="subtitle">Activity Diagram (theo chuẩn Visual Paradigm UML 2.x)</div>
 
         <!-- Mục lục -->
         <div class="toc">
-            <h2>📋 Danh Sách Sơ Đồ Hoạt Động (10 Core Flows)</h2>
+            <h2>Danh Sách Sơ Đồ Hoạt Động (10 Core Flows)</h2>
             <ul>
-                <li><a href="#diagram1">1. Đăng Ký & Đăng Nhập Hệ Thống</a></li>
-                <li><a href="#diagram2">2. Tìm Kiếm & Lọc Sản Phẩm (Điện Thoại)</a></li>
+                <li><a href="#diagram1">1. Đăng Ký &amp; Đăng Nhập Hệ Thống</a></li>
+                <li><a href="#diagram2">2. Tìm Kiếm &amp; Lọc Sản Phẩm</a></li>
                 <li><a href="#diagram3">3. Quản Lý Giỏ Hàng</a></li>
                 <li><a href="#diagram4">4. Thanh Toán Đơn Hàng (Checkout)</a></li>
                 <li><a href="#diagram5">5. Tư Vấn Bằng AI Chatbot RAG</a></li>
-                <li><a href="#diagram6">6. Gợi Ý Sản Phẩm Thông Minh (Recommend Engine)</a></li>
-                <li><a href="#diagram7">7. Quản Lý Tài Khoản & Theo Dõi Đơn Hàng</a></li>
-                <li><a href="#diagram8">8. Đọc Tin Tức & Cập Nhật Khuyến Mãi</a></li>
+                <li><a href="#diagram6">6. Gợi Ý Sản Phẩm Thông Minh</a></li>
+                <li><a href="#diagram7">7. Quản Lý Tài Khoản &amp; Theo Dõi Đơn Hàng</a></li>
+                <li><a href="#diagram8">8. Đọc Tin Tức &amp; Khuyến Mãi</a></li>
                 <li><a href="#diagram9">9. Đánh Giá Sản Phẩm (Reviews)</a></li>
-                <li><a href="#diagram10">10. Quản Lý Của Admin (Sản Phẩm, Đơn, Chatbot Knowledge)</a></li>
+                <li><a href="#diagram10">10. Quản Lý Của Admin Tích Hợp AI</a></li>
             </ul>
         </div>
 
-        <!-- Sơ đồ 1 -->
+        <!-- =================== Sơ đồ 1 =================== -->
         <div class="diagram-section" id="diagram1">
-            <h2 class="diagram-title">1. Đăng Ký & Đăng Nhập Hệ Thống</h2>
+            <h2 class="diagram-title">1. Đăng Ký &amp; Đăng Nhập Hệ Thống</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Luồng xử lý người dùng tham gia ứng dụng. Hỗ trợ tạo tài khoản và xác thực.
+                <strong>Mô tả:</strong> Người dùng truy cập hệ thống. Nếu chưa có tài khoản thì đăng ký, nếu sai dữ liệu sẽ quay lại nhập. Có tài khoản thì đăng nhập, sai mật khẩu quay lại nhập. Hai luồng hợp nhất bằng <em>Merge Node</em>, kết thúc bằng <em>Activity Final Node</em>.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="decision">
-                        <div class="decision-text">Hành<br>động?</div>
-                    </div>
-                    <div class="parallel-split"></div>
-                    <div class="parallel-container">
-                        <div class="parallel-branch">
-                            <div class="activity">Đăng ký</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Điền Tên, Email, Mật khẩu</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Hệ thống xử lý & Valid API</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Lưu Database</div>
-                        </div>
-                        <div class="parallel-branch">
-                            <div class="activity">Đăng nhập</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Nhập Email & Password</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Kiểm tra thông tin</div>
-                        </div>
-                    </div>
-                    <div class="parallel-split"></div>
-                    <div class="arrow"></div>
-                    <div class="activity">Cấp Token (Session/Passport)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Chuyển hướng trang chủ / Chức năng</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 820 1020" width="820" height="1020" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <!-- Initial Node -->
+                    <circle cx="410" cy="30" r="12" fill="#000"/>
+
+                    <!-- Activity: Truy cập trang -->
+                    <rect class="activity-rect" x="290" y="70" width="240" height="44" rx="22"/>
+                    <text class="label" x="410" y="97">Truy cập trang đăng nhập</text>
+
+                    <!-- Decision: Đã có tài khoản? -->
+                    <polygon class="decision" points="410,160 490,220 410,280 330,220"/>
+                    <text class="label" x="410" y="216" font-size="12">Đã có</text>
+                    <text class="label" x="410" y="232" font-size="12">tài khoản?</text>
+
+                    <!-- Flow Start -> Activity -->
+                    <line class="flow" x1="410" y1="42" x2="410" y2="70" marker-end="url(#arr)"/>
+                    <!-- Activity -> Decision -->
+                    <line class="flow" x1="410" y1="114" x2="410" y2="160" marker-end="url(#arr)"/>
+
+                    <!-- Branch [Chưa] - đi trái -->
+                    <polyline class="flow" points="330,220 180,220 180,330" marker-end="url(#arr)"/>
+                    <text class="guard" x="200" y="212">[Chưa]</text>
+                    <!-- Branch [Có] - đi phải -->
+                    <polyline class="flow" points="490,220 640,220 640,330" marker-end="url(#arr)"/>
+                    <text class="guard" x="600" y="212">[Có]</text>
+
+                    <!-- Nhánh Đăng Ký (trái) -->
+                    <rect class="activity-rect" x="70" y="330" width="220" height="44" rx="22"/>
+                    <text class="label" x="180" y="357">Điền họ tên, email, mật khẩu</text>
+
+                    <line class="flow" x1="180" y1="374" x2="180" y2="410" marker-end="url(#arr)"/>
+                    <rect class="activity-rect" x="70" y="410" width="220" height="44" rx="22"/>
+                    <text class="label" x="180" y="437">Hệ thống validate form</text>
+
+                    <line class="flow" x1="180" y1="454" x2="180" y2="495" marker-end="url(#arr)"/>
+                    <polygon class="decision" points="180,495 250,545 180,595 110,545"/>
+                    <text class="label" x="180" y="549" font-size="12">Hợp lệ?</text>
+
+                    <!-- Loop back [Sai] về Điền form -->
+                    <polyline class="flow" points="110,545 30,545 30,352 70,352" marker-end="url(#arr)"/>
+                    <text class="guard" x="40" y="535">[Sai]</text>
+
+                    <!-- [Đúng] xuống tiếp -->
+                    <line class="flow" x1="180" y1="595" x2="180" y2="635" marker-end="url(#arr)"/>
+                    <text class="guard" x="190" y="620">[Đúng]</text>
+
+                    <rect class="activity-rect" x="70" y="635" width="220" height="44" rx="22"/>
+                    <text class="label" x="180" y="662">Lưu tài khoản vào Database</text>
+
+                    <line class="flow" x1="180" y1="679" x2="180" y2="755" marker-end="url(#arr)"/>
+
+                    <!-- Nhánh Đăng Nhập (phải) -->
+                    <rect class="activity-rect" x="530" y="330" width="220" height="44" rx="22"/>
+                    <text class="label" x="640" y="357">Nhập email &amp; mật khẩu</text>
+
+                    <line class="flow" x1="640" y1="374" x2="640" y2="410" marker-end="url(#arr)"/>
+                    <rect class="activity-rect" x="530" y="410" width="220" height="44" rx="22"/>
+                    <text class="label" x="640" y="437">Kiểm tra thông tin đăng nhập</text>
+
+                    <line class="flow" x1="640" y1="454" x2="640" y2="495" marker-end="url(#arr)"/>
+                    <polygon class="decision" points="640,495 710,545 640,595 570,545"/>
+                    <text class="label" x="640" y="549" font-size="12">Đúng?</text>
+
+                    <!-- Loop back [Sai] -->
+                    <polyline class="flow" points="710,545 790,545 790,352 750,352" marker-end="url(#arr)"/>
+                    <text class="guard" x="755" y="535">[Sai]</text>
+
+                    <!-- [Đúng] xuống tiếp -->
+                    <line class="flow" x1="640" y1="595" x2="640" y2="755" marker-end="url(#arr)"/>
+                    <text class="guard" x="650" y="620">[Đúng]</text>
+
+                    <!-- Merge Node hợp 2 nhánh -->
+                    <polygon class="decision" points="410,755 470,795 410,835 350,795"/>
+                    <polyline class="flow" points="180,755 410,755" marker-end="url(#arr)"/>
+                    <polyline class="flow" points="640,755 410,755" marker-end="url(#arr)"/>
+
+                    <!-- Activity: Cấp Token -->
+                    <line class="flow" x1="410" y1="835" x2="410" y2="865" marker-end="url(#arr)"/>
+                    <rect class="activity-rect" x="280" y="865" width="260" height="44" rx="22"/>
+                    <text class="label" x="410" y="892">Cấp Token &amp; chuyển trang chủ</text>
+
+                    <!-- Final Bar + Final Node -->
+                    <line class="flow" x1="410" y1="909" x2="410" y2="940" marker-end="url(#arr)"/>
+                    <rect class="bar" x="310" y="940" width="200" height="6"/>
+                    <line class="flow" x1="410" y1="946" x2="410" y2="980" marker-end="url(#arr)"/>
+                    <circle cx="410" cy="998" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="410" cy="998" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 2 -->
+        <!-- =================== Sơ đồ 2 =================== -->
         <div class="diagram-section" id="diagram2">
-            <h2 class="diagram-title">2. Tìm Kiếm & Lọc Sản Phẩm</h2>
+            <h2 class="diagram-title">2. Tìm Kiếm &amp; Lọc Sản Phẩm</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Khách hàng tìm kiếm các loại máy (iPhone, Samsung, OPPO) và xem chi tiết cấu hình.
+                <strong>Mô tả:</strong> Khách nhập từ khoá. Nếu không tìm thấy sản phẩm phù hợp sẽ <strong>quay lại bước nhập lại</strong>; nếu có thì xem chi tiết và kết thúc.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Khách hàng nhập từ khóa tìm kiếm (VD: "iPhone 16")</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Hệ thống gọi Route /search & /products</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Trả về danh sách sản phẩm</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Khách click xem chi tiết sản phẩm</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Hiển thị giá, ảnh, cấu hình (product-detail.html)</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 600 830" width="600" height="830" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="300" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="300" y1="42" x2="300" y2="80" marker-end="url(#arr2)"/>
+
+                    <rect class="activity-rect" x="160" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="300" y="107">Nhập từ khoá tìm kiếm</text>
+
+                    <line class="flow" x1="300" y1="124" x2="300" y2="160" marker-end="url(#arr2)"/>
+                    <rect class="activity-rect" x="160" y="160" width="280" height="44" rx="22"/>
+                    <text class="label" x="300" y="187">Gọi API /search /products</text>
+
+                    <line class="flow" x1="300" y1="204" x2="300" y2="240" marker-end="url(#arr2)"/>
+                    <rect class="activity-rect" x="160" y="240" width="280" height="44" rx="22"/>
+                    <text class="label" x="300" y="267">Truy vấn Database</text>
+
+                    <!-- Decision: Tìm thấy? -->
+                    <line class="flow" x1="300" y1="284" x2="300" y2="325" marker-end="url(#arr2)"/>
+                    <polygon class="decision" points="300,325 370,375 300,425 230,375"/>
+                    <text class="label" x="300" y="380" font-size="12">Có kết quả?</text>
+
+                    <!-- Loop back [Không] -->
+                    <polyline class="flow" points="230,375 80,375 80,102 160,102" marker-end="url(#arr2)"/>
+                    <text class="guard" x="100" y="365">[Không]</text>
+
+                    <!-- [Có] xuống tiếp -->
+                    <line class="flow" x1="300" y1="425" x2="300" y2="465" marker-end="url(#arr2)"/>
+                    <text class="guard" x="310" y="450">[Có]</text>
+
+                    <rect class="activity-rect" x="160" y="465" width="280" height="44" rx="22"/>
+                    <text class="label" x="300" y="492">Hiển thị danh sách sản phẩm</text>
+
+                    <line class="flow" x1="300" y1="509" x2="300" y2="545" marker-end="url(#arr2)"/>
+                    <rect class="activity-rect" x="160" y="545" width="280" height="44" rx="22"/>
+                    <text class="label" x="300" y="572">Click vào sản phẩm xem chi tiết</text>
+
+                    <line class="flow" x1="300" y1="589" x2="300" y2="625" marker-end="url(#arr2)"/>
+                    <rect class="activity-rect" x="160" y="625" width="280" height="44" rx="22"/>
+                    <text class="label" x="300" y="652">Hiển thị giá, ảnh, cấu hình</text>
+
+                    <line class="flow" x1="300" y1="669" x2="300" y2="700" marker-end="url(#arr2)"/>
+                    <rect class="bar" x="200" y="700" width="200" height="6"/>
+                    <line class="flow" x1="300" y1="706" x2="300" y2="745" marker-end="url(#arr2)"/>
+                    <circle cx="300" cy="763" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="300" cy="763" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 3 -->
+        <!-- =================== Sơ đồ 3 =================== -->
         <div class="diagram-section" id="diagram3">
             <h2 class="diagram-title">3. Quản Lý Giỏ Hàng</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Thêm, sửa, xóa sản phẩm trong giỏ hàng trước khi đặt.
+                <strong>Mô tả:</strong> Quyết định <em>Thao tác?</em> tách 3 nhánh (Thêm / Sửa / Xoá). Các nhánh hợp lại tại <em>Merge Node</em> rồi cập nhật lại tổng tiền. Sau đó hỏi <em>Còn thao tác?</em> – nếu Có thì <strong>quay lại</strong>, Không thì kết thúc.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Khách đang ở trang chi tiết sản phẩm</div>
-                    <div class="arrow"></div>
-                    <div class="decision">
-                        <div class="decision-text">Chọn<br>Thao tác</div>
-                    </div>
-                    <div class="arrow"><span class="arrow-label">Thêm vào giỏ</span></div>
-                    <div class="activity">Lưu sản phẩm vào Cart State (localStorage/Session)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Vào trang Giỏ hàng (cart.html)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Sửa số lượng / Áp dụng mã giảm giá</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Cập nhật Tổng tiền</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 820 920" width="820" height="920" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="410" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="410" y1="42" x2="410" y2="80" marker-end="url(#arr3)"/>
+
+                    <rect class="activity-rect" x="270" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="107">Mở trang giỏ hàng (cart.html)</text>
+
+                    <!-- Decision Thao tác? -->
+                    <line class="flow" x1="410" y1="124" x2="410" y2="165" marker-end="url(#arr3)"/>
+                    <polygon class="decision" points="410,165 490,225 410,285 330,225"/>
+                    <text class="label" x="410" y="222" font-size="12">Thao</text>
+                    <text class="label" x="410" y="238" font-size="12">tác?</text>
+
+                    <!-- 3 nhánh: trái = Thêm, giữa = Sửa, phải = Xoá -->
+                    <polyline class="flow" points="330,225 140,225 140,335" marker-end="url(#arr3)"/>
+                    <text class="guard" x="200" y="217">[Thêm]</text>
+
+                    <line class="flow" x1="410" y1="285" x2="410" y2="335" marker-end="url(#arr3)"/>
+                    <text class="guard" x="420" y="315">[Sửa SL]</text>
+
+                    <polyline class="flow" points="490,225 680,225 680,335" marker-end="url(#arr3)"/>
+                    <text class="guard" x="600" y="217">[Xoá]</text>
+
+                    <!-- Activity 3 nhánh -->
+                    <rect class="activity-rect" x="30" y="335" width="220" height="44" rx="22"/>
+                    <text class="label" x="140" y="362">Thêm SP vào Cart</text>
+
+                    <rect class="activity-rect" x="300" y="335" width="220" height="44" rx="22"/>
+                    <text class="label" x="410" y="362">Tăng/Giảm số lượng</text>
+
+                    <rect class="activity-rect" x="570" y="335" width="220" height="44" rx="22"/>
+                    <text class="label" x="680" y="362">Xoá sản phẩm khỏi Cart</text>
+
+                    <!-- Mũi tên xuống Merge -->
+                    <polyline class="flow" points="140,379 140,440 410,440" marker-end="url(#arr3)"/>
+                    <line class="flow" x1="410" y1="379" x2="410" y2="430" marker-end="url(#arr3)"/>
+                    <polyline class="flow" points="680,379 680,440 410,440" marker-end="url(#arr3)"/>
+
+                    <!-- Merge Node -->
+                    <polygon class="decision" points="410,440 460,475 410,510 360,475"/>
+
+                    <line class="flow" x1="410" y1="510" x2="410" y2="545" marker-end="url(#arr3)"/>
+                    <rect class="activity-rect" x="270" y="545" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="572">Cập nhật localStorage + DB</text>
+
+                    <line class="flow" x1="410" y1="589" x2="410" y2="625" marker-end="url(#arr3)"/>
+                    <rect class="activity-rect" x="270" y="625" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="652">Tính lại tổng tiền &amp; voucher</text>
+
+                    <!-- Decision còn thao tác? -->
+                    <line class="flow" x1="410" y1="669" x2="410" y2="705" marker-end="url(#arr3)"/>
+                    <polygon class="decision" points="410,705 490,760 410,815 330,760"/>
+                    <text class="label" x="410" y="757" font-size="12">Còn</text>
+                    <text class="label" x="410" y="773" font-size="12">thao tác?</text>
+
+                    <!-- Loop back [Có] -->
+                    <polyline class="flow" points="490,760 780,760 780,225 490,225" marker-end="url(#arr3)"/>
+                    <text class="guard" x="700" y="750">[Có]</text>
+
+                    <!-- [Không] xuống End -->
+                    <line class="flow" x1="410" y1="815" x2="410" y2="850" marker-end="url(#arr3)"/>
+                    <text class="guard" x="420" y="835">[Không]</text>
+
+                    <rect class="bar" x="310" y="850" width="200" height="6"/>
+                    <line class="flow" x1="410" y1="856" x2="410" y2="890" marker-end="url(#arr3)"/>
+                    <circle cx="410" cy="908" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="410" cy="908" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 4: Thanh toán -->
+        <!-- =================== Sơ đồ 4 =================== -->
         <div class="diagram-section" id="diagram4">
             <h2 class="diagram-title">4. Thanh Toán Đơn Hàng (Checkout)</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Chuyển hóa giỏ hàng thành đơn hàng hoàn chỉnh (checkout.js, payment.js).
+                <strong>Mô tả:</strong> Khách chọn phương thức thanh toán. Nếu thanh toán <em>thất bại</em> thì quay lại nhập lại; nếu thành công thì tạo đơn, trừ kho, kết thúc.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Từ giỏ hàng nhấn "Tiến hành thanh toán"</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Nhập địa chỉ giao hàng & SĐT</div>
-                    <div class="arrow"></div>
-                    <div class="decision">
-                        <div class="decision-text">Phương thức<br>thanh toán?</div>
-                    </div>
-                    <div class="parallel-split"></div>
-                    <div class="parallel-container">
-                        <div class="parallel-branch">
-                            <div class="activity">COD</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Xác nhận nhận hàng trả tiền</div>
-                        </div>
-                        <div class="parallel-branch">
-                            <div class="activity">Ví điện tử / Thẻ</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Chuyển hướng Payment Gateway</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Xác nhận API callback</div>
-                        </div>
-                    </div>
-                    <div class="parallel-split"></div>
-                    <div class="arrow"></div>
-                    <div class="activity">Tạo DB record Đơn Hàng (Pending)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Trừ tồn kho & Xóa giỏ hàng</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Chuyển trang Thành Công (order-success.html)</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 820 1080" width="820" height="1080" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="410" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="410" y1="42" x2="410" y2="80" marker-end="url(#arr4)"/>
+
+                    <rect class="activity-rect" x="270" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="107">Nhấn "Tiến hành thanh toán"</text>
+
+                    <line class="flow" x1="410" y1="124" x2="410" y2="160" marker-end="url(#arr4)"/>
+                    <rect class="activity-rect" x="270" y="160" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="187">Nhập địa chỉ giao hàng &amp; SĐT</text>
+
+                    <!-- Decision Phương thức? -->
+                    <line class="flow" x1="410" y1="204" x2="410" y2="245" marker-end="url(#arr4)"/>
+                    <polygon class="decision" points="410,245 500,310 410,375 320,310"/>
+                    <text class="label" x="410" y="305" font-size="12">Phương</text>
+                    <text class="label" x="410" y="321" font-size="12">thức?</text>
+
+                    <!-- Fork Bar -->
+                    <line class="flow" x1="410" y1="375" x2="410" y2="410" marker-end="url(#arr4)"/>
+                    <rect class="bar" x="180" y="410" width="460" height="6"/>
+
+                    <!-- 2 nhánh song song -->
+                    <line class="flow" x1="280" y1="416" x2="280" y2="455" marker-end="url(#arr4)"/>
+                    <text class="guard" x="200" y="445">[COD]</text>
+                    <line class="flow" x1="540" y1="416" x2="540" y2="455" marker-end="url(#arr4)"/>
+                    <text class="guard" x="560" y="445">[Online / Ví]</text>
+
+                    <rect class="activity-rect" x="160" y="455" width="240" height="44" rx="22"/>
+                    <text class="label" x="280" y="482">Xác nhận nhận hàng trả tiền</text>
+
+                    <rect class="activity-rect" x="420" y="455" width="240" height="44" rx="22"/>
+                    <text class="label" x="540" y="482">Chuyển hướng Payment Gateway</text>
+
+                    <line class="flow" x1="540" y1="499" x2="540" y2="535" marker-end="url(#arr4)"/>
+                    <rect class="activity-rect" x="420" y="535" width="240" height="44" rx="22"/>
+                    <text class="label" x="540" y="562">Xác nhận callback API</text>
+
+                    <!-- Join Bar -->
+                    <line class="flow" x1="280" y1="499" x2="280" y2="610" marker-end="url(#arr4)"/>
+                    <line class="flow" x1="540" y1="579" x2="540" y2="610" marker-end="url(#arr4)"/>
+                    <rect class="bar" x="180" y="610" width="460" height="6"/>
+
+                    <!-- Decision Thành công? -->
+                    <line class="flow" x1="410" y1="616" x2="410" y2="650" marker-end="url(#arr4)"/>
+                    <polygon class="decision" points="410,650 490,710 410,770 330,710"/>
+                    <text class="label" x="410" y="707" font-size="12">Thanh toán</text>
+                    <text class="label" x="410" y="723" font-size="12">thành công?</text>
+
+                    <!-- Loop back [Thất bại] về Nhập địa chỉ -->
+                    <polyline class="flow" points="330,710 50,710 50,182 270,182" marker-end="url(#arr4)"/>
+                    <text class="guard" x="80" y="700">[Thất bại]</text>
+
+                    <!-- [Thành công] xuống tiếp -->
+                    <line class="flow" x1="410" y1="770" x2="410" y2="805" marker-end="url(#arr4)"/>
+                    <text class="guard" x="420" y="790">[Thành công]</text>
+
+                    <rect class="activity-rect" x="270" y="805" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="832">Tạo bản ghi Đơn hàng (Pending)</text>
+
+                    <line class="flow" x1="410" y1="849" x2="410" y2="885" marker-end="url(#arr4)"/>
+                    <rect class="activity-rect" x="270" y="885" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="912">Trừ tồn kho &amp; xoá giỏ hàng</text>
+
+                    <line class="flow" x1="410" y1="929" x2="410" y2="965" marker-end="url(#arr4)"/>
+                    <rect class="activity-rect" x="270" y="965" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="992">Chuyển trang order-success.html</text>
+
+                    <line class="flow" x1="410" y1="1009" x2="410" y2="1040" marker-end="url(#arr4)"/>
+                    <circle cx="410" cy="1058" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="410" cy="1058" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 5: Chatbot RAG -->
+        <!-- =================== Sơ đồ 5 =================== -->
         <div class="diagram-section" id="diagram5">
             <h2 class="diagram-title">5. Tư Vấn Bằng AI Chatbot RAG</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Hệ thống sử dụng Engine Python ChromaDB lấy tri thức cửa hàng để tư vấn điện thoại.
+                <strong>Mô tả:</strong> Khách nhắn tin, hệ thống vector hoá và truy vấn ChromaDB. Nếu không có context phù hợp sẽ trả lời mặc định; nếu có, gọi LLM sinh câu trả lời. Sau khi trả về, hỏi <em>Tiếp tục hỏi?</em> – Có thì <strong>quay lại</strong>, Không thì kết thúc.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Khách nhắn tin ("iPhone 16 pin bao lâu?")</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Node backend gọi API tới Python Service (rag_engine)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Vector Hóa truy vấn</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Lọc thông tin từ ChromaDB (Knowledge base)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Gửi Context + Prompt tới LLM</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Tạo sinh câu trả lời tự nhiên</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Trả kết quả ra khung chat UI</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                    <div class="note">🤖 Công nghệ: Python, ChromaDB, RAG</div>
-                </div>
+                <svg class="uml" viewBox="0 0 820 1130" width="820" height="1130" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="410" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="410" y1="42" x2="410" y2="80" marker-end="url(#arr5)"/>
+
+                    <rect class="activity-rect" x="270" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="107">Khách gửi câu hỏi vào khung chat</text>
+
+                    <line class="flow" x1="410" y1="124" x2="410" y2="160" marker-end="url(#arr5)"/>
+                    <rect class="activity-rect" x="270" y="160" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="187">Node gọi API Python rag_engine</text>
+
+                    <line class="flow" x1="410" y1="204" x2="410" y2="240" marker-end="url(#arr5)"/>
+                    <rect class="activity-rect" x="270" y="240" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="267">Vector hoá truy vấn (Embedding)</text>
+
+                    <line class="flow" x1="410" y1="284" x2="410" y2="320" marker-end="url(#arr5)"/>
+                    <rect class="activity-rect" x="270" y="320" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="347">Tra cứu ChromaDB Knowledge</text>
+
+                    <!-- Decision Có context phù hợp? -->
+                    <line class="flow" x1="410" y1="364" x2="410" y2="405" marker-end="url(#arr5)"/>
+                    <polygon class="decision" points="410,405 500,465 410,525 320,465"/>
+                    <text class="label" x="410" y="460" font-size="12">Có context</text>
+                    <text class="label" x="410" y="476" font-size="12">phù hợp?</text>
+
+                    <!-- [Không] - trả lời mặc định (sang phải) -->
+                    <polyline class="flow" points="500,465 700,465 700,545" marker-end="url(#arr5)"/>
+                    <text class="guard" x="620" y="455">[Không]</text>
+                    <rect class="activity-rect" x="580" y="545" width="240" height="44" rx="22"/>
+                    <text class="label" x="700" y="572">Trả về câu trả lời mặc định</text>
+
+                    <!-- [Có] xuống tiếp -->
+                    <line class="flow" x1="410" y1="525" x2="410" y2="560" marker-end="url(#arr5)"/>
+                    <text class="guard" x="420" y="545">[Có]</text>
+
+                    <rect class="activity-rect" x="270" y="560" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="587">Gửi Prompt + Context cho LLM</text>
+
+                    <line class="flow" x1="410" y1="604" x2="410" y2="640" marker-end="url(#arr5)"/>
+                    <rect class="activity-rect" x="270" y="640" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="667">LLM sinh câu trả lời tự nhiên</text>
+
+                    <!-- Merge 2 nhánh -->
+                    <polyline class="flow" points="700,589 700,720 470,720" marker-end="url(#arr5)"/>
+                    <line class="flow" x1="410" y1="684" x2="410" y2="710" marker-end="url(#arr5)"/>
+                    <polygon class="decision" points="410,720 460,755 410,790 360,755"/>
+
+                    <line class="flow" x1="410" y1="790" x2="410" y2="825" marker-end="url(#arr5)"/>
+                    <rect class="activity-rect" x="270" y="825" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="852">Hiển thị kết quả lên UI chat</text>
+
+                    <!-- Decision Tiếp tục hỏi? -->
+                    <line class="flow" x1="410" y1="869" x2="410" y2="905" marker-end="url(#arr5)"/>
+                    <polygon class="decision" points="410,905 490,955 410,1005 330,955"/>
+                    <text class="label" x="410" y="952" font-size="12">Tiếp tục</text>
+                    <text class="label" x="410" y="968" font-size="12">hỏi?</text>
+
+                    <!-- Loop back [Có] -->
+                    <polyline class="flow" points="330,955 60,955 60,102 270,102" marker-end="url(#arr5)"/>
+                    <text class="guard" x="80" y="945">[Có]</text>
+
+                    <!-- [Không] đi xuống -->
+                    <line class="flow" x1="410" y1="1005" x2="410" y2="1040" marker-end="url(#arr5)"/>
+                    <text class="guard" x="420" y="1030">[Không]</text>
+
+                    <rect class="bar" x="310" y="1040" width="200" height="6"/>
+                    <line class="flow" x1="410" y1="1046" x2="410" y2="1080" marker-end="url(#arr5)"/>
+                    <circle cx="410" cy="1098" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="410" cy="1098" r="8" fill="#000"/>
+                </svg>
             </div>
+            <div class="note">Công nghệ: Python · ChromaDB · RAG · LLM</div>
         </div>
 
-        <!-- Sơ đồ 6: Recommendation -->
+        <!-- =================== Sơ đồ 6 =================== -->
         <div class="diagram-section" id="diagram6">
             <h2 class="diagram-title">6. Gợi Ý Sản Phẩm Thông Minh (Recommend Engine)</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Gợi ý điện thoại, ốp lưng, sạc dựa trên lịch sử mua/xem (recommend_engine.py).
+                <strong>Mô tả:</strong> Khi vào trang chủ, kiểm tra có lịch sử user không. Nếu <em>không</em> thì gợi ý trending; nếu <em>có</em> thì gọi engine phân tích Collaborative / Content-based.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Truy cập Trang chủ / Trang sản phẩm</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Gửi ID User / Lịch sử Session (Local)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Server gọi Recommend Engine Python</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Phân tích Collaborative / Content-based</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Trả ra danh sách ID sản phẩm phù hợp</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Render UI ở mục "Có thể bạn sẽ thích"</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 820 920" width="820" height="920" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr6" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="410" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="410" y1="42" x2="410" y2="80" marker-end="url(#arr6)"/>
+
+                    <rect class="activity-rect" x="270" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="107">Truy cập trang chủ / trang sản phẩm</text>
+
+                    <line class="flow" x1="410" y1="124" x2="410" y2="160" marker-end="url(#arr6)"/>
+                    <rect class="activity-rect" x="270" y="160" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="187">Gửi User ID / Session lên server</text>
+
+                    <!-- Decision Có lịch sử? -->
+                    <line class="flow" x1="410" y1="204" x2="410" y2="245" marker-end="url(#arr6)"/>
+                    <polygon class="decision" points="410,245 500,305 410,365 320,305"/>
+                    <text class="label" x="410" y="300" font-size="12">Có lịch sử</text>
+                    <text class="label" x="410" y="316" font-size="12">mua/xem?</text>
+
+                    <!-- [Không] - sang trái -->
+                    <polyline class="flow" points="320,305 150,305 150,400" marker-end="url(#arr6)"/>
+                    <text class="guard" x="180" y="295">[Không]</text>
+                    <rect class="activity-rect" x="30" y="400" width="240" height="44" rx="22"/>
+                    <text class="label" x="150" y="427">Lấy danh sách Trending</text>
+
+                    <!-- [Có] - sang phải -->
+                    <polyline class="flow" points="500,305 670,305 670,400" marker-end="url(#arr6)"/>
+                    <text class="guard" x="600" y="295">[Có]</text>
+                    <rect class="activity-rect" x="550" y="400" width="240" height="44" rx="22"/>
+                    <text class="label" x="670" y="427">Gọi recommend_engine.py</text>
+
+                    <line class="flow" x1="670" y1="444" x2="670" y2="480" marker-end="url(#arr6)"/>
+                    <rect class="activity-rect" x="550" y="480" width="240" height="44" rx="22"/>
+                    <text class="label" x="670" y="500">Phân tích Collaborative</text>
+                    <text class="label" x="670" y="516">/ Content-based</text>
+
+                    <!-- Merge -->
+                    <polyline class="flow" points="150,444 150,580 380,580" marker-end="url(#arr6)"/>
+                    <polyline class="flow" points="670,524 670,580 440,580" marker-end="url(#arr6)"/>
+                    <polygon class="decision" points="410,580 460,615 410,650 360,615"/>
+
+                    <line class="flow" x1="410" y1="650" x2="410" y2="685" marker-end="url(#arr6)"/>
+                    <rect class="activity-rect" x="270" y="685" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="712">Trả về danh sách ID sản phẩm</text>
+
+                    <line class="flow" x1="410" y1="729" x2="410" y2="765" marker-end="url(#arr6)"/>
+                    <rect class="activity-rect" x="270" y="765" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="792">Render UI "Có thể bạn thích"</text>
+
+                    <line class="flow" x1="410" y1="809" x2="410" y2="840" marker-end="url(#arr6)"/>
+                    <rect class="bar" x="310" y="840" width="200" height="6"/>
+                    <line class="flow" x1="410" y1="846" x2="410" y2="880" marker-end="url(#arr6)"/>
+                    <circle cx="410" cy="898" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="410" cy="898" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 7: User Profile -->
+        <!-- =================== Sơ đồ 7 =================== -->
         <div class="diagram-section" id="diagram7">
-            <h2 class="diagram-title">7. Quản Lý Tài Khoản & Theo Dõi Đơn Hàng</h2>
+            <h2 class="diagram-title">7. Quản Lý Tài Khoản &amp; Theo Dõi Đơn Hàng</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Khách kiểm tra các đơn đã mua, thay đổi thông tin.
+                <strong>Mô tả:</strong> Sau khi vào trang Profile, hệ thống chạy <strong>song song 2 nhánh</strong> (Sửa thông tin và Xem đơn). Hai nhánh kết hợp tại <em>Join Bar</em> rồi kết thúc bằng chấm tròn có viền.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Vào trang Profile (profile.html)</div>
-                    <div class="arrow"></div>
-                    <div class="decision">
-                        <div class="decision-text">Hành<br>động?</div>
-                    </div>
-                    <div class="parallel-split"></div>
-                    <div class="parallel-container">
-                        <div class="parallel-branch">
-                            <div class="activity">Sửa Thông tin</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Cập nhật Avatar / SĐT</div>
-                        </div>
-                        <div class="parallel-branch">
-                            <div class="activity">Theo dõi Đơn</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Xem trạng thái (Đang giao/Hoàn thành)</div>
-                        </div>
-                    </div>
-                    <div class="parallel-split"></div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 820 780" width="820" height="780" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr7" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="410" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="410" y1="42" x2="410" y2="80" marker-end="url(#arr7)"/>
+
+                    <rect class="activity-rect" x="270" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="107">Vào trang Profile (profile.html)</text>
+
+                    <!-- Decision Đăng nhập? -->
+                    <line class="flow" x1="410" y1="124" x2="410" y2="160" marker-end="url(#arr7)"/>
+                    <polygon class="decision" points="410,160 490,210 410,260 330,210"/>
+                    <text class="label" x="410" y="206" font-size="12">Đã đăng</text>
+                    <text class="label" x="410" y="222" font-size="12">nhập?</text>
+
+                    <!-- Loop back [Chưa] về Vào trang -->
+                    <polyline class="flow" points="330,210 50,210 50,102 270,102" marker-end="url(#arr7)"/>
+                    <text class="guard" x="80" y="200">[Chưa]</text>
+
+                    <!-- [Rồi] xuống Fork -->
+                    <line class="flow" x1="410" y1="260" x2="410" y2="295" marker-end="url(#arr7)"/>
+                    <text class="guard" x="420" y="280">[Rồi]</text>
+
+                    <!-- Fork Bar -->
+                    <rect class="bar" x="180" y="295" width="460" height="6"/>
+
+                    <line class="flow" x1="280" y1="301" x2="280" y2="340" marker-end="url(#arr7)"/>
+                    <line class="flow" x1="540" y1="301" x2="540" y2="340" marker-end="url(#arr7)"/>
+
+                    <!-- Nhánh trái: Sửa info -->
+                    <rect class="activity-rect" x="160" y="340" width="240" height="44" rx="22"/>
+                    <text class="label" x="280" y="367">Sửa thông tin cá nhân</text>
+
+                    <line class="flow" x1="280" y1="384" x2="280" y2="420" marker-end="url(#arr7)"/>
+                    <rect class="activity-rect" x="160" y="420" width="240" height="44" rx="22"/>
+                    <text class="label" x="280" y="447">Cập nhật Avatar / SĐT</text>
+
+                    <line class="flow" x1="280" y1="464" x2="280" y2="500" marker-end="url(#arr7)"/>
+                    <rect class="activity-rect" x="160" y="500" width="240" height="44" rx="22"/>
+                    <text class="label" x="280" y="527">Lưu thay đổi vào DB</text>
+
+                    <!-- Nhánh phải: Xem đơn -->
+                    <rect class="activity-rect" x="420" y="340" width="240" height="44" rx="22"/>
+                    <text class="label" x="540" y="367">Vào tab "Đơn của tôi"</text>
+
+                    <line class="flow" x1="540" y1="384" x2="540" y2="420" marker-end="url(#arr7)"/>
+                    <rect class="activity-rect" x="420" y="420" width="240" height="44" rx="22"/>
+                    <text class="label" x="540" y="447">Xem trạng thái đơn hàng</text>
+
+                    <line class="flow" x1="540" y1="464" x2="540" y2="500" marker-end="url(#arr7)"/>
+                    <rect class="activity-rect" x="420" y="500" width="240" height="44" rx="22"/>
+                    <text class="label" x="540" y="527">Tra cứu / đánh giá đơn</text>
+
+                    <!-- Join Bar -->
+                    <line class="flow" x1="280" y1="544" x2="280" y2="595" marker-end="url(#arr7)"/>
+                    <line class="flow" x1="540" y1="544" x2="540" y2="595" marker-end="url(#arr7)"/>
+                    <rect class="bar" x="180" y="595" width="460" height="6"/>
+
+                    <!-- End -->
+                    <line class="flow" x1="410" y1="601" x2="410" y2="725" marker-end="url(#arr7)"/>
+                    <circle cx="410" cy="743" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="410" cy="743" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 8: News -->
+        <!-- =================== Sơ đồ 8 =================== -->
         <div class="diagram-section" id="diagram8">
-            <h2 class="diagram-title">8. Đọc Tin Tức Công Nghệ & Khuyến Mãi</h2>
+            <h2 class="diagram-title">8. Đọc Tin Tức &amp; Khuyến Mãi</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Module đọc báo, cập nhật tin iPhone 17, Oppo mới.
+                <strong>Mô tả:</strong> Luồng tuyến tính – truy cập trang tin, lọc danh mục, click bài và đọc chi tiết. Có decision <em>Đọc tiếp bài khác?</em> để quay lại danh sách hoặc kết thúc.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Truy cập Trang Tin Tức (news.html)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Lọc theo danh mục (Tech News / Khuyến mãi)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Nhấp vào bài viết</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Tải Chi Tiết (news-detail.html)</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 700 850" width="700" height="850" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr8" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="350" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="350" y1="42" x2="350" y2="80" marker-end="url(#arr8)"/>
+
+                    <rect class="activity-rect" x="210" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="350" y="107">Truy cập trang tin tức (news.html)</text>
+
+                    <line class="flow" x1="350" y1="124" x2="350" y2="160" marker-end="url(#arr8)"/>
+                    <rect class="activity-rect" x="210" y="160" width="280" height="44" rx="22"/>
+                    <text class="label" x="350" y="187">Lọc theo danh mục</text>
+
+                    <line class="flow" x1="350" y1="204" x2="350" y2="240" marker-end="url(#arr8)"/>
+                    <rect class="activity-rect" x="210" y="240" width="280" height="44" rx="22"/>
+                    <text class="label" x="350" y="267">Hiển thị danh sách bài viết</text>
+
+                    <line class="flow" x1="350" y1="284" x2="350" y2="320" marker-end="url(#arr8)"/>
+                    <rect class="activity-rect" x="210" y="320" width="280" height="44" rx="22"/>
+                    <text class="label" x="350" y="347">Click vào một bài viết</text>
+
+                    <line class="flow" x1="350" y1="364" x2="350" y2="400" marker-end="url(#arr8)"/>
+                    <rect class="activity-rect" x="210" y="400" width="280" height="44" rx="22"/>
+                    <text class="label" x="350" y="427">Tải chi tiết (news-detail.html)</text>
+
+                    <line class="flow" x1="350" y1="444" x2="350" y2="480" marker-end="url(#arr8)"/>
+                    <rect class="activity-rect" x="210" y="480" width="280" height="44" rx="22"/>
+                    <text class="label" x="350" y="507">Đọc nội dung bài viết</text>
+
+                    <!-- Decision Đọc tiếp? -->
+                    <line class="flow" x1="350" y1="524" x2="350" y2="560" marker-end="url(#arr8)"/>
+                    <polygon class="decision" points="350,560 430,615 350,670 270,615"/>
+                    <text class="label" x="350" y="612" font-size="12">Đọc tiếp</text>
+                    <text class="label" x="350" y="628" font-size="12">bài khác?</text>
+
+                    <!-- [Có] loop back về danh sách -->
+                    <polyline class="flow" points="270,615 60,615 60,262 210,262" marker-end="url(#arr8)"/>
+                    <text class="guard" x="85" y="605">[Có]</text>
+
+                    <!-- [Không] xuống End -->
+                    <line class="flow" x1="350" y1="670" x2="350" y2="705" marker-end="url(#arr8)"/>
+                    <text class="guard" x="360" y="695">[Không]</text>
+                    <rect class="bar" x="250" y="705" width="200" height="6"/>
+                    <line class="flow" x1="350" y1="711" x2="350" y2="745" marker-end="url(#arr8)"/>
+                    <circle cx="350" cy="763" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="350" cy="763" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 9: Reviews -->
+        <!-- =================== Sơ đồ 9 =================== -->
         <div class="diagram-section" id="diagram9">
             <h2 class="diagram-title">9. Đánh Giá Sản Phẩm (Reviews)</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> Khách hàng bình luận, gắn đánh giá sao sau khi mua.
+                <strong>Mô tả:</strong> Trước khi đánh giá hệ thống kiểm tra <em>Khách đã mua sản phẩm chưa?</em>. Nếu chưa, từ chối và quay lại. Nếu đã mua, cho phép nhập rating &amp; comment rồi lưu DB.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Đơn hàng hoàn thành</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Vào góc review ở Product Detail</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Chọn số sao & Nhập text đánh giá</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Lưu vào DB bằng Route (reviews.js)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Tính lại điểm Rate trung bình của sản phẩm</div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 820 950" width="820" height="950" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr9" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="410" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="410" y1="42" x2="410" y2="80" marker-end="url(#arr9)"/>
+
+                    <rect class="activity-rect" x="270" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="107">Vào mục Review ở Product Detail</text>
+
+                    <!-- Decision Đã mua? -->
+                    <line class="flow" x1="410" y1="124" x2="410" y2="160" marker-end="url(#arr9)"/>
+                    <polygon class="decision" points="410,160 500,220 410,280 320,220"/>
+                    <text class="label" x="410" y="216" font-size="12">Khách đã</text>
+                    <text class="label" x="410" y="232" font-size="12">mua SP?</text>
+
+                    <!-- [Chưa] - sang phải hiển thị thông báo, rồi quay lại -->
+                    <polyline class="flow" points="500,220 670,220 670,300" marker-end="url(#arr9)"/>
+                    <text class="guard" x="580" y="210">[Chưa]</text>
+                    <rect class="activity-rect" x="550" y="300" width="240" height="44" rx="22"/>
+                    <text class="label" x="670" y="327">Hiện thông báo từ chối</text>
+                    <polyline class="flow" points="670,344 670,440 760,440 760,30 422,30" marker-end="url(#arr9)"/>
+
+                    <!-- [Đã mua] xuống tiếp -->
+                    <line class="flow" x1="410" y1="280" x2="410" y2="320" marker-end="url(#arr9)"/>
+                    <text class="guard" x="420" y="305">[Đã mua]</text>
+
+                    <rect class="activity-rect" x="270" y="320" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="347">Chọn số sao (1-5)</text>
+
+                    <line class="flow" x1="410" y1="364" x2="410" y2="400" marker-end="url(#arr9)"/>
+                    <rect class="activity-rect" x="270" y="400" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="427">Nhập nội dung đánh giá</text>
+
+                    <!-- Decision: Hợp lệ? -->
+                    <line class="flow" x1="410" y1="444" x2="410" y2="480" marker-end="url(#arr9)"/>
+                    <polygon class="decision" points="410,480 490,535 410,590 330,535"/>
+                    <text class="label" x="410" y="532" font-size="12">Nội dung</text>
+                    <text class="label" x="410" y="548" font-size="12">hợp lệ?</text>
+
+                    <!-- [Sai] - loop back lên Nhập nội dung -->
+                    <polyline class="flow" points="330,535 70,535 70,422 270,422" marker-end="url(#arr9)"/>
+                    <text class="guard" x="90" y="525">[Sai]</text>
+
+                    <!-- [Đúng] xuống tiếp -->
+                    <line class="flow" x1="410" y1="590" x2="410" y2="625" marker-end="url(#arr9)"/>
+                    <text class="guard" x="420" y="610">[Đúng]</text>
+
+                    <rect class="activity-rect" x="270" y="625" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="652">Lưu review vào Database</text>
+
+                    <line class="flow" x1="410" y1="669" x2="410" y2="705" marker-end="url(#arr9)"/>
+                    <rect class="activity-rect" x="270" y="705" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="732">Tính lại điểm rate trung bình</text>
+
+                    <line class="flow" x1="410" y1="749" x2="410" y2="785" marker-end="url(#arr9)"/>
+                    <rect class="activity-rect" x="270" y="785" width="280" height="44" rx="22"/>
+                    <text class="label" x="410" y="812">Hiển thị review mới trên trang</text>
+
+                    <line class="flow" x1="410" y1="829" x2="410" y2="860" marker-end="url(#arr9)"/>
+                    <rect class="bar" x="310" y="860" width="200" height="6"/>
+                    <line class="flow" x1="410" y1="866" x2="410" y2="900" marker-end="url(#arr9)"/>
+                    <circle cx="410" cy="918" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="410" cy="918" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Sơ đồ 10: Admin -->
+        <!-- =================== Sơ đồ 10 =================== -->
         <div class="diagram-section" id="diagram10">
             <h2 class="diagram-title">10. Quản Lý Của Admin Tích Hợp AI</h2>
             <div class="diagram-description">
-                <strong>Mô tả:</strong> CMS quản lý toàn diện (Sản phẩm, đơn hàng, AI training - chatbot_knowledge, thêm dữ liệu RAG).
+                <strong>Mô tả:</strong> Admin đăng nhập – nếu sai mật khẩu quay lại. Vào dashboard, decision <em>Chức năng?</em> tách thành nhiều nhánh xử lý (Sản phẩm/Đơn, Chatbot Knowledge, Cấu hình). Các nhánh hợp tại Join Bar rồi kết thúc.
             </div>
             <div class="diagram">
-                <div class="activity-diagram">
-                    <div class="start-end">Bắt đầu</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Đăng nhập Admin (admin-login.html)</div>
-                    <div class="arrow"></div>
-                    <div class="activity">Truy cập Dashboard (admin.html)</div>
-                    <div class="arrow"></div>
-                    <div class="decision">
-                        <div class="decision-text">Chức<br>năng?</div>
-                    </div>
-                    <div class="parallel-split" style="width: 500px;"></div>
-                    <div class="parallel-container">
-                        <div class="parallel-branch">
-                            <div class="activity">Quản lý SP/Đơn</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Duyệt đơn, Thêm/Sửa SP</div>
-                        </div>
-                        <div class="parallel-branch">
-                            <div class="activity">Chatbot Knowledge</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Thêm câu hỏi/đáp án (chatbot_knowledge.html)</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Trigger Vectorize RAG DB (add_knowledge.py)</div>
-                        </div>
-                        <div class="parallel-branch">
-                            <div class="activity">Website Config</div>
-                            <div class="arrow"></div>
-                            <div class="activity">Sửa thông báo (Merge_notifs, Admin.js)</div>
-                        </div>
-                    </div>
-                    <div class="parallel-split" style="width: 500px;"></div>
-                    <div class="arrow"></div>
-                    <div class="start-end">Kết thúc</div>
-                </div>
+                <svg class="uml" viewBox="0 0 980 1080" width="980" height="1080" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr10" viewBox="0 0 10 10" refX="9" refY="5"
+                                markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+                        </marker>
+                    </defs>
+
+                    <circle cx="490" cy="30" r="12" fill="#000"/>
+                    <line class="flow" x1="490" y1="42" x2="490" y2="80" marker-end="url(#arr10)"/>
+
+                    <rect class="activity-rect" x="350" y="80" width="280" height="44" rx="22"/>
+                    <text class="label" x="490" y="107">Truy cập admin-login.html</text>
+
+                    <line class="flow" x1="490" y1="124" x2="490" y2="160" marker-end="url(#arr10)"/>
+                    <rect class="activity-rect" x="350" y="160" width="280" height="44" rx="22"/>
+                    <text class="label" x="490" y="187">Nhập tài khoản admin</text>
+
+                    <!-- Decision Hợp lệ? -->
+                    <line class="flow" x1="490" y1="204" x2="490" y2="245" marker-end="url(#arr10)"/>
+                    <polygon class="decision" points="490,245 570,300 490,355 410,300"/>
+                    <text class="label" x="490" y="296" font-size="12">Đúng quyền</text>
+                    <text class="label" x="490" y="312" font-size="12">admin?</text>
+
+                    <!-- Loop back [Sai] -->
+                    <polyline class="flow" points="410,300 90,300 90,182 350,182" marker-end="url(#arr10)"/>
+                    <text class="guard" x="130" y="290">[Sai]</text>
+
+                    <!-- [Đúng] xuống tiếp -->
+                    <line class="flow" x1="490" y1="355" x2="490" y2="395" marker-end="url(#arr10)"/>
+                    <text class="guard" x="500" y="380">[Đúng]</text>
+
+                    <rect class="activity-rect" x="350" y="395" width="280" height="44" rx="22"/>
+                    <text class="label" x="490" y="422">Vào Dashboard (admin.html)</text>
+
+                    <!-- Decision Chức năng? -->
+                    <line class="flow" x1="490" y1="439" x2="490" y2="475" marker-end="url(#arr10)"/>
+                    <polygon class="decision" points="490,475 570,530 490,585 410,530"/>
+                    <text class="label" x="490" y="526" font-size="12">Chức</text>
+                    <text class="label" x="490" y="542" font-size="12">năng?</text>
+
+                    <!-- Fork Bar (3 nhánh) -->
+                    <line class="flow" x1="490" y1="585" x2="490" y2="620" marker-end="url(#arr10)"/>
+                    <rect class="bar" x="100" y="620" width="780" height="6"/>
+
+                    <line class="flow" x1="200" y1="626" x2="200" y2="665" marker-end="url(#arr10)"/>
+                    <text class="guard" x="115" y="655">[SP/Đơn]</text>
+                    <line class="flow" x1="490" y1="626" x2="490" y2="665" marker-end="url(#arr10)"/>
+                    <text class="guard" x="500" y="655">[Chatbot KB]</text>
+                    <line class="flow" x1="780" y1="626" x2="780" y2="665" marker-end="url(#arr10)"/>
+                    <text class="guard" x="700" y="655">[Config Web]</text>
+
+                    <!-- Nhánh 1 -->
+                    <rect class="activity-rect" x="80" y="665" width="240" height="44" rx="22"/>
+                    <text class="label" x="200" y="692">Quản lý sản phẩm / đơn</text>
+                    <line class="flow" x1="200" y1="709" x2="200" y2="745" marker-end="url(#arr10)"/>
+                    <rect class="activity-rect" x="80" y="745" width="240" height="44" rx="22"/>
+                    <text class="label" x="200" y="772">Duyệt đơn, Thêm/Sửa SP</text>
+
+                    <!-- Nhánh 2 -->
+                    <rect class="activity-rect" x="370" y="665" width="240" height="44" rx="22"/>
+                    <text class="label" x="490" y="692">Quản lý Chatbot Knowledge</text>
+                    <line class="flow" x1="490" y1="709" x2="490" y2="745" marker-end="url(#arr10)"/>
+                    <rect class="activity-rect" x="370" y="745" width="240" height="44" rx="22"/>
+                    <text class="label" x="490" y="772">Thêm câu hỏi / đáp án</text>
+                    <line class="flow" x1="490" y1="789" x2="490" y2="825" marker-end="url(#arr10)"/>
+                    <rect class="activity-rect" x="370" y="825" width="240" height="44" rx="22"/>
+                    <text class="label" x="490" y="852">Trigger vectorize RAG DB</text>
+
+                    <!-- Nhánh 3 -->
+                    <rect class="activity-rect" x="660" y="665" width="240" height="44" rx="22"/>
+                    <text class="label" x="780" y="692">Cấu hình website</text>
+                    <line class="flow" x1="780" y1="709" x2="780" y2="745" marker-end="url(#arr10)"/>
+                    <rect class="activity-rect" x="660" y="745" width="240" height="44" rx="22"/>
+                    <text class="label" x="780" y="772">Sửa banner / thông báo</text>
+
+                    <!-- Join Bar -->
+                    <line class="flow" x1="200" y1="789" x2="200" y2="905" marker-end="url(#arr10)"/>
+                    <line class="flow" x1="490" y1="869" x2="490" y2="905" marker-end="url(#arr10)"/>
+                    <line class="flow" x1="780" y1="789" x2="780" y2="905" marker-end="url(#arr10)"/>
+                    <rect class="bar" x="100" y="905" width="780" height="6"/>
+
+                    <line class="flow" x1="490" y1="911" x2="490" y2="950" marker-end="url(#arr10)"/>
+                    <rect class="activity-rect" x="350" y="950" width="280" height="44" rx="22"/>
+                    <text class="label" x="490" y="977">Đăng xuất khỏi hệ thống</text>
+
+                    <line class="flow" x1="490" y1="994" x2="490" y2="1030" marker-end="url(#arr10)"/>
+                    <circle cx="490" cy="1048" r="14" fill="#fff" stroke="#000" stroke-width="1.5"/>
+                    <circle cx="490" cy="1048" r="8" fill="#000"/>
+                </svg>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <h3 style="margin-bottom: 15px;">📊 Tổng Kết</h3>
-            <p style="font-size: 1.1em; line-height: 1.8;">
-                Hệ thống bao gồm <strong>10 sơ đồ hoạt động chính</strong> được thiết kế theo cấu trúc project hiện tại.<br>
-                Bao gồm cả nghiệp vụ e-commerce (Giỏ hàng, Sản phẩm, Đơn) và Tích hợp Trí tuệ nhân tạo (RAG, Recommend).<br><br>
-                <strong>Công nghệ:</strong> Node.js, Express, Python (ChromaDB cho RAG AI), HTML/CSS/JS, Tailwind.<br>
+            <h3 style="margin-bottom: 15px;">Chú thích ký hiệu UML (Visual Paradigm)</h3>
+            <p style="text-align:left; font-size:0.95em; line-height:1.8;">
+                • <strong>Chấm tròn đen đặc</strong> = Initial Node (bắt đầu)<br>
+                • <strong>Chấm tròn có viền (bullseye)</strong> = Activity Final Node (kết thúc)<br>
+                • <strong>Hình chữ nhật bo tròn</strong> = Action / Activity (một bước xử lý)<br>
+                • <strong>Hình thoi</strong> = Decision / Merge Node (rẽ nhánh hoặc gộp nhánh)<br>
+                • <strong>Thanh ngang đen đậm</strong> = Fork / Join Bar (tách / hợp luồng song song)<br>
+                • <strong>Mũi tên</strong> = Control Flow (hướng đi của luồng)<br>
+                • <strong>[Đúng] / [Sai]</strong> = Guard condition (điều kiện trên nhánh)
             </p>
         </div>
     </div>
 
     <script>
-        // Smooth scroll
-        document.querySelectorAll('.toc a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        document.querySelectorAll('.toc a').forEach(a => {
+            a.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelector(this.getAttribute('href'))
+                    .scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
-        });
-
-        // Thêm animation khi scroll đến sơ đồ
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '0';
-                    entry.target.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        entry.target.style.transition = 'all 0.6s ease';
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }, 100);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.diagram-section').forEach(section => {
-            observer.observe(section);
         });
     </script>
 </body>

@@ -531,11 +531,20 @@ function updateSummary() {
   const totalItems = checkedItems.reduce((sum, item) => sum + item.quantity, 0);
   
   // Update UI
-  document.getElementById('cart-item-count').textContent = `${cartItems.length} sản phẩm`;
-  document.getElementById('select-all-count').textContent = `(${cartItems.length} sản phẩm)`;
-  document.getElementById('summary-count').textContent = totalItems;
-  document.getElementById('subtotal').textContent = formatPrice(subtotal);
-  document.getElementById('total').textContent = formatPrice(total);
+  const cartItemCountEl = document.getElementById('cart-item-count');
+  if (cartItemCountEl) cartItemCountEl.textContent = `${cartItems.length} sản phẩm`;
+
+  const selectAllCountEl = document.getElementById('select-all-count');
+  if (selectAllCountEl) selectAllCountEl.textContent = `(${cartItems.length} sản phẩm)`;
+
+  const summaryCountEl = document.getElementById('summary-count');
+  if (summaryCountEl) summaryCountEl.textContent = totalItems;
+
+  const subtotalEl = document.getElementById('subtotal');
+  if (subtotalEl) subtotalEl.textContent = formatPrice(subtotal);
+
+  const totalEl = document.getElementById('total');
+  if (totalEl) totalEl.textContent = formatPrice(total);
   
   // Savings badge
   const savingsBadge = document.getElementById('savings-badge');

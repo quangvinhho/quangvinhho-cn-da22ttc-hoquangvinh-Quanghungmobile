@@ -838,23 +838,54 @@ function mapProductToFrontend(row) {
         }
     }
     
+    const nameLower = productName.toLowerCase();
+    const isAccessory = (() => {
+        if (row.category === 'phukien') return true;
+        return nameLower.includes('ốp') || 
+               nameLower.includes('case') ||
+               nameLower.includes('tai nghe') || 
+               nameLower.includes('earpods') || 
+               nameLower.includes('airpods') || 
+               nameLower.includes('buds') || 
+               nameLower.includes('sạc') || 
+               nameLower.includes('cáp') || 
+               nameLower.includes('dây sạc') || 
+               nameLower.includes('cường lực') || 
+               nameLower.includes('giá đỡ') || 
+               nameLower.includes('gậy chụp');
+    })();
+
+    const accessoryType = (() => {
+        if (!isAccessory) return null;
+        if (nameLower.includes('tai nghe') || nameLower.includes('earpods') || nameLower.includes('airpods') || nameLower.includes('buds') || nameLower.includes('headphone')) return 'tainghe';
+        if (nameLower.includes('ốp') || nameLower.includes('case')) return 'oplung';
+        if (nameLower.includes('cường lực') || nameLower.includes('kính cường lực')) return 'cuongluc';
+        if (nameLower.includes('giá đỡ') || nameLower.includes('holder')) return 'giado';
+        if (nameLower.includes('gậy chụp') || nameLower.includes('gậy tự sướng')) return 'gaychup';
+        if (nameLower.includes('cáp') || nameLower.includes('dây sạc') || nameLower.includes('cable')) return 'cap';
+        if (nameLower.includes('sạc dự phòng') || nameLower.includes('pin dự phòng')) return 'sac';
+        if (nameLower.includes('sạc') || nameLower.includes('củ sạc') || nameLower.includes('cốc sạc') || nameLower.includes('charger')) return 'sac';
+        return null;
+    })();
+
     return {
         id: row.ma_sp || row.id,
         name: productName,
         brand: brandLower,
-        category: row.category || 'dienthoai',
+        category: isAccessory ? 'phukien' : (row.category || 'dienthoai'),
+        type: accessoryType,
         price: price,
         oldPrice: oldPrice,
         discount: oldPrice ? Math.round((1 - price / oldPrice) * 100) : 0,
-        ram: realSpecs?.ram || row.ram || '8GB',
-        storage: realSpecs?.storage || parseInt(row.bo_nho) || row.storage || 128,
-        screen: realSpecs?.screen || row.screen || '6.5" AMOLED',
-        chip: realSpecs?.chip || row.chip || (brandLower === 'apple' ? 'Apple A17 Pro' : 'Snapdragon 8 Gen 2'),
-        camera: realSpecs?.camera || row.camera || '50MP',
-        frontCamera: realSpecs?.frontCamera || '12MP',
-        battery: realSpecs?.battery || row.battery || '5000 mAh',
-        os: realSpecs?.os || defaultOS,
-        sim: realSpecs?.sim || defaultSim,
+        ram: isAccessory ? null : (realSpecs?.ram || row.ram || '8GB'),
+        storage: isAccessory ? null : (realSpecs?.storage || parseInt(row.bo_nho) || row.storage || 128),
+        screen: isAccessory ? null : (realSpecs?.screen || row.screen || '6.5" AMOLED'),
+        chip: isAccessory ? null : (realSpecs?.chip || row.chip || (brandLower === 'apple' ? 'Apple A17 Pro' : 'Snapdragon 8 Gen 2')),
+        camera: isAccessory ? null : (realSpecs?.camera || row.camera || '50MP'),
+        frontCamera: isAccessory ? null : (realSpecs?.frontCamera || '12MP'),
+        battery: isAccessory ? null : (realSpecs?.battery || row.battery || '5000 mAh'),
+        os: isAccessory ? null : (realSpecs?.os || defaultOS),
+        sim: isAccessory ? null : (realSpecs?.sim || defaultSim),
         weight: realSpecs?.weight || '200g',
         features: row.features ? (typeof row.features === 'string' ? JSON.parse(row.features) : row.features) : ['tragop'],
         colors: dbColors || realSpecs?.colors || defaultColors,
@@ -891,13 +922,15 @@ router.get('/brands', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         // Join với bảng hang_san_xuat và cau_hinh để lấy đầy đủ thông tin
+        // Lọc bỏ sản phẩm ngừng kinh doanh — sản phẩm cũ không có cột trang_thai vẫn lọt qua (NULL coi như active)
         const [rows] = await pool.query(`
             SELECT sp.*, hsx.ten_hang,
-                   ch.ram as db_ram, ch.chip as db_chip, ch.pin as db_pin, 
+                   ch.ram as db_ram, ch.chip as db_chip, ch.pin as db_pin,
                    ch.man_hinh as db_screen, ch.camera as db_camera, ch.he_dieu_hanh as db_os
-            FROM san_pham sp 
+            FROM san_pham sp
             LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
             LEFT JOIN cau_hinh ch ON sp.ma_sp = ch.ma_sp
+            WHERE COALESCE(sp.trang_thai, 'active') <> 'discontinued'
         `);
         
         // Map dữ liệu sang format frontend
@@ -916,12 +949,14 @@ function mapProductToFrontendWithDB(row) {
     
     // ƯU TIÊN dữ liệu từ bảng cau_hinh (admin nhập vào)
     // Chỉ dùng fallback nếu DB trống
-    if (row.db_ram) baseProduct.ram = row.db_ram;
-    if (row.db_chip) baseProduct.chip = row.db_chip;
-    if (row.db_screen) baseProduct.screen = row.db_screen;
-    if (row.db_camera) baseProduct.camera = row.db_camera;
-    if (row.db_pin) baseProduct.battery = row.db_pin;
-    if (row.db_os) baseProduct.os = row.db_os;
+    if (baseProduct.category !== 'phukien') {
+        if (row.db_ram) baseProduct.ram = row.db_ram;
+        if (row.db_chip) baseProduct.chip = row.db_chip;
+        if (row.db_screen) baseProduct.screen = row.db_screen;
+        if (row.db_camera) baseProduct.camera = row.db_camera;
+        if (row.db_pin) baseProduct.battery = row.db_pin;
+        if (row.db_os) baseProduct.os = row.db_os;
+    }
     
     // Thêm ảnh gallery từ bảng anh_san_pham nếu có
     if (row.images && row.images.length > 0) {
@@ -1202,6 +1237,79 @@ router.get('/:id', async (req, res) => {
         res.json(mappedProduct);
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+// GET /api/products/:id/variants - Public endpoint cho frontend
+// Trả về biến thể active + tồn kho hiển thị cho khách hàng
+router.get('/:id/variants', async (req, res) => {
+    try {
+        const idNum = parseInt(req.params.id);
+        if (!idNum) return res.status(400).json({ success: false, message: 'id không hợp lệ' });
+
+        const [variants] = await pool.query(
+            `SELECT ma_bt AS id, mau_sac AS color, mau_hex AS colorHex, dung_luong AS storage,
+                    so_luong AS stock, gia_chenh AS priceDiff
+             FROM bien_the_san_pham
+             WHERE ma_sp = ? AND trang_thai = 'active'
+             ORDER BY mau_sac ASC, dung_luong ASC`,
+            [idNum]
+        );
+
+        // Trả structure dễ dùng cho UI: list màu unique + list dung lượng unique + matrix
+        const colors = [];
+        const storages = [];
+        const seenColors = new Set();
+        const seenStorages = new Set();
+        for (const v of variants) {
+            if (!seenColors.has(v.color)) {
+                seenColors.add(v.color);
+                colors.push({ name: v.color, hex: v.colorHex });
+            }
+            if (!seenStorages.has(v.storage)) {
+                seenStorages.add(v.storage);
+                storages.push(v.storage);
+            }
+        }
+
+        res.json({
+            success: true,
+            data: {
+                hasVariants: variants.length > 0,
+                variants,
+                colors,
+                storages
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching variants:', error && error.message);
+        res.status(500).json({ success: false, message: 'Lỗi tải biến thể' });
+    }
+});
+
+// GET /api/products/:id/color-images?color=Titan%20Đen - Public: ảnh theo màu cho khách hàng
+router.get('/:id/color-images', async (req, res) => {
+    try {
+        const idNum = parseInt(req.params.id);
+        if (!idNum) return res.status(400).json({ success: false, message: 'id không hợp lệ' });
+        const color = req.query.color;
+        let rows;
+        if (color) {
+            [rows] = await pool.query(
+                'SELECT duong_dan, thu_tu FROM hinh_anh_bien_the WHERE ma_sp = ? AND mau_sac = ? ORDER BY thu_tu ASC, ma_anh ASC',
+                [idNum, color]
+            );
+        } else {
+            [rows] = await pool.query(
+                'SELECT mau_sac, duong_dan, thu_tu FROM hinh_anh_bien_the WHERE ma_sp = ? ORDER BY mau_sac, thu_tu ASC, ma_anh ASC',
+                [idNum]
+            );
+        }
+        // Đảm bảo đường dẫn tương đối thống nhất (FE prefix 'images/' nếu cần)
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        console.error('Error fetching color images (public):', error && error.message);
+        res.status(500).json({ success: false, message: 'Lỗi tải ảnh theo màu' });
     }
 });
 

@@ -1,8 +1,8 @@
 // Products Page JavaScript
 // QuangHưng Mobile - Kết nối MySQL
 
-// API URL
-const API_URL = 'http://localhost:3000/api';
+// API URL — ưu tiên window.API_BASE_URL (cấu hình ở main.js) để hoạt động ở production
+const API_URL = window.API_BASE_URL || 'http://localhost:3000/api';
 
 // Biến lưu dữ liệu sản phẩm từ API
 let PRODUCTS = [];
@@ -736,12 +736,19 @@ function createProductCard(product) {
             <div class="relative aspect-square p-3 flex items-center justify-center bg-white group overflow-hidden">
                 ${discountBadge}
                 ${outOfStockBadge}
-                <img src="${productImage}" 
-                     alt="${product.name}" 
-                     class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" 
+                <img src="${productImage}"
+                     alt="${product.name}"
+                     class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                      style="mix-blend-mode: multiply; max-height: 100%; max-width: 100%;"
                      loading="lazy"
                      onerror="this.onerror=null; this.src='images/IPHONE17.avif';">
+                ${!isOutOfStock ? `
+                <button onclick="event.stopPropagation(); openQuickView(${product.id})"
+                    class="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-200 bg-white/95 backdrop-blur border border-gray-200 text-gray-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow hover:bg-red-600 hover:text-white hover:border-red-600"
+                    title="Xem nhanh">
+                    <i class="fas fa-eye mr-1"></i>Xem nhanh
+                </button>
+                ` : ''}
             </div>
             
             <div class="p-4 flex flex-col flex-1">
@@ -976,6 +983,94 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
+// --- QUICK VIEW MODAL ---
+function _ensureQuickViewModal() {
+    let m = document.getElementById('quickViewModal');
+    if (m) return m;
+    m = document.createElement('div');
+    m.id = 'quickViewModal';
+    m.className = 'fixed inset-0 bg-black/60 z-[9998] hidden items-center justify-center p-4';
+    m.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center z-10" title="Đóng">
+                <i class="fas fa-times text-gray-600"></i>
+            </button>
+            <div id="quickViewBody" class="p-6">
+                <div class="text-center py-10 text-gray-400"><i class="fas fa-spinner fa-spin text-3xl"></i></div>
+            </div>
+        </div>
+    `;
+    m.addEventListener('click', (e) => { if (e.target === m) closeQuickView(); });
+    document.body.appendChild(m);
+    return m;
+}
+
+function closeQuickView() {
+    const m = document.getElementById('quickViewModal');
+    if (!m) return;
+    m.classList.add('hidden');
+    m.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+window.closeQuickView = closeQuickView;
+
+async function openQuickView(productId) {
+    const m = _ensureQuickViewModal();
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    const body = document.getElementById('quickViewBody');
+    body.innerHTML = '<div class="text-center py-10 text-gray-400"><i class="fas fa-spinner fa-spin text-3xl"></i></div>';
+
+    const p = PRODUCTS.find(x => String(x.id) === String(productId));
+    if (!p) {
+        body.innerHTML = '<p class="text-center text-gray-500 py-10">Không tìm thấy sản phẩm.</p>';
+        return;
+    }
+    let img = p.image;
+    if (img && !img.startsWith('http') && !img.startsWith('images/')) img = `images/${img}`;
+    const isOOS = !p.stock || p.stock <= 0;
+
+    body.innerHTML = `
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 rounded-xl p-6 flex items-center justify-center aspect-square">
+                <img src="${img}" alt="${p.name}" class="max-w-full max-h-full object-contain" onerror="this.src='images/IPHONE17.avif'">
+            </div>
+            <div class="flex flex-col">
+                <h2 class="text-xl font-bold text-gray-900 mb-2">${p.name}</h2>
+                <div class="flex items-center gap-2 mb-3 text-xs text-gray-500">
+                    <div class="flex text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    <span>(${p.reviews || 'Mới'})</span>
+                </div>
+                <div class="flex items-baseline gap-3 mb-4">
+                    <span class="text-2xl font-black ${isOOS ? 'text-gray-400' : 'text-red-600'}">${formatPrice(p.price)}</span>
+                    ${p.oldPrice ? `<span class="text-sm text-gray-400 line-through">${formatPrice(p.oldPrice)}</span>` : ''}
+                    ${p.discount ? `<span class="text-xs bg-red-100 text-red-600 font-bold px-2 py-1 rounded">-${p.discount}%</span>` : ''}
+                </div>
+                ${p.shortDescription ? `<p class="text-sm text-gray-600 mb-4">${p.shortDescription.replace(/\|/g, ' • ')}</p>` : ''}
+                <ul class="text-sm text-gray-700 space-y-1 mb-5">
+                    ${p.ram ? `<li><i class="fas fa-memory text-red-500 mr-2 w-4"></i>RAM: <b>${p.ram}</b></li>` : ''}
+                    ${p.chip ? `<li><i class="fas fa-microchip text-red-500 mr-2 w-4"></i>Chip: <b>${p.chip}</b></li>` : ''}
+                    ${p.storage ? `<li><i class="fas fa-hdd text-red-500 mr-2 w-4"></i>Bộ nhớ: <b>${p.storage}GB</b></li>` : ''}
+                    ${p.battery ? `<li><i class="fas fa-battery-full text-red-500 mr-2 w-4"></i>Pin: <b>${p.battery}</b></li>` : ''}
+                </ul>
+                <div class="mt-auto flex flex-col gap-2">
+                    ${isOOS
+                        ? '<button disabled class="w-full bg-gray-200 text-gray-500 font-bold py-3 rounded-lg cursor-not-allowed"><i class="fas fa-times-circle mr-2"></i>Hết hàng</button>'
+                        : `<button onclick="addToCart(${p.id}); closeQuickView();" class="w-full bg-red-50 text-red-600 border-2 border-red-500 font-bold py-3 rounded-lg hover:bg-red-600 hover:text-white transition">
+                              <i class="fas fa-cart-plus mr-2"></i>Thêm vào giỏ
+                          </button>`
+                    }
+                    <a href="product-detail.html?id=${p.id}" class="w-full bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 rounded-lg hover:from-red-700 hover:to-red-600 transition">
+                        <i class="fas fa-arrow-right mr-2"></i>Xem chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+}
+window.openQuickView = openQuickView;
+
 // --- MUA NGAY TỪ CARD ---
 async function buyNowFromCard(productId) {
     // Kiểm tra đăng nhập trước
@@ -1021,6 +1116,19 @@ function parseUrlParams() {
     
     if (search) {
         searchQuery = search;
+    }
+
+    const isAccessorySearch = search && (
+        search.toLowerCase().includes('ốp') ||
+        search.toLowerCase().includes('sạc') ||
+        search.toLowerCase().includes('cáp') ||
+        search.toLowerCase().includes('tai nghe') ||
+        search.toLowerCase().includes('cường lực')
+    );
+    
+    if (category === 'phukien' || isAccessorySearch) {
+        const accFilter = document.getElementById('accessoryFilter');
+        if (accFilter) accFilter.style.display = 'block';
     }
 }
 

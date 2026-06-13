@@ -12,6 +12,15 @@ node_modules/
 # Logs
 *.log
 npm-debug.log*
+backend/error_log*.txt
+backend/output_log*.txt
+backend/result*.txt
+backend/server_log.txt
+backend/test.log
+rag_service/error_log.txt
+rag_service/rag_err.txt
+rag_service/rag_out.txt
+rag_service/result.txt
 
 # OS files
 .DS_Store

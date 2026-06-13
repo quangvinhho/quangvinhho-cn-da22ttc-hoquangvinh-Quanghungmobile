@@ -1,6 +1,6 @@
 // AI Chatbot - Với lịch sử cuộc hội thoại giống ChatGPT
 (function() {
-  const API_URL = 'http://localhost:3000/api';
+  const API_URL = window.API_BASE_URL || 'http://localhost:3000/api';
   let currentUserId = null;
   let currentConversationId = null;
   let conversations = [];
@@ -104,7 +104,21 @@
           
           <!-- Suggestion Chips Container -->
           <div class="ai-chat-suggestions" id="ai-chat-suggestions" style="display: none;"></div>
-          
+
+          <!-- Handoff sang nhân viên thật -->
+          <div class="ai-chat-handoff" style="display: flex; gap: 6px; padding: 6px 12px; border-top: 1px solid #eef0f3; background: #fafbfc; font-size: 12px;">
+            <span style="color: #6b7280; align-self: center; margin-right: 4px;">Cần nhân viên thật?</span>
+            <a href="tel:1900xxxx" title="Gọi hotline" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; background: #fee2e2; color: #b91c1c; text-decoration: none; font-weight: 600;">
+              <i class="fas fa-phone"></i> Hotline
+            </a>
+            <a href="https://zalo.me/0000000000" target="_blank" rel="noopener" title="Chat Zalo" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; background: #dbeafe; color: #1d4ed8; text-decoration: none; font-weight: 600;">
+              <i class="fas fa-comments"></i> Zalo
+            </a>
+            <a href="https://m.me/quanghungmobile" target="_blank" rel="noopener" title="Chat Messenger" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; background: #e0e7ff; color: #4338ca; text-decoration: none; font-weight: 600;">
+              <i class="fab fa-facebook-messenger"></i> Messenger
+            </a>
+          </div>
+
           <div class="ai-chat-input-area">
             <div class="ai-chat-input-wrapper">
               <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Nhập câu hỏi của bạn..." autocomplete="off" spellcheck="false">
@@ -605,7 +619,10 @@
     };
 
     utterance.onerror = (e) => {
-      console.error('Speech synthesis error:', e);
+      // Bỏ qua log lỗi 'interrupted' vì đây là sự kiện bình thường khi người dùng bấm dừng nghe
+      if (e.error !== 'interrupted') {
+        console.error('Speech synthesis error:', e);
+      }
       if (speechQueue.length === 0) return;
       speechQueueIndex++;
       playNextChunk();
@@ -926,6 +943,27 @@
     
     // Khởi tạo Speech Recognition
     initSpeechRecognition();
+
+    // Event delegation: nút "Thêm vào giỏ" trong card SP do bot trả về
+    // Dùng data-* attributes (an toàn với mọi ký tự đặc biệt) thay vì onclick=JSON inline
+    document.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('.chatbot-add-cart-btn');
+      if (!btn) return;
+      ev.preventDefault();
+      const product = {
+        id: parseInt(btn.dataset.pid) || btn.dataset.pid,
+        name: btn.dataset.pname || 'Sản phẩm',
+        price: parseFloat(String(btn.dataset.pprice).replace(/[^\d.-]/g, '')) || 0,
+        image: btn.dataset.pimage || ''
+      };
+      if (typeof window.addToCart === 'function') {
+        try { window.addToCart(product, 1); }
+        catch (e) { console.error('addToCart error:', e); }
+      } else {
+        // Fallback graceful — trang hiện tại chưa load helper cart
+        alert('Không thể thêm vào giỏ ở trang này. Vui lòng vào trang chi tiết sản phẩm.');
+      }
+    });
 
     // Pre-load / warm up voices for browsers that load them asynchronously
     if (typeof window !== 'undefined' && window.speechSynthesis) {

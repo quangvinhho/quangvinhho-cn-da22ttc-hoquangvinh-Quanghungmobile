@@ -28,8 +28,31 @@ router.post('/', async (req, res) => {
         const interestsCount = parseInt(interestsRow[0].c) || 0;
 
         if (totalViews < 5 && interestsCount === 0) {
-            // Chưa xem đủ 5 SP và cũng chưa có sở thích nào -> KH hoàn toàn mới, ẩn section
-            return res.json({ success: true, data: [], source: 'cold_start' });
+            // KH hoàn toàn mới — fallback sang top sản phẩm bán chạy / có lượt xem cao thay vì ẩn hẳn
+            try {
+                const [trending] = await pool.query(
+                    `SELECT sp.ma_sp AS id, sp.ten_sp AS name, sp.gia AS price,
+                            sp.anh_dai_dien AS image, sp.mau_sac AS color, sp.bo_nho AS storage
+                     FROM san_pham sp
+                     LEFT JOIN (
+                       SELECT ma_sp, COUNT(*) AS sold
+                       FROM chi_tiet_don_hang ct
+                       JOIN don_hang dh ON ct.ma_don = dh.ma_don
+                       WHERE dh.trang_thai IN ('delivered','completed','da_giao','hoan_thanh','confirmed','paid','shipping')
+                       GROUP BY ma_sp
+                     ) bs ON sp.ma_sp = bs.ma_sp
+                     LEFT JOIN (
+                       SELECT ma_sp, SUM(so_lan_xem) AS views FROM lich_su_xem_san_pham GROUP BY ma_sp
+                     ) vs ON sp.ma_sp = vs.ma_sp
+                     WHERE sp.so_luong_ton > 0
+                     ORDER BY (COALESCE(bs.sold,0) * 3 + COALESCE(vs.views,0)) DESC, sp.ngay_cap_nhat DESC
+                     LIMIT 8`
+                );
+                return res.json({ success: true, data: trending, source: 'cold_start_trending' });
+            } catch (e) {
+                console.warn('Cold-start trending fallback failed:', e.message);
+                return res.json({ success: true, data: [], source: 'cold_start' });
+            }
         }
         
         // 1. Lấy danh sách sản phẩm người dùng đã xem

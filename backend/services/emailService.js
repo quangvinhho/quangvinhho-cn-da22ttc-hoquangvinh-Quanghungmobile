@@ -615,9 +615,20 @@ async function notifyMatchingCustomers(productId, opts = {}) {
 // AUTO TRIGGERS — Promotion / Back-in-Stock / Pending Reminder
 // ============================================================
 
-// Helper: insert vào thong_bao (in-app notification)
+// Helper: insert vào thong_bao (in-app notification) — có dedupe chống spam
 async function createInAppNotification({ ma_kh, tieu_de, noi_dung, loai = 'system', lien_ket = null }) {
     try {
+        // Dedupe: nếu trong 60s gần đây đã có notification giống hệt cho cùng user → bỏ qua
+        const [recent] = await pool.query(
+            `SELECT ma_tb FROM thong_bao
+             WHERE ma_kh = ? AND loai = ? AND tieu_de = ? AND noi_dung = ?
+               AND ngay_tao >= DATE_SUB(NOW(), INTERVAL 60 SECOND)
+             LIMIT 1`,
+            [ma_kh, loai, tieu_de, noi_dung]
+        );
+        if (recent.length > 0) {
+            return true; // coi như thành công, đã có notification gần đây
+        }
         await pool.query(
             `INSERT INTO thong_bao (ma_kh, tieu_de, noi_dung, loai, lien_ket, da_doc, ngay_tao)
              VALUES (?, ?, ?, ?, ?, 0, NOW())`,
@@ -625,7 +636,7 @@ async function createInAppNotification({ ma_kh, tieu_de, noi_dung, loai = 'syste
         );
         return true;
     } catch (e) {
-        console.error('[createInAppNotification] Lỗi:', e.message);
+        console.error('[createInAppNotification] Lỗi:', e && e.message);
         return false;
     }
 }

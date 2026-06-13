@@ -15,34 +15,42 @@ const checkCartAccess = async (req, res, next) => {
   const sessionUser = req.session.user;
   const isAdmin = sessionUser.vai_tro === 'admin';
   
-  // 1. Kiểm tra theo userId (nếu có)
-  const userId = req.params.userId || req.body.userId;
-  if (userId) {
-    if (!isAdmin && sessionUser.ma_kh != userId) {
-      return res.status(403).json({ 
-        success: false, 
+  // 1. Kiểm tra theo userId (nếu có) — chuẩn hoá về Number để so sánh strict
+  const rawUserId = req.params.userId || req.body.userId;
+  if (rawUserId !== undefined && rawUserId !== null && rawUserId !== '') {
+    const userId = Number(rawUserId);
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return res.status(400).json({ success: false, message: 'userId không hợp lệ.' });
+    }
+    if (!isAdmin && Number(sessionUser.ma_kh) !== userId) {
+      return res.status(403).json({
+        success: false,
         message: 'Bạn không có quyền truy cập giỏ hàng này.',
         code: 'ACCESS_DENIED'
       });
     }
     return next();
   }
-  
+
   // 2. Kiểm tra theo cartItemId (nếu có)
-  const cartItemId = req.params.cartItemId || req.body.cartItemId;
-  if (cartItemId) {
+  const rawCartItemId = req.params.cartItemId || req.body.cartItemId;
+  if (rawCartItemId !== undefined && rawCartItemId !== null && rawCartItemId !== '') {
+    const cartItemId = Number(rawCartItemId);
+    if (!Number.isInteger(cartItemId) || cartItemId <= 0) {
+      return res.status(400).json({ success: false, message: 'cartItemId không hợp lệ.' });
+    }
     try {
       const [cartOwner] = await pool.query(
-        `SELECT gh.ma_kh FROM chi_tiet_gio_hang ct 
-         JOIN gio_hang gh ON ct.ma_gio_hang = gh.ma_gio_hang 
+        `SELECT gh.ma_kh FROM chi_tiet_gio_hang ct
+         JOIN gio_hang gh ON ct.ma_gio_hang = gh.ma_gio_hang
          WHERE ct.ma_ct = ?`,
         [cartItemId]
       );
-      
+
       if (cartOwner.length > 0) {
-        if (!isAdmin && cartOwner[0].ma_kh != sessionUser.ma_kh) {
-          return res.status(403).json({ 
-            success: false, 
+        if (!isAdmin && Number(cartOwner[0].ma_kh) !== Number(sessionUser.ma_kh)) {
+          return res.status(403).json({
+            success: false,
             message: 'Bạn không có quyền thay đổi sản phẩm này trong giỏ hàng.',
             code: 'ACCESS_DENIED'
           });
@@ -50,10 +58,11 @@ const checkCartAccess = async (req, res, next) => {
       }
       return next();
     } catch (e) {
-      return res.status(500).json({ success: false, message: e.message });
+      console.error('checkCartAccess error:', e && e.message);
+      return res.status(500).json({ success: false, message: 'Lỗi kiểm tra quyền truy cập.' });
     }
   }
-  
+
   next();
 };
 
@@ -61,122 +70,115 @@ const checkCartAccess = async (req, res, next) => {
 // CÁC ROUTE CỤ THỂ PHẢI ĐẶT TRƯỚC ROUTE CÓ PARAMS
 // ============================================
 
-// GET /api/cart/debug/:userId - Debug giỏ hàng
-router.get('/debug/:userId', checkCartAccess, async (req, res) => {
-  try {
-    const { userId } = req.params;
-    
-    // Lấy tất cả giỏ hàng của user
-    const [carts] = await pool.query(
-      'SELECT * FROM gio_hang WHERE ma_kh = ?',
-      [userId]
-    );
-    
-    // Lấy tất cả chi tiết giỏ hàng
-    let allDetails = [];
-    for (const cart of carts) {
-      const [details] = await pool.query(
-        'SELECT * FROM chi_tiet_gio_hang WHERE ma_gio_hang = ?',
-        [cart.ma_gio_hang]
+// GET /api/cart/debug/:userId - Debug giỏ hàng (CHỈ DEV)
+if (process.env.NODE_ENV !== 'production') {
+  router.get('/debug/:userId', checkCartAccess, async (req, res) => {
+    try {
+      const { userId } = req.params;
+
+      const [carts] = await pool.query(
+        'SELECT * FROM gio_hang WHERE ma_kh = ?',
+        [userId]
       );
-      allDetails.push({
-        cart: cart,
-        details: details
-      });
+
+      if (carts.length === 0) {
+        return res.json({ userId, totalCarts: 0, data: [] });
+      }
+
+      // Gộp 1 query thay vì N — tránh N+1
+      const cartIds = carts.map(c => c.ma_gio_hang);
+      const [allDetails] = await pool.query(
+        'SELECT * FROM chi_tiet_gio_hang WHERE ma_gio_hang IN (?)',
+        [cartIds]
+      );
+
+      const byCart = carts.map(cart => ({
+        cart,
+        details: allDetails.filter(d => d.ma_gio_hang === cart.ma_gio_hang)
+      }));
+
+      res.json({ userId, totalCarts: carts.length, data: byCart });
+    } catch (error) {
+      console.error('cart debug error:', error && error.message);
+      res.status(500).json({ error: 'Lỗi server' });
     }
-    
-    res.json({
-      userId,
-      totalCarts: carts.length,
-      data: allDetails
-    });
-  } catch (error) {
-    res.json({ error: error.message });
-  }
-});
+  });
+}
 
 // POST /api/cart/cleanup/:userId - Dọn dẹp giỏ hàng trùng lặp
 router.post('/cleanup/:userId', checkCartAccess, async (req, res) => {
   const connection = await pool.getConnection();
   try {
     const { userId } = req.params;
-    
-    console.log('=== CLEANUP CART for user:', userId, '===');
-    
+
     // Lấy tất cả giỏ hàng của user
     const [carts] = await connection.query(
       'SELECT ma_gio_hang FROM gio_hang WHERE ma_kh = ? ORDER BY ma_gio_hang ASC',
       [userId]
     );
-    
-    console.log('Found carts:', carts);
-    
+
     if (carts.length <= 1) {
-      connection.release();
       return res.json({ success: true, message: 'Không cần cleanup', cartsCount: carts.length });
     }
-    
+
     await connection.beginTransaction();
-    
-    // Giữ lại giỏ hàng đầu tiên, merge các item từ giỏ hàng khác vào
+
     const mainCartId = carts[0].ma_gio_hang;
     const otherCartIds = carts.slice(1).map(c => c.ma_gio_hang);
-    
-    console.log('Main cart:', mainCartId);
-    console.log('Other carts to merge:', otherCartIds);
-    
-    // Di chuyển tất cả chi tiết từ các giỏ hàng khác vào giỏ hàng chính
-    for (const cartId of otherCartIds) {
-      // Lấy chi tiết từ giỏ hàng cần merge
-      const [details] = await connection.query(
-        'SELECT ma_sp, so_luong, gia_tai_thoi_diem FROM chi_tiet_gio_hang WHERE ma_gio_hang = ?',
-        [cartId]
-      );
-      
-      for (const detail of details) {
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chính chưa
-        const [existing] = await connection.query(
-          'SELECT ma_ct, so_luong FROM chi_tiet_gio_hang WHERE ma_gio_hang = ? AND ma_sp = ?',
-          [mainCartId, detail.ma_sp]
-        );
-        
-        if (existing.length > 0) {
-          // Cộng dồn số lượng
-          await connection.query(
-            'UPDATE chi_tiet_gio_hang SET so_luong = so_luong + ? WHERE ma_ct = ?',
-            [detail.so_luong, existing[0].ma_ct]
-          );
-        } else {
-          // Thêm mới vào giỏ hàng chính
-          await connection.query(
-            'INSERT INTO chi_tiet_gio_hang (ma_gio_hang, ma_sp, so_luong, gia_tai_thoi_diem) VALUES (?, ?, ?, ?)',
-            [mainCartId, detail.ma_sp, detail.so_luong, detail.gia_tai_thoi_diem]
-          );
-        }
-      }
-      
-      // Xóa chi tiết giỏ hàng cũ
-      await connection.query('DELETE FROM chi_tiet_gio_hang WHERE ma_gio_hang = ?', [cartId]);
-      
-      // Xóa giỏ hàng cũ
-      await connection.query('DELETE FROM gio_hang WHERE ma_gio_hang = ?', [cartId]);
+
+    // Gộp lấy tất cả chi tiết từ các giỏ phụ trong 1 query — tránh N+1
+    const [allDetails] = await connection.query(
+      'SELECT ma_sp, so_luong, gia_tai_thoi_diem FROM chi_tiet_gio_hang WHERE ma_gio_hang IN (?)',
+      [otherCartIds]
+    );
+
+    // Gộp số lượng theo ma_sp
+    const merged = new Map();
+    for (const d of allDetails) {
+      const cur = merged.get(d.ma_sp);
+      if (cur) cur.so_luong += d.so_luong;
+      else merged.set(d.ma_sp, { ma_sp: d.ma_sp, so_luong: d.so_luong, gia_tai_thoi_diem: d.gia_tai_thoi_diem });
     }
-    
+
+    // Lấy chi tiết hiện có ở giỏ chính 1 lần
+    const [existingMain] = await connection.query(
+      'SELECT ma_ct, ma_sp FROM chi_tiet_gio_hang WHERE ma_gio_hang = ?',
+      [mainCartId]
+    );
+    const existingMap = new Map(existingMain.map(r => [r.ma_sp, r.ma_ct]));
+
+    for (const item of merged.values()) {
+      const exMaCt = existingMap.get(item.ma_sp);
+      if (exMaCt) {
+        await connection.query(
+          'UPDATE chi_tiet_gio_hang SET so_luong = so_luong + ? WHERE ma_ct = ?',
+          [item.so_luong, exMaCt]
+        );
+      } else {
+        await connection.query(
+          'INSERT INTO chi_tiet_gio_hang (ma_gio_hang, ma_sp, so_luong, gia_tai_thoi_diem) VALUES (?, ?, ?, ?)',
+          [mainCartId, item.ma_sp, item.so_luong, item.gia_tai_thoi_diem]
+        );
+      }
+    }
+
+    // Xoá toàn bộ chi tiết + bản ghi giỏ phụ trong 2 query
+    await connection.query('DELETE FROM chi_tiet_gio_hang WHERE ma_gio_hang IN (?)', [otherCartIds]);
+    await connection.query('DELETE FROM gio_hang WHERE ma_gio_hang IN (?)', [otherCartIds]);
+
     await connection.commit();
-    connection.release();
-    
-    console.log('=== CLEANUP SUCCESS ===');
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: `Đã merge ${otherCartIds.length} giỏ hàng vào giỏ hàng chính`,
       mainCartId,
       mergedCarts: otherCartIds
     });
   } catch (error) {
-    await connection.rollback();
+    try { await connection.rollback(); } catch (_) {}
+    console.error('Cleanup error:', error && error.message);
+    res.status(500).json({ success: false, message: 'Lỗi cleanup giỏ hàng.' });
+  } finally {
     connection.release();
-    console.error('Cleanup error:', error);
-    res.json({ success: false, message: error.message });
   }
 });
 
@@ -334,43 +336,67 @@ router.put('/update', checkCartAccess, async (req, res) => {
 // POST /api/cart - Thêm sản phẩm vào giỏ hàng
 router.post('/', checkCartAccess, async (req, res) => {
   try {
-    const { userId, productId, quantity = 1, productInfo } = req.body;
-    
+    const {
+      userId, productId, quantity = 1, productInfo,
+      variantId, color, storage
+    } = req.body;
+
     if (!userId || !productId) {
       return res.json({ success: false, message: 'Thiếu thông tin userId hoặc productId' });
     }
-    
+
+    const variantIdNum = (variantId !== undefined && variantId !== null && variantId !== '')
+      ? Number(variantId) : null;
+    const colorChosen = color || null;
+    const storageChosen = storage || null;
+
     // Lấy thông tin sản phẩm từ database (bao gồm số lượng tồn kho)
     const [products] = await pool.query(
       'SELECT ma_sp, ten_sp, gia, mau_sac, bo_nho, anh_dai_dien, so_luong_ton FROM san_pham WHERE ma_sp = ?',
       [productId]
     );
-    
+
     let product;
     let price;
     let isFromDB = false;
-    let stockQuantity = 99; // Mặc định nếu không có trong DB
-    
+    let stockQuantity = 99;
+    let variantRow = null;
+
     if (products.length > 0) {
-      // Sản phẩm có trong database
       product = products[0];
       price = parseFloat(product.gia) || 0;
       stockQuantity = parseInt(product.so_luong_ton) || 0;
       isFromDB = true;
-      
-      // Kiểm tra số lượng tồn kho
-      if (quantity > stockQuantity) {
-        return res.json({ 
-          success: false, 
-          message: `Số lượng tối đa có thể mua là ${stockQuantity} sản phẩm`,
-          maxQuantity: stockQuantity
+
+      // Nếu client gửi variantId → kiểm tra biến thể và dùng tồn kho/giá variant
+      if (variantIdNum && Number.isInteger(variantIdNum) && variantIdNum > 0) {
+        const [variants] = await pool.query(
+          'SELECT ma_bt, ma_sp, mau_sac, dung_luong, so_luong, gia_chenh, trang_thai FROM bien_the_san_pham WHERE ma_bt = ?',
+          [variantIdNum]
+        );
+        if (variants.length === 0 || Number(variants[0].ma_sp) !== Number(productId)) {
+          return res.json({ success: false, message: 'Biến thể không hợp lệ' });
+        }
+        variantRow = variants[0];
+        if (variantRow.trang_thai && variantRow.trang_thai !== 'active') {
+          return res.json({ success: false, message: 'Biến thể đã ngừng kinh doanh' });
+        }
+        stockQuantity = parseInt(variantRow.so_luong) || 0;
+        price = (parseFloat(product.gia) || 0) + (parseFloat(variantRow.gia_chenh) || 0);
+      }
+
+      if (stockQuantity <= 0) {
+        return res.json({
+          success: false,
+          message: 'Sản phẩm đã hết hàng'
         });
       }
-      
-      if (stockQuantity <= 0) {
-        return res.json({ 
-          success: false, 
-          message: 'Sản phẩm đã hết hàng'
+
+      if (quantity > stockQuantity) {
+        return res.json({
+          success: false,
+          message: `Số lượng tối đa có thể mua là ${stockQuantity} sản phẩm`,
+          maxQuantity: stockQuantity
         });
       }
     } else if (productInfo) {
@@ -388,7 +414,7 @@ router.post('/', checkCartAccess, async (req, res) => {
     } else {
       return res.json({ success: false, message: 'Sản phẩm không tồn tại' });
     }
-    
+
     // Chỉ lưu vào database nếu sản phẩm có trong bảng san_pham
     if (isFromDB) {
       // Kiểm tra/tạo giỏ hàng cho user
@@ -396,10 +422,9 @@ router.post('/', checkCartAccess, async (req, res) => {
         'SELECT ma_gio_hang FROM gio_hang WHERE ma_kh = ?',
         [userId]
       );
-      
+
       let cartId;
       if (carts.length === 0) {
-        // Tạo giỏ hàng mới
         const [result] = await pool.query(
           'INSERT INTO gio_hang (ma_kh) VALUES (?)',
           [userId]
@@ -408,47 +433,53 @@ router.post('/', checkCartAccess, async (req, res) => {
       } else {
         cartId = carts[0].ma_gio_hang;
       }
-      
-      // Kiểm tra sản phẩm đã có trong chi tiết giỏ hàng chưa
+
+      // Tìm line item TRÙNG cả biến thể (NULL = NULL coi là trùng cho SP không có variant)
       const [existing] = await pool.query(
-        'SELECT ma_ct, so_luong FROM chi_tiet_gio_hang WHERE ma_gio_hang = ? AND ma_sp = ?',
-        [cartId, productId]
+        `SELECT ma_ct, so_luong FROM chi_tiet_gio_hang
+         WHERE ma_gio_hang = ? AND ma_sp = ?
+           AND ((ma_bt IS NULL AND ? IS NULL) OR ma_bt = ?)`,
+        [cartId, productId, variantIdNum, variantIdNum]
       );
-      
+
       if (existing.length > 0) {
-        // Kiểm tra tổng số lượng sau khi cộng thêm không vượt quá tồn kho
         const newTotalQuantity = existing[0].so_luong + quantity;
         if (newTotalQuantity > stockQuantity) {
-          return res.json({ 
-            success: false, 
+          return res.json({
+            success: false,
             message: `Bạn đã có ${existing[0].so_luong} sản phẩm trong giỏ. Tối đa có thể thêm ${stockQuantity - existing[0].so_luong} sản phẩm nữa.`,
             maxQuantity: stockQuantity,
             currentInCart: existing[0].so_luong
           });
         }
-        
-        // Cập nhật số lượng
+
         await pool.query(
           'UPDATE chi_tiet_gio_hang SET so_luong = so_luong + ? WHERE ma_ct = ?',
           [quantity, existing[0].ma_ct]
         );
       } else {
-        // Thêm mới vào chi tiết giỏ hàng
         await pool.query(
-          'INSERT INTO chi_tiet_gio_hang (ma_gio_hang, ma_sp, so_luong, gia_tai_thoi_diem) VALUES (?, ?, ?, ?)',
-          [cartId, productId, quantity, price]
+          `INSERT INTO chi_tiet_gio_hang
+             (ma_gio_hang, ma_sp, ma_bt, mau_sac_chon, dung_luong_chon, so_luong, gia_tai_thoi_diem)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          [
+            cartId, productId, variantIdNum,
+            variantRow ? variantRow.mau_sac : colorChosen,
+            variantRow ? variantRow.dung_luong : storageChosen,
+            quantity, price
+          ]
         );
       }
     }
-    
+
     // Xử lý đường dẫn ảnh
     let imagePath = product.anh_dai_dien || 'images/15-256.avif';
     if (imagePath && !imagePath.startsWith('images/') && !imagePath.startsWith('http')) {
       imagePath = `images/${imagePath}`;
     }
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: isFromDB ? 'Đã thêm vào giỏ hàng' : 'Đã thêm vào giỏ hàng (localStorage)',
       savedToDB: isFromDB,
       product: {
@@ -456,8 +487,9 @@ router.post('/', checkCartAccess, async (req, res) => {
         name: product.ten_sp,
         price: price,
         image: imagePath,
-        color: product.mau_sac || 'Mặc định',
-        storage: product.bo_nho || '128GB'
+        color: variantRow ? variantRow.mau_sac : (colorChosen || product.mau_sac || 'Mặc định'),
+        storage: variantRow ? variantRow.dung_luong : (storageChosen || product.bo_nho || '128GB'),
+        variantId: variantRow ? variantRow.ma_bt : null
       }
     });
   } catch (error) {
@@ -490,12 +522,18 @@ router.get('/:userId', checkCartAccess, async (req, res) => {
     }
     
     // Lấy giỏ hàng từ TẤT CẢ các bản ghi gio_hang của user
+    // LEFT JOIN bien_the_san_pham để vẫn lấy được line item của SP chưa có biến thể (ma_bt NULL)
     const [rows] = await pool.query(`
       SELECT ct.ma_ct, ct.ma_sp, ct.so_luong, ct.gia_tai_thoi_diem, ct.ma_gio_hang,
-             sp.ten_sp, sp.anh_dai_dien, sp.gia, sp.mau_sac, sp.bo_nho, sp.so_luong_ton
+             ct.ma_bt, ct.mau_sac_chon, ct.dung_luong_chon,
+             sp.ten_sp, sp.anh_dai_dien, sp.gia, sp.mau_sac, sp.bo_nho, sp.so_luong_ton,
+             bt.mau_sac AS bt_mau_sac, bt.mau_hex AS bt_mau_hex,
+             bt.dung_luong AS bt_dung_luong, bt.so_luong AS bt_so_luong,
+             bt.trang_thai AS bt_trang_thai
       FROM gio_hang gh
       JOIN chi_tiet_gio_hang ct ON gh.ma_gio_hang = ct.ma_gio_hang
       JOIN san_pham sp ON ct.ma_sp = sp.ma_sp
+      LEFT JOIN bien_the_san_pham bt ON ct.ma_bt = bt.ma_bt
       WHERE gh.ma_kh = ?
     `, [userId]);
     
@@ -519,11 +557,18 @@ router.get('/:userId', checkCartAccess, async (req, res) => {
       }
       imagePath = imagePath.replace('images/images/', 'images/');
       
-      // Xử lý màu sắc
+      // Xử lý màu sắc — ƯU TIÊN biến thể đã chọn nếu có
       let colorName = 'Mặc định';
       let colorCode = '#000000';
-      
-      if (item.mau_sac) {
+
+      if (item.bt_mau_sac) {
+        // Có biến thể → dùng thông tin biến thể (chính xác nhất)
+        colorName = item.bt_mau_sac;
+        if (item.bt_mau_hex) colorCode = item.bt_mau_hex;
+      } else if (item.mau_sac_chon) {
+        // Có lựa chọn lưu trong cart (legacy variant chưa link bien_the_san_pham)
+        colorName = item.mau_sac_chon;
+      } else if (item.mau_sac) {
         try {
           if (item.mau_sac.startsWith('{') || item.mau_sac.startsWith('[')) {
             const colorData = JSON.parse(item.mau_sac);
@@ -540,10 +585,14 @@ router.get('/:userId', checkCartAccess, async (req, res) => {
           colorName = item.mau_sac;
         }
       }
-      
+
+      const storage = item.bt_dung_luong || item.dung_luong_chon || item.bo_nho || '128GB';
+      const stockCount = item.ma_bt ? (item.bt_so_luong || 0) : (item.so_luong_ton || 0);
+
       return {
         id: item.ma_sp,
         cartItemId: item.ma_ct,
+        variantId: item.ma_bt || null,
         name: item.ten_sp || 'Sản phẩm',
         image: imagePath,
         price: price,
@@ -551,9 +600,9 @@ router.get('/:userId', checkCartAccess, async (req, res) => {
         quantity: item.so_luong || 1,
         color: colorName,
         colorCode: colorCode,
-        storage: item.bo_nho || '128GB',
-        inStock: (item.so_luong_ton || 0) > 0,
-        stockCount: item.so_luong_ton || 0
+        storage: storage,
+        inStock: stockCount > 0 && (!item.ma_bt || item.bt_trang_thai === 'active' || !item.bt_trang_thai),
+        stockCount: stockCount
       };
     });
     

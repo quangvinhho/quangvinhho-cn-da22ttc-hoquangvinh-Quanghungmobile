@@ -3,7 +3,16 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const mysql = require('mysql2/promise');
 
-// Tạo pool kết nối MySQL
+const IS_PROD = process.env.NODE_ENV === 'production';
+
+if (IS_PROD && !process.env.DB_PASSWORD) {
+    console.error('❌ FATAL: DB_PASSWORD chưa được set trong môi trường production.');
+    process.exit(1);
+}
+if (!process.env.DB_PASSWORD) {
+    console.warn('⚠️  DB_PASSWORD chưa set — đang dùng mật khẩu dev mặc định. CHỈ chấp nhận ở môi trường local.');
+}
+
 const pool = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 3306,

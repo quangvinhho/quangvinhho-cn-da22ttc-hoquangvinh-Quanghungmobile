@@ -210,12 +210,14 @@ async function editKnowledge(id) {
             credentials: 'include'
         });
         const data = await response.json();
-        
+
         document.getElementById('modalTitle').textContent = 'Sửa Tài liệu Tri thức';
         document.getElementById('knowledgeId').value = data.id;
         document.getElementById('title').value = data.title;
         document.getElementById('content').value = data.content;
         document.getElementById('type').value = data.type;
+        const kwInput = document.getElementById('keywords');
+        if (kwInput) kwInput.value = data.keywords || '';
         document.getElementById('isActive').checked = data.is_active === 1;
         document.getElementById('knowledgeModal').classList.add('active');
     } catch (error) {
@@ -227,28 +229,30 @@ async function editKnowledge(id) {
 // Lưu knowledge
 async function saveKnowledge(event) {
     event.preventDefault();
-    
+
     const id = document.getElementById('knowledgeId').value;
+    const kwInput = document.getElementById('keywords');
     const data = {
         title: document.getElementById('title').value,
         content: document.getElementById('content').value,
         type: document.getElementById('type').value,
+        keywords: kwInput ? kwInput.value : '',
         is_active: document.getElementById('isActive').checked ? 1 : 0
     };
-    
+
     try {
         const url = id ? `${API_URL}/chatbot-knowledge/${id}` : `${API_URL}/chatbot-knowledge`;
         const method = id ? 'PUT' : 'POST';
-        
+
         const response = await fetch(url, {
             method,
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
             body: JSON.stringify(data)
         });
-        
+
         const result = await response.json();
-        
+
         if (response.ok) {
             alert(result.message);
             closeModal();

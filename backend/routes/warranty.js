@@ -5,10 +5,32 @@ const { pool } = require('../config/database');
 // Middleware kiểm tra quyền admin cho các thao tác quản lý bảo hành
 const checkAdmin = (req, res, next) => {
   if (!req.session || !req.session.user || req.session.user.vai_tro !== 'admin') {
-    return res.status(403).json({ 
-      success: false, 
+    return res.status(403).json({
+      success: false,
       message: 'Bạn không có quyền thực hiện thao tác này.',
       code: 'ADMIN_REQUIRED'
+    });
+  }
+  next();
+};
+
+// Middleware yêu cầu đăng nhập (customer hoặc admin) - dùng cho tra cứu & gửi yêu cầu bảo hành
+const requireLogin = (req, res, next) => {
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Vui lòng đăng nhập để tra cứu và gửi yêu cầu bảo hành.',
+      code: 'LOGIN_REQUIRED'
+    });
+  }
+  // Customer phải có ma_kh, admin được phép luôn
+  const u = req.session.user;
+  const isAdmin = u.vai_tro === 'admin';
+  if (!isAdmin && !u.ma_kh) {
+    return res.status(401).json({
+      success: false,
+      message: 'Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.',
+      code: 'LOGIN_REQUIRED'
     });
   }
   next();
@@ -17,28 +39,72 @@ const checkAdmin = (req, res, next) => {
 /**
  * POST /api/warranty/check
  * Tra cứu bảo hành theo IMEI, Số Serial hoặc Mã Đơn hàng
+ * YÊU CẦU: Đã đăng nhập + chỉ tra cứu được phiếu BH thuộc về mình
+ * (qua phieu_bao_hanh.ma_kh hoặc don_hang.ma_kh). Admin xem được tất cả.
  */
-router.post('/check', async (req, res) => {
+router.post('/check', requireLogin, async (req, res) => {
   try {
     const { query } = req.body;
-    
+
     if (!query || !query.trim()) {
       return res.status(400).json({ success: false, message: 'Vui lòng cung cấp mã IMEI, Serial hoặc Mã đơn hàng' });
     }
 
     const searchQuery = query.trim();
+    const sessionUser = req.session.user;
+    const isAdmin = sessionUser.vai_tro === 'admin';
+    const userId = sessionUser.ma_kh;
 
-    // Tìm kiếm phiếu bảo hành
-    const [warranties] = await pool.query(
-      `SELECT pbh.*, sp.ten_sp, sp.anh_dai_dien, dh.trang_thai as trang_thai_don
-       FROM phieu_bao_hanh pbh
-       JOIN san_pham sp ON pbh.ma_sp = sp.ma_sp
-       JOIN don_hang dh ON pbh.ma_don = dh.ma_don
-       WHERE pbh.so_imei = ? OR pbh.so_serial = ? OR pbh.ma_don = ?`,
-      [searchQuery, searchQuery, searchQuery]
-    );
+    // Tìm kiếm phiếu bảo hành - admin xem hết, customer chỉ xem của mình
+    let warrantySql = `
+      SELECT pbh.*, sp.ten_sp, sp.anh_dai_dien, dh.trang_thai as trang_thai_don, dh.ma_kh as ma_kh_don
+      FROM phieu_bao_hanh pbh
+      JOIN san_pham sp ON pbh.ma_sp = sp.ma_sp
+      JOIN don_hang dh ON pbh.ma_don = dh.ma_don
+      WHERE (pbh.so_imei = ? OR pbh.so_serial = ? OR pbh.ma_don = ?)
+    `;
+    const params = [searchQuery, searchQuery, searchQuery];
+
+    if (!isAdmin) {
+      // Khách hàng chỉ tra cứu được phiếu BH mà họ là chủ sở hữu hoặc người mua đơn hàng
+      // và đơn hàng liên quan phải ở trạng thái đã giao (delivered) hoặc hoàn thành (completed)
+      warrantySql += ` AND (pbh.ma_kh = ? OR dh.ma_kh = ?) AND dh.trang_thai IN ('completed', 'delivered')`;
+      params.push(userId, userId);
+    }
+
+    const [warranties] = await pool.query(warrantySql, params);
 
     if (warranties.length === 0) {
+      // Phân biệt các case:
+      // 1. Phân biệt xem mã này có tồn tại trong hệ thống không
+      const [exists] = await pool.query(
+        `SELECT pbh.*, dh.trang_thai as trang_thai_don, dh.ma_kh as ma_kh_don 
+         FROM phieu_bao_hanh pbh
+         JOIN don_hang dh ON pbh.ma_don = dh.ma_don
+         WHERE pbh.so_imei = ? OR pbh.so_serial = ? OR pbh.ma_don = ? LIMIT 1`,
+        [searchQuery, searchQuery, searchQuery]
+      );
+      if (exists.length > 0 && !isAdmin) {
+        const item = exists[0];
+        // Check ownership
+        const ownerOfWarranty = item.ma_kh != null && Number(item.ma_kh) === Number(userId);
+        const buyerOfOrder = item.ma_kh_don != null && Number(item.ma_kh_don) === Number(userId);
+        if (!ownerOfWarranty && !buyerOfOrder) {
+          return res.status(403).json({
+            success: false,
+            message: 'Bạn chỉ có thể tra cứu bảo hành cho sản phẩm mình đã mua. Mã này không thuộc về tài khoản của bạn.',
+            code: 'NOT_OWNER'
+          });
+        }
+        // Check order status
+        if (item.trang_thai_don !== 'completed' && item.trang_thai_don !== 'delivered') {
+          return res.status(400).json({
+            success: false,
+            message: 'Sản phẩm/Đơn hàng này chưa được hoàn thành hoặc giao hàng thành công. Quyền lợi bảo hành chỉ được kích hoạt sau khi nhận hàng thành công.',
+            code: 'ORDER_NOT_COMPLETED'
+          });
+        }
+      }
       return res.status(404).json({ success: false, message: 'Không tìm thấy phiếu bảo hành nào tương ứng với thông tin tra cứu.' });
     }
 
@@ -78,7 +144,7 @@ router.get('/user/:userId', async (req, res) => {
     const isAdmin = sessionUser && sessionUser.vai_tro === 'admin';
     const sessionUserId = sessionUser ? sessionUser.ma_kh : null;
 
-    if (!isAdmin && userId != sessionUserId) {
+    if (!isAdmin && Number(userId) !== Number(sessionUserId)) {
       return res.status(403).json({ success: false, message: 'Bạn không có quyền truy cập thông tin bảo hành này.' });
     }
 
@@ -105,8 +171,9 @@ router.get('/user/:userId', async (req, res) => {
 /**
  * POST /api/warranty/claim
  * Gửi yêu cầu bảo hành online
+ * YÊU CẦU: Đã đăng nhập + sở hữu phiếu BH (qua pbh.ma_kh hoặc don_hang.ma_kh)
  */
-router.post('/claim', async (req, res) => {
+router.post('/claim', requireLogin, async (req, res) => {
   try {
     const { ma_pbh, mo_ta_loi, hinh_anh } = req.body;
 
@@ -114,9 +181,12 @@ router.post('/claim', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Thiếu thông tin yêu cầu bảo hành.' });
     }
 
-    // 1. Kiểm tra phiếu bảo hành có hợp lệ không
+    // 1. Kiểm tra phiếu bảo hành có hợp lệ không + lấy ma_kh và trạng thái của đơn hàng
     const [warranties] = await pool.query(
-      `SELECT * FROM phieu_bao_hanh WHERE ma_pbh = ?`,
+      `SELECT pbh.*, dh.ma_kh as ma_kh_don, dh.trang_thai as trang_thai_don
+       FROM phieu_bao_hanh pbh
+       JOIN don_hang dh ON pbh.ma_don = dh.ma_don
+       WHERE pbh.ma_pbh = ?`,
       [ma_pbh]
     );
 
@@ -126,16 +196,31 @@ router.post('/claim', async (req, res) => {
 
     const pbh = warranties[0];
 
-    // Xác thực người dùng sở hữu phiếu bảo hành này (nếu có ma_kh)
-    const sessionUser = req.session ? req.session.user : null;
-    const isAdmin = sessionUser && sessionUser.vai_tro === 'admin';
-    const sessionUserId = sessionUser ? sessionUser.ma_kh : null;
+    // 2. Xác thực sở hữu: phải có ma_kh khớp với pbh.ma_kh hoặc don_hang.ma_kh
+    const sessionUser = req.session.user;
+    const isAdmin = sessionUser.vai_tro === 'admin';
+    const sessionUserId = sessionUser.ma_kh;
+    const ownerOfWarranty = pbh.ma_kh != null && Number(pbh.ma_kh) === Number(sessionUserId);
+    const buyerOfOrder = pbh.ma_kh_don != null && Number(pbh.ma_kh_don) === Number(sessionUserId);
 
-    if (pbh.ma_kh && !isAdmin && pbh.ma_kh != sessionUserId) {
-      return res.status(403).json({ success: false, message: 'Bạn không có quyền gửi yêu cầu cho phiếu bảo hành này.' });
+    if (!isAdmin && !ownerOfWarranty && !buyerOfOrder) {
+      return res.status(403).json({
+        success: false,
+        message: 'Bạn chỉ có thể gửi yêu cầu bảo hành cho sản phẩm mình đã mua.',
+        code: 'NOT_OWNER'
+      });
     }
 
-    // 2. Kiểm tra hạn bảo hành
+    // Kiểm tra trạng thái đơn hàng: phải hoàn thành hoặc đã giao mới được gửi bảo hành
+    if (!isAdmin && pbh.trang_thai_don !== 'completed' && pbh.trang_thai_don !== 'delivered') {
+      return res.status(400).json({
+        success: false,
+        message: 'Đơn hàng này chưa được giao hàng hoặc hoàn thành thành công, do đó bạn chưa thể yêu cầu bảo hành/sửa chữa.',
+        code: 'ORDER_NOT_COMPLETED'
+      });
+    }
+
+    // 3. Kiểm tra hạn bảo hành
     if (pbh.trang_thai === 'expired' || new Date(pbh.ngay_het_han) < new Date()) {
       // Tự động cập nhật expired nếu đã quá hạn
       await pool.query(`UPDATE phieu_bao_hanh SET trang_thai = 'expired' WHERE ma_pbh = ?`, [ma_pbh]);
@@ -146,15 +231,20 @@ router.post('/claim', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Phiếu bảo hành này đã bị vô hiệu hóa do vi phạm chính sách bảo hành.' });
     }
 
-    // 3. Tạo yêu cầu bảo hành
+    // 4. Tạo yêu cầu bảo hành — luôn gắn ma_kh của session (không cho phép anonymous)
     const imgStr = hinh_anh ? (Array.isArray(hinh_anh) ? JSON.stringify(hinh_anh) : hinh_anh) : null;
-    const customerId = pbh.ma_kh || sessionUserId || null;
+    const customerId = isAdmin ? (pbh.ma_kh || pbh.ma_kh_don) : sessionUserId;
 
     const [result] = await pool.query(
       `INSERT INTO yeu_cau_bao_hanh (ma_pbh, ma_kh, mo_ta_loi, hinh_anh, trang_thai)
        VALUES (?, ?, ?, ?, 'pending')`,
       [ma_pbh, customerId, mo_ta_loi.trim(), imgStr]
     );
+
+    // Nếu phiếu bảo hành chưa gắn ma_kh, gắn luôn từ buyer của đơn hàng để các lần sau đỡ phải JOIN
+    if (!pbh.ma_kh && pbh.ma_kh_don) {
+      await pool.query(`UPDATE phieu_bao_hanh SET ma_kh = ? WHERE ma_pbh = ?`, [pbh.ma_kh_don, ma_pbh]);
+    }
 
     res.json({
       success: true,

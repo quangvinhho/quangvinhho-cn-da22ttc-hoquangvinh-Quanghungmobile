@@ -22,11 +22,62 @@
 }
 
 .main-image-container img {
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  cursor: zoom-in;
 }
 
-.main-image-container:hover img {
-  transform: scale(1.03);
+/* Zoom 2x theo vị trí cursor — kích hoạt bằng class .zoom-active đặt khi mouseenter */
+.main-image-container.zoom-active img {
+  transform: scale(2);
+  transition: transform 0.1s linear;
+}
+
+/* ===== LIGHTBOX ===== */
+#lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#lightboxOverlay.active { display: flex; }
+#lightboxOverlay img {
+  max-width: min(92vw, 1200px);
+  max-height: 86vh;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.lightbox-btn {
+  position: absolute;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 9999px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lightbox-btn:hover { background: rgba(255,255,255,0.25); }
+.lightbox-close { top: 20px; right: 24px; }
+.lightbox-prev  { left: 24px;  top: 50%; transform: translateY(-50%); }
+.lightbox-next  { right: 24px; top: 50%; transform: translateY(-50%); }
+.lightbox-counter {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 14px;
+  background: rgba(0,0,0,0.4);
+  padding: 6px 14px;
+  border-radius: 9999px;
 }
 
 /* Thumbnail Styles - Liền kề CellphoneS */

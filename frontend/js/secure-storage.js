@@ -9,7 +9,7 @@ class SecureStorage {
     this.secretKey = this.generateDeviceKey();
   }
 
-  // Tạo key dựa trên device fingerprint
+  // Tạo key dựa trên device fingerprint (ổn định khi đổi màn hình hoặc timezone)
   generateDeviceKey() {
     const nav = window.navigator;
     const screen = window.screen;
@@ -17,8 +17,6 @@ class SecureStorage {
       nav.userAgent,
       nav.language,
       screen.colorDepth,
-      screen.width + 'x' + screen.height,
-      new Date().getTimezoneOffset(),
       !!window.sessionStorage,
       !!window.localStorage
     ].join('|');
@@ -76,7 +74,7 @@ class SecureStorage {
         return result;
       }
     } catch (e) {
-      console.error('Decrypt error');
+      console.warn('Decrypt error');
       return '';
     }
   }
@@ -103,7 +101,11 @@ class SecureStorage {
       
       const trimmed = rawValue.trim();
       if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
-        return JSON.parse(trimmed);
+        try {
+          return JSON.parse(trimmed);
+        } catch (e) {
+          // Tiếp tục giải mã nếu parse lỗi (có thể là chuỗi mã hóa tình cờ bắt đầu bằng { hoặc [)
+        }
       }
       
       const decrypted = this.decrypt(rawValue);
@@ -112,9 +114,17 @@ class SecureStorage {
       const decryptedTrimmed = decrypted.trim();
       if (!decryptedTrimmed) return null;
       
-      return JSON.parse(decryptedTrimmed);
+      try {
+        return JSON.parse(decryptedTrimmed);
+      } catch (parseError) {
+        if (decryptedTrimmed.startsWith('{') || decryptedTrimmed.startsWith('[')) {
+          console.warn(`SecureStorage: Không thể parse JSON cho key "${key}". Có thể thiết bị hoặc mã hóa đã thay đổi.`);
+        }
+        localStorage.removeItem(key);
+        return null;
+      }
     } catch (e) {
-      console.error('SecureStorage getItem error', e);
+      console.warn('SecureStorage getItem error for key:', key, e.message);
       // Xóa dữ liệu lỗi để tránh lỗi lặp lại
       localStorage.removeItem(key);
       return null;

@@ -48,99 +48,53 @@ router.post('/', async (req, res) => {
     let maKmDiscount = null;
     const usedVouchers = [];
 
-    // Xử lý mã freeship
-    if (freeshipVoucher && freeshipVoucher.code) {
-      
-      
-      // Tìm voucher trong DB (không lọc điều kiện để debug)
-      const [allVouchers] = await connection.query(
-        `SELECT ma_km, code, so_luong, so_luong_da_dung, trang_thai, ngay_bat_dau, ngay_ket_thuc 
-         FROM khuyen_mai WHERE code = ?`,
-        [freeshipVoucher.code]
-      );
-      
-      
+    // Helper: claim voucher với SELECT FOR UPDATE để chống race condition
+    // Trả về ma_km nếu claim thành công, null nếu voucher không tồn tại / hết / hết hạn
+    async function claimVoucher(code) {
       const [vouchers] = await connection.query(
-        `SELECT ma_km, code, so_luong, so_luong_da_dung 
-         FROM khuyen_mai 
-         WHERE code = ? 
+        `SELECT ma_km, so_luong, so_luong_da_dung
+         FROM khuyen_mai
+         WHERE code = ?
            AND trang_thai = 'active'
            AND ngay_bat_dau <= NOW()
-           AND ngay_ket_thuc >= NOW() 
-           AND so_luong_da_dung < so_luong`,
-        [freeshipVoucher.code]
+           AND ngay_ket_thuc >= NOW()
+         FOR UPDATE`,
+        [code]
       );
-      
-      if (vouchers.length > 0) {
-        maKmFreeship = vouchers[0].ma_km;
-        await connection.query(
-          'UPDATE khuyen_mai SET so_luong_da_dung = so_luong_da_dung + 1 WHERE ma_km = ?', 
-          [maKmFreeship]
-        );
+      if (vouchers.length === 0) return null;
+      const v = vouchers[0];
+      if (v.so_luong != null && v.so_luong_da_dung >= v.so_luong) return null;
+      const [upd] = await connection.query(
+        `UPDATE khuyen_mai
+         SET so_luong_da_dung = so_luong_da_dung + 1
+         WHERE ma_km = ?
+           AND (so_luong IS NULL OR so_luong_da_dung < so_luong)`,
+        [v.ma_km]
+      );
+      if (upd.affectedRows !== 1) return null;
+      return v.ma_km;
+    }
+
+    if (freeshipVoucher && freeshipVoucher.code) {
+      maKmFreeship = await claimVoucher(freeshipVoucher.code);
+      if (maKmFreeship) {
         usedVouchers.push({ code: freeshipVoucher.code, type: 'freeship', maKm: maKmFreeship });
-        console.log(`✅ Freeship voucher ${freeshipVoucher.code} used. Remaining: ${vouchers[0].so_luong - vouchers[0].so_luong_da_dung - 1}`);
-      } else {
-        console.log(`⚠️ Freeship voucher ${freeshipVoucher.code} not found or not valid in DB`);
       }
     }
 
-    // Xử lý mã giảm giá
     if (discountVoucher && discountVoucher.code) {
-      
-      
-      // Tìm voucher trong DB (không lọc điều kiện để debug)
-      const [allVouchers] = await connection.query(
-        `SELECT ma_km, code, so_luong, so_luong_da_dung, trang_thai, ngay_bat_dau, ngay_ket_thuc 
-         FROM khuyen_mai WHERE code = ?`,
-        [discountVoucher.code]
-      );
-      
-      
-      const [vouchers] = await connection.query(
-        `SELECT ma_km, code, so_luong, so_luong_da_dung 
-         FROM khuyen_mai 
-         WHERE code = ? 
-           AND trang_thai = 'active'
-           AND ngay_bat_dau <= NOW()
-           AND ngay_ket_thuc >= NOW() 
-           AND so_luong_da_dung < so_luong`,
-        [discountVoucher.code]
-      );
-      
-      if (vouchers.length > 0) {
-        maKmDiscount = vouchers[0].ma_km;
-        await connection.query(
-          'UPDATE khuyen_mai SET so_luong_da_dung = so_luong_da_dung + 1 WHERE ma_km = ?', 
-          [maKmDiscount]
-        );
+      maKmDiscount = await claimVoucher(discountVoucher.code);
+      if (maKmDiscount) {
         usedVouchers.push({ code: discountVoucher.code, type: 'discount', maKm: maKmDiscount });
-        console.log(`✅ Discount voucher ${discountVoucher.code} used. Remaining: ${vouchers[0].so_luong - vouchers[0].so_luong_da_dung - 1}`);
-      } else {
-        console.log(`⚠️ Discount voucher ${discountVoucher.code} not found or not valid in DB`);
       }
     }
 
     // Fallback: xử lý voucherCode cũ (tương thích ngược)
     let maKm = maKmDiscount || maKmFreeship; // Ưu tiên mã giảm giá
     if (!maKm && voucherCode) {
-      const [vouchers] = await connection.query(
-        `SELECT ma_km, so_luong, so_luong_da_dung 
-         FROM khuyen_mai 
-         WHERE code = ? 
-           AND trang_thai = 'active'
-           AND ngay_bat_dau <= NOW()
-           AND ngay_ket_thuc >= NOW() 
-           AND so_luong_da_dung < so_luong`,
-        [voucherCode]
-      );
-      if (vouchers.length > 0) {
-        maKm = vouchers[0].ma_km;
-        await connection.query(
-          'UPDATE khuyen_mai SET so_luong_da_dung = so_luong_da_dung + 1 WHERE ma_km = ?', 
-          [maKm]
-        );
+      maKm = await claimVoucher(voucherCode);
+      if (maKm) {
         usedVouchers.push({ code: voucherCode, type: 'legacy', maKm: maKm });
-        console.log(`Legacy voucher ${voucherCode} used. Updated so_luong_da_dung for ma_km=${maKm}`);
       }
     }
 
@@ -164,22 +118,61 @@ router.post('/', async (req, res) => {
     
     console.log(`Order ${orderId} created: type=${orderType}, deposit=${actualDepositAmount}, remaining=${actualRemainingAmount}`);
 
-    // Thêm chi tiết đơn hàng
+    // Thêm chi tiết đơn hàng + giảm tồn kho atomically (chống oversell)
+    // Hỗ trợ biến thể: item.variantId (tuỳ chọn) → giảm bien_the_san_pham; nếu không có → giảm san_pham.so_luong_ton
     for (const item of items) {
-      // Lấy giá nhập hiện tại của sản phẩm để lưu vào chi tiết đơn hàng (khóa vốn)
       const [[product]] = await connection.query('SELECT gia_nhap FROM san_pham WHERE ma_sp = ?', [item.id]);
       const importPrice = product && product.gia_nhap ? product.gia_nhap : 0;
 
+      if (item.variantId) {
+        // Giảm tồn kho biến thể atomic
+        const [vUpd] = await connection.query(
+          `UPDATE bien_the_san_pham SET so_luong = so_luong - ?
+           WHERE ma_bt = ? AND ma_sp = ? AND so_luong >= ? AND trang_thai = 'active'`,
+          [item.quantity, item.variantId, item.id, item.quantity]
+        );
+        if (vUpd.affectedRows !== 1) {
+          const err = new Error(`Biến thể "${item.name || item.id} (${item.color || ''} ${item.storage || ''})" không đủ tồn kho.`);
+          err.code = 'OUT_OF_STOCK';
+          err.statusCode = 409;
+          throw err;
+        }
+        // Sync tổng tồn kho ở san_pham (đồng bộ với variant)
+        await connection.query(
+          `UPDATE san_pham sp
+           SET so_luong_ton = (
+             SELECT COALESCE(SUM(so_luong), 0)
+             FROM bien_the_san_pham
+             WHERE ma_sp = sp.ma_sp AND trang_thai = 'active'
+           )
+           WHERE sp.ma_sp = ?`,
+          [item.id]
+        );
+      } else {
+        // Backward-compat: không có variantId → giảm tồn kho tổng như cũ
+        const [stockUpd] = await connection.query(
+          'UPDATE san_pham SET so_luong_ton = so_luong_ton - ? WHERE ma_sp = ? AND so_luong_ton >= ?',
+          [item.quantity, item.id, item.quantity]
+        );
+        if (stockUpd.affectedRows !== 1) {
+          const err = new Error(`Sản phẩm "${item.name || item.id}" không đủ tồn kho.`);
+          err.code = 'OUT_OF_STOCK';
+          err.statusCode = 409;
+          throw err;
+        }
+      }
+
       await connection.query(
-        `INSERT INTO chi_tiet_don_hang (ma_don, ma_sp, so_luong, gia, gia_nhap)
-         VALUES (?, ?, ?, ?, ?)`,
-        [orderId, item.id, item.quantity, item.price, importPrice]
-      );
-      
-      // Giảm số lượng tồn kho
-      await connection.query(
-        'UPDATE san_pham SET so_luong_ton = so_luong_ton - ? WHERE ma_sp = ?',
-        [item.quantity, item.id]
+        `INSERT INTO chi_tiet_don_hang
+           (ma_don, ma_sp, ma_bt, mau_sac_chon, dung_luong_chon, so_luong, gia, gia_nhap)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          orderId, item.id,
+          item.variantId || null,
+          item.color || null,
+          item.storage || null,
+          item.quantity, item.price, importPrice
+        ]
       );
     }
 
@@ -338,11 +331,17 @@ router.post('/', async (req, res) => {
     }
 
   } catch (error) {
-    await connection.rollback();
-    console.error('Create order error:', error);
-    res.status(500).json({
+    try { await connection.rollback(); } catch (_) {}
+    console.error('Create order error:', error && error.message);
+    const statusCode = error && error.statusCode ? error.statusCode : 500;
+    // Trả message nghiệp vụ cho lỗi 4xx, nuốt detail cho 5xx
+    const message = statusCode >= 400 && statusCode < 500
+      ? (error.message || 'Yêu cầu không hợp lệ')
+      : 'Lỗi tạo đơn hàng, vui lòng thử lại.';
+    res.status(statusCode).json({
       success: false,
-      message: 'Lỗi tạo đơn hàng: ' + error.message
+      code: error && error.code,
+      message
     });
   } finally {
     connection.release();

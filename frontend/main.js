@@ -72,6 +72,47 @@
   window.hidePageLoader = hidePageLoader;
 })();
 
+// API URL toàn cục — tự chọn theo môi trường để không hardcode localhost ở production
+window.API_BASE_URL = window.API_BASE_URL || (
+  (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000/api'
+    : (location.origin + '/api')
+);
+
+// Helper escape HTML — chặn XSS khi render text vào innerHTML
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+window.escapeHtml = escapeHtml;
+
+// safeFetch — wrap fetch với check response.ok, timeout 10s, trả {ok, data, error}
+async function safeFetch(url, opts = {}) {
+  const { timeout = 10000, ...rest } = opts;
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), timeout);
+  try {
+    const resp = await fetch(url, { credentials: 'include', ...rest, signal: controller.signal });
+    let data = null;
+    try { data = await resp.json(); } catch (_) { /* response không phải JSON */ }
+    if (!resp.ok) {
+      return { ok: false, status: resp.status, data, error: data && data.message ? data.message : `HTTP ${resp.status}` };
+    }
+    return { ok: true, status: resp.status, data, error: null };
+  } catch (err) {
+    const aborted = err && err.name === 'AbortError';
+    return { ok: false, status: 0, data: null, error: aborted ? 'Yêu cầu quá thời gian, vui lòng thử lại.' : (err.message || 'Lỗi mạng') };
+  } finally {
+    clearTimeout(t);
+  }
+}
+window.safeFetch = safeFetch;
+
 // Format price to Vietnamese currency
 function formatPrice(price) {
   if (price === undefined || price === null || isNaN(price)) {
@@ -111,10 +152,11 @@ function showToast(message, type = 'success') {
     'bg-gray-800 text-white'
   }`;
   
+  const iconClass = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
   toast.innerHTML = `
     <div class="flex items-center gap-3">
-      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-      <span>${message}</span>
+      <i class="fas ${iconClass}"></i>
+      <span>${escapeHtml(message)}</span>
     </div>
   `;
   

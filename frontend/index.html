@@ -626,7 +626,7 @@
               return;
             }
             
-            const API_URL = 'http://localhost:3000/api';
+            const API_URL = window.API_BASE_URL || 'http://localhost:3000/api';
             const cartKey = `cart_user_${user.ma_kh}`;
             
             // Gọi API để thêm vào database
@@ -1603,7 +1603,7 @@
   <!-- Product Loading Script -->
   <script>
     // API URL
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = window.API_BASE_URL || 'http://localhost:3000/api';
 
     // Format price to Vietnamese currency
     function formatPrice(price) {

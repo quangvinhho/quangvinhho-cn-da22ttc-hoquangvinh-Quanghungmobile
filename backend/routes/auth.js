@@ -76,21 +76,22 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB
     fileFilter: function (req, file, cb) {
-        // Mở rộng hỗ trợ nhiều định dạng ảnh
-        const allowedExtensions = /jpeg|jpg|png|gif|webp|bmp|tiff|tif|svg|ico|heic|heif|avif|jfif/;
-        const allowedMimeTypes = /image\/(jpeg|jpg|png|gif|webp|bmp|tiff|svg\+xml|x-icon|vnd\.microsoft\.icon|heic|heif|avif)|application\/octet-stream/;
-        
-        const extname = allowedExtensions.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = allowedMimeTypes.test(file.mimetype);
-        
-        if (extname || mimetype) {
+        // Whitelist nghiêm — bỏ application/octet-stream và SVG (XSS qua SVG)
+        const allowedExtensions = /\.(jpe?g|png|gif|webp|bmp|tiff?|heic|heif|avif|jfif)$/i;
+        const allowedMimeTypes = /^image\/(jpeg|png|gif|webp|bmp|tiff|heic|heif|avif)$/i;
+
+        const extOk = allowedExtensions.test(path.extname(file.originalname));
+        const mimeOk = allowedMimeTypes.test(file.mimetype);
+
+        // Bắt buộc CẢ extension và mime hợp lệ (trước đây dùng OR → bypass dễ)
+        if (extOk && mimeOk) {
             return cb(null, true);
         }
-        cb(new Error('Định dạng ảnh không được hỗ trợ! Chấp nhận: JPG, PNG, GIF, WEBP, BMP, TIFF, SVG, ICO, HEIC, AVIF'));
+        cb(new Error('Định dạng ảnh không được hỗ trợ! Chấp nhận: JPG, PNG, GIF, WEBP, BMP, TIFF, HEIC, AVIF'));
     }
 });
 
@@ -131,18 +132,20 @@ router.post('/send-otp', async (req, res) => {
         // Gửi email
         try {
             await sendOTPEmail(email, otp, ho_ten);
-            console.log(`OTP sent to ${email}: ${otp}`); // Log để debug
+            if (process.env.NODE_ENV !== 'production') {
+                console.log(`[DEV] OTP sent to ${email}: ${otp}`);
+            }
             res.json({ success: true, message: 'Mã OTP đã được gửi đến email của bạn' });
         } catch (emailError) {
-            console.error('Lỗi gửi email:', emailError);
-            // Log OTP vào server console để debug (KHÔNG trả về client)
-            console.log(`[DEV DEBUG] OTP for ${email}: ${otp}`);
-            res.json({ success: true, message: 'Mã OTP đã được gửi. Nếu không nhận được email, vui lòng thử lại sau.' });
+            console.error('Lỗi gửi email:', emailError && emailError.message);
+            // KHÔNG giả vờ thành công — user cần biết để thử lại
+            otpStore.delete(email);
+            return res.status(500).json({ success: false, message: 'Không thể gửi email OTP. Vui lòng thử lại sau.' });
         }
 
     } catch (error) {
-        console.error('Lỗi gửi OTP:', error);
-        res.status(500).json({ success: false, message: 'Lỗi server: ' + error.message });
+        console.error('Lỗi gửi OTP:', error && error.message);
+        res.status(500).json({ success: false, message: 'Lỗi server, vui lòng thử lại.' });
     }
 });
 
@@ -358,15 +361,28 @@ router.post('/admin/login', async (req, res) => {
             });
         }
 
+        // [TASK 2] Ghi nhận IP và thời gian đăng nhập gần nhất
+        const loginIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip || 'unknown';
+        try {
+            await pool.query(
+                'UPDATE admin SET last_login_at = NOW(), last_login_ip = ? WHERE ma_admin = ?',
+                [loginIp, user.ma_admin]
+            );
+        } catch (ipErr) {
+            console.error('Lỗi cập nhật last_login cho admin:', ipErr.message);
+        }
+
         const adminData = {
-            ma_admin: user.ma_admin, // Đã xóa isEmployee vì bây giờ auth/admin/login chỉ dành cho admin
+            ma_admin: user.ma_admin,
             tai_khoan: user.tai_khoan,
             ho_ten: user.ho_ten,
             quyen: user.quyen || 'admin',
             avt: user.avt || null,
             email: user.email,
             role: 'admin',
-            vai_tro: 'admin'
+            vai_tro: 'admin',
+            last_login_at: new Date().toISOString(),
+            last_login_ip: loginIp
         };
 
         // Lưu vào session và đảm bảo session được lưu trước khi trả response
@@ -388,7 +404,7 @@ router.post('/admin/login', async (req, res) => {
                 success: true, 
                 message: 'Đăng nhập admin thành công',
                 data: adminData,
-                sessionId: req.sessionID // Debug info
+                sessionId: req.sessionID
             });
         });
 
@@ -442,15 +458,28 @@ router.post('/employee/login', async (req, res) => {
             });
         }
 
+        // [TASK 2] Ghi nhận IP và thời gian đăng nhập gần nhất
+        const loginIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip || 'unknown';
+        try {
+            await pool.query(
+                'UPDATE nhan_vien SET last_login_at = NOW(), last_login_ip = ? WHERE ma_nv = ?',
+                [loginIp, user.ma_nv]
+            );
+        } catch (ipErr) {
+            console.error('Lỗi cập nhật last_login cho nhân viên:', ipErr.message);
+        }
+
         const employeeData = {
-            ma_admin: user.ma_nv, // Dùng chung key với admin cho tiện phân quyền dashboard
+            ma_admin: user.ma_nv,
             ma_nv: user.ma_nv,
             tai_khoan: user.tai_khoan,
             ho_ten: user.ho_ten,
             quyen: user.quyen,
             isEmployee: true,
             role: 'admin',
-            vai_tro: 'admin'
+            vai_tro: 'admin',
+            last_login_at: new Date().toISOString(),
+            last_login_ip: loginIp
         };
 
         // Lưu session an toàn với HttpOnly Cookie
@@ -568,7 +597,9 @@ router.put('/profile/:id', handleUpload, async (req, res) => {
 });
 
 // POST /api/auth/forgot-password - Gửi OTP reset password (lưu vào bảng reset_password)
+// Bảo vệ chống email enumeration: luôn trả response giống nhau, không tiết lộ email có tồn tại hay không
 router.post('/forgot-password', async (req, res) => {
+    const genericResponse = { success: true, message: 'Nếu email tồn tại, mã đặt lại mật khẩu sẽ được gửi.' };
     try {
         const { email } = req.body;
 
@@ -576,10 +607,10 @@ router.post('/forgot-password', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Vui lòng nhập email' });
         }
 
-        // Kiểm tra email có tồn tại không
         const [users] = await pool.query('SELECT ma_kh, ho_ten FROM khach_hang WHERE email = ?', [email]);
         if (users.length === 0) {
-            return res.status(404).json({ success: false, message: 'Email không tồn tại trong hệ thống' });
+            // Vẫn trả thành công để chống enumerate; không gửi mail
+            return res.json(genericResponse);
         }
 
         const user = users[0];
@@ -627,17 +658,19 @@ router.post('/forgot-password', async (req, res) => {
 
         try {
             await transporter.sendMail(mailOptions);
-            console.log(`Reset OTP sent to ${email}: ${otp}`);
-            res.json({ success: true, message: 'Mã OTP đã được gửi đến email của bạn' });
+            if (process.env.NODE_ENV !== 'production') {
+                console.log(`[DEV] Reset OTP sent to ${email}`);
+            }
+            return res.json(genericResponse);
         } catch (emailError) {
-            console.error('Lỗi gửi email:', emailError);
-            console.log(`[DEV DEBUG] Reset OTP for ${email}: ${otp}`);
-            res.json({ success: true, message: 'Mã OTP đã được gửi. Nếu không nhận được email, vui lòng thử lại sau.' });
+            console.error('Lỗi gửi email reset:', emailError && emailError.message);
+            // Vẫn trả response generic để không leak; nhưng status 500 để frontend retry
+            return res.status(500).json({ success: false, message: 'Không thể gửi email lúc này, vui lòng thử lại sau.' });
         }
 
     } catch (error) {
-        console.error('Lỗi forgot password:', error);
-        res.status(500).json({ success: false, message: 'Lỗi server: ' + error.message });
+        console.error('Lỗi forgot password:', error && error.message);
+        res.status(500).json({ success: false, message: 'Lỗi server, vui lòng thử lại.' });
     }
 });
 
@@ -782,32 +815,26 @@ router.put('/change-password/:id', async (req, res) => {
 
 // GET /api/auth/check - Kiểm tra trạng thái đăng nhập và session
 router.get('/check', (req, res) => {
-    console.log('🔍 Auth check called');
-    console.log('Session ID:', req.sessionID);
-    console.log('Session data:', req.session);
-    console.log('req.user (passport):', req.user);
-    console.log('req.session.user:', req.session?.user);
-    
+    if (process.env.NODE_ENV !== 'production') {
+        console.log('🔍 Auth check - sid:', req.sessionID, '- user:', req.session?.user?.email || 'none');
+    }
+
     // Ưu tiên session từ Google OAuth (passport)
     if (req.user) {
-        console.log('✅ Found req.user (passport)');
-        return res.json({ 
-            isAuthenticated: true, 
-            user: { ...req.user, vai_tro: req.user.vai_tro || req.user.role || (req.user.isAdmin ? 'admin' : 'customer') } 
+        return res.json({
+            isAuthenticated: true,
+            user: { ...req.user, vai_tro: req.user.vai_tro || req.user.role || (req.user.isAdmin ? 'admin' : 'customer') }
         });
     }
-    
+
     // Fallback: session đăng nhập thường
     if (req.session && req.session.user) {
-        console.log('✅ Found req.session.user');
-        return res.json({ 
-            isAuthenticated: true, 
-            user: { ...req.session.user, vai_tro: req.session.user.vai_tro || req.session.user.role || 'customer' } 
+        return res.json({
+            isAuthenticated: true,
+            user: { ...req.session.user, vai_tro: req.session.user.vai_tro || req.session.user.role || 'customer' }
         });
     }
-    
-    // Nếu không có session
-    console.log('❌ No session found');
+
     res.status(401).json({ isAuthenticated: false, message: 'Chưa đăng nhập' });
 });
 
@@ -972,6 +999,9 @@ router.get('/google/callback', (req, res, next) => {
 router.get('/admin/google', (req, res, next) => {
     // Lưu flag admin vào session để callback biết redirect về đâu
     req.session.adminLogin = true;
+    // QUAN TRỌNG: Set googleAuthState = 'admin_login' để khớp với state gửi tới Google
+    // Nếu không set, passport.js sẽ so sánh queryState ('admin_login') vs sessionState cũ ('login') → mismatch
+    req.session.googleAuthState = 'admin_login';
     req.session.save((err) => {
         if (err) {
             console.error('Session save error:', err);

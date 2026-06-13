@@ -150,3 +150,49 @@ User role: undefined
 📍 GET /api/admin/settings
 Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
 Session user: gujiu2882@gmail.com
+📍 GET /api/admin/dashboard/overview
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/dashboard/revenue
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/dashboard/sales-analytics
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/dashboard/inventory
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/settings
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+📍 GET /api/admin/dashboard/overview
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/dashboard/revenue
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/dashboard/sales-analytics
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/dashboard/inventory
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com
+❌ Admin auth failed: Not admin role
+User role: undefined
+📍 GET /api/admin/settings
+Session ID: I0b-1rUwa5aVgRmDgN2jkdkk6YPHhzmw
+Session user: gujiu2882@gmail.com

@@ -15,9 +15,17 @@ from langchain_classic.chains import RetrievalQA
 
 load_dotenv(dotenv_path="../backend/.env")
 
+_IS_PROD = os.getenv("NODE_ENV") == "production" or os.getenv("ENV") == "production"
+# Fallback DB_PASSWORD (chuẩn) → DB_PASS (legacy)
+_DB_PASS_RAW = os.getenv("DB_PASSWORD") or os.getenv("DB_PASS")
+if _IS_PROD and not _DB_PASS_RAW:
+    raise SystemExit("FATAL: DB_PASSWORD chưa set ở production (rag_engine).")
+if not _DB_PASS_RAW:
+    print("WARN: DB_PASSWORD chưa set — rag_engine dùng default dev.")
+
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_USER = os.getenv("DB_USER", "root")
-DB_PASS = os.getenv("DB_PASS", "Vinh123456789@")
+DB_PASS = _DB_PASS_RAW or "Vinh123456789@"
 DB_NAME = os.getenv("DB_NAME", "QHUNG")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
@@ -46,7 +54,8 @@ class RAGEngine:
         # 4. RAM Cache cho chatbot_knowledge (tránh query MySQL mỗi lần chat)
         self._knowledge_cache = None
         self._knowledge_cache_time = 0
-        self._KNOWLEDGE_CACHE_TTL = 300  # 5 phút
+        # Giảm TTL 300 → 60s để cập nhật FAQ nhanh hơn nhưng vẫn cache để tránh DB hit mỗi câu hỏi
+        self._KNOWLEDGE_CACHE_TTL = 60
         
         # Try to load existing vector store or create a new one
         if os.path.exists(self.vector_dir):
@@ -124,24 +133,33 @@ class RAGEngine:
         """Xóa vector store cũ và khởi tạo lại để cập nhật dữ liệu mới"""
         import shutil
         print("Reloading Vector Store...")
-        
+
         # Xóa RAM cache knowledge để lấy dữ liệu mới
         self._knowledge_cache = None
         self._knowledge_cache_time = 0
-        
+
         # Đóng kết nối / xóa vectorstore hiện tại khỏi memory
         self.vectorstore = None
-        
+
         # Xóa thư mục chroma_db cũ
         if os.path.exists(self.vector_dir):
             try:
                 shutil.rmtree(self.vector_dir)
             except Exception as e:
                 print(f"Error deleting old vector store: {str(e)}")
-                
+
         # Khởi tạo lại
         self.vectorstore = self._initialize_vector_store()
         print("Reloaded Vector Store successfully!")
+        return True
+
+    def invalidate_knowledge_cache(self):
+        """Chỉ xóa RAM cache knowledge (nhanh, không reload vectorstore).
+        Dùng khi admin update content nhỏ → response tiếp theo lấy knowledge mới ngay
+        mà không phải chờ rebuild Chroma (vài giây)."""
+        self._knowledge_cache = None
+        self._knowledge_cache_time = 0
+        print("[RAG] Knowledge RAM cache invalidated.")
         return True
 
     def query_kpi(self, question: str) -> str:
@@ -174,9 +192,10 @@ class RAGEngine:
             sql_query = sql_query.split(";")[0].strip()
                 
             # Kiểm tra an toàn SQL (chống Text-to-SQL Injection / phá hoại DB)
-            forbidden_keywords = ["DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE", "GRANT", "REVOKE"]
-            upper_query = sql_query.upper()
-            if any(f" {keyword} " in f" {upper_query} " or upper_query.startswith(f"{keyword} ") for keyword in forbidden_keywords):
+            # Tokenize trên \W để chặn bypass kiểu DROP/**/TABLE hay DROP\nTABLE
+            forbidden_keywords = {"DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE", "GRANT", "REVOKE", "REPLACE", "CREATE", "RENAME"}
+            tokens = set(re.split(r'\W+', sql_query.upper()))
+            if tokens & forbidden_keywords:
                 return "Xin lỗi, tôi phát hiện yêu cầu có nguy cơ bảo mật nên đã tự động chặn lại."
                 
             # Chạy SQL an toàn
@@ -261,33 +280,34 @@ class RAGEngine:
            - Cuối câu trả lời, hãy luôn đưa ra một câu hỏi gợi mở để kéo dài cuộc hội thoại và hỗ trợ khách tiếp theo.
            - Ví dụ: "Anh/chị có muốn em tư vấn chi tiết hơn về chương trình Trả góp 0% lãi suất của mẫu máy này không ạ?", "Mẫu này bên em đang có sẵn máy trải nghiệm tại cửa hàng, anh/chị có muốn qua test thử không ạ?".
         
-        4. KHÔNG BỊA ĐẶT THÔNG TIN:
-           - Chỉ tư vấn và gợi ý những sản phẩm thực tế CÓ TRONG CONTEXT RAG dưới đây.
-           - Nếu sản phẩm khách hỏi không có trong Context, hãy lịch sự phản hồi: "Dạ, hiện tại dòng sản phẩm này bên em đang tạm hết hàng hoặc chưa có thông tin chính thức trên hệ thống. Tuy nhiên, cửa hàng đang có những dòng máy cùng tầm giá và cấu hình tương đương rất đáng cân nhắc sau đây..." và giới thiệu sản phẩm có sẵn.
+        4. XỬ LÝ KHI THÔNG TIN KHÔNG CÓ TRONG CONTEXT:
+           - Hãy phân biệt rõ câu hỏi của khách hàng: câu hỏi về sản phẩm/mua hàng cụ thể hay câu hỏi về chính sách/tin tức/thông tin chung của cửa hàng.
+           - Nếu khách hàng hỏi mua một dòng sản phẩm/điện thoại cụ thể KHÔNG có trong Context RAG bên dưới, hãy lịch sự phản hồi: "Dạ, hiện tại dòng sản phẩm này bên em đang tạm hết hàng hoặc chưa có thông tin chính thức trên hệ thống. Tuy nhiên, cửa hàng đang có những dòng máy cùng tầm giá và cấu hình tương đương rất đáng cân nhắc sau đây..." và gợi ý giới thiệu sản phẩm có sẵn khác trong Context.
+           - Nếu khách hàng hỏi về thông tin chính sách (bảo hành, đổi trả, ship hàng, trả góp...), thông tin liên hệ hoặc các thắc mắc chung về cửa hàng KHÔNG có trong Context RAG bên dưới, tuyệt đối KHÔNG phản hồi "sản phẩm tạm hết hàng". Thay vào đó, hãy lịch sự giải đáp dựa trên các kiến thức chung hiện có và hướng dẫn khách hàng liên hệ trực tiếp với Hotline hoặc Zalo CSKH của QuangHưng Mobile để được nhân viên hỗ trợ chi tiết nhanh nhất.
         
-        5. ĐỊNH DẠNG BẮT BUỘC (QUAN TRỌNG NHẤT):
-           - BẠN BẮT BUỘC PHẢI DÙNG HTML ĐỂ HIỂN THỊ SẢN PHẨM MỖI KHI NHẮC ĐẾN CHÚNG. KHÔNG được chỉ trả lời bằng text thường.
-           - TUYỆT ĐỐI KHÔNG DÙNG MARKDOWN (như **in đậm**, *in nghiêng*, list -, list *). Chỉ sử dụng HTML cơ bản như <br>, <strong>.
-           - Mỗi sản phẩm bạn gợi ý BẮT BUỘC phải được chèn vào khung HTML này (thay thế các biến {{{{...}}}} bằng dữ liệu thật):
+        5. ĐỊNH DẠNG BẮT BUỘC (TUYỆT ĐỐI TUÂN THỦ):
+           - Bạn BẮT BUỘC phải sử dụng thẻ HTML cho tất cả định dạng văn bản.
+           - TUYỆT ĐỐI NGHIÊM CẤM sử dụng bất kỳ ký hiệu Markdown nào, bao gồm: dấu sao đôi (`**`), dấu sao đơn (`*`), dấu gạch đầu dòng (`-` hoặc `*`), dấu thăng (`#`), hay các ký tự markdown định dạng khối mã (` ``` `). Mọi định dạng in đậm phải dùng thẻ `<strong>` hoặc `<b>`. Xuống dòng dùng `<br>`. Dùng thẻ danh sách HTML (`<ul>` và `<li>`) nếu cần tạo danh sách. Bất kỳ sự rò rỉ ký tự markdown nào đều bị coi là lỗi nghiêm trọng.
+           - Mỗi sản phẩm bạn gợi ý BẮT BUỘC phải được chèn vào khung HTML này (thay thế các biến [[...]] bằng dữ liệu thật):
              <div style="display:flex; margin-top:10px; margin-bottom:10px; gap:15px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff;">
                <div style="flex-shrink: 0;">
-                 <img src="images/{{{{Anh}}}}" alt="{{{{Ten_san_pham}}}}" style="width:100px; height:auto; object-fit:contain;">
+                 <img src="[[Anh]]" alt="[[Ten_san_pham]]" style="width:100px; height:auto; object-fit:contain;">
                </div>
                <div style="flex-grow: 1;">
-                 <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">{{{{Ten_san_pham}}}}</div>
-                 <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">{{{{Gia}}}}</span></div>
-                 <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">{{{{Cau_hinh}}}}</div>
+                 <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">[[Ten_san_pham]]</div>
+                 <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">[[Gia]]</span></div>
+                 <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">[[Cau_hinh]]</div>
                  <div>
-                   <a href="product-detail.html?id={{{{ID}}}}" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
+                   <a href="product-detail.html?id=[[ID]]" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
                  </div>
                </div>
              </div>
-             (Thay thế {{{{Anh}}}}, {{{{Ten_san_pham}}}}, {{{{Gia}}}}, {{{{ID}}}} bằng thông tin thật. Trong đó, {{{{Anh}}}} BẮT BUỘC phải điền chính xác tên file ảnh từ trường "Ảnh đại diện (anh_dai_dien)" được cung cấp trong thông tin sản phẩm (Ví dụ: "samsung_galaxy_a07.webp" - KHÔNG tự chế tên file, KHÔNG bỏ đuôi .webp/.jpg/.png/.avif). Riêng phần {{{{Cau_hinh}}}} bạn tự tổng hợp ngắn gọn các thông số như RAM, Chip, Pin, Màn hình, Camera thành 1 câu giống trong ảnh).
+             (Thay thế [[Anh]], [[Ten_san_pham]], [[Gia]], [[ID]] bằng thông tin thật. Trong đó, [[Anh]] BẮT BUỘC phải SAO CHÉP NGUYÊN VĂN 100% đường dẫn ảnh từ trường "Ảnh đại diện (anh_dai_dien)" được cung cấp trong thông tin sản phẩm (Ví dụ: "images/products/product-1766371394101-525441573.jpg" - BẮT BUỘC copy nguyên cả đường dẫn bao gồm "images/products/...", KHÔNG tự chế tên file, KHÔNG bỏ đuôi .webp/.jpg/.png/.avif, KHÔNG bỏ phần "images/products/" ở đầu). Riêng phần [[Cau_hinh]] bạn tự tổng hợp ngắn gọn các thông số như RAM, Chip, Pin, Màn hình, Camera thành 1 câu giống trong ảnh).
 
         6. KHỚP ẢNH CHÍNH XÁC & PHÂN LOẠI DANH MỤC SẢN PHẨM (BẮT BUỘC):
            - Hãy xem kỹ "Loại sản phẩm (Danh mục)" của từng mặt hàng được cung cấp trong Context.
            - Nếu khách hỏi mua "ĐIỆN THOẠI", chỉ tư vấn các dòng máy có loại sản phẩm là "Điện thoại" (như Redmi Note 11, Redmi Note 12, Xiaomi 13 Pro). Tuyệt đối không được lấy mẫu "Phụ kiện" (như Sạc nhanh Xiaomi 33W) để giới thiệu làm điện thoại!
-           - Khi ghép thẻ HTML sản phẩm, bắt buộc phải đối chiếu khớp đúng 100% giữa Tên sản phẩm và Ảnh đại diện (anh_dai_dien) của chính sản phẩm đó. Tuyệt đối không lấy ảnh của cục sạc gán cho điện thoại và ngược lại! BẮT BUỘC sao chép chính xác 100% tên file ảnh trong ngữ cảnh (Ví dụ: "samsung_galaxy_a07.webp", không tự sáng tạo ra tên khác).
+           - Khi ghép thẻ HTML sản phẩm, bắt buộc phải đối chiếu khớp đúng 100% giữa Tên sản phẩm và Ảnh đại diện (anh_dai_dien) của chính sản phẩm đó. Tuyệt đối không lấy ảnh của cục sạc gán cho điện thoại và ngược lại! BẮT BUỘC sao chép chính xác 100% đường dẫn ảnh trong ngữ cảnh bao gồm cả tiền tố "images/products/" (Ví dụ: "images/products/product-1766470093003-131484230.webp", không tự sáng tạo ra tên khác). Khi thay thế biến [[Anh]], [[Ten_san_pham]], [[Gia]], [[ID]], [[Cau_hinh]] trong HTML template, hãy thay bằng dữ liệu thật từ Context.
 
         7. GUARDRAILS (RẤT QUAN TRỌNG):
            - Bạn CHỈ TƯ VẤN về CÔNG NGHỆ, ĐIỆN THOẠI, LAPTOP, PHỤ KIỆN, và DỊCH VỤ CỦA CỬA HÀNG.
@@ -435,23 +455,23 @@ QUY TẮC BẮT BUỘC:
 3. BẠN BẮT BUỘC PHẢI DÙNG HTML ĐỂ HIỂN THỊ SẢN PHẨM. Mỗi khi nói về một sản phẩm, BẮT BUỘC dùng thẻ HTML:
    <div style="display:flex; margin-top:10px; margin-bottom:10px; gap:15px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff;">
      <div style="flex-shrink: 0;">
-       <img src="images/{{{{Anh}}}}" alt="{{{{Ten_san_pham}}}}" style="width:100px; height:auto; object-fit:contain;">
+       <img src="[[Anh]]" alt="[[Ten_san_pham]]" style="width:100px; height:auto; object-fit:contain;">
      </div>
      <div style="flex-grow: 1;">
-       <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">{{{{Ten_san_pham}}}}</div>
-       <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">{{{{Gia}}}}</span></div>
-       <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">{{{{Cau_hinh}}}}</div>
+       <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">[[Ten_san_pham]]</div>
+       <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">[[Gia]]</span></div>
+       <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">[[Cau_hinh]]</div>
        <div>
-         <a href="product-detail.html?id={{{{ID}}}}" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
+         <a href="product-detail.html?id=[[ID]]" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
        </div>
      </div>
    </div>
-   (Trong đó, {{{{Anh}}}} BẮT BUỘC phải điền chính xác 100% tên file ảnh từ trường "Ảnh" được cung cấp trong danh sách sản phẩm bên trên (Ví dụ: "samsung-galaxy-a07-black-1_2.webp" - KHÔNG tự chế tên file, KHÔNG bỏ đuôi .webp/.jpg/.png/.avif). Thay thế {{{{Ten_san_pham}}}}, {{{{Gia}}}}, {{{{ID}}}} bằng thông tin tương ứng. {{{{Cau_hinh}}}} là chuỗi tóm tắt thông số cấu hình như RAM, Chip, Pin, Màn hình, Camera).
-4. TUYỆT ĐỐI KHÔNG dùng Markdown (không dùng ** hay *). Chỉ dùng HTML (<br>, <strong>, <div>). Bắt buộc phải render giao diện thẻ sản phẩm như trên.
+   (Trong đó, [[Anh]] BẮT BUỘC phải SAO CHÉP NGUYÊN VĂN 100% đường dẫn ảnh từ trường "Ảnh" được cung cấp trong danh sách sản phẩm bên trên (Ví dụ: "images/products/product-1766383708166-283137270.webp" - BẮT BUỘC copy nguyên cả đường dẫn bao gồm "images/products/...", KHÔNG tự chế tên file, KHÔNG bỏ đuôi .webp/.jpg/.png/.avif, KHÔNG bỏ phần "images/products/" ở đầu). Thay thế [[Ten_san_pham]], [[Gia]], [[ID]] bằng thông tin tương ứng. [[Cau_hinh]] là chuỗi tóm tắt thông số cấu hình như RAM, Chip, Pin, Màn hình, Camera).
+4. TUYỆT ĐỐI NGHIÊM CẤM sử dụng bất kỳ ký hiệu Markdown nào (như `**`, `*`, `-`, `#`, ` ``` `). Chỉ sử dụng HTML cơ bản như `<br>`, `<strong>`, `<b>`, `<ul>`, `<li>` và các thẻ `<div>` để dựng khung sản phẩm. Bất kỳ ký tự markdown nào rò rỉ đều bị coi là lỗi nghiêm trọng.
 5. Xưng hô lịch sự: "Dạ", "em", "anh/chị".
 6. So sánh ưu/nhược điểm nếu có nhiều sản phẩm.
 7. Cuối câu trả lời, đưa ra gợi ý tiếp theo.
-8. GUARDRAILS: CHỈ TƯ VẤN về CÔNG NGHỆ, ĐIỆN THOẠI, LAPTOP, PHỤ KIỆN, và DỊCH VỤ CỦA CỬA HÀNG. TỪ CHỐI LỊCH SỰ nếu hỏi ngoài lề.
+8. GUARDRAILS: CHỈ TƯ VẤN về CÔNG NGHỆ, ĐIỆN THOẠI, LAPTOP, PHỤ KIỆN, và DỊCH VỤ CỦA CỬA HÀNG. TỪ CHỐI LỊCH SỰ nếu hỏi ngoài lề. Nếu câu hỏi về chính sách chung nằm ngoài danh sách sản phẩm, hãy hỗ trợ dựa trên kiến thức chung hiện có và hướng dẫn khách hàng liên hệ trực tiếp Hotline/Zalo của QuangHưng Mobile thay vì báo hết hàng.
 
 Lịch sử trò chuyện:
 {chat_history}
