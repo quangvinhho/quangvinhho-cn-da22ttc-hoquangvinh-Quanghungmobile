@@ -200,4 +200,111 @@ router.post('/', async (req, res) => {
     }
 });
 
+// ==================== ADMIN RECOMMENDATION MANAGEMENT & SIMULATOR ====================
+
+const checkAdmin = (req, res, next) => {
+    if (!req.session || !req.session.user || req.session.user.vai_tro !== 'admin') {
+        return res.status(401).json({ success: false, message: 'Unauthorized: Yêu cầu quyền admin' });
+    }
+    next();
+};
+
+// GET /api/recommendations/admin/test-customers
+// Lấy danh sách khách hàng có lịch sử tương tác để test gợi ý
+router.get('/admin/test-customers', checkAdmin, async (req, res) => {
+    try {
+        const [customers] = await pool.query(`
+            SELECT DISTINCT kh.ma_kh, kh.ho_ten, kh.email
+            FROM khach_hang kh
+            WHERE EXISTS (SELECT 1 FROM lich_su_xem_san_pham ls WHERE ls.ma_kh = kh.ma_kh)
+               OR EXISTS (SELECT 1 FROM don_hang dh WHERE dh.ma_kh = kh.ma_kh)
+            ORDER BY kh.ho_ten ASC
+        `);
+        res.json({ success: true, data: customers });
+    } catch (error) {
+        console.error('Error fetching test customers:', error);
+        res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+});
+
+// GET /api/recommendations/admin/status
+// Lấy trạng thái của hệ thống gợi ý AI
+router.get('/admin/status', checkAdmin, async (req, res) => {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/recommend/admin/status');
+        res.json({ success: true, data: response.data });
+    } catch (error) {
+        console.error('Error fetching python status:', error.message);
+        res.status(500).json({ success: false, message: 'Python recommendation service offline hoặc lỗi' });
+    }
+});
+
+// POST /api/recommendations/admin/config
+// Cập nhật cấu hình tham số học máy và huấn luyện lại
+router.post('/admin/config', checkAdmin, async (req, res) => {
+    try {
+        const { k_neighbors, min_support, min_threshold } = req.body;
+        const response = await axios.post('http://127.0.0.1:8000/api/recommend/admin/config', {
+            k_neighbors: parseInt(k_neighbors),
+            min_support: parseFloat(min_support),
+            min_threshold: parseFloat(min_threshold)
+        });
+        res.json({ success: true, message: response.data.message, data: response.data.data });
+    } catch (error) {
+        console.error('Error updating python config:', error.message);
+        res.status(500).json({ success: false, message: 'Python recommendation service offline hoặc lỗi' });
+    }
+});
+
+// POST /api/recommendations/admin/retrain
+// Yêu cầu huấn luyện lại các mô hình AI ngay lập tức
+router.post('/admin/retrain', checkAdmin, async (req, res) => {
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/api/recommend/admin/retrain');
+        res.json({ success: true, message: response.data.message, data: response.data.data });
+    } catch (error) {
+        console.error('Error retraining python service:', error.message);
+        res.status(500).json({ success: false, message: 'Python recommendation service offline hoặc lỗi' });
+    }
+});
+
+// GET /api/recommendations/admin/explain/:userId
+// Chạy mô phỏng và giải thích kết quả gợi ý cho khách hàng cụ thể
+router.get('/admin/explain/:userId', checkAdmin, async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { cartItems } = req.query;
+        const response = await axios.get('http://127.0.0.1:8000/api/recommend/admin/explain', {
+            params: { userId, cartItems }
+        });
+        res.json({ success: true, recommendations: response.data.recommendations });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Python recommendation service offline hoặc lỗi' });
+    }
+});
+
+// GET /api/recommendations/admin/overview-knn
+// Lấy danh sách tổng quan khách hàng có gu mua sắm tương đồng
+router.get('/admin/overview-knn', checkAdmin, async (req, res) => {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/recommend/admin/overview-knn');
+        res.json({ success: true, data: response.data.data });
+    } catch (error) {
+        console.error('Error fetching overview-knn:', error.message);
+        res.status(500).json({ success: false, message: 'Python recommendation service offline hoặc lỗi' });
+    }
+});
+
+// GET /api/recommendations/admin/overview-apriori
+// Lấy danh sách tổng quan các luật mua chung và gợi ý mua kèm Apriori
+router.get('/admin/overview-apriori', checkAdmin, async (req, res) => {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/recommend/admin/overview-apriori');
+        res.json({ success: true, data: response.data.data });
+    } catch (error) {
+        console.error('Error fetching overview-apriori:', error.message);
+        res.status(500).json({ success: false, message: 'Python recommendation service offline hoặc lỗi' });
+    }
+});
+
 module.exports = router;

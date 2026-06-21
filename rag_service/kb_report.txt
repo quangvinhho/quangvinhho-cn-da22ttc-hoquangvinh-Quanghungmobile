@@ -1,0 +1,26 @@
+Total active knowledge rows: 22
+
+1. Title: Địa chỉ cửa hàng (Length: 85 chars)
+2. Title: Giờ làm việc (Length: 103 chars)
+3. Title: Chính sách bảo hành (Length: 116 chars)
+4. Title: Sự khác biệt giữa Gợi ý sản phẩm và Tư vấn sản phẩm là gì? Hoặc phân biệt gợi ý và tư vấn (Length: 444 chars)
+5. Title: Chủ cửa hàng (Length: 141 chars)
+6. Title: Hotline liên hệ (Length: 275 chars)
+7. Title: Email & mạng xã hội (Length: 306 chars)
+8. Title: Giới thiệu cửa hàng (Length: 380 chars)
+9. Title: Chính sách đổi trả (Length: 447 chars)
+10. Title: Chính sách vận chuyển - giao hàng (Length: 488 chars)
+11. Title: Chính sách trả góp (Length: 495 chars)
+12. Title: Hình thức thanh toán (Length: 444 chars)
+13. Title: Chính sách bảo mật thông tin (Length: 477 chars)
+14. Title: Chính sách giá - cam kết (Length: 386 chars)
+15. Title: Khuyến mãi - voucher (Length: 471 chars)
+16. Title: Thu cũ đổi mới - lên đời (Length: 469 chars)
+17. Title: Hướng dẫn đặt hàng online (Length: 466 chars)
+18. Title: Kiểm tra đơn hàng (Length: 435 chars)
+19. Title: Hủy đơn - thay đổi đơn hàng (Length: 439 chars)
+20. Title: Tư vấn chọn mua điện thoại (Length: 491 chars)
+21. Title: Phụ kiện đi kèm khi mua máy (Length: 466 chars)
+22. Title: Tài khoản thành viên - tích điểm (Length: 541 chars)
+
+Total characters: 8365

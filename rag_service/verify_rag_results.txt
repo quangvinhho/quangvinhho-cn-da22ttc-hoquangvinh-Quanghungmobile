@@ -1,0 +1,13 @@
+--- 1. Testing HTML block finder boundary ---
+Original block length: 768
+Validated block length: 768
+SUCCESS: Validated block kept successfully (no incorrect fallback match/mismatch error).
+
+--- 2. Testing validate_text_products brand transition skip ---
+Original text: Dạ, anh/chị có thể tham khảo các sản phẩm khác của...
+Validated text: Dạ, anh/chị có thể tham khảo các sản phẩm khác của...
+SUCCESS: Generic brand listing was NOT stripped.
+
+--- 3. Testing Brand Inheritance ---
+Detected brand inherited from history: Samsung
+SUCCESS: Brand inherited successfully.

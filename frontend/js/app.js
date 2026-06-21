@@ -173,29 +173,6 @@ function checkUserLogin() {
 function initHeader() {
   // ===== USER AUTHENTICATION =====
   checkUserLogin();
-
-  // Helper get user (priority secureStorage)
-  function _getCurrentUser() {
-    if (window.secureStorage) return window.secureStorage.getItem('user');
-    return JSON.parse(localStorage.getItem('user') || 'null');
-  }
-
-  // [MỚI] KH vừa đăng ký xong (đã set flag ở login.html) → show popup ngay
-  if (localStorage.getItem('forceOnboarding') === '1') {
-    const user = _getCurrentUser();
-    if (user && user.ma_kh) {
-      localStorage.removeItem('forceOnboarding'); // chỉ show 1 lần
-      checkAndShowInterestsPopup(user);
-    }
-  } else {
-    // Trường hợp bình thường — wait 1.5s rồi check
-    setTimeout(() => {
-      const user = _getCurrentUser();
-      if (user && user.ma_kh) {
-        checkAndShowInterestsPopup(user);
-      }
-    }, 1500);
-  }
   
   // Lắng nghe thay đổi localStorage
   window.addEventListener('storage', function(e) {
@@ -653,11 +630,16 @@ document.addEventListener('DOMContentLoaded', async function() {
 // INTERESTS POPUP (AI RECOMMENDATION)
 // ============================================
 
-async function checkAndShowInterestsPopup(user) {
+function getInterestsPopupSessionKey(userId) {
+    return `interests_popup_shown_${userId}`;
+}
+
+async function checkAndShowInterestsPopup(user, options = {}) {
     if (!user || !user.ma_kh) return;
+    const sessionKey = getInterestsPopupSessionKey(user.ma_kh);
     
     // Đã hiển thị popup trong phiên này rồi thì thôi
-    if (sessionStorage.getItem('interests_popup_shown')) return;
+    if (!options.force && sessionStorage.getItem(sessionKey)) return;
     
     try {
         const res = await fetch(`http://localhost:3000/api/interests/check-user/${user.ma_kh}`);
@@ -665,7 +647,7 @@ async function checkAndShowInterestsPopup(user) {
         
         if (data.success && !data.hasInterests) {
             showInterestsPopup(user.ma_kh);
-            sessionStorage.setItem('interests_popup_shown', 'true');
+            sessionStorage.setItem(sessionKey, 'true');
         }
     } catch (error) {
         console.error('Lỗi kiểm tra sở thích:', error);
@@ -788,9 +770,9 @@ async function showInterestsPopup(userId) {
           
           <!-- Action buttons -->
           <div class="flex gap-3">
-            <button id="btn-skip-interests" class="flex-1 px-4 py-3.5 border-2 border-gray-200 rounded-2xl font-semibold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all text-sm flex items-center justify-center gap-2">
-              <i class="fas fa-magic text-purple-400"></i>
-              Để AI tự đoán
+            <button id="btn-skip-interests" class="flex-1 px-4 py-3.5 border-2 border-gray-200 rounded-2xl font-semibold text-gray-500 hover:bg-gray-50 hover:border-gray-300 transition-all text-sm flex items-center justify-center gap-2">
+              <i class="fas fa-forward text-gray-400"></i>
+              Bỏ qua
             </button>
             <button id="btn-save-interests" class="flex-1 px-4 py-3.5 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-2xl font-semibold hover:from-red-700 hover:to-red-600 transition-all shadow-lg shadow-red-500/25 text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none" disabled>
               <i class="fas fa-check-circle"></i>
@@ -847,7 +829,7 @@ async function showInterestsPopup(userId) {
                 body: JSON.stringify({ userId, interests: selectedInterests })
             });
             // Lưu cờ sessionStorage để chống lặp popup lập tức ở phiên hiện tại
-            sessionStorage.setItem('interests_popup_shown', 'true');
+            sessionStorage.setItem(getInterestsPopupSessionKey(userId), 'true');
             showToast('Đã lưu sở thích thành công! 🎉', 'success');
             modal.remove();
             if (typeof window.loadRecommendations === 'function') {
@@ -861,30 +843,13 @@ async function showInterestsPopup(userId) {
         }
     });
     
-    // Bỏ qua (AI Generate)
+    // Bỏ qua (Lần sau chọn)
     const skipBtn = document.getElementById('btn-skip-interests');
-    skipBtn.addEventListener('click', async () => {
-        skipBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang phân tích...';
-        skipBtn.disabled = true;
-        try {
-            await fetch('http://localhost:3000/api/interests/ai-generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId })
-            });
-            // Lưu cờ sessionStorage để chống lặp popup lập tức ở phiên hiện tại
-            sessionStorage.setItem('interests_popup_shown', 'true');
-            showToast('AI đã phân tích sở thích từ lịch sử của bạn! 🤖', 'success');
-            modal.remove();
-            if (typeof window.loadRecommendations === 'function') {
-                window.loadRecommendations();
-            }
-        } catch (e) {
-            console.error(e);
-            // Kể cả khi lỗi, lưu cờ sessionStorage và đóng modal để giữ trải nghiệm mượt mà cho người dùng
-            sessionStorage.setItem('interests_popup_shown', 'true');
-            modal.remove();
-        }
+    skipBtn.addEventListener('click', () => {
+        // Lưu cờ sessionStorage để chống lặp popup lập tức ở phiên hiện tại
+        sessionStorage.setItem(getInterestsPopupSessionKey(userId), 'true');
+        showToast('Bạn có thể chọn lại sở thích ở trang Cá nhân bất kỳ lúc nào! 😊', 'info');
+        modal.remove();
     });
 }
 
@@ -907,4 +872,3 @@ window.isLoggedIn = isLoggedIn;
 window.showLoginRequiredModal = showLoginRequiredModal;
 window.closeLoginModal = closeLoginModal;
 window.checkAndShowInterestsPopup = checkAndShowInterestsPopup;
-

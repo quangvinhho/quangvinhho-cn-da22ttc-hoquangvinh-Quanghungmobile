@@ -1,19 +1,9 @@
 """
-Script Đăng ký khuôn mặt nhân viên + FaceNet Embedding
-========================================================
+Script Đăng ký khuôn mặt nhân viên + FaceNet Embedding + YuNet Alignment
+========================================================================
 Pipeline:
-  1. Ảnh nhân viên → U-Net segment face → FaceNet embedding
+  1. Ảnh nhân viên → YuNet detect & align → U-Net segment (optional) → FaceNet embedding
   2. Lưu embedding vào MySQL (bảng face_embeddings)
-
-Usage:
-  # Đăng ký từ ảnh (1 ảnh hoặc nhiều ảnh thư mục):
-  python register_face.py --emp_id 1 --img_path ./photos/nv001.jpg
-
-  # Đăng ký từ thư mục chứa nhiều ảnh của 1 NV (lấy embedding trung bình):
-  python register_face.py --emp_id 1 --img_dir ./photos/nv001/
-
-  # Đăng ký hàng loạt (mỗi sub-folder là 1 nhân viên):
-  python register_face.py --bulk_dir ./photos/
 """
 
 import os
@@ -22,13 +12,12 @@ import argparse
 import numpy as np
 import cv2
 import torch
-import json
 import mysql.connector
 from dotenv import load_dotenv
 from PIL import Image
 
 # FaceNet từ thư viện facenet-pytorch
-from facenet_pytorch import InceptionResnetV1, MTCNN
+from facenet_pytorch import InceptionResnetV1
 
 from model_unet import UNet, segment_face_with_unet
 
@@ -46,6 +35,7 @@ DB_CONFIG = {
 
 UNET_WEIGHTS = os.getenv('UNET_WEIGHTS', './weights/unet_face_best.pth')
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+YUNET_MODEL_PATH = os.path.join(os.path.dirname(__file__), 'weights/face_detection_yunet_2023mar.onnx')
 
 
 # ==================== MODEL LOADING ====================
@@ -75,69 +65,114 @@ def load_facenet(device):
     return model
 
 
-def load_mtcnn(device):
-    """MTCNN để detect và align khuôn mặt trước khi đưa vào FaceNet"""
-    mtcnn = MTCNN(
-        image_size=160,        # FaceNet cần 160x160
-        margin=20,             # Margin xung quanh face
-        min_face_size=40,      # Kích thước mặt tối thiểu (pixel)
-        thresholds=[0.6, 0.7, 0.7],  # MTCNN 3-stage thresholds
-        factor=0.709,
-        post_process=True,
-        device=device,
-        keep_all=False         # Chỉ lấy mặt lớn nhất
+def load_yunet():
+    """Load YuNet face detector model và tự động tải nếu thiếu"""
+    if not os.path.exists(YUNET_MODEL_PATH):
+        os.makedirs(os.path.dirname(YUNET_MODEL_PATH), exist_ok=True)
+        print(f"📥 Đang tải YuNet model weights về: {YUNET_MODEL_PATH}...")
+        import urllib.request
+        url = "https://huggingface.co/opencv/face_detection_yunet/resolve/main/face_detection_yunet_2023mar.onnx"
+        urllib.request.urlretrieve(url, YUNET_MODEL_PATH)
+        print("✅ Đã tải xong YuNet model.")
+    
+    detector = cv2.FaceDetectorYN.create(
+        model=YUNET_MODEL_PATH,
+        config="",
+        input_size=(320, 320),
+        score_threshold=0.8,
+        nms_threshold=0.3,
+        top_k=5000
     )
-    return mtcnn
+    print("✅ YuNet face detector loaded.")
+    return detector
 
 
 # ==================== FACE EMBEDDING ====================
 
-def extract_embedding_from_img(img_bgr, unet_model, facenet_model, mtcnn, device,
+def extract_embedding_from_img(img_bgr, unet_model, facenet_model, detector_yn, device,
                                 use_unet=True):
     """
-    Pipeline hoàn chỉnh: ảnh BGR → embedding 512-dim
-
-    Bước 1: (Nếu use_unet=True) U-Net segment face
-    Bước 2: MTCNN detect + align face → 160x160
-    Bước 3: FaceNet → 512-dim embedding vector
+    Pipeline hoàn chỉnh: ảnh BGR → YuNet detect & align → U-Net segment (optional) → FaceNet embedding
     """
-    # Bước 1: U-Net segmentation
-    if use_unet and unet_model is not None:
-        img_bgr = segment_face_with_unet(unet_model, img_bgr, device,
-                                          input_size=256, output_size=None)
+    h, w, _ = img_bgr.shape
+    
+    # 1. Phát hiện khuôn mặt bằng YuNet
+    detector_yn.setInputSize((w, h))
+    _, faces = detector_yn.detect(img_bgr)
+    
+    face_img = None
+    if faces is not None and len(faces) > 0:
+        face = faces[0]
+        
+        # Căn chỉnh khuôn mặt (Face Alignment) dựa trên mắt
+        right_eye = (float(face[4]), float(face[5]))
+        left_eye = (float(face[6]), float(face[7]))
+        
+        dY = left_eye[1] - right_eye[1]
+        dX = left_eye[0] - right_eye[0]
+        angle = np.degrees(np.arctan2(dY, dX))
+        
+        eye_center = (float((right_eye[0] + left_eye[0]) / 2), float((right_eye[1] + left_eye[1]) / 2))
+        
+        # Phép xoay Affine
+        M = cv2.getRotationMatrix2D(eye_center, angle, scale=1.0)
+        rotated = cv2.warpAffine(img_bgr, M, (w, h))
+        
+        # Phát hiện lại trên ảnh đã xoay để lấy bounding box thẳng đứng
+        detector_yn.setInputSize((w, h))
+        _, rotated_faces = detector_yn.detect(rotated)
+        
+        if rotated_faces is not None and len(rotated_faces) > 0:
+            x, y, fw, fh = map(int, rotated_faces[0][0:4])
+            # Thêm padding để lấy trọn vẹn khuôn mặt
+            pad_w = int(fw * 0.15)
+            pad_h = int(fh * 0.15)
+            x = max(0, x - pad_w)
+            y = max(0, y - pad_h)
+            fw = min(w - x, fw + 2 * pad_w)
+            fh = min(h - y, fh + 2 * pad_h)
+            face_img = rotated[y:y+fh, x:x+fw]
+        else:
+            # Fallback: crop theo bounding box ban đầu trên rotated
+            x, y, fw, fh = map(int, face[0:4])
+            x = max(0, x)
+            y = max(0, y)
+            fw = min(w - x, fw)
+            fh = min(h - y, fh)
+            face_img = rotated[y:y+fh, x:x+fw]
+    else:
+        # Fallback nếu không phát hiện được mặt
+        face_img = img_bgr
 
-    # Bước 2: MTCNN detect + align
-    img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-    img_pil = Image.fromarray(img_rgb)
+    # Bước U-Net segmentation nếu cần
+    if use_unet and unet_model is not None and face_img is not None:
+        try:
+            face_img = segment_face_with_unet(unet_model, face_img, device,
+                                             input_size=256, output_size=None)
+        except Exception as e:
+            print(f"  ⚠️ U-Net segment error: {e}")
 
-    try:
-        face_tensor = mtcnn(img_pil)  # (3, 160, 160) hoặc None
-    except Exception as e:
-        print(f"  ⚠️  MTCNN lỗi: {e}")
-        face_tensor = None
-
-    if face_tensor is None:
-        # Fallback: resize toàn ảnh về 160x160 nếu không detect được mặt
-        img_resized = cv2.resize(img_bgr, (160, 160))
-        img_rgb_r = cv2.cvtColor(img_resized, cv2.COLOR_BGR2RGB)
-        img_norm = (img_rgb_r.astype(np.float32) / 127.5) - 1.0
-        face_tensor = torch.from_numpy(img_norm.transpose(2, 0, 1)).float()
-
-    # Bước 3: FaceNet embedding
-    face_tensor = face_tensor.unsqueeze(0).to(device)  # (1, 3, 160, 160)
+    # Đưa về kích thước 160x160 cho FaceNet
+    face_resized = cv2.resize(face_img, (160, 160))
+    face_rgb = cv2.cvtColor(face_resized, cv2.COLOR_BGR2RGB)
+    
+    # Chuẩn hóa ảnh về [-1, 1]
+    img_norm = (face_rgb.astype(np.float32) / 127.5) - 1.0
+    face_tensor = torch.from_numpy(img_norm.transpose(2, 0, 1)).float().to(device)
+    
+    # Trích xuất embedding bằng FaceNet
+    face_tensor = face_tensor.unsqueeze(0)  # (1, 3, 160, 160)
     with torch.no_grad():
         embedding = facenet_model(face_tensor)  # (1, 512)
-
+        
     emb_np = embedding.squeeze().cpu().numpy()
-    # L2 normalize
     emb_np = emb_np / (np.linalg.norm(emb_np) + 1e-8)
     return emb_np
 
 
-def compute_embeddings_from_dir(img_dir, unet_model, facenet_model, mtcnn, device):
+def compute_embeddings_from_dir(img_dir, unet_model, facenet_model, detector_yn, device):
     """
     Xử lý nhiều ảnh từ 1 thư mục, lấy embedding trung bình (mean embedding).
-    Lấy trung bình giúp đặc trưng ổn định hơn khi so sánh.
     """
     exts = {'.jpg', '.jpeg', '.png', '.bmp', '.webp'}
     img_files = [f for f in os.listdir(img_dir)
@@ -154,7 +189,7 @@ def compute_embeddings_from_dir(img_dir, unet_model, facenet_model, mtcnn, devic
         if img is None:
             continue
         try:
-            emb = extract_embedding_from_img(img, unet_model, facenet_model, mtcnn, device)
+            emb = extract_embedding_from_img(img, unet_model, facenet_model, detector_yn, device)
             embeddings.append(emb)
             print(f"  ✓ {fname}")
         except Exception as e:
@@ -250,7 +285,6 @@ def load_all_embeddings():
 def recognize_face(query_embedding, db_embeddings, threshold=0.6):
     """
     Nhận diện khuôn mặt bằng Cosine Similarity.
-    threshold: ngưỡng để xác nhận (0.5-0.7 tùy yêu cầu bảo mật)
     """
     if not db_embeddings:
         return None, 0.0
@@ -272,19 +306,19 @@ def recognize_face(query_embedding, db_embeddings, threshold=0.6):
 
 # ==================== CLI REGISTRATION ====================
 
-def register_single(emp_id, img_path, unet_model, facenet_model, mtcnn, device):
+def register_single(emp_id, img_path, unet_model, facenet_model, detector_yn, device):
     print(f"\n👤 Đăng ký NV ID {emp_id} từ ảnh: {img_path}")
     img = cv2.imread(img_path)
     if img is None:
         print(f"  ❌ Không đọc được ảnh: {img_path}")
         return False
-    emb = extract_embedding_from_img(img, unet_model, facenet_model, mtcnn, device)
+    emb = extract_embedding_from_img(img, unet_model, facenet_model, detector_yn, device)
     return save_embedding_to_db(emp_id, emb, n_samples=1)
 
 
-def register_from_dir(emp_id, img_dir, unet_model, facenet_model, mtcnn, device):
+def register_from_dir(emp_id, img_dir, unet_model, facenet_model, detector_yn, device):
     print(f"\n👤 Đăng ký NV ID {emp_id} từ thư mục: {img_dir}")
-    emb = compute_embeddings_from_dir(img_dir, unet_model, facenet_model, mtcnn, device)
+    emb = compute_embeddings_from_dir(img_dir, unet_model, facenet_model, detector_yn, device)
     if emb is None:
         return False
     exts = {'.jpg', '.jpeg', '.png', '.bmp', '.webp'}
@@ -292,12 +326,7 @@ def register_from_dir(emp_id, img_dir, unet_model, facenet_model, mtcnn, device)
     return save_embedding_to_db(emp_id, emb, n_samples=n)
 
 
-def register_bulk(bulk_dir, unet_model, facenet_model, mtcnn, device):
-    """
-    Đăng ký hàng loạt từ thư mục gốc.
-    Mỗi sub-folder = 1 nhân viên, tên folder = emp_id.
-    Ví dụ: photos/1/, photos/2/, ...
-    """
+def register_bulk(bulk_dir, unet_model, facenet_model, detector_yn, device):
     print(f"\n📁 Đăng ký hàng loạt từ: {bulk_dir}")
     for folder in sorted(os.listdir(bulk_dir)):
         folder_path = os.path.join(bulk_dir, folder)
@@ -308,14 +337,14 @@ def register_bulk(bulk_dir, unet_model, facenet_model, mtcnn, device):
         except ValueError:
             print(f"  ⚠️  Bỏ qua folder '{folder}' (tên không phải số)")
             continue
-        register_from_dir(emp_id, folder_path, unet_model, facenet_model, mtcnn, device)
+        register_from_dir(emp_id, folder_path, unet_model, facenet_model, detector_yn, device)
 
 
 # ==================== ENTRY POINT ====================
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Đăng ký khuôn mặt nhân viên')
-    parser.add_argument('--emp_id',      type=int,   default=None, help='ID nhân viên (ma_admin)')
+    parser.add_argument('--emp_id',      type=int,   default=None, help='ID nhân viên (ma_nv)')
     parser.add_argument('--img_path',    type=str,   default=None, help='Đường dẫn tới 1 ảnh')
     parser.add_argument('--img_dir',     type=str,   default=None, help='Thư mục nhiều ảnh của 1 NV')
     parser.add_argument('--bulk_dir',    type=str,   default=None, help='Thư mục chứa nhiều NV (sub-folder = ID)')
@@ -329,14 +358,14 @@ if __name__ == '__main__':
     # Load models
     unet  = None if args.no_unet else load_unet(args.unet_weights, DEVICE)
     fnet  = load_facenet(DEVICE)
-    mtcnn = load_mtcnn(DEVICE)
+    dyn   = load_yunet()
 
     if args.bulk_dir:
-        register_bulk(args.bulk_dir, unet, fnet, mtcnn, DEVICE)
+        register_bulk(args.bulk_dir, unet, fnet, dyn, DEVICE)
     elif args.emp_id and args.img_dir:
-        register_from_dir(args.emp_id, args.img_dir, unet, fnet, mtcnn, DEVICE)
+        register_from_dir(args.emp_id, args.img_dir, unet, fnet, dyn, DEVICE)
     elif args.emp_id and args.img_path:
-        register_single(args.emp_id, args.img_path, unet, fnet, mtcnn, DEVICE)
+        register_single(args.emp_id, args.img_path, unet, fnet, dyn, DEVICE)
     else:
         print("❌ Thiếu tham số. Ví dụ:")
         print("   python register_face.py --emp_id 1 --img_path ./photo.jpg")

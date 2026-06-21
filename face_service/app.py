@@ -1,14 +1,10 @@
 """
-Flask API Server cho Face Recognition Service
-=============================================
+Flask API Server cho Face Recognition Service (YuNet version)
+=============================================================
 Endpoint:
   POST /recognize  → nhận base64 ảnh, trả về nhân viên nhận diện được
   POST /register   → nhận base64 ảnh + emp_id, lưu embedding vào DB
   GET  /health     → kiểm tra service
-
-Chạy:
-  python app.py
-  → http://localhost:5001
 """
 
 import os
@@ -26,7 +22,7 @@ from dotenv import load_dotenv
 
 from model_unet import UNet, segment_face_with_unet
 from register_face import (
-    load_unet, load_facenet, load_mtcnn,
+    load_unet, load_facenet, load_yunet,
     extract_embedding_from_img,
     save_embedding_to_db, load_all_embeddings,
     recognize_face
@@ -50,18 +46,18 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 UNET_WEIGHTS = os.getenv('UNET_WEIGHTS', './weights/unet_face_best.pth')
 RECOGNIZE_THRESHOLD = float(os.getenv('RECOGNIZE_THRESHOLD', '0.60'))
 
-unet_model   = None
+unet_model    = None
 facenet_model = None
-mtcnn_model  = None
+yunet_detector = None
 
 
 def load_models():
-    global unet_model, facenet_model, mtcnn_model
+    global unet_model, facenet_model, yunet_detector
     log.info(f"🖥️  Thiết bị: {DEVICE}")
     unet_model    = load_unet(UNET_WEIGHTS, DEVICE)
     facenet_model = load_facenet(DEVICE)
-    mtcnn_model   = load_mtcnn(DEVICE)
-    log.info("✅ Tất cả models đã load xong.")
+    yunet_detector = load_yunet()
+    log.info("✅ Tất cả models (U-Net, FaceNet, YuNet) đã load xong.")
 
 
 # ==================== UTILS ====================
@@ -92,6 +88,7 @@ def health():
         'device': str(DEVICE),
         'unet_loaded': unet_model is not None,
         'facenet_loaded': facenet_model is not None,
+        'yunet_loaded': yunet_detector is not None,
         'threshold': RECOGNIZE_THRESHOLD
     })
 
@@ -100,23 +97,6 @@ def health():
 def recognize():
     """
     Nhận diện khuôn mặt từ ảnh base64.
-
-    Request JSON:
-    {
-        "image": "<base64 image>",
-        "return_debug": false   // trả về ảnh đã segment nếu true
-    }
-
-    Response:
-    {
-        "success": true,
-        "matched": true,
-        "ma_tai_khoan": 1,
-        "ho_ten": "Nguyễn Văn A",
-        "score": 0.87,
-        "status": "on_time" | "late",
-        "debug_image": "<base64>" // nếu return_debug=true
-    }
     """
     try:
         data = request.get_json()
@@ -128,9 +108,9 @@ def recognize():
         if img is None:
             return jsonify({'success': False, 'message': 'Không đọc được ảnh'}), 400
 
-        # Trích xuất embedding (U-Net → FaceNet)
+        # Trích xuất embedding (YuNet → FaceNet)
         embedding = extract_embedding_from_img(
-            img, unet_model, facenet_model, mtcnn_model, DEVICE,
+            img, unet_model, facenet_model, yunet_detector, DEVICE,
             use_unet=(unet_model is not None)
         )
 
@@ -142,7 +122,7 @@ def recognize():
                 'message': 'Chưa có dữ liệu khuôn mặt trong hệ thống. Vui lòng đăng ký trước.'
             }), 404
 
-        # So sánh embedding
+        # So sánh embedding bằng Cosine Similarity
         matched, score = recognize_face(embedding, db_embeddings, threshold=RECOGNIZE_THRESHOLD)
 
         result = {
@@ -179,12 +159,6 @@ def recognize():
 def register():
     """
     Đăng ký khuôn mặt nhân viên (upload ảnh → lưu embedding).
-
-    Request JSON:
-    {
-        "image": "<base64 image>",
-        "emp_id": 1
-    }
     """
     try:
         data = request.get_json()
@@ -198,7 +172,7 @@ def register():
 
         # Trích xuất embedding
         embedding = extract_embedding_from_img(
-            img, unet_model, facenet_model, mtcnn_model, DEVICE,
+            img, unet_model, facenet_model, yunet_detector, DEVICE,
             use_unet=(unet_model is not None)
         )
 
@@ -219,12 +193,6 @@ def register():
 def register_multi():
     """
     Đăng ký khuôn mặt nhân viên từ nhiều góc độ ảnh (lấy embedding trung bình).
-
-    Request JSON:
-    {
-        "images": ["<base64 image 1>", "<base64 image 2>", ...],
-        "emp_id": 1
-    }
     """
     try:
         data = request.get_json()
@@ -243,7 +211,7 @@ def register_multi():
                 continue
             try:
                 emb = extract_embedding_from_img(
-                    img, unet_model, facenet_model, mtcnn_model, DEVICE,
+                    img, unet_model, facenet_model, yunet_detector, DEVICE,
                     use_unet=(unet_model is not None)
                 )
                 embeddings.append(emb)

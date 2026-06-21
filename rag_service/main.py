@@ -90,10 +90,12 @@ class ChatRequest(BaseModel):
     conversationId: Optional[Any] = None
     history: Optional[List[Dict]] = []
     interests: Optional[List[str]] = []
+    context_state: Optional[Dict[str, Any]] = {}
 
 class ChatResponse(BaseModel):
     response: str
     intent: Optional[str] = None
+    context_state: Optional[Dict[str, Any]] = {}
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest, http_request: Request):
@@ -109,18 +111,20 @@ async def chat(request: ChatRequest, http_request: Request):
         if not GROQ_API_KEY or GROQ_API_KEY == "your_groq_api_key_here":
             return ChatResponse(
                 response="Xin lỗi quý khách, hệ thống AI Chatbot hiện tại chưa được cấu hình khóa API (API Key) hợp lệ. Vui lòng cập nhật GROQ_API_KEY trong tệp cấu hình backend/.env.",
-                intent="ERROR"
+                intent="ERROR",
+                context_state=request.context_state
             )
 
         engine = get_rag_engine()
-        answer = engine.process_chat(
+        answer, updated_state = engine.process_chat(
             request.message, 
             request.history, 
             user_id=request.userId, 
-            interests=request.interests
+            interests=request.interests,
+            context_state=request.context_state
         )
         
-        return ChatResponse(response=answer)
+        return ChatResponse(response=answer, context_state=updated_state)
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -230,6 +234,79 @@ async def generate_interests(request: GenerateInterestsRequest):
     except Exception as e:
         print(f"Error in generate-interests endpoint: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+class RecommendConfigRequest(BaseModel):
+    k_neighbors: int
+    min_support: float
+    min_threshold: float
+
+@app.get("/api/recommend/admin/status")
+async def get_recommend_status():
+    try:
+        from recommend_engine import get_model_status
+        return get_model_status()
+    except Exception as e:
+        print(f"Error in recommend/admin/status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/recommend/admin/config")
+async def save_recommend_config_route(request: RecommendConfigRequest):
+    try:
+        from recommend_engine import save_config, trigger_retrain
+        config_data = {
+            "k_neighbors": request.k_neighbors,
+            "min_support": request.min_support,
+            "min_threshold": request.min_threshold
+        }
+        if save_config(config_data):
+            status = trigger_retrain()
+            return {"status": "success", "message": "Đã lưu cấu hình và huấn luyện lại mô hình thành công", "data": status}
+        else:
+            raise HTTPException(status_code=500, detail="Không thể ghi cấu hình")
+    except Exception as e:
+        print(f"Error in recommend/admin/config: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/recommend/admin/retrain")
+async def retrain_recommend_engine():
+    try:
+        from recommend_engine import trigger_retrain
+        status = trigger_retrain()
+        return {"status": "success", "message": "Huấn luyện lại mô hình thành công", "data": status}
+    except Exception as e:
+        print(f"Error in recommend/admin/retrain: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/recommend/admin/explain")
+async def explain_recommendations_route(userId: str, cartItems: Optional[str] = None):
+    try:
+        from recommend_engine import explain_recommendations
+        cart_list = cartItems.split(",") if cartItems else []
+        recs = explain_recommendations(userId, cart_list)
+        return {"status": "success", "recommendations": recs}
+    except Exception as e:
+        print(f"Error in recommend/admin/explain: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/recommend/admin/overview-knn")
+async def get_similar_customers_overview_route():
+    try:
+        from recommend_engine import get_similar_customers_overview
+        data = get_similar_customers_overview()
+        return {"status": "success", "data": data}
+    except Exception as e:
+        print(f"Error in recommend/admin/overview-knn: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/recommend/admin/overview-apriori")
+async def get_association_rules_overview_route():
+    try:
+        from recommend_engine import get_association_rules_overview
+        data = get_association_rules_overview()
+        return {"status": "success", "data": data}
+    except Exception as e:
+        print(f"Error in recommend/admin/overview-apriori: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=False)

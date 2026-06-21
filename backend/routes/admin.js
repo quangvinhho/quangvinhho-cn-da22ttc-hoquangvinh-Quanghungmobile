@@ -7,6 +7,91 @@ const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs'); // Thêm bcrypt để băm mật khẩu nhân viên
 
+// Khởi tạo bảng chi tiêu hằng ngày và loại chi tiêu nếu chưa có
+async function initExpenditureTables() {
+    try {
+        // 1. Tạo bảng loai_chi_tieu
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS loai_chi_tieu (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                ten_loai VARCHAR(100) NOT NULL UNIQUE,
+                mo_ta VARCHAR(255),
+                ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Seed default categories if empty
+        const [rows] = await pool.query('SELECT COUNT(*) as count FROM loai_chi_tieu');
+        if (rows[0].count === 0) {
+            const defaultCategories = [
+                ['Tiền điện', 'Chi phí tiền điện vận hành cửa hàng'],
+                ['Tiền nước', 'Chi phí tiền nước sinh hoạt'],
+                ['Mặt bằng', 'Chi phí thuê mặt bằng cửa hàng'],
+                ['Lương nhân viên', 'Chi phí lương và thưởng nhân viên'],
+                ['Mua sắm thiết bị', 'Chi phí mua sắm thiết bị, cơ sở vật chất'],
+                ['Chi phí khác', 'Các khoản chi phí vận hành khác']
+            ];
+            for (const cat of defaultCategories) {
+                await pool.query('INSERT INTO loai_chi_tieu (ten_loai, mo_ta) VALUES (?, ?)', cat);
+            }
+            console.log('✅ Đã nạp danh mục chi tiêu mặc định');
+        }
+
+        // 2. Tạo bảng chi_tieu_hang_ngay
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS chi_tieu_hang_ngay (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                ngay DATE NOT NULL,
+                so_tien DECIMAL(15, 2) NOT NULL,
+                muc_dich VARCHAR(255) NOT NULL,
+                loai_id INT,
+                nguoi_chi VARCHAR(100),
+                ghi_chu TEXT,
+                ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT fk_chi_tieu_loai FOREIGN KEY (loai_id) REFERENCES loai_chi_tieu(id) ON DELETE SET NULL
+            )
+        `);
+
+        // Kiểm tra cột loai_id đã có chưa để alter
+        const [cols] = await pool.query("SHOW COLUMNS FROM chi_tieu_hang_ngay WHERE Field = 'loai_id'");
+        if (cols.length === 0) {
+            await pool.query("ALTER TABLE chi_tieu_hang_ngay ADD COLUMN loai_id INT");
+            await pool.query("ALTER TABLE chi_tieu_hang_ngay ADD CONSTRAINT fk_chi_tieu_loai FOREIGN KEY (loai_id) REFERENCES loai_chi_tieu(id) ON DELETE SET NULL");
+            console.log('✅ Đã thêm cột loai_id và khóa ngoại vào bảng chi_tieu_hang_ngay');
+        }
+
+        console.log('✅ Bảng chi_tieu_hang_ngay và loai_chi_tieu đã sẵn sàng');
+    } catch (err) {
+        console.error('❌ Lỗi khởi tạo bảng chi tiêu:', err);
+    }
+}
+initExpenditureTables();
+
+async function initPayrollTable() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS bang_luong (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                ma_nv INT NOT NULL,
+                thang VARCHAR(7) NOT NULL,
+                luong_co_ban DECIMAL(15, 2) NOT NULL,
+                so_ca_lam INT DEFAULT 0,
+                so_phut_tre INT DEFAULT 0,
+                tong_phat_tre DECIMAL(15, 2) DEFAULT 0.00,
+                luong_thuc_linh DECIMAL(15, 2) NOT NULL,
+                trang_thai ENUM('chua_thanh_toan', 'da_thanh_toan') DEFAULT 'chua_thanh_toan',
+                ngay_tinh TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                CONSTRAINT fk_bang_luong_nv FOREIGN KEY (ma_nv) REFERENCES nhan_vien(ma_nv) ON DELETE CASCADE,
+                UNIQUE KEY unique_nv_thang (ma_nv, thang)
+            )
+        `);
+        console.log('✅ Bảng bang_luong đã sẵn sàng');
+    } catch (err) {
+        console.error('❌ Lỗi khởi tạo bảng bang_luong:', err);
+    }
+}
+initPayrollTable();
+
 // ==================== COLOR HELPER (dùng chung cho POST/PUT product) ====================
 // Map tên màu thường dùng → hex. Dùng để auto-generate hex khi admin chỉ nhập tên.
 const COLOR_NAME_TO_HEX = {
@@ -208,6 +293,46 @@ const checkSuperAdmin = (req, res, next) => {
         });
     }
     next();
+};
+
+// Middleware kiểm tra quyền truy cập module chi tiết (dành cho nhân viên) hoặc SuperAdmin
+const checkPermission = (moduleName) => {
+    return (req, res, next) => {
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.',
+                code: 'AUTH_REQUIRED'
+            });
+        }
+
+        // Superadmin có toàn quyền
+        if (req.session.user.quyen === 'superadmin') {
+            return next();
+        }
+
+        // Kiểm tra phân quyền chi tiết của nhân viên
+        let allowed = [];
+        if (req.session.user.allowed_modules) {
+            try {
+                allowed = typeof req.session.user.allowed_modules === 'string'
+                    ? JSON.parse(req.session.user.allowed_modules)
+                    : req.session.user.allowed_modules;
+            } catch (e) {
+                console.error('Error parsing allowed_modules in checkPermission middleware:', e);
+            }
+        }
+
+        if (Array.isArray(allowed) && allowed.includes(moduleName)) {
+            return next();
+        }
+
+        return res.status(403).json({
+            success: false,
+            message: `Bạn không có quyền thực hiện chức năng này (yêu cầu quyền: ${moduleName}).`,
+            code: 'PERMISSION_DENIED'
+        });
+    };
 };
 
 // Áp dụng middleware cho TẤT CẢ routes trong router này
@@ -524,19 +649,36 @@ router.put('/orders/:id/status', async (req, res) => {
         // Nếu chuyển sang trạng thái cancelled và trước đó không phải cancelled
         // => Hoàn lại số lượng tồn kho và voucher
         if (status === 'cancelled' && oldStatus !== 'cancelled') {
-            // Hoàn lại số lượng tồn kho
+            // Hoàn lại số lượng tồn kho (cả product-level, variant-level và IMEI)
             const [orderItems] = await connection.query(
-                'SELECT ma_sp, so_luong FROM chi_tiet_don_hang WHERE ma_don = ?',
+                'SELECT ma_ct_don, ma_sp, ma_bt, so_luong FROM chi_tiet_don_hang WHERE ma_don = ?',
                 [id]
             );
-            
+
+            let imeiRestoredTotal = 0;
             for (const item of orderItems) {
+                // 1. Cộng lại tồn product-level
                 await connection.query(
                     'UPDATE san_pham SET so_luong_ton = so_luong_ton + ? WHERE ma_sp = ?',
                     [item.so_luong, item.ma_sp]
                 );
+                // 2. Cộng lại tồn variant-level (nếu có biến thể)
+                if (item.ma_bt) {
+                    await connection.query(
+                        'UPDATE bien_the_san_pham SET so_luong = so_luong + ? WHERE ma_bt = ?',
+                        [item.so_luong, item.ma_bt]
+                    );
+                }
+                // 3. Trả IMEI về kho (in_stock), clear liên kết đơn
+                const [imeiRes] = await connection.query(
+                    `UPDATE imei_san_pham
+                     SET trang_thai = 'in_stock', ma_ct_don = NULL, ngay_ban = NULL
+                     WHERE ma_ct_don = ? AND trang_thai = 'sold'`,
+                    [item.ma_ct_don]
+                );
+                imeiRestoredTotal += imeiRes.affectedRows || 0;
             }
-            console.log(`Order ${id} cancelled - Stock restored for ${orderItems.length} items`);
+            console.log(`Order ${id} cancelled - Stock restored for ${orderItems.length} items, IMEIs restored: ${imeiRestoredTotal}`);
             
             // Hoàn lại voucher nếu có
             if (maKm) {
@@ -637,19 +779,36 @@ router.put('/orders/:id/cancel', async (req, res) => {
             console.error('[Email Admin] Lỗi require emailService:', e);
         }
         
-        // Hoàn lại số lượng tồn kho
+        // Hoàn lại số lượng tồn kho (cả product-level, variant-level và IMEI)
         const [orderItems] = await connection.query(
-            'SELECT ma_sp, so_luong FROM chi_tiet_don_hang WHERE ma_don = ?',
+            'SELECT ma_ct_don, ma_sp, ma_bt, so_luong FROM chi_tiet_don_hang WHERE ma_don = ?',
             [id]
         );
-        
+
+        let imeiRestoredTotal = 0;
         for (const item of orderItems) {
+            // 1. Cộng lại tồn product-level
             await connection.query(
                 'UPDATE san_pham SET so_luong_ton = so_luong_ton + ? WHERE ma_sp = ?',
                 [item.so_luong, item.ma_sp]
             );
+            // 2. Cộng lại tồn variant-level (nếu có biến thể)
+            if (item.ma_bt) {
+                await connection.query(
+                    'UPDATE bien_the_san_pham SET so_luong = so_luong + ? WHERE ma_bt = ?',
+                    [item.so_luong, item.ma_bt]
+                );
+            }
+            // 3. Trả IMEI về kho (in_stock), clear liên kết đơn
+            const [imeiRes] = await connection.query(
+                `UPDATE imei_san_pham
+                 SET trang_thai = 'in_stock', ma_ct_don = NULL, ngay_ban = NULL
+                 WHERE ma_ct_don = ? AND trang_thai = 'sold'`,
+                [item.ma_ct_don]
+            );
+            imeiRestoredTotal += imeiRes.affectedRows || 0;
         }
-        console.log(`Order ${id} cancelled - Stock restored for ${orderItems.length} items`);
+        console.log(`Order ${id} cancelled - Stock restored for ${orderItems.length} items, IMEIs restored: ${imeiRestoredTotal}`);
         
         // Hoàn lại voucher nếu có
         if (maKm) {
@@ -700,7 +859,7 @@ router.put('/orders/:id/cancel', async (req, res) => {
 // ==================== CUSTOMERS ====================
 
 // GET /api/admin/customers - Lấy tất cả khách hàng
-router.get('/customers', checkSuperAdmin, async (req, res) => {
+router.get('/customers', checkPermission('nav-customers'), async (req, res) => {
     try {
         const [customers] = await pool.query(`
             SELECT kh.*,
@@ -724,7 +883,7 @@ router.get('/customers', checkSuperAdmin, async (req, res) => {
 });
 
 // GET /api/admin/customers/:id - Lấy chi tiết khách hàng
-router.get('/customers/:id', checkSuperAdmin, async (req, res) => {
+router.get('/customers/:id', checkPermission('nav-customers'), async (req, res) => {
     try {
         const { id } = req.params;
         
@@ -755,7 +914,7 @@ router.get('/customers/:id', checkSuperAdmin, async (req, res) => {
 });
 
 // PUT /api/admin/customers/:id/status - Khóa/Mở khóa tài khoản khách hàng
-router.put('/customers/:id/status', checkSuperAdmin, async (req, res) => {
+router.put('/customers/:id/status', checkPermission('nav-customers'), async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
@@ -787,7 +946,7 @@ router.put('/customers/:id/status', checkSuperAdmin, async (req, res) => {
 });
 
 // DELETE /api/admin/customers/:id - Xóa khách hàng
-router.delete('/customers/:id', checkSuperAdmin, async (req, res) => {
+router.delete('/customers/:id', checkPermission('nav-customers'), async (req, res) => {
     try {
         const { id } = req.params;
         
@@ -939,7 +1098,14 @@ router.get('/stats/top-products', async (req, res) => {
 // Gọi sang RAG Service để đồng bộ dữ liệu sản phẩm tự động
 async function syncRAGProducts() {
     try {
-        await fetch('http://127.0.0.1:8000/api/reload-vectorstore', { method: 'POST' });
+        const headers = { 'Content-Type': 'application/json' };
+        if (process.env.ADMIN_TOKEN) {
+            headers['X-Admin-Token'] = process.env.ADMIN_TOKEN;
+        }
+        await fetch('http://127.0.0.1:8000/api/reload-vectorstore', { 
+            method: 'POST',
+            headers
+        });
         console.log('Đã tự động đồng bộ RAG Vectorstore sau khi cập nhật sản phẩm');
     } catch (error) {
         console.log('RAG service hiện không chạy, bỏ qua đồng bộ tự động.');
@@ -957,6 +1123,26 @@ router.get('/products', async (req, res) => {
             LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
             ORDER BY sp.ma_sp DESC
         `);
+        
+        // Fetch all variants to map them to products for instant frontend filtering & warning badges
+        const [variants] = await pool.query(`
+            SELECT ma_bt, ma_sp, mau_sac, mau_hex, dung_luong, so_luong, gia_chenh, sku, trang_thai
+            FROM bien_the_san_pham
+        `);
+        
+        // Group variants by product ID
+        const variantsByProduct = {};
+        variants.forEach(v => {
+            if (!variantsByProduct[v.ma_sp]) {
+                variantsByProduct[v.ma_sp] = [];
+            }
+            variantsByProduct[v.ma_sp].push(v);
+        });
+        
+        // Attach variants to products
+        products.forEach(p => {
+            p.variants = variantsByProduct[p.ma_sp] || [];
+        });
         
         res.json({ success: true, data: products });
     } catch (error) {
@@ -1898,6 +2084,14 @@ router.get('/dashboard/revenue', checkSuperAdmin, async (req, res) => {
                 GROUP BY DATE(thoi_gian)
                 ORDER BY date
             `);
+
+            // Chi tiêu hằng ngày 7 ngày gần nhất
+            const [dailyExpenses] = await pool.query(`
+                SELECT DATE(ngay) as date, SUM(so_tien) as total_expense
+                FROM chi_tieu_hang_ngay
+                WHERE ngay >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                GROUP BY DATE(ngay)
+            `);
             
             // Tạo mảng 7 ngày
             for (let i = 6; i >= 0; i--) {
@@ -1905,11 +2099,13 @@ router.get('/dashboard/revenue', checkSuperAdmin, async (req, res) => {
                 date.setDate(date.getDate() - i);
                 const dateStr = date.toISOString().split('T')[0];
                 const found = dailyRevenue.find(d => d.date.toISOString().split('T')[0] === dateStr);
+                const foundExpense = dailyExpenses.find(e => e.date.toISOString().split('T')[0] === dateStr);
+                const expense = foundExpense ? parseFloat(foundExpense.total_expense) : 0;
                 labels.push(date.toLocaleDateString('vi-VN', { weekday: 'short', day: '2-digit', month: '2-digit' }));
                 revenueData.push({
                     date: dateStr,
                     revenue: found ? parseFloat(found.revenue) : 0,
-                    profit: found ? parseFloat(found.revenue) - parseFloat(found.import_cost || 0) : 0,
+                    profit: found ? parseFloat(found.revenue) - parseFloat(found.import_cost || 0) - expense : -expense,
                     orders: found ? found.orders : 0
                 });
             }
@@ -1947,15 +2143,25 @@ router.get('/dashboard/revenue', checkSuperAdmin, async (req, res) => {
                 GROUP BY DAY(thoi_gian)
                 ORDER BY day
             `, [currentYear, currentMonth]);
+
+            // Chi tiêu trong tháng
+            const [dailyExpenses] = await pool.query(`
+                SELECT DAY(ngay) as day, SUM(so_tien) as total_expense
+                FROM chi_tieu_hang_ngay
+                WHERE YEAR(ngay) = ? AND MONTH(ngay) = ?
+                GROUP BY DAY(ngay)
+            `, [currentYear, currentMonth]);
             
             const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
             for (let i = 1; i <= daysInMonth; i++) {
                 const found = dailyRevenue.find(d => d.day === i);
+                const foundExpense = dailyExpenses.find(e => e.day === i);
+                const expense = foundExpense ? parseFloat(foundExpense.total_expense) : 0;
                 labels.push(i.toString());
                 revenueData.push({
                     day: i,
                     revenue: found ? parseFloat(found.revenue) : 0,
-                    profit: found ? parseFloat(found.revenue) - parseFloat(found.import_cost || 0) : 0,
+                    profit: found ? parseFloat(found.revenue) - parseFloat(found.import_cost || 0) - expense : -expense,
                     orders: found ? found.orders : 0
                 });
             }
@@ -1996,14 +2202,27 @@ router.get('/dashboard/revenue', checkSuperAdmin, async (req, res) => {
                 GROUP BY MONTH(thoi_gian)
                 ORDER BY month
             `, [currentYear]);
+
+            // Chi tiêu trong năm
+            const [monthlyExpenses] = await pool.query(`
+                SELECT MONTH(ngay) as month, SUM(so_tien) as total_expense
+                FROM chi_tieu_hang_ngay
+                WHERE YEAR(ngay) = ?
+                GROUP BY MONTH(ngay)
+            `, [currentYear]);
             
             const monthNames = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
             for (let i = 1; i <= 12; i++) {
                 const found = monthlyRevenue.find(d => d.month === i);
+                const foundExpense = monthlyExpenses.find(e => e.month === i);
+                const expense = foundExpense ? parseFloat(foundExpense.total_expense) : 0;
+                const revenue = found ? parseFloat(found.revenue) : 0;
+                const import_cost = found ? parseFloat(found.import_cost || 0) : 0;
                 labels.push(monthNames[i - 1]);
                 revenueData.push({
                     month: i,
-                    revenue: found ? parseFloat(found.revenue) : 0,
+                    revenue: revenue,
+                    profit: revenue - import_cost - expense,
                     orders: found ? found.orders : 0
                 });
             }
@@ -3624,7 +3843,7 @@ router.get('/debug/orders-by-month', async (req, res) => {
 
 // ==================== SETTINGS ====================
 
-// Biến lưu cài đặt trong memory (có thể thay bằng database nếu cần)
+// Biến lưu cài đặt trong memory
 let shopSettings = {
     hideStockFromCustomer: false // Mặc định hiển thị tồn kho
 };
@@ -3632,7 +3851,20 @@ let shopSettings = {
 // GET /api/admin/settings - Lấy cài đặt shop
 router.get('/settings', async (req, res) => {
     try {
-        res.json({ success: true, data: shopSettings });
+        const [rows] = await pool.query('SELECT `key`, value FROM cau_hinh_shop');
+        const settingsMap = {};
+        rows.forEach(r => {
+            settingsMap[r.key] = r.value;
+        });
+
+        const mergedSettings = {
+            hideStockFromCustomer: settingsMap['hide_stock'] === '1' || settingsMap['hide_stock'] === 'true' || shopSettings.hideStockFromCustomer,
+            shop_lat: settingsMap['shop_lat'] || '9.920170',
+            shop_lng: settingsMap['shop_lng'] || '106.347510',
+            shop_attendance_radius: settingsMap['shop_attendance_radius'] || '150'
+        };
+
+        res.json({ success: true, data: mergedSettings });
     } catch (error) {
         console.error('Error getting settings:', error);
         res.status(500).json({ success: false, message: error.message });
@@ -3642,13 +3874,52 @@ router.get('/settings', async (req, res) => {
 // PUT /api/admin/settings - Cập nhật cài đặt shop
 router.put('/settings', checkSuperAdmin, async (req, res) => {
     try {
-        const { hideStockFromCustomer } = req.body;
+        const { hideStockFromCustomer, shop_lat, shop_lng, shop_attendance_radius } = req.body;
         
         if (typeof hideStockFromCustomer === 'boolean') {
             shopSettings.hideStockFromCustomer = hideStockFromCustomer;
+            await pool.query(
+                "INSERT INTO cau_hinh_shop (`key`, value, mo_ta) VALUES ('hide_stock', ?, 'Ẩn số lượng tồn kho khỏi khách (0/1)') ON DUPLICATE KEY UPDATE value = ?",
+                [hideStockFromCustomer ? '1' : '0', hideStockFromCustomer ? '1' : '0']
+            );
         }
         
-        res.json({ success: true, message: 'Cập nhật cài đặt thành công', data: shopSettings });
+        if (shop_lat !== undefined && shop_lat !== null) {
+            await pool.query(
+                "INSERT INTO cau_hinh_shop (`key`, value, mo_ta) VALUES ('shop_lat', ?, 'Vĩ độ GPS của cửa hàng/chi nhánh') ON DUPLICATE KEY UPDATE value = ?",
+                [shop_lat.toString(), shop_lat.toString()]
+            );
+        }
+        
+        if (shop_lng !== undefined && shop_lng !== null) {
+            await pool.query(
+                "INSERT INTO cau_hinh_shop (`key`, value, mo_ta) VALUES ('shop_lng', ?, 'Kinh độ GPS của cửa hàng/chi nhánh') ON DUPLICATE KEY UPDATE value = ?",
+                [shop_lng.toString(), shop_lng.toString()]
+            );
+        }
+        
+        if (shop_attendance_radius !== undefined && shop_attendance_radius !== null) {
+            await pool.query(
+                "INSERT INTO cau_hinh_shop (`key`, value, mo_ta) VALUES ('shop_attendance_radius', ?, 'Bán kính chấm công cho phép (mét)') ON DUPLICATE KEY UPDATE value = ?",
+                [shop_attendance_radius.toString(), shop_attendance_radius.toString()]
+            );
+        }
+
+        // Fetch fresh settings from DB to return
+        const [rows] = await pool.query('SELECT `key`, value FROM cau_hinh_shop');
+        const settingsMap = {};
+        rows.forEach(r => {
+            settingsMap[r.key] = r.value;
+        });
+
+        const mergedSettings = {
+            hideStockFromCustomer: settingsMap['hide_stock'] === '1' || settingsMap['hide_stock'] === 'true' || shopSettings.hideStockFromCustomer,
+            shop_lat: settingsMap['shop_lat'] || '9.920170',
+            shop_lng: settingsMap['shop_lng'] || '106.347510',
+            shop_attendance_radius: settingsMap['shop_attendance_radius'] || '150'
+        };
+        
+        res.json({ success: true, message: 'Cập nhật cài đặt thành công', data: mergedSettings });
     } catch (error) {
         console.error('Error updating settings:', error);
         res.status(500).json({ success: false, message: error.message });
@@ -3658,10 +3929,15 @@ router.put('/settings', checkSuperAdmin, async (req, res) => {
 // GET /api/admin/settings/public - API công khai để frontend lấy cài đặt hiển thị
 router.get('/settings/public', async (req, res) => {
     try {
+        const [rows] = await pool.query("SELECT value FROM cau_hinh_shop WHERE `key` = 'hide_stock'");
+        let hideVal = shopSettings.hideStockFromCustomer;
+        if (rows.length > 0) {
+            hideVal = rows[0].value === '1' || rows[0].value === 'true';
+        }
         res.json({ 
             success: true, 
             data: {
-                hideStockFromCustomer: shopSettings.hideStockFromCustomer
+                hideStockFromCustomer: hideVal
             }
         });
     } catch (error) {
@@ -3674,9 +3950,13 @@ router.get('/settings/public', async (req, res) => {
 // GET /api/admin/employees - Lấy danh sách nhân viên
 router.get('/employees', async (req, res) => {
     try {
-        const [employees] = await pool.query(
-            "SELECT ma_nv as ma_admin, ma_nv as ma_tai_khoan, tai_khoan, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen, ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam FROM nhan_vien ORDER BY ma_nv DESC"
-        );
+        const [employees] = await pool.query(`
+            SELECT nv.ma_nv as ma_admin, nv.ma_nv as ma_tai_khoan, nv.tai_khoan, nv.ho_ten, nv.email, nv.so_dt, nv.luong_co_ban, nv.trang_thai, nv.quyen, nv.ngay_sinh, nv.dia_chi, nv.chuc_vu, nv.ngay_vao_lam, nv.cccd_truoc, nv.cccd_sau, nv.anh_dai_dien, nv.allowed_modules,
+                   CASE WHEN fe.ma_tai_khoan IS NOT NULL THEN 1 ELSE 0 END as has_face_data
+            FROM nhan_vien nv
+            LEFT JOIN face_embeddings fe ON nv.ma_nv = fe.ma_tai_khoan
+            ORDER BY nv.ma_nv DESC
+        `);
         res.json({ success: true, data: employees, employees });
     } catch (error) {
         console.error('Error getting employees:', error);
@@ -3687,7 +3967,7 @@ router.get('/employees', async (req, res) => {
 // POST /api/admin/employees - Tạo nhân viên mới
 router.post('/employees', checkSuperAdmin, async (req, res) => {
     try {
-        const { tai_khoan, mat_khau, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen, ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam } = req.body;
+        const { tai_khoan, mat_khau, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen, ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam, cccd_truoc, cccd_sau, anh_dai_dien } = req.body;
         
         if (!tai_khoan || !mat_khau || !ho_ten) {
             return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ thông tin bắt buộc' });
@@ -3704,11 +3984,11 @@ router.post('/employees', checkSuperAdmin, async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashed_mat_khau = await bcrypt.hash(mat_khau, salt);
         
-        await pool.query(
-            'INSERT INTO nhan_vien (tai_khoan, mat_khau, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen, ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [tai_khoan, hashed_mat_khau, ho_ten, email || null, so_dt || null, luong_co_ban || 0, trang_thai || 'hoat_dong', quyen || 'nhanvien', ngay_sinh || null, dia_chi || null, chuc_vu || null, ngay_vao_lam || null]
+        const [result] = await pool.query(
+            'INSERT INTO nhan_vien (tai_khoan, mat_khau, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen, ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam, cccd_truoc, cccd_sau, anh_dai_dien) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [tai_khoan, hashed_mat_khau, ho_ten, email || null, so_dt || null, luong_co_ban || 0, trang_thai || 'hoat_dong', quyen || 'nhanvien', ngay_sinh || null, dia_chi || null, chuc_vu || null, ngay_vao_lam || null, cccd_truoc || null, cccd_sau || null, anh_dai_dien || null]
         );
-        res.json({ success: true, message: 'Tạo tài khoản nhân viên thành công' });
+        res.json({ success: true, message: 'Tạo tài khoản nhân viên thành công', id: result.insertId });
     } catch (error) {
         console.error('Error creating employee:', error);
         res.status(500).json({ success: false, message: error.message });
@@ -3719,7 +3999,7 @@ router.post('/employees', checkSuperAdmin, async (req, res) => {
 router.put('/employees/:id', checkSuperAdmin, async (req, res) => {
     try {
         const { id } = req.params;
-        const { tai_khoan, mat_khau, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen, ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam } = req.body;
+        const { tai_khoan, mat_khau, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen, ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam, cccd_truoc, cccd_sau, anh_dai_dien } = req.body;
         
         if (!tai_khoan || !ho_ten) {
             return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ thông tin bắt buộc' });
@@ -3744,8 +4024,8 @@ router.put('/employees/:id', checkSuperAdmin, async (req, res) => {
         }
         
         await pool.query(
-            'UPDATE nhan_vien SET tai_khoan=?, mat_khau=?, ho_ten=?, email=?, so_dt=?, luong_co_ban=?, trang_thai=?, quyen=?, ngay_sinh=?, dia_chi=?, chuc_vu=?, ngay_vao_lam=? WHERE ma_nv=?',
-            [tai_khoan, finalMatKhau, ho_ten, email || null, so_dt || null, luong_co_ban || 0, trang_thai || 'hoat_dong', quyen || 'nhanvien', ngay_sinh || null, dia_chi || null, chuc_vu || null, ngay_vao_lam || null, id]
+            'UPDATE nhan_vien SET tai_khoan=?, mat_khau=?, ho_ten=?, email=?, so_dt=?, luong_co_ban=?, trang_thai=?, quyen=?, ngay_sinh=?, dia_chi=?, chuc_vu=?, ngay_vao_lam=?, cccd_truoc=?, cccd_sau=?, anh_dai_dien=? WHERE ma_nv=?',
+            [tai_khoan, finalMatKhau, ho_ten, email || null, so_dt || null, luong_co_ban || 0, trang_thai || 'hoat_dong', quyen || 'nhanvien', ngay_sinh || null, dia_chi || null, chuc_vu || null, ngay_vao_lam || null, cccd_truoc || null, cccd_sau || null, anh_dai_dien || existing[0].anh_dai_dien, id]
         );
         res.json({ success: true, message: 'Cập nhật tài khoản nhân viên thành công' });
     } catch (error) {
@@ -3764,6 +4044,81 @@ router.delete('/employees/:id', checkSuperAdmin, async (req, res) => {
     } catch (error) {
         console.error('Error deleting employee:', error);
         res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/employees/:id/cccd - Cập nhật ảnh CCCD mặt trước & mặt sau
+router.put('/employees/:id/cccd', checkSuperAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { cccd_truoc, cccd_sau } = req.body;
+        
+        await pool.query(
+            'UPDATE nhan_vien SET cccd_truoc = ?, cccd_sau = ? WHERE ma_nv = ?',
+            [cccd_truoc || null, cccd_sau || null, id]
+        );
+        res.json({ success: true, message: 'Đã cập nhật ảnh CCCD thành công' });
+    } catch (error) {
+        console.error('Error updating CCCD:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/employees/:id/register-face - Đăng ký/Training khuôn mặt cho nhân viên
+router.post('/employees/:id/register-face', checkSuperAdmin, async (req, res) => {
+    try {
+        const axios = require('axios');
+        const { id } = req.params;
+        const { images } = req.body;
+        
+        if (!images || !Array.isArray(images) || images.length === 0) {
+            return res.status(400).json({ success: false, message: 'Thiếu dữ liệu hình ảnh khuôn mặt' });
+        }
+        
+        const pyRes = await axios.post('http://localhost:5001/register_multi', {
+            emp_id: id,
+            images: images
+        });
+        
+        res.json(pyRes.data);
+    } catch (error) {
+        console.error('Error registering face in backend:', error.message);
+        const status = error.response ? error.response.status : 500;
+        const msg = error.response && error.response.data ? error.response.data.message : 'Không thể kết nối đến dịch vụ nhận diện khuôn mặt.';
+        res.status(status).json({ success: false, message: msg });
+    }
+});
+
+// PUT /api/admin/employees/:id/permissions - Cập nhật phân quyền chi tiết cho nhân viên
+router.put('/employees/:id/permissions', checkSuperAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { permissions } = req.body;
+        
+        if (!Array.isArray(permissions)) {
+            return res.status(400).json({ success: false, error: 'Danh sách quyền không hợp lệ' });
+        }
+        
+        // Convert array to JSON string
+        const permissionsJson = JSON.stringify(permissions);
+        
+        // Update allowed_modules in nhan_vien table
+        await pool.query(
+            'UPDATE nhan_vien SET allowed_modules = ? WHERE ma_nv = ?',
+            [permissionsJson, id]
+        );
+        
+        // Log action
+        await logAdminAction(req, 'Cập nhật phân quyền', 'nhan_vien', id, `Cập nhật quyền: ${permissions.join(', ')}`);
+        
+        res.json({ 
+            success: true, 
+            message: 'Cập nhật phân quyền thành công',
+            permissions: permissions
+        });
+    } catch (error) {
+        console.error('Error updating permissions:', error);
+        res.status(500).json({ success: false, error: 'Lỗi cập nhật phân quyền' });
     }
 });
 
@@ -3977,7 +4332,7 @@ router.get('/dashboard/counts', async (req, res) => {
         const [[orders]] = await pool.query('SELECT COUNT(*) as cnt FROM don_hang');
         const [[customers]] = await pool.query('SELECT COUNT(*) as cnt FROM khach_hang');
         const [[products]] = await pool.query('SELECT COUNT(*) as cnt FROM san_pham WHERE trang_thai != "deleted"');
-        const [[employees]] = await pool.query('SELECT COUNT(*) as cnt FROM admin WHERE trang_thai != "locked"');
+        const [[employees]] = await pool.query('SELECT COUNT(*) as cnt FROM nhan_vien WHERE trang_thai != "da_nghi_viec"');
 
         res.json({
             success: true,
@@ -4001,16 +4356,24 @@ router.get('/dashboard/financial', async (req, res) => {
 
         let dateCondition = '';
         let prevDateCondition = '';
+        let expenseCond = '';
+        let prevExpenseCond = '';
 
         if (period === 'today') {
             dateCondition = "DATE(dh.thoi_gian) = CURDATE()";
             prevDateCondition = "DATE(dh.thoi_gian) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+            expenseCond = "DATE(ngay) = CURDATE()";
+            prevExpenseCond = "DATE(ngay) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
         } else if (period === 'month') {
             dateCondition = "YEAR(dh.thoi_gian) = YEAR(NOW()) AND MONTH(dh.thoi_gian) = MONTH(NOW())";
             prevDateCondition = "YEAR(dh.thoi_gian) = YEAR(DATE_SUB(NOW(), INTERVAL 1 MONTH)) AND MONTH(dh.thoi_gian) = MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))";
+            expenseCond = "YEAR(ngay) = YEAR(NOW()) AND MONTH(ngay) = MONTH(NOW())";
+            prevExpenseCond = "YEAR(ngay) = YEAR(DATE_SUB(NOW(), INTERVAL 1 MONTH)) AND MONTH(ngay) = MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))";
         } else if (period === 'year') {
             dateCondition = "YEAR(dh.thoi_gian) = YEAR(NOW())";
             prevDateCondition = "YEAR(dh.thoi_gian) = YEAR(NOW()) - 1";
+            expenseCond = "YEAR(ngay) = YEAR(NOW())";
+            prevExpenseCond = "YEAR(ngay) = YEAR(NOW()) - 1";
         }
 
         const query = (cond) => `
@@ -4026,16 +4389,27 @@ router.get('/dashboard/financial', async (req, res) => {
             WHERE dh.trang_thai NOT IN ('cancelled') AND ${cond}
         `;
 
+        const expenseQuery = (cond) => `
+            SELECT COALESCE(SUM(so_tien), 0) AS total_expense
+            FROM chi_tieu_hang_ngay
+            WHERE ${cond}
+        `;
+
         const [[cur]] = await pool.query(query(dateCondition));
         const [[prev]] = await pool.query(query(prevDateCondition));
+        
+        const [[curExpenseRow]] = await pool.query(expenseQuery(expenseCond));
+        const [[prevExpenseRow]] = await pool.query(expenseQuery(prevExpenseCond));
 
         const revenue = parseFloat(cur.revenue) || 0;
         const cost = parseFloat(cur.cost) || 0;
-        const profit = revenue - cost;
+        const expense = parseFloat(curExpenseRow ? curExpenseRow.total_expense : 0) || 0;
+        const profit = revenue - cost - expense;
 
         const prevRevenue = parseFloat(prev.revenue) || 0;
         const prevCost = parseFloat(prev.cost) || 0;
-        const prevProfit = prevRevenue - prevCost;
+        const prevExpense = parseFloat(prevExpenseRow ? prevExpenseRow.total_expense : 0) || 0;
+        const prevProfit = prevRevenue - prevCost - prevExpense;
 
         const revenueChange = prevRevenue ? ((revenue - prevRevenue) / prevRevenue) * 100 : 0;
         const profitChange = prevProfit ? ((profit - prevProfit) / prevProfit) * 100 : 0;
@@ -4198,7 +4572,7 @@ router.get('/attendance', async (req, res) => {
         `);
 
         const { date } = req.query;
-        const filterDate = date || new Date().toISOString().split('T')[0];
+        const filterDate = date || new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
 
         // Lấy danh sách phân công ngày đó
         const [schedules] = await pool.query(`
@@ -4233,7 +4607,7 @@ router.get('/attendance', async (req, res) => {
 // POST /api/admin/attendance/checkin — Nhân viên chấm công (gọi từ trang employee-attendance.html)
 router.post('/attendance/checkin', async (req, res) => {
     try {
-        const { ma_tai_khoan, ca_id, lat, lng, face_verified } = req.body;
+        const { ma_tai_khoan, ca_id, lat, lng, face_verified, action = 'checkin' } = req.body;
         if (!ma_tai_khoan || !ca_id) {
             return res.status(400).json({ success: false, message: 'Thiếu thông tin chấm công' });
         }
@@ -4286,64 +4660,1042 @@ router.post('/attendance/checkin', async (req, res) => {
         if (!shift) return res.status(404).json({ success: false, message: 'Không tìm thấy ca làm việc' });
 
         const now = new Date();
-        const today = now.toISOString().split('T')[0];
+        const today = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
 
         // Kiểm tra đã chấm công chưa
         const [existing] = await pool.query(
-            'SELECT id FROM cham_cong WHERE ma_tai_khoan=? AND ca_id=? AND ngay=?',
+            'SELECT id, gio_checkout FROM cham_cong WHERE ma_tai_khoan=? AND ca_id=? AND ngay=?',
             [ma_tai_khoan, ca_id, today]
         );
-        if (existing.length > 0) {
-            return res.status(400).json({ success: false, message: 'Bạn đã chấm công ca này rồi!' });
+
+        if (action === 'checkin') {
+            if (existing.length > 0) {
+                return res.status(400).json({ success: false, message: 'Bạn đã check-in ca này rồi!' });
+            }
+
+            // Tính số phút trễ
+            const [startH, startM] = shift.gio_bat_dau.split(':').map(Number);
+            const shiftStart = new Date(now);
+            shiftStart.setHours(startH, startM, 0, 0);
+
+            const diffMs = now - shiftStart;
+            const phut_tre = diffMs > 0 ? Math.floor(diffMs / 60000) : 0;
+            const trang_thai = phut_tre > 5 ? 'late' : 'on_time';
+
+            // Lưu chấm công
+            await pool.query(
+                'INSERT INTO cham_cong (ma_tai_khoan, ca_id, ngay, gio_checkin, lat, lng, trang_thai, phut_tre) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)',
+                [ma_tai_khoan, ca_id, today, lat || null, lng || null, trang_thai, phut_tre]
+            );
+
+            // Nếu đi trễ → ghi log (thông báo admin)
+            if (trang_thai === 'late') {
+                const [[emp]] = await pool.query('SELECT ho_ten, tai_khoan FROM nhan_vien WHERE ma_nv=?', [ma_tai_khoan]);
+                console.log(`⚠️ [Chấm công] ${emp?.ho_ten || 'NV'} đi trễ ${phut_tre} phút — Ca: ${shift.ten_ca}`);
+            }
+
+            res.json({
+                success: true,
+                message: trang_thai === 'late'
+                    ? `Chấm công vào ca thành công! Bạn đi trễ ${phut_tre} phút.`
+                    : 'Chấm công vào ca thành công! Đúng giờ.',
+                data: { trang_thai, phut_tre }
+            });
+        } else {
+            // action === 'checkout'
+            if (existing.length === 0) {
+                return res.status(400).json({ success: false, message: 'Bạn chưa check-in vào ca này hôm nay!' });
+            }
+            if (existing[0].gio_checkout) {
+                return res.status(400).json({ success: false, message: 'Bạn đã check-out ra ca này hôm nay rồi!' });
+            }
+
+            await pool.query(
+                'UPDATE cham_cong SET gio_checkout = NOW(), lat_checkout = ?, lng_checkout = ? WHERE id = ?',
+                [lat || null, lng || null, existing[0].id]
+            );
+
+            res.json({
+                success: true,
+                message: 'Chấm công ra ca thành công! Hẹn gặp lại bạn.'
+            });
         }
-
-        // Tính số phút trễ
-        const [startH, startM] = shift.gio_bat_dau.split(':').map(Number);
-        const shiftStart = new Date(now);
-        shiftStart.setHours(startH, startM, 0, 0);
-
-        const diffMs = now - shiftStart;
-        const phut_tre = diffMs > 0 ? Math.floor(diffMs / 60000) : 0;
-        const trang_thai = phut_tre > 5 ? 'late' : 'on_time';
-
-        // Lưu chấm công
-        await pool.query(
-            'INSERT INTO cham_cong (ma_tai_khoan, ca_id, ngay, gio_checkin, lat, lng, trang_thai, phut_tre) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)',
-            [ma_tai_khoan, ca_id, today, lat || null, lng || null, trang_thai, phut_tre]
-        );
-
-        // Nếu đi trễ → ghi log (thông báo admin)
-        if (trang_thai === 'late') {
-            const [[emp]] = await pool.query('SELECT ho_ten, tai_khoan FROM nhan_vien WHERE ma_nv=?', [ma_tai_khoan]);
-            console.log(`⚠️ [Chấm công] ${emp?.ho_ten || 'NV'} đi trễ ${phut_tre} phút — Ca: ${shift.ten_ca}`);
-        }
-
-        res.json({
-            success: true,
-            message: trang_thai === 'late'
-                ? `Chấm công thành công! Bạn đi trễ ${phut_tre} phút.`
-                : 'Chấm công thành công! Đúng giờ.',
-            data: { trang_thai, phut_tre }
-        });
     } catch (error) {
         console.error('Error checkin:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });
 
-// ==================== EMPLOYEES (MỞ RỘNG) ====================
+// ==================== DAILY EXPENDITURE MANAGEMENT (QUẢN LÝ CHI TIÊU HẰNG NGÀY) ====================
 
-// GET /api/admin/employees — Lấy danh sách nhân viên đầy đủ
-router.get('/employees', async (req, res) => {
+// GET /api/admin/expenses — Lấy danh sách chi tiêu hằng ngày
+router.get('/expenses', async (req, res) => {
     try {
-        const [employees] = await pool.query(`
-            SELECT ma_nv as ma_admin, ma_nv as ma_tai_khoan, tai_khoan, ho_ten, email, so_dt, luong_co_ban, trang_thai, quyen,
-                   ngay_sinh, dia_chi, chuc_vu, ngay_vao_lam
-            FROM nhan_vien
-            ORDER BY ma_nv DESC
-        `);
-        res.json({ success: true, employees, data: employees });
+        const { from_date, to_date } = req.query;
+        let query = `
+            SELECT c.*, l.ten_loai 
+            FROM chi_tieu_hang_ngay c
+            LEFT JOIN loai_chi_tieu l ON c.loai_id = l.id
+        `;
+        let params = [];
+        if (from_date && to_date) {
+            query += ' WHERE c.ngay >= ? AND c.ngay <= ?';
+            params = [from_date, to_date];
+        } else if (from_date) {
+            query += ' WHERE c.ngay >= ?';
+            params = [from_date];
+        } else if (to_date) {
+            query += ' WHERE c.ngay <= ?';
+            params = [to_date];
+        }
+        query += ' ORDER BY c.ngay DESC, c.id DESC';
+        const [rows] = await pool.query(query, params);
+        res.json({ success: true, data: rows });
     } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/expenses — Thêm chi tiêu mới
+router.post('/expenses', async (req, res) => {
+    try {
+        const { ngay, so_tien, muc_dich, loai_id, nguoi_chi, ghi_chu } = req.body;
+        if (!ngay || !so_tien || !muc_dich) {
+            return res.status(400).json({ success: false, message: 'Thiếu thông tin bắt buộc!' });
+        }
+        const [result] = await pool.query(
+            'INSERT INTO chi_tieu_hang_ngay (ngay, so_tien, muc_dich, loai_id, nguoi_chi, ghi_chu) VALUES (?, ?, ?, ?, ?, ?)',
+            [ngay, so_tien, muc_dich, loai_id || null, nguoi_chi || null, ghi_chu || null]
+        );
+        res.json({ success: true, data: { id: result.insertId, ngay, so_tien, muc_dich, loai_id, nguoi_chi, ghi_chu } });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/expenses/:id — Cập nhật chi tiêu
+router.put('/expenses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ngay, so_tien, muc_dich, loai_id, nguoi_chi, ghi_chu } = req.body;
+        if (!ngay || !so_tien || !muc_dich) {
+            return res.status(400).json({ success: false, message: 'Thiếu thông tin bắt buộc!' });
+        }
+        await pool.query(
+            'UPDATE chi_tieu_hang_ngay SET ngay = ?, so_tien = ?, muc_dich = ?, loai_id = ?, nguoi_chi = ?, ghi_chu = ? WHERE id = ?',
+            [ngay, so_tien, muc_dich, loai_id || null, nguoi_chi || null, ghi_chu || null, id]
+        );
+        res.json({ success: true, message: 'Cập nhật chi tiêu thành công!' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/expenses/:id — Xóa chi tiêu
+router.delete('/expenses/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM chi_tieu_hang_ngay WHERE id = ?', [id]);
+        res.json({ success: true, message: 'Xóa chi tiêu thành công!' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ==================== EXPENSE CATEGORY MANAGEMENT (QUẢN LÝ LOẠI CHI TIÊU) ====================
+
+// GET /api/admin/expense-categories — Lấy danh sách loại chi tiêu kèm đếm số lượng khoản chi
+router.get('/expense-categories', async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT l.*, COUNT(c.id) as count_expenses
+            FROM loai_chi_tieu l
+            LEFT JOIN chi_tieu_hang_ngay c ON l.id = c.loai_id
+            GROUP BY l.id
+            ORDER BY l.ten_loai ASC
+        `);
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/expense-categories — Thêm loại chi tiêu mới
+router.post('/expense-categories', async (req, res) => {
+    try {
+        const { ten_loai, mo_ta } = req.body;
+        if (!ten_loai) {
+            return res.status(400).json({ success: false, message: 'Tên loại chi tiêu là bắt buộc!' });
+        }
+        
+        // Kiểm tra xem đã tồn tại chưa
+        const [existing] = await pool.query('SELECT id FROM loai_chi_tieu WHERE ten_loai = ?', [ten_loai]);
+        if (existing.length > 0) {
+            return res.status(400).json({ success: false, message: 'Tên loại chi tiêu này đã tồn tại!' });
+        }
+
+        const [result] = await pool.query(
+            'INSERT INTO loai_chi_tieu (ten_loai, mo_ta) VALUES (?, ?)',
+            [ten_loai, mo_ta || null]
+        );
+        res.json({ success: true, data: { id: result.insertId, ten_loai, mo_ta } });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/expense-categories/:id — Cập nhật loại chi tiêu
+router.put('/expense-categories/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ten_loai, mo_ta } = req.body;
+        if (!ten_loai) {
+            return res.status(400).json({ success: false, message: 'Tên loại chi tiêu là bắt buộc!' });
+        }
+
+        // Kiểm tra xem tên loại có bị trùng với loại khác không
+        const [existing] = await pool.query('SELECT id FROM loai_chi_tieu WHERE ten_loai = ? AND id != ?', [ten_loai, id]);
+        if (existing.length > 0) {
+            return res.status(400).json({ success: false, message: 'Tên loại chi tiêu này đã được sử dụng!' });
+        }
+
+        await pool.query(
+            'UPDATE loai_chi_tieu SET ten_loai = ?, mo_ta = ? WHERE id = ?',
+            [ten_loai, mo_ta || null, id]
+        );
+        res.json({ success: true, message: 'Cập nhật loại chi tiêu thành công!' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/expense-categories/:id — Xóa loại chi tiêu
+router.delete('/expense-categories/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM loai_chi_tieu WHERE id = ?', [id]);
+        res.json({ success: true, message: 'Xóa loại chi tiêu thành công!' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ==================== ATTENDANCE & PAYROLL EXTENSION ====================
+
+// GET /api/admin/schedules/my-today — Lấy ca làm việc hôm nay của nhân viên đang đăng nhập
+router.get('/schedules/my-today', async (req, res) => {
+    try {
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({ success: false, message: 'Yêu cầu đăng nhập!' });
+        }
+        const ma_nv = req.session.user.ma_nv;
+        if (!ma_nv) {
+            return res.status(401).json({ success: false, message: 'Yêu cầu đăng nhập tài khoản nhân viên!' });
+        }
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+        const [rows] = await pool.query(`
+            SELECT pc.*, clv.ten_ca, clv.gio_bat_dau, clv.gio_ket_thuc
+            FROM phan_cong_ca pc
+            JOIN ca_lam_viec clv ON pc.ca_id = clv.id
+            WHERE pc.ma_tai_khoan = ? AND pc.ngay_lam = ?
+        `, [ma_nv, today]);
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/attendance/face-checkin — Chấm công khuôn mặt (kết hợp GPS và Ca trực hôm nay)
+router.post('/attendance/face-checkin', async (req, res) => {
+    try {
+        const { image, ca_id, lat, lng, action = 'checkin' } = req.body;
+        if (!image || !ca_id) {
+            return res.status(400).json({ success: false, message: 'Thiếu hình ảnh hoặc ca làm việc!' });
+        }
+
+        const sessionUser = req.session.user;
+        if (!sessionUser) {
+            return res.status(401).json({ success: false, message: 'Phiên làm việc hết hạn. Vui lòng đăng nhập lại.' });
+        }
+
+        // 1. Gọi dịch vụ nhận diện khuôn mặt Python
+        const axios = require('axios');
+        let recognizeResult;
+        try {
+            const pythonRes = await axios.post('http://localhost:5001/recognize', { image });
+            recognizeResult = pythonRes.data;
+        } catch (pyErr) {
+            console.error('Lỗi gọi service khuôn mặt:', pyErr.message);
+            if (pyErr.response && pyErr.response.data && pyErr.response.data.message) {
+                return res.status(pyErr.response.status).json({
+                    success: false,
+                    message: pyErr.response.data.message
+                });
+            }
+            return res.status(500).json({ success: false, message: 'Không thể kết nối tới dịch vụ nhận diện khuôn mặt. Vui lòng liên hệ kỹ thuật.' });
+        }
+
+        if (!recognizeResult.success || !recognizeResult.matched) {
+            return res.status(400).json({ 
+                success: false, 
+                message: recognizeResult.message || 'Không nhận diện được khuôn mặt. Vui lòng điều chỉnh góc chụp hoặc ánh sáng!' 
+            });
+        }
+
+        const matchedEmpId = recognizeResult.ma_tai_khoan;
+        const matchedName = recognizeResult.ho_ten;
+
+        // 2. Kiểm tra phân quyền và chống chấm công hộ
+        let finalEmpId = matchedEmpId;
+        if (sessionUser.quyen !== 'superadmin') {
+            // Nhân viên tự chấm công → Phải trùng khớp khuôn mặt với tài khoản đăng nhập
+            if (sessionUser.ma_nv !== matchedEmpId) {
+                return res.status(403).json({ 
+                    success: false, 
+                    message: `Phát hiện sai lệch khuôn mặt! Khuôn mặt nhận diện là "${matchedName}", nhưng tài khoản đăng nhập là "${sessionUser.ho_ten}".` 
+                });
+            }
+            finalEmpId = sessionUser.ma_nv;
+        }
+
+        // 3. Định vị GPS kiểm tra khoảng cách cửa hàng
+        let storeLat = 10.7700;
+        let storeLng = 106.6600;
+        let maxRadius = 50.0; // 50m
+
+        try {
+            const [latRow] = await pool.query("SELECT value FROM cau_hinh_shop WHERE `key` = 'shop_lat'");
+            const [lngRow] = await pool.query("SELECT value FROM cau_hinh_shop WHERE `key` = 'shop_lng'");
+            const [radRow] = await pool.query("SELECT value FROM cau_hinh_shop WHERE `key` = 'shop_attendance_radius'");
+            if (latRow.length > 0 && latRow[0].value) storeLat = parseFloat(latRow[0].value);
+            if (lngRow.length > 0 && lngRow[0].value) storeLng = parseFloat(lngRow[0].value);
+            if (radRow.length > 0 && radRow[0].value) maxRadius = parseFloat(radRow[0].value);
+        } catch (dbErr) {
+            console.log("Using default shop GPS config");
+        }
+
+        if (lat && lng) {
+            const lat1 = parseFloat(lat);
+            const lon1 = parseFloat(lng);
+            
+            // Haversine distance
+            const R = 6371e3; // m
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = storeLat * Math.PI/180;
+            const Δφ = (storeLat - lat1) * Math.PI/180;
+            const Δλ = (storeLng - lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c; // m
+
+            if (distance > maxRadius) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Lỗi GPS: Bạn không ở trong phạm vi cửa hàng. Khoảng cách hiện tại: ${Math.round(distance)}m (Yêu cầu <= ${maxRadius}m).`
+                });
+            }
+        } else {
+            return res.status(400).json({ success: false, message: 'Yêu cầu định vị GPS để xác thực vị trí chấm công.' });
+        }
+
+        // 4. Kiểm tra ca trực và phân công hôm nay của nhân viên
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
+        const [assignRows] = await pool.query(
+            'SELECT id FROM phan_cong_ca WHERE ma_tai_khoan=? AND ca_id=? AND ngay_lam=?',
+            [finalEmpId, ca_id, today]
+        );
+        if (assignRows.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Lỗi ca trực: Hôm nay bạn không được phân công ca trực này!`
+            });
+        }
+
+        // 5. Kiểm tra xem đã chấm công ca này chưa
+        const [existing] = await pool.query(
+            'SELECT id, gio_checkout FROM cham_cong WHERE ma_tai_khoan=? AND ca_id=? AND ngay=?',
+            [finalEmpId, ca_id, today]
+        );
+
+        if (action === 'checkin') {
+            if (existing.length > 0) {
+                return res.status(400).json({ success: false, message: 'Bạn đã check-in ca này trong ngày hôm nay rồi!' });
+            }
+
+            // 6. Tính số phút trễ
+            const [[shift]] = await pool.query('SELECT * FROM ca_lam_viec WHERE id = ?', [ca_id]);
+            if (!shift) return res.status(404).json({ success: false, message: 'Không tìm thấy ca làm việc' });
+
+            const now = new Date();
+            const [startH, startM] = shift.gio_bat_dau.split(':').map(Number);
+            const shiftStart = new Date(now);
+            shiftStart.setHours(startH, startM, 0, 0);
+
+            const diffMs = now - shiftStart;
+            const phut_tre = diffMs > 0 ? Math.floor(diffMs / 60000) : 0;
+            const trang_thai = phut_tre > 5 ? 'late' : 'on_time';
+
+            // 7. Lưu chấm công
+            await pool.query(
+                'INSERT INTO cham_cong (ma_tai_khoan, ca_id, ngay, gio_checkin, lat, lng, trang_thai, phut_tre) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)',
+                [finalEmpId, ca_id, today, lat || null, lng || null, trang_thai, phut_tre]
+            );
+
+            res.json({
+                success: true,
+                message: trang_thai === 'late'
+                    ? `Nhận diện thành công: ${matchedName}. Chấm công vào ca hoàn tất (Đi trễ ${phut_tre} phút).`
+                    : `Nhận diện thành công: ${matchedName}. Chấm công vào ca hoàn tất đúng giờ!`,
+                employee: matchedName,
+                data: { trang_thai, phut_tre }
+            });
+        } else {
+            // action === 'checkout'
+            if (existing.length === 0) {
+                return res.status(400).json({ success: false, message: 'Bạn chưa check-in vào ca này ngày hôm nay!' });
+            }
+            if (existing[0].gio_checkout) {
+                return res.status(400).json({ success: false, message: 'Bạn đã check-out ra ca này hôm nay rồi!' });
+            }
+
+            // Cập nhật thông tin checkout
+            await pool.query(
+                'UPDATE cham_cong SET gio_checkout = NOW(), lat_checkout = ?, lng_checkout = ? WHERE id = ?',
+                [lat || null, lng || null, existing[0].id]
+            );
+
+            res.json({
+                success: true,
+                message: `Nhận diện thành công: ${matchedName}. Chấm công ra ca hoàn tất! Hẹn gặp lại bạn.`,
+                employee: matchedName
+            });
+        }
+    } catch (error) {
+        console.error('Error face checkin:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/payroll — Lấy danh sách bảng lương của tháng
+router.get('/payroll', async (req, res) => {
+    try {
+        const { month } = req.query;
+        if (!month) {
+            return res.status(400).json({ success: false, message: 'Vui lòng cung cấp tham số tháng (YYYY-MM)!' });
+        }
+        const [rows] = await pool.query(`
+            SELECT bl.*, nv.ho_ten, nv.tai_khoan, nv.chuc_vu
+            FROM bang_luong bl
+            JOIN nhan_vien nv ON bl.ma_nv = nv.ma_nv
+            WHERE bl.thang = ?
+            ORDER BY nv.ho_ten ASC
+        `, [month]);
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/payroll/calculate — Tính toán/Cập nhật bảng lương cho tháng
+router.post('/payroll/calculate', async (req, res) => {
+    try {
+        const { month } = req.body;
+        if (!month) {
+            return res.status(400).json({ success: false, message: 'Vui lòng nhập tháng cần tính lương!' });
+        }
+        
+        // Lấy danh sách toàn bộ nhân viên hoạt động
+        const [employees] = await pool.query('SELECT ma_nv, ho_ten, luong_co_ban FROM nhan_vien WHERE trang_thai = "hoat_dong"');
+        
+        for (const emp of employees) {
+            // Đếm số ca đã chấm công trong tháng
+            const [attRows] = await pool.query(`
+                SELECT COUNT(id) as so_ca, COALESCE(SUM(phut_tre), 0) as total_late
+                FROM cham_cong
+                WHERE ma_tai_khoan = ? AND DATE_FORMAT(ngay, '%Y-%m') = ? AND trang_thai IN ('on_time', 'late')
+            `, [emp.ma_nv, month]);
+            
+            const so_ca_lam = attRows[0].so_ca || 0;
+            const so_phut_tre = attRows[0].total_late || 0;
+            
+            // Tiền phạt trễ: 5,000đ mỗi phút trễ
+            const tong_phat_tre = so_phut_tre * 5000;
+            
+            // Lương thực lĩnh = (so_ca_lam * (luong_co_ban / 26)) - tong_phat_tre
+            const luong_theo_ca = emp.luong_co_ban / 26;
+            let luong_thuc_linh = (so_ca_lam * luong_theo_ca) - tong_phat_tre;
+            if (luong_thuc_linh < 0) luong_thuc_linh = 0;
+            
+            // Chèn hoặc cập nhật bảng lương
+            await pool.query(`
+                INSERT INTO bang_luong (ma_nv, thang, luong_co_ban, so_ca_lam, so_phut_tre, tong_phat_tre, luong_thuc_linh, trang_thai)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'chua_thanh_toan')
+                ON DUPLICATE KEY UPDATE
+                    luong_co_ban = VALUES(luong_co_ban),
+                    so_ca_lam = VALUES(so_ca_lam),
+                    so_phut_tre = VALUES(so_phut_tre),
+                    tong_phat_tre = VALUES(tong_phat_tre),
+                    luong_thuc_linh = VALUES(luong_thuc_linh)
+            `, [emp.ma_nv, month, emp.luong_co_ban, so_ca_lam, so_phut_tre, tong_phat_tre, luong_thuc_linh]);
+        }
+        
+        res.json({ success: true, message: `Đã tính toán bảng lương tháng ${month} thành công!` });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/payroll/:id/status — Cập nhật trạng thái thanh toán bảng lương
+router.put('/payroll/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { trang_thai } = req.body;
+        if (!trang_thai) {
+            return res.status(400).json({ success: false, message: 'Thiếu trạng thái thanh toán!' });
+        }
+        await pool.query('UPDATE bang_luong SET trang_thai = ? WHERE id = ?', [trang_thai, id]);
+        res.json({ success: true, message: 'Cập nhật trạng thái thanh toán thành công!' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/payroll/:id — Xóa bản ghi bảng lương
+router.delete('/payroll/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM bang_luong WHERE id = ?', [id]);
+        res.json({ success: true, message: 'Xóa bản ghi bảng lương thành công!' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ============================================================================
+// CATALOG MÀU SẮC (dùng chung cho mọi sản phẩm)
+// ============================================================================
+
+// GET /api/admin/colors - Lấy toàn bộ màu trong catalog
+router.get('/colors', async (req, res) => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT ma_mau, ten_mau, ma_hex, mo_ta, trang_thai,
+                    (SELECT COUNT(*) FROM bien_the_san_pham WHERE ma_mau = mau_sac.ma_mau) AS so_bien_the
+             FROM mau_sac
+             ORDER BY ten_mau ASC`
+        );
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/colors - Thêm màu vào catalog
+router.post('/colors', async (req, res) => {
+    try {
+        const { ten_mau, ma_hex, mo_ta } = req.body;
+        if (!ten_mau || !ten_mau.trim()) {
+            return res.status(400).json({ success: false, message: 'Tên màu không được trống' });
+        }
+        const hex = (ma_hex || '').trim() || null;
+        const [result] = await pool.query(
+            'INSERT INTO mau_sac (ten_mau, ma_hex, mo_ta) VALUES (?, ?, ?)',
+            [ten_mau.trim(), hex, (mo_ta || '').trim() || null]
+        );
+        res.json({ success: true, data: { ma_mau: result.insertId, ten_mau, ma_hex: hex } });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ success: false, message: 'Màu này đã tồn tại' });
+        }
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/colors/:id - Cập nhật màu
+router.put('/colors/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ten_mau, ma_hex, mo_ta, trang_thai } = req.body;
+        if (!ten_mau || !ten_mau.trim()) {
+            return res.status(400).json({ success: false, message: 'Tên màu không được trống' });
+        }
+        await pool.query(
+            `UPDATE mau_sac SET ten_mau = ?, ma_hex = ?, mo_ta = ?, trang_thai = ? WHERE ma_mau = ?`,
+            [ten_mau.trim(), (ma_hex || '').trim() || null, (mo_ta || '').trim() || null,
+             trang_thai === 'inactive' ? 'inactive' : 'active', id]
+        );
+        res.json({ success: true });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ success: false, message: 'Tên màu đã tồn tại' });
+        }
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/colors/:id - Xóa màu khỏi catalog
+router.delete('/colors/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [[{ cnt }]] = await pool.query(
+            'SELECT COUNT(*) AS cnt FROM bien_the_san_pham WHERE ma_mau = ?', [id]
+        );
+        if (cnt > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Không thể xóa: màu này đang được dùng ở ${cnt} biến thể. Hãy ẩn thay vì xóa.`
+            });
+        }
+        await pool.query('DELETE FROM mau_sac WHERE ma_mau = ?', [id]);
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ============================================================================
+// CATALOG DUNG LƯỢNG (dùng chung cho mọi sản phẩm)
+// ============================================================================
+
+// GET /api/admin/storages
+router.get('/storages', async (req, res) => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT ma_dung_luong, ten_dung_luong, kich_thuoc_gb, trang_thai,
+                    (SELECT COUNT(*) FROM bien_the_san_pham WHERE ma_dung_luong = dung_luong.ma_dung_luong) AS so_bien_the
+             FROM dung_luong
+             ORDER BY COALESCE(kich_thuoc_gb, 0) ASC, ten_dung_luong ASC`
+        );
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/storages
+router.post('/storages', async (req, res) => {
+    try {
+        const { ten_dung_luong, kich_thuoc_gb } = req.body;
+        if (!ten_dung_luong || !ten_dung_luong.trim()) {
+            return res.status(400).json({ success: false, message: 'Tên dung lượng không được trống' });
+        }
+        const size = kich_thuoc_gb ? parseInt(kich_thuoc_gb) : null;
+        const [result] = await pool.query(
+            'INSERT INTO dung_luong (ten_dung_luong, kich_thuoc_gb) VALUES (?, ?)',
+            [ten_dung_luong.trim(), size]
+        );
+        res.json({ success: true, data: { ma_dung_luong: result.insertId, ten_dung_luong, kich_thuoc_gb: size } });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ success: false, message: 'Dung lượng này đã tồn tại' });
+        }
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/storages/:id
+router.put('/storages/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ten_dung_luong, kich_thuoc_gb, trang_thai } = req.body;
+        if (!ten_dung_luong || !ten_dung_luong.trim()) {
+            return res.status(400).json({ success: false, message: 'Tên dung lượng không được trống' });
+        }
+        await pool.query(
+            `UPDATE dung_luong SET ten_dung_luong = ?, kich_thuoc_gb = ?, trang_thai = ? WHERE ma_dung_luong = ?`,
+            [ten_dung_luong.trim(), kich_thuoc_gb ? parseInt(kich_thuoc_gb) : null,
+             trang_thai === 'inactive' ? 'inactive' : 'active', id]
+        );
+        res.json({ success: true });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ success: false, message: 'Tên dung lượng đã tồn tại' });
+        }
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// DELETE /api/admin/storages/:id
+router.delete('/storages/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [[{ cnt }]] = await pool.query(
+            'SELECT COUNT(*) AS cnt FROM bien_the_san_pham WHERE ma_dung_luong = ?', [id]
+        );
+        if (cnt > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Không thể xóa: dung lượng này đang được dùng ở ${cnt} biến thể. Hãy ẩn thay vì xóa.`
+            });
+        }
+        await pool.query('DELETE FROM dung_luong WHERE ma_dung_luong = ?', [id]);
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// ============================================================================
+// MỞ RỘNG: set ảnh chính cho 1 màu + cập nhật variants nhận ma_mau/ma_dung_luong
+// ============================================================================
+
+// PATCH /api/admin/products/:id/color-images/:imageId/set-main
+// Đặt ảnh này làm ảnh CHÍNH cho màu của nó (các ảnh khác cùng màu bị bỏ flag).
+router.patch('/products/:id/color-images/:imageId/set-main', async (req, res) => {
+    const conn = await pool.getConnection();
+    try {
+        const { id, imageId } = req.params;
+        await conn.beginTransaction();
+        const [rows] = await conn.query(
+            'SELECT ma_sp, mau_sac, ma_mau FROM hinh_anh_bien_the WHERE ma_anh = ? AND ma_sp = ?',
+            [imageId, id]
+        );
+        if (rows.length === 0) {
+            await conn.rollback();
+            return res.status(404).json({ success: false, message: 'Không tìm thấy ảnh' });
+        }
+        const { mau_sac, ma_mau } = rows[0];
+        // Bỏ flag mọi ảnh cùng màu
+        if (ma_mau) {
+            await conn.query(
+                'UPDATE hinh_anh_bien_the SET la_anh_chinh = 0 WHERE ma_sp = ? AND ma_mau = ?',
+                [id, ma_mau]
+            );
+        } else {
+            await conn.query(
+                'UPDATE hinh_anh_bien_the SET la_anh_chinh = 0 WHERE ma_sp = ? AND mau_sac = ?',
+                [id, mau_sac]
+            );
+        }
+        await conn.query(
+            'UPDATE hinh_anh_bien_the SET la_anh_chinh = 1 WHERE ma_anh = ?',
+            [imageId]
+        );
+        await conn.commit();
+        res.json({ success: true });
+    } catch (error) {
+        try { await conn.rollback(); } catch (_) {}
+        res.status(500).json({ success: false, message: error.message });
+    } finally {
+        conn.release();
+    }
+});
+
+// PUT /api/admin/products/:id/variants-v2 — version mới: nhận ma_mau + ma_dung_luong + gia_ban
+// Body: { variants: [{ma_mau, ma_dung_luong, gia_ban, gia_khuyen_mai, so_luong, sku, trang_thai}], syncStock: true }
+// Phép cũ (PUT /products/:id/variants) vẫn giữ để backward-compat với màn legacy.
+router.put('/products/:id/variants-v2', async (req, res) => {
+    const conn = await pool.getConnection();
+    try {
+        const { id } = req.params;
+        const { variants, syncStock } = req.body;
+        if (!Array.isArray(variants)) {
+            return res.status(400).json({ success: false, message: 'variants phải là mảng' });
+        }
+
+        // Pre-load catalog để lookup tên + hex
+        const [colorRows] = await pool.query('SELECT ma_mau, ten_mau, ma_hex FROM mau_sac');
+        const [storageRows] = await pool.query('SELECT ma_dung_luong, ten_dung_luong FROM dung_luong');
+        const colorMap = new Map(colorRows.map(c => [c.ma_mau, c]));
+        const storageMap = new Map(storageRows.map(s => [s.ma_dung_luong, s]));
+
+        const cleaned = [];
+        const seen = new Set();
+        for (const v of variants) {
+            const ma_mau = parseInt(v.ma_mau);
+            const ma_dung_luong = parseInt(v.ma_dung_luong);
+            if (!ma_mau || !colorMap.has(ma_mau)) {
+                return res.status(400).json({ success: false, message: 'Mã màu không hợp lệ' });
+            }
+            if (!ma_dung_luong || !storageMap.has(ma_dung_luong)) {
+                return res.status(400).json({ success: false, message: 'Mã dung lượng không hợp lệ' });
+            }
+            const key = `${ma_mau}__${ma_dung_luong}`;
+            if (seen.has(key)) {
+                const c = colorMap.get(ma_mau);
+                const s = storageMap.get(ma_dung_luong);
+                return res.status(400).json({
+                    success: false,
+                    message: `Biến thể trùng: ${c.ten_mau} - ${s.ten_dung_luong}`
+                });
+            }
+            seen.add(key);
+
+            const sl = parseInt(v.so_luong);
+            if (Number.isNaN(sl) || sl < 0) {
+                return res.status(400).json({ success: false, message: 'Số lượng không hợp lệ' });
+            }
+            const gia_ban = v.gia_ban != null && v.gia_ban !== '' ? parseFloat(v.gia_ban) : null;
+            const gia_khuyen_mai = v.gia_khuyen_mai != null && v.gia_khuyen_mai !== '' ? parseFloat(v.gia_khuyen_mai) : null;
+
+            const c = colorMap.get(ma_mau);
+            const s = storageMap.get(ma_dung_luong);
+            cleaned.push({
+                ma_mau, ma_dung_luong,
+                mau_sac: c.ten_mau,
+                mau_hex: c.ma_hex,
+                dung_luong: s.ten_dung_luong,
+                so_luong: sl,
+                gia_ban,
+                gia_khuyen_mai,
+                gia_chenh: parseFloat(v.gia_chenh) || 0,
+                sku: v.sku ? String(v.sku).slice(0, 80) : null,
+                trang_thai: v.trang_thai === 'inactive' ? 'inactive' : 'active'
+            });
+        }
+
+        const [check] = await conn.query('SELECT ma_sp FROM san_pham WHERE ma_sp = ?', [id]);
+        if (check.length === 0) {
+            return res.status(404).json({ success: false, message: 'Sản phẩm không tồn tại' });
+        }
+
+        await conn.beginTransaction();
+        await conn.query('DELETE FROM bien_the_san_pham WHERE ma_sp = ?', [id]);
+
+        if (cleaned.length > 0) {
+            const values = cleaned.map(v => [
+                id, v.mau_sac, v.mau_hex, v.ma_mau, v.ma_dung_luong,
+                v.dung_luong, v.so_luong, v.gia_chenh, v.gia_ban, v.gia_khuyen_mai,
+                v.sku, v.trang_thai
+            ]);
+            await conn.query(
+                `INSERT INTO bien_the_san_pham
+                 (ma_sp, mau_sac, mau_hex, ma_mau, ma_dung_luong, dung_luong, so_luong, gia_chenh, gia_ban, gia_khuyen_mai, sku, trang_thai)
+                 VALUES ?`,
+                [values]
+            );
+        }
+
+        if (syncStock !== false) {
+            const totalStock = cleaned
+                .filter(v => v.trang_thai === 'active')
+                .reduce((s, v) => s + v.so_luong, 0);
+            await conn.query('UPDATE san_pham SET so_luong_ton = ? WHERE ma_sp = ?', [totalStock, id]);
+        }
+
+        // Sync san_pham.mau_sac (text JSON dùng cho FE products page)
+        const colorNames = [], colorHexes = [];
+        const seenColors = new Set();
+        for (const v of cleaned) {
+            if (v.trang_thai !== 'active') continue;
+            if (seenColors.has(v.ma_mau)) continue;
+            seenColors.add(v.ma_mau);
+            colorNames.push(v.mau_sac);
+            colorHexes.push(v.mau_hex || '#1C1C1C');
+        }
+        const mauSacJson = colorNames.length > 0
+            ? JSON.stringify({ colorNames, colors: colorHexes })
+            : null;
+        await conn.query('UPDATE san_pham SET mau_sac = ? WHERE ma_sp = ?', [mauSacJson, id]);
+
+        await conn.commit();
+        res.json({ success: true, data: { count: cleaned.length } });
+    } catch (error) {
+        try { await conn.rollback(); } catch (_) {}
+        console.error('variants-v2 error:', error && error.message);
+        res.status(500).json({ success: false, message: error.message });
+    } finally {
+        conn.release();
+    }
+});
+
+// GET /api/admin/products/:id/variants-v2 — trả về kèm ma_mau/ma_dung_luong/gia_ban
+router.get('/products/:id/variants-v2', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [variants] = await pool.query(
+            `SELECT bt.ma_bt, bt.ma_sp, bt.ma_mau, bt.ma_dung_luong,
+                    bt.mau_sac, bt.mau_hex, bt.dung_luong,
+                    bt.so_luong, bt.gia_chenh, bt.gia_ban, bt.gia_khuyen_mai,
+                    bt.sku, bt.trang_thai,
+                    m.ten_mau, m.ma_hex AS catalog_hex,
+                    d.ten_dung_luong, d.kich_thuoc_gb
+             FROM bien_the_san_pham bt
+             LEFT JOIN mau_sac m ON bt.ma_mau = m.ma_mau
+             LEFT JOIN dung_luong d ON bt.ma_dung_luong = d.ma_dung_luong
+             WHERE bt.ma_sp = ?
+             ORDER BY m.ten_mau ASC, d.kich_thuoc_gb ASC`,
+            [id]
+        );
+        res.json({ success: true, data: variants });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// POST /api/admin/products/:id/color-images-v2 — upload kèm ma_mau + la_anh_chinh
+router.post('/products/:id/color-images-v2', (req, res) => {
+    upload.single('image')(req, res, async function (err) {
+        if (err) return res.status(400).json({ success: false, message: err.message });
+        if (!req.file) return res.status(400).json({ success: false, message: 'Không có file' });
+        try {
+            const { id } = req.params;
+            const ma_mau = parseInt(req.body.ma_mau);
+            const la_anh_chinh = req.body.la_anh_chinh === '1' || req.body.la_anh_chinh === 'true' ? 1 : 0;
+            if (!ma_mau) return res.status(400).json({ success: false, message: 'Thiếu ma_mau' });
+
+            const [colorRows] = await pool.query('SELECT ten_mau FROM mau_sac WHERE ma_mau = ?', [ma_mau]);
+            if (colorRows.length === 0) {
+                return res.status(400).json({ success: false, message: 'Màu không tồn tại trong catalog' });
+            }
+            const ten_mau = colorRows[0].ten_mau;
+            const imageUrl = 'images/products/' + req.file.filename;
+
+            if (la_anh_chinh) {
+                await pool.query(
+                    'UPDATE hinh_anh_bien_the SET la_anh_chinh = 0 WHERE ma_sp = ? AND ma_mau = ?',
+                    [id, ma_mau]
+                );
+            }
+            const [result] = await pool.query(
+                `INSERT INTO hinh_anh_bien_the (ma_sp, ma_mau, mau_sac, duong_dan, la_anh_chinh)
+                 VALUES (?, ?, ?, ?, ?)`,
+                [id, ma_mau, ten_mau, imageUrl, la_anh_chinh]
+            );
+            res.json({
+                success: true,
+                data: {
+                    ma_anh: result.insertId,
+                    ma_sp: Number(id),
+                    ma_mau,
+                    mau_sac: ten_mau,
+                    duong_dan: imageUrl,
+                    la_anh_chinh
+                }
+            });
+        } catch (e) {
+            res.status(500).json({ success: false, message: e.message });
+        }
+    });
+});
+
+// GET /api/admin/products/:id/color-images-v2?ma_mau=X
+router.get('/products/:id/color-images-v2', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ma_mau = req.query.ma_mau ? parseInt(req.query.ma_mau) : null;
+        let rows;
+        if (ma_mau) {
+            [rows] = await pool.query(
+                `SELECT ma_anh, ma_sp, ma_mau, mau_sac, duong_dan, thu_tu, la_anh_chinh
+                 FROM hinh_anh_bien_the
+                 WHERE ma_sp = ? AND ma_mau = ?
+                 ORDER BY la_anh_chinh DESC, thu_tu ASC, ma_anh ASC`,
+                [id, ma_mau]
+            );
+        } else {
+            [rows] = await pool.query(
+                `SELECT h.ma_anh, h.ma_sp, h.ma_mau, h.mau_sac, h.duong_dan, h.thu_tu, h.la_anh_chinh,
+                        m.ten_mau, m.ma_hex
+                 FROM hinh_anh_bien_the h
+                 LEFT JOIN mau_sac m ON h.ma_mau = m.ma_mau
+                 WHERE h.ma_sp = ?
+                 ORDER BY m.ten_mau, h.la_anh_chinh DESC, h.thu_tu ASC`,
+                [id]
+            );
+        }
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/admin/employees/:id/permissions - Cập nhật phân quyền chi tiết cho nhân viên
+router.put('/employees/:id/permissions', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { permissions } = req.body;
+        
+        if (!Array.isArray(permissions)) {
+            return res.status(400).json({ success: false, error: 'Danh sách quyền không hợp lệ' });
+        }
+        
+        // Convert array to JSON string
+        const permissionsJson = JSON.stringify(permissions);
+        
+        // Update allowed_modules in nhan_vien table
+        await pool.query(
+            'UPDATE nhan_vien SET allowed_modules = ? WHERE ma_nv = ?',
+            [permissionsJson, id]
+        );
+        
+        res.json({ 
+            success: true, 
+            message: 'Cập nhật phân quyền thành công',
+            permissions: permissions
+        });
+    } catch (error) {
+        console.error('Error updating permissions:', error);
+        res.status(500).json({ success: false, error: 'Lỗi cập nhật phân quyền' });
+    }
+});
+
+// ==================== IMEI MANAGEMENT ====================
+
+// GET /api/admin/imei/stats - Thống kê IMEI theo trạng thái
+router.get('/imei/stats', checkPermission('nav-imei'), async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT trang_thai, COUNT(*) AS so_luong
+            FROM imei_san_pham
+            GROUP BY trang_thai
+        `);
+        const stats = { in_stock: 0, sold: 0, reserved: 0, returned: 0, total: 0 };
+        rows.forEach(r => {
+            stats[r.trang_thai] = Number(r.so_luong) || 0;
+            stats.total += Number(r.so_luong) || 0;
+        });
+        res.json({ success: true, data: stats });
+    } catch (error) {
+        console.error('Error fetching IMEI stats:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET /api/admin/imei - Danh sách IMEI có filter
+// Query: status, ma_sp, search (theo imei), limit (default 200)
+router.get('/imei', checkPermission('nav-imei'), async (req, res) => {
+    try {
+        const { status, ma_sp, search } = req.query;
+        const limit = Math.min(parseInt(req.query.limit) || 200, 1000);
+
+        const wheres = [];
+        const params = [];
+        if (status && ['in_stock', 'sold', 'reserved', 'returned'].includes(status)) {
+            wheres.push('im.trang_thai = ?');
+            params.push(status);
+        }
+        if (ma_sp) {
+            wheres.push('im.ma_sp = ?');
+            params.push(ma_sp);
+        }
+        if (search) {
+            wheres.push('im.imei LIKE ?');
+            params.push(`%${search}%`);
+        }
+        const whereClause = wheres.length ? 'WHERE ' + wheres.join(' AND ') : '';
+
+        const [rows] = await pool.query(`
+            SELECT im.ma_imei, im.imei, im.trang_thai, im.ngay_nhap, im.ngay_ban,
+                   im.ma_sp, im.ma_bt, im.ma_ct_don,
+                   sp.ten_sp,
+                   bt.mau_sac, bt.mau_hex, bt.dung_luong, bt.sku,
+                   ct.ma_don
+            FROM imei_san_pham im
+            LEFT JOIN san_pham sp ON im.ma_sp = sp.ma_sp
+            LEFT JOIN bien_the_san_pham bt ON im.ma_bt = bt.ma_bt
+            LEFT JOIN chi_tiet_don_hang ct ON im.ma_ct_don = ct.ma_ct_don
+            ${whereClause}
+            ORDER BY im.ngay_nhap DESC, im.ma_imei DESC
+            LIMIT ?
+        `, [...params, limit]);
+
+        res.json({ success: true, data: rows, count: rows.length });
+    } catch (error) {
+        console.error('Error fetching IMEI list:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });

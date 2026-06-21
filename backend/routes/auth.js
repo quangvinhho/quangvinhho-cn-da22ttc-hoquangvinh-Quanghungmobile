@@ -327,7 +327,8 @@ router.post('/login', async (req, res) => {
 // POST /api/auth/admin/login - Đăng nhập admin
 router.post('/admin/login', async (req, res) => {
     try {
-        const { tai_khoan, mat_khau } = req.body;
+        const tai_khoan = req.body.tai_khoan || req.body.username;
+        const mat_khau = req.body.mat_khau || req.body.password;
 
         if (!tai_khoan || !mat_khau) {
             return res.status(400).json({ 
@@ -417,7 +418,8 @@ router.post('/admin/login', async (req, res) => {
 // POST /api/auth/employee/login - Đăng nhập nhân viên
 router.post('/employee/login', async (req, res) => {
     try {
-        const { username: tai_khoan, password: mat_khau } = req.body;
+        const tai_khoan = req.body.tai_khoan || req.body.username;
+        const mat_khau = req.body.mat_khau || req.body.password;
 
         if (!tai_khoan || !mat_khau) {
             return res.status(400).json({ 
@@ -475,6 +477,7 @@ router.post('/employee/login', async (req, res) => {
             tai_khoan: user.tai_khoan,
             ho_ten: user.ho_ten,
             quyen: user.quyen,
+            allowed_modules: user.allowed_modules, // ✨ THÊM DÒNG NÀY
             isEmployee: true,
             role: 'admin',
             vai_tro: 'admin',
@@ -814,7 +817,7 @@ router.put('/change-password/:id', async (req, res) => {
 });
 
 // GET /api/auth/check - Kiểm tra trạng thái đăng nhập và session
-router.get('/check', (req, res) => {
+router.get('/check', async (req, res) => {
     if (process.env.NODE_ENV !== 'production') {
         console.log('🔍 Auth check - sid:', req.sessionID, '- user:', req.session?.user?.email || 'none');
     }
@@ -829,6 +832,18 @@ router.get('/check', (req, res) => {
 
     // Fallback: session đăng nhập thường
     if (req.session && req.session.user) {
+        // Tự động đồng bộ permissions/allowed_modules mới nhất từ database nếu là nhân viên
+        if (req.session.user.isEmployee && req.session.user.ma_nv) {
+            try {
+                const [rows] = await pool.query('SELECT allowed_modules FROM nhan_vien WHERE ma_nv = ?', [req.session.user.ma_nv]);
+                if (rows.length > 0) {
+                    req.session.user.allowed_modules = rows[0].allowed_modules;
+                }
+            } catch (err) {
+                console.error('Error fetching updated permissions in check-auth:', err);
+            }
+        }
+
         return res.json({
             isAuthenticated: true,
             user: { ...req.session.user, vai_tro: req.session.user.vai_tro || req.session.user.role || 'customer' }
@@ -893,8 +908,27 @@ router.get('/google/callback', (req, res, next) => {
             }
             
             if (!user) {
-                console.log('❌ No user returned from passport');
-                const redirectUrl = isAdminLogin ? '/admin-login.html?error=google_failed' : '/login.html?error=google_failed';
+                console.log('❌ No user returned from passport. Info:', info);
+                const errType = info && info.message ? info.message : 'google_failed';
+                
+                // Trả về kết quả đăng ký Google thành công
+                if (info && info.message === 'register_success') {
+                    const emailParam = info.email ? `&email=${encodeURIComponent(info.email)}` : '';
+                    return res.redirect(`/login.html?registered=true&google_registered=true${emailParam}`);
+                }
+                
+                // Trả về lỗi nếu email đã tồn tại khi đăng ký
+                if (info && info.message === 'email_exists') {
+                    return res.redirect(`/register.html?error=email_exists&message=${encodeURIComponent('Email đã được đăng ký trước đó. Vui lòng đăng nhập!')}`);
+                }
+                
+                // Trả về lỗi nếu tài khoản bị khóa
+                if (info && info.message === 'account_locked') {
+                    return res.redirect(`/login.html?error=account_locked`);
+                }
+                
+                // Các lỗi khác như not_registered hoặc invalid_state
+                const redirectUrl = isAdminLogin ? `/admin-login.html?error=${errType}` : `/login.html?error=${errType}`;
                 return res.redirect(redirectUrl);
             }
             

@@ -223,8 +223,8 @@ router.post('/momo/ipn', async (req, res) => {
       
       // Cập nhật trạng thái đơn hàng và thanh toán
       await pool.query(
-        `UPDATE thanh_toan SET trang_thai = 'success', thoi_gian = NOW() WHERE ma_don = ? AND phuong_thuc = ?`,
-        [orderId, 'MOMO']
+        `UPDATE thanh_toan SET trang_thai = 'success', thoi_gian = NOW() WHERE ma_don = ? AND phuong_thuc LIKE 'MOMO%'`,
+        [orderId]
       );
       await pool.query(
         `UPDATE don_hang SET trang_thai = 'confirmed' WHERE ma_don = ?`,
@@ -237,8 +237,8 @@ router.post('/momo/ipn', async (req, res) => {
       
       // Cập nhật trạng thái thanh toán
       await pool.query(
-        `UPDATE thanh_toan SET trang_thai = 'failed', thoi_gian = NOW() WHERE ma_don = ? AND phuong_thuc = ?`,
-        [orderId, 'MOMO']
+        `UPDATE thanh_toan SET trang_thai = 'failed', thoi_gian = NOW() WHERE ma_don = ? AND phuong_thuc LIKE 'MOMO%'`,
+        [orderId]
       );
     }
 

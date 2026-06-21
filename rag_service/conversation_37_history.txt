@@ -1,0 +1,153 @@
+Message ID: 241
+Role: user
+Time: 2026-05-27 01:06:47
+Content:
+chào
+================================================================================
+Message ID: 242
+Role: assistant
+Time: 2026-05-27 01:07:01
+Content:
+Dạ, chào anh/chị! Em là trợ lý AI của QuangHưng Mobile, em rất hân hạnh được hỗ trợ anh/chị trong việc tìm kiếm sản phẩm công nghệ phù hợp. Em có thể giúp anh/chị tìm hiểu thông tin về các sản phẩm điện thoại, phụ kiện, hoặc dịch vụ của cửa hàng chúng tôi. Anh/chị có đang quan tâm đến dòng smartphone nào không, em hỗ trợ mình nhé?
+
+<div style="display:flex; margin-top:10px; margin-bottom:10px; gap:15px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff;">
+  <div style="flex-shrink: 0;">
+    <img src="images/samsung_galaxy_a07.webp" alt="Samsung Galaxy A07" style="width:100px; height:auto; object-fit:contain;">
+  </div>
+  <div style="flex-grow: 1;">
+    <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">Samsung Galaxy A07</div>
+    <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">5.990.000 VND</span></div>
+    <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">RAM 4GB, Chip Exynos 850, Pin 5000mAh, Màn hình 6.5 inch, Camera 13MP</div>
+    <div>
+      <a href="product-detail.html?id=123" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
+    </div>
+  </div>
+</div>
+
+Em hy vọng anh/chị sẽ tìm được sản phẩm phù hợp với nhu cầu của mình!
+================================================================================
+Message ID: 243
+Role: user
+Time: 2026-05-27 01:07:38
+Content:
+tôi muốn biết địa chỉ
+================================================================================
+Message ID: 244
+Role: assistant
+Time: 2026-05-27 01:07:38
+Content:
+Dạ, anh/chị cần xem địa chỉ cửa hàng hay địa chỉ giao hàng của mình ạ?
+================================================================================
+Message ID: 245
+Role: user
+Time: 2026-05-27 01:07:43
+Content:
+📦 Địa chỉ giao hàng của tôi
+================================================================================
+Message ID: 246
+Role: assistant
+Time: 2026-05-27 01:07:43
+Content:
+Dạ, tài khoản của bạn hiện tại chưa có đơn hàng nào nên chưa có địa chỉ giao hàng được lưu. Khi bạn tiến hành đặt mua sản phẩm, địa chỉ giao hàng sẽ được lưu tại đây để tiện sử dụng cho lần sau ạ!
+================================================================================
+Message ID: 247
+Role: user
+Time: 2026-05-27 01:08:02
+Content:
+sở thích của tôi
+================================================================================
+Message ID: 248
+Role: assistant
+Time: 2026-05-27 01:08:03
+Content:
+Dạ, sở thích của anh/chị là gì ạ? Em có thể giúp anh/chị tìm hiểu thông tin về các sản phẩm điện thoại phù hợp với sở thích của mình. Anh/chị quan tâm đến dòng smartphone nào, chẳng hạn như chơi game, quay phim, chụp ảnh,...?
+================================================================================
+Message ID: 249
+Role: user
+Time: 2026-05-27 01:08:28
+Content:
+shop có mấy samsung
+================================================================================
+Message ID: 250
+Role: user
+Time: 2026-05-27 01:10:01
+Content:
+shop có mấy samsung
+================================================================================
+Message ID: 251
+Role: assistant
+Time: 2026-05-27 01:10:02
+Content:
+Dạ, cửa hàng QuangHưng Mobile hiện có 10 sản phẩm Samsung đang bán ạ.
+
+Nếu anh/chị muốn biết thêm thông tin về các sản phẩm Samsung của chúng tôi, em có thể giúp anh/chị tìm hiểu thông tin chi tiết về từng sản phẩm.
+
+<div style="display:flex; margin-top:10px; margin-bottom:10px; gap:15px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff;">
+  <div style="flex-shrink: 0;">
+    <img src="images/products/product-1766470665933-587233399.webp" alt="Samsung Galaxy A05" style="width:100px; height:auto; object-fit:contain;">
+  </div>
+  <div style="flex-grow: 1;">
+    <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">Samsung Galaxy A05</div>
+    <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">3.040.000 VND</span></div>
+    <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">RAM 4GB, Chip Exynos 850, Pin 5000mAh, Màn hình 6.5 inch, Camera 13MP</div>
+    <div>
+      <a href="product-detail.html?id=11" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
+    </div>
+  </div>
+</div>
+
+Em hy vọng anh/chị sẽ tìm được sản phẩm phù hợp với nhu cầu của mình!
+================================================================================
+Message ID: 252
+Role: user
+Time: 2026-05-27 01:10:24
+Content:
+có các loại nào
+================================================================================
+Message ID: 253
+Role: assistant
+Time: 2026-05-27 01:10:26
+Content:
+Dạ, cửa hàng QuangHưng Mobile hiện có các sản phẩm Samsung sau:
+
+- Samsung Galaxy A05
+- Samsung Galaxy A06
+- Samsung Galaxy A07
+- Samsung Galaxy A53
+- Samsung Galaxy S21
+- Samsung Galaxy S22
+- Samsung Galaxy Note 20
+- Samsung Galaxy Note 21
+- Samsung Galaxy Fold
+- Samsung Galaxy Z Flip
+
+<div style="display:flex; margin-top:10px; margin-bottom:10px; gap:15px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff;">
+  <div style="flex-shrink: 0;">
+    <img src="images/products/product-1766470665933-587233399.webp" alt="Samsung Galaxy A05" style="width:100px; height:auto; object-fit:contain;">
+  </div>
+  <div style="flex-grow: 1;">
+    <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">Samsung Galaxy A05</div>
+    <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">3.040.000 VND</span></div>
+    <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">RAM 4GB, Chip Exynos 850, Pin 5000mAh, Màn hình 6.5 inch, Camera 13MP</div>
+    <div>
+      <a href="product-detail.html?id=11" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
+    </div>
+  </div>
+</div>
+
+<div style="display:flex; margin-top:10px; margin-bottom:10px; gap:15px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff;">
+  <div style="flex-shrink: 0;">
+    <img src="images/products/product-1767934389566-278073451.webp" alt="Samsung Galaxy A06" style="width:100px; height:auto; object-fit:contain;">
+  </div>
+  <div style="flex-grow: 1;">
+    <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:5px;">Samsung Galaxy A06</div>
+    <div style="margin-bottom:5px; color:#333;">Giá: <span style="color:#d32f2f; font-weight:bold;">2.700.000 VND</span></div>
+    <div style="font-size:14px; color:#555; margin-bottom:10px; line-height:1.5;">RAM 4GB, Chip Exynos 1200, Pin 5000mAh, Màn hình 6.5 inch, Camera 13MP</div>
+    <div>
+      <a href="product-detail.html?id=22" style="display:inline-block; padding:8px 16px; background-color:#1976d2; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500;">Xem chi tiết</a>
+    </div>
+  </div>
+</div>
+
+Em hy vọng anh/chị sẽ tìm được sản phẩm phù hợp với nhu cầu của mình!
+================================================================================

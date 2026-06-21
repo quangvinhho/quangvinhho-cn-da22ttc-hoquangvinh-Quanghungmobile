@@ -81,7 +81,6 @@ Khi `NODE_ENV` khác (dev): default sẽ được dùng kèm cảnh báo `WARN` 
 ## Lưu ý vận hành
 
 - File `error_log*.txt`, `output_log*.txt`, `result*.txt`, `server_log.txt`, `test.log` đã được thêm vào `.gitignore`.
-- `rasa_chatbot/mock_rasa_server.py` chỉ là mock dev — refuse khởi động ở production.
 - `rag_service/main.py`: `/api/reload-vectorstore` yêu cầu header `X-Admin-Token` nếu `ADMIN_TOKEN` được set.
 
 ## Kết nối Frontend

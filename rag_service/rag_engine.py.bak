@@ -1,0 +1,1112 @@
+import os
+import mysql.connector
+from dotenv import load_dotenv
+from typing import List, Dict, Any
+
+from langchain_classic.chains import create_sql_query_chain
+from langchain_community.utilities import SQLDatabase
+from langchain_groq import ChatGroq
+from langchain_core.prompts import PromptTemplate
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_chroma import Chroma
+from langchain_core.documents import Document
+from langchain_classic.chains import RetrievalQA
+
+load_dotenv(dotenv_path="../backend/.env")
+
+def remove_diacritics(s: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn').replace('đ', 'd').replace('Đ', 'D')
+
+def is_accessory(name: str) -> bool:
+    if not name:
+        return False
+    n = remove_diacritics(name.lower())
+    keywords = ['op lung', 'op magsafe', 'cap sac', 'cu sac', 'sac nhanh', 'tai nghe', 'cuong luc', 'bao da', 'dan man hinh', 'the nho', 'pin du phong', 'sac du phong']
+    return any(kw in n for kw in keywords)
+
+def parse_price_constraint(question: str):
+    import re
+    # Remove diacritics and spaces
+    q = remove_diacritics(question.lower()).replace(' ', '')
+    
+    # 1. Patterns for maximum price (dưới, <=, trở xuống, đổ lại, tầm, khoảng)
+    max_patterns = [
+        r'duoi(\d+(?:\.\d+)?)trieu',
+        r'duoi(\d+(?:\.\d+)?)tr',
+        r'duoi(\d+(?:\.\d+)?)t',
+        r'duoi(\d{7,})',
+        r'(\d+(?:\.\d+)?)trieutroxuong',
+        r'(\d+(?:\.\d+)?)trtroxuong',
+        r'(\d+(?:\.\d+)?)ttroxuong',
+        r'(\d+(?:\.\d+)?)trieudolai',
+        r'(\d+(?:\.\d+)?)trdolai',
+        r'(\d+(?:\.\d+)?)tdolai',
+        r'tam(\d+(?:\.\d+)?)trieu',
+        r'tam(\d+(?:\.\d+)?)tr',
+        r'khoang(\d+(?:\.\d+)?)trieu',
+        r'khoang(\d+(?:\.\d+)?)tr'
+    ]
+    for pattern in max_patterns:
+        match = re.search(pattern, q)
+        if match:
+            val_str = match.group(1).replace('.', '')
+            try:
+                val = float(val_str)
+                if val < 1000:  # e.g. 4 -> 4 million
+                    val = val * 1000000
+                return ("max", val)
+            except ValueError:
+                pass
+            
+    # 2. Patterns for minimum price (trên, >=, trở lên, hơn)
+    min_patterns = [
+        r'tren(\d+(?:\.\d+)?)trieu',
+        r'tren(\d+(?:\.\d+)?)tr',
+        r'tren(\d+(?:\.\d+)?)t',
+        r'tren(\d{7,})',
+        r'hon(\d+(?:\.\d+)?)trieu',
+        r'hon(\d+(?:\.\d+)?)tr',
+        r'(\d+(?:\.\d+)?)trieutrolen',
+        r'(\d+(?:\.\d+)?)trtrolen',
+        r'(\d+(?:\.\d+)?)ttrolen'
+    ]
+    for pattern in min_patterns:
+        match = re.search(pattern, q)
+        if match:
+            val_str = match.group(1).replace('.', '')
+            try:
+                val = float(val_str)
+                if val < 1000:
+                    val = val * 1000000
+                return ("min", val)
+            except ValueError:
+                pass
+            
+    return None
+
+_IS_PROD = os.getenv("NODE_ENV") == "production" or os.getenv("ENV") == "production"
+# Fallback DB_PASSWORD (chuẩn) → DB_PASS (legacy)
+_DB_PASS_RAW = os.getenv("DB_PASSWORD") or os.getenv("DB_PASS")
+if _IS_PROD and not _DB_PASS_RAW:
+    raise SystemExit("FATAL: DB_PASSWORD chưa set ở production (rag_engine).")
+if not _DB_PASS_RAW:
+    print("WARN: DB_PASSWORD chưa set — rag_engine dùng default dev.")
+
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASS = _DB_PASS_RAW or "Vinh123456789@"
+DB_NAME = os.getenv("DB_NAME", "QHUNG")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+
+class RAGEngine:
+    def __init__(self):
+        # 1. Setup LLM
+        self.llm = ChatGroq(
+            temperature=0, 
+            api_key=GROQ_API_KEY, 
+            model_name="llama-3.1-8b-instant"
+        )
+        
+        import urllib.parse
+        # 2. Setup SQL Database for KPI (Text-to-SQL)
+        encoded_pass = urllib.parse.quote_plus(DB_PASS)
+        db_uri = f"mysql+mysqlconnector://{DB_USER}:{encoded_pass}@{DB_HOST}/{DB_NAME}"
+        self.db = SQLDatabase.from_uri(
+            db_uri,
+            include_tables=["san_pham", "don_hang", "chi_tiet_don_hang", "danh_gia", "khuyen_mai", "cau_hinh"]
+        )
+        
+        # 3. Setup Vector Store for Semantic Search (RAG)
+        self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+        self.vector_dir = "./chroma_db"
+        
+        # 4. RAM Cache cho chatbot_knowledge (tránh query MySQL mỗi lần chat)
+        self._knowledge_cache = None
+        self._knowledge_cache_time = 0
+        # Giảm TTL 300 → 60s để cập nhật FAQ nhanh hơn nhưng vẫn cache để tránh DB hit mỗi câu hỏi
+        self._KNOWLEDGE_CACHE_TTL = 60
+
+        # 5. Vectorstore freshness: so checksum DB vs Chroma định kỳ → auto rebuild khi lệch
+        # Tránh trường hợp admin xoá/sửa SP nhưng vectorstore vẫn giữ data cũ → LLM "bịa" SP
+        self._last_freshness_check = 0
+        self._FRESHNESS_CHECK_TTL = 300  # 5 phút giữa các lần so checksum
+        
+        # Try to load existing vector store or create a new one
+        if os.path.exists(self.vector_dir):
+            self.vectorstore = Chroma(persist_directory=self.vector_dir, embedding_function=self.embeddings)
+        else:
+            self.vectorstore = self._initialize_vector_store()
+            
+    def _load_documents_from_db(self):
+        print("Loading documents from MySQL DB...")
+        conn = mysql.connector.connect(
+            host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME
+        )
+        cursor = conn.cursor(dictionary=True)
+        
+        # Lấy thông tin sản phẩm, hãng sản xuất và cấu hình
+        query = """
+            SELECT sp.ma_sp, sp.ten_sp, sp.gia, sp.mo_ta_ngan, sp.anh_dai_dien, sp.bo_nho,
+                   hsx.ten_hang,
+                   ch.ram, ch.chip, ch.pin, ch.man_hinh, ch.camera
+            FROM san_pham sp
+            LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+            LEFT JOIN cau_hinh ch ON sp.ma_sp = ch.ma_sp
+            WHERE sp.so_luong_ton > 0
+        """
+        cursor.execute(query)
+        products = cursor.fetchall()
+        
+        documents = []
+        for p in products:
+            # Lọc bỏ nội dung khuyến mãi/quảng cáo trong mô tả ngắn
+            mo_ta = p['mo_ta_ngan'] or ''
+            promo_keywords = ['trade-in', 'giảm đến', 'giá chỉ', 'duy nhất', 'khuyến mãi', 'ưu đãi', 'trả góp 0%', 'flash sale']
+            if any(kw in mo_ta.lower() for kw in promo_keywords):
+                mo_ta = ''  # Bỏ mô tả nếu chỉ là text khuyến mãi
+            
+            # Phân loại sản phẩm (Phụ kiện vs Điện thoại)
+            category_name = "Phụ kiện" if is_accessory(p['ten_sp']) else "Điện thoại"
+            
+            # Tạo nội dung text để nhúng (embedding)
+            content = f"Sản phẩm: {p['ten_sp']}. Hãng sản xuất: {p.get('ten_hang') or 'Khác'}. Loại sản phẩm (Danh mục): {category_name}. Giá bán: {p['gia']} VNĐ. Bộ nhớ: {p.get('bo_nho') or 'N/A'}. ID sản phẩm (ma_sp): {p['ma_sp']}. Ảnh đại diện (anh_dai_dien): {p['anh_dai_dien']}. "
+            if mo_ta:
+                content += f"Mô tả: {mo_ta}. "
+            if p['ram']:
+                content += f"Cấu hình: RAM {p['ram']}, Chip {p['chip']}, Pin {p['pin']}, Màn hình {p['man_hinh']}, Camera {p['camera']}."
+            
+            doc = Document(
+                page_content=content,
+                metadata={"type": "product", "ma_sp": p['ma_sp'], "ten_sp": p['ten_sp'], "gia": float(p['gia']), "anh_dai_dien": p['anh_dai_dien'], "ten_loai": category_name, "ten_hang": p.get('ten_hang') or 'Khác'}
+            )
+            documents.append(doc)
+            
+        # Lấy thông tin từ chatbot_knowledge
+        cursor.execute("SELECT title, content, type FROM chatbot_knowledge WHERE is_active = 1")
+        knowledge_items = cursor.fetchall()
+        for k in knowledge_items:
+            # Vector hóa dạng Khối tài liệu có Tiêu đề & Nội dung
+            content_to_embed = f"Tài liệu tri thức về: {k['title']}\nChi tiết: {k['content']}"
+            doc = Document(
+                page_content=content_to_embed,
+                metadata={"type": "knowledge", "title": k['title'], "category": k['type']}
+            )
+            documents.append(doc)
+            
+        cursor.close()
+        conn.close()
+        return documents
+
+    def _initialize_vector_store(self):
+        print("Initializing Vector Store from DB...")
+        documents = self._load_documents_from_db()
+        if documents:
+            vectorstore = Chroma.from_documents(
+                documents=documents, 
+                embedding=self.embeddings, 
+                persist_directory=self.vector_dir
+            )
+            if hasattr(vectorstore, 'persist'):
+                vectorstore.persist()
+            return vectorstore
+        return None
+
+    def reload_vectorstore(self):
+        """Xóa vector store cũ và khởi tạo lại để cập nhật dữ liệu mới"""
+        print("Reloading Vector Store...")
+
+        # Xóa RAM cache knowledge để lấy dữ liệu mới
+        self._knowledge_cache = None
+        self._knowledge_cache_time = 0
+
+        # Nếu đã có vectorstore, xóa toàn bộ tài liệu cũ thông qua API để tránh lock file trên Windows
+        if self.vectorstore:
+            try:
+                collection = self.vectorstore._collection
+                results = collection.get()
+                ids = results.get('ids', [])
+                if ids:
+                    collection.delete(ids=ids)
+                    print(f"Cleared {len(ids)} existing documents from Chroma DB via API.")
+            except Exception as e:
+                print(f"Error clearing vector store via API: {str(e)}")
+                # Nếu lỗi, giải phóng vectorstore để chuẩn bị xóa thư mục
+                self.vectorstore = None
+                import gc
+                gc.collect()
+
+        # Nếu không có hoặc bị lỗi giải phóng ở bước trước, xóa thư mục cũ
+        if not self.vectorstore and os.path.exists(self.vector_dir):
+            import shutil
+            try:
+                shutil.rmtree(self.vector_dir)
+            except Exception as e:
+                print(f"Error deleting old vector store directory: {str(e)}")
+
+        # Load tài liệu mới từ DB
+        documents = self._load_documents_from_db()
+        if documents:
+            if self.vectorstore:
+                self.vectorstore.add_documents(documents)
+                if hasattr(self.vectorstore, 'persist'):
+                    self.vectorstore.persist()
+                print("Vector Store updated successfully with new documents!")
+            else:
+                self.vectorstore = Chroma.from_documents(
+                    documents=documents,
+                    embedding=self.embeddings,
+                    persist_directory=self.vector_dir
+                )
+                if hasattr(self.vectorstore, 'persist'):
+                    self.vectorstore.persist()
+                print("Vector Store recreated successfully!")
+        else:
+            print("No documents found in DB to reload.")
+        return True
+
+    def invalidate_knowledge_cache(self):
+        """Chỉ xóa RAM cache knowledge (nhanh, không reload vectorstore).
+        Dùng khi admin update content nhỏ → response tiếp theo lấy knowledge mới ngay
+        mà không phải chờ rebuild Chroma (vài giây)."""
+        self._knowledge_cache = None
+        self._knowledge_cache_time = 0
+        print("[RAG] Knowledge RAM cache invalidated.")
+        return True
+
+    def query_kpi(self, question: str) -> str:
+        """Sử dụng Text-to-SQL để truy vấn KPI từ DB"""
+        chain = create_sql_query_chain(self.llm, self.db)
+        
+        try:
+            # Sinh ra câu lệnh SQL
+            sql_query = chain.invoke({"question": question + " Trả về kết quả bằng tiếng Việt."})
+            
+            # Làm sạch SQL string nếu LLM trả về markdown hoặc thêm văn bản giải thích
+            if "```sql" in sql_query:
+                sql_query = sql_query.split("```sql")[1].split("```")[0].strip()
+            elif "```" in sql_query:
+                sql_query = sql_query.split("```")[1].strip()
+                
+            # Xóa các tiền tố hội thoại thường gặp từ các mô hình Llama như "SQLQuery:", "Question:"
+            import re
+            parts = re.split(r'(?:sql\s*query|sqlquery|query|question)\s*:', sql_query, flags=re.IGNORECASE)
+            if len(parts) > 1:
+                # Lấy phần sau dấu hai chấm cuối cùng nếu có nhiều từ khóa
+                sql_query = parts[-1].strip()
+                
+            # Định vị từ khóa SQL chính (SELECT/SHOW/WITH/DESCRIBE) để cắt bỏ rác phía trước
+            match = re.search(r'\b(SELECT|SHOW|WITH|DESCRIBE)\b', sql_query, re.IGNORECASE)
+            if match:
+                sql_query = sql_query[match.start():].strip()
+                
+            # Chỉ lấy câu lệnh SQL trước dấu chấm phẩy đầu tiên (nếu có)
+            sql_query = sql_query.split(";")[0].strip()
+                
+            # Kiểm tra an toàn SQL (chống Text-to-SQL Injection / phá hoại DB)
+            # Tokenize trên \W để chặn bypass kiểu DROP/**/TABLE hay DROP\nTABLE
+            forbidden_keywords = {"DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE", "GRANT", "REVOKE", "REPLACE", "CREATE", "RENAME"}
+            tokens = set(re.split(r'\W+', sql_query.upper()))
+            if tokens & forbidden_keywords:
+                return "Xin lỗi, tôi phát hiện yêu cầu có nguy cơ bảo mật nên đã tự động chặn lại."
+                
+            # Chạy SQL an toàn
+            result = self.db.run(sql_query)
+            
+            # Diễn dịch kết quả
+            prompt = PromptTemplate.from_template(
+                "Dựa vào câu hỏi: {question}\n"
+                "Và kết quả truy vấn từ cơ sở dữ liệu: {result}\n"
+                "Hãy viết một câu trả lời tự nhiên, thân thiện cho khách hàng bằng tiếng Việt."
+            )
+            answer_chain = prompt | self.llm
+            final_answer = answer_chain.invoke({"question": question, "result": result})
+            return final_answer.content
+        except Exception as e:
+            return f"Lỗi khi truy vấn KPI: {str(e)}"
+
+    def query_semantic(self, question: str, history: List[Dict] = None, interests: List[str] = None) -> str:
+        """Sử dụng RAG để tìm kiếm thông tin theo ngữ nghĩa và ngữ cảnh trò chuyện"""
+        if not self.vectorstore:
+            return "Chưa có dữ liệu thông tin linh kiện/sản phẩm để hỗ trợ."
+
+        # Định dạng lịch sử trò chuyện (dọn dẹp mã HTML thừa để tiết kiệm token)
+        chat_history = ""
+        if history:
+            import re
+            for msg in history[-4:]:  # Chỉ lấy 4 tin nhắn gần nhất để giữ context gọn gàng
+                role = "Khách hàng" if msg.get("role") == "user" else "Chatbot"
+                content = str(msg.get('content', ''))
+                
+                # Nếu là Chatbot, loại bỏ các thẻ HTML dài dòng của sản phẩm để tiết kiệm token
+                if role == "Chatbot":
+                    # Thay thế các thẻ div sản phẩm bằng tên sản phẩm ngắn gọn
+                    content = re.sub(r'<div[^>]*>.*?</div>', '', content, flags=re.DOTALL)
+                    # Loại bỏ tất cả các thẻ HTML còn lại
+                    content = re.sub(r'<[^>]+>', ' ', content)
+                    # Thu gọn khoảng trắng
+                    content = re.sub(r'\s+', ' ', content).strip()
+                    # Tránh tin nhắn quá dài trong history
+                    content = content[:300] + "..." if len(content) > 300 else content
+                
+                # Escape '{' '}' trong nội dung user/bot cũ để PromptTemplate không hiểu nhầm là placeholder
+                content_safe = content.replace("{", "{{").replace("}", "}}")
+                chat_history += f"{role}: {content_safe}\n"
+
+        # [TỐI ƯU] Thay vì gọi LLM contextualize (tốn 2-4s), nối lịch sử vào query để ChromaDB tìm ngữ nghĩa
+        standalone_question = question
+        if history and len(history) > 0:
+            # Trích xuất keywords từ lịch sử gần nhất (chỉ lấy tin user)
+            recent_user_msgs = [msg.get('content', '') for msg in history[-3:] if msg.get('role') == 'user']
+            if recent_user_msgs:
+                history_context = ' '.join(recent_user_msgs)
+                standalone_question = f"{history_context} {question}"
+                try:
+                    print(f"[RAG FAST-CONTEXT] '{question}' -> '{standalone_question}'".encode('utf-8', 'replace').decode('utf-8'))
+                except UnicodeEncodeError:
+                    print("[RAG FAST-CONTEXT] <unicode error in print>")
+
+        # Tùy chỉnh prompt để AI trả lời theo ngữ cảnh RAG và lịch sử
+        history_instruction = ""
+        if history and len(history) > 0:
+            history_instruction = "LƯU Ý QUAN TRỌNG: Khách hàng ĐÃ ĐĂNG NHẬP và có lịch sử chat bên dưới. Hãy ĐỌC KỸ LỊCH SỬ để nhớ lại sở thích, mức giá, dòng điện thoại khách từng hỏi. Dựa vào đó, hãy CHỦ ĐỘNG ĐƯA RA CÁC GỢI Ý ĐIỆN THOẠI phù hợp với họ. Hãy thể hiện bạn là một trợ lý ảo nhớ rất rõ khách hàng!"
+        else:
+            history_instruction = "LƯU Ý: Người dùng chưa đăng nhập hoặc đây là phiên chat mới (không có lịch sử). Chỉ tư vấn tập trung vào câu hỏi hiện tại, không tự chế ra lịch sử."
+
+        # Cá nhân hóa dựa trên sở thích
+        interests_instruction = ""
+        if interests and len(interests) > 0:
+            # Escape '{' '}' trong từng sở thích để PromptTemplate không hiểu nhầm là placeholder
+            interests_safe = [str(i).replace("{", "{{").replace("}", "}}") for i in interests]
+            interests_str = ", ".join(interests_safe)
+            interests_instruction = f"LƯU Ý CÁ NHÂN HÓA: Khách hàng này có sở thích đặc biệt quan tâm tới: {interests_str}. Hãy ưu tiên nhấn mạnh các tính năng liên quan đến sở thích này khi tư vấn (Ví dụ nếu thích gaming, hãy nói nhiều về chip, pin, tản nhiệt... Nếu thích chụp ảnh, hãy nói về camera, AI...)."
+
+        # [TỐI ƯU] Lấy Kiến thức chung từ RAM cache (thay vì MySQL mỗi lần)
+        general_knowledge = self._get_general_knowledge()
+
+        system_template = f"""
+        Bạn là Chuyên gia Tư vấn Công nghệ kiêm Đại sứ Thương hiệu của QuangHưng Mobile.
+        Mục tiêu của bạn là thấu hiểu NGỮ NGHĨA, CẢM XÚC và Ý ĐỊNH của khách hàng để tư vấn và chốt sale với tỉ lệ thành công cao nhất.
+        
+        {history_instruction}
+        {interests_instruction}
+        {general_knowledge}
+        
+        🌟 NGUYÊN TẮC ĐỐI ĐÁP THÔNG MINH & THUYẾT PHỤC:
+        1. THẤU HIỂU & ĐỒNG CẢM (Active Listening):
+           - Trước khi đưa ra gợi ý sản phẩm, hãy LUÔN LUÔN ghi nhận và đồng cảm với nhu cầu của khách bằng 1-2 câu tự nhiên.
+           - Ví dụ: Khách cần mua máy chơi game -> "Dạ, để chiến game Liên Quân hay PUBG mượt mà, không lo tụt FPS hay nóng máy thì hiệu năng cấu hình và dung lượng pin là ưu tiên số một đúng không ạ?..."
+           - Xưng hô lịch sự, ấm áp: Dùng "Dạ, em", "Anh/Chị", "Bạn".
+        
+        2. TƯ VẤN CHUYÊN SÂU & SO SÁNH KHÁCH QUAN:
+           - Đừng chỉ liệt kê sản phẩm một cách vô hồn. Hãy đóng vai trò là một chuyên gia: phân tích điểm mạnh nổi bật của máy sát với nhu cầu của khách (ví dụ: dung lượng pin bao nhiêu mAh, chip gì, camera chụp đêm thế nào).
+           - Nếu có nhiều sản phẩm phù hợp trong Context, hãy so sánh ngắn gọn để khách dễ chọn lựa. (Ví dụ: "Nếu anh/chị thích màn hình đẹp 120Hz mượt mà thì mẫu A rất tốt, còn nếu muốn chụp hình chân thực, quay video mịn màng thì mẫu B sẽ tối ưu hơn").
+        
+        3. DẪN DẮT HỘI THOẠI & KÊU GỌI HÀNH ĐỘNG (Sales Closing):
+           - Cuối câu trả lời, hãy luôn đưa ra một câu hỏi gợi mở để kéo dài cuộc hội thoại và hỗ trợ khách tiếp theo.
+           - Ví dụ: "Anh/chị có muốn em tư vấn chi tiết hơn về chương trình Trả góp 0% lãi suất của mẫu máy này không ạ?", "Mẫu này bên em đang có sẵn máy trải nghiệm tại cửa hàng, anh/chị có muốn qua test thử không ạ?".
+        
+        4. XỬ LÝ KHI THÔNG TIN KHÔNG CÓ TRONG CONTEXT (TUYỆT ĐỐI KHÔNG BỊA ĐẶT):
+           - BẮT BUỘC KHẲNG ĐỊNH KHÔNG CÓ TRƯỚC: Nếu khách hàng hỏi về một dòng máy/hãng cụ thể trong tầm giá mà Context không có sản phẩm nào thỏa mãn (Ví dụ: khách hỏi "iPhone dưới 4 triệu" nhưng Context không có chiếc iPhone nào dưới 4 triệu), bạn BẮT BUỘC phải bắt đầu câu trả lời bằng cách khẳng định rõ ràng, lịch sự và trực tiếp là cửa hàng không có hoặc đang tạm hết dòng sản phẩm đó trong tầm giá yêu cầu (Ví dụ: "Dạ, hiện tại dòng iPhone có giá dưới 4 triệu đồng bên em đang tạm hết hàng ạ" hoặc "Dạ, hiện tại cửa hàng bên em không có mẫu iPhone nào ở phân khúc dưới 4 triệu đồng ạ").
+           - GỢI Ý THAY THẾ LỊCH SỰ: Sau khi khẳng định rõ ràng là không có, bạn mới được chủ động gợi ý giới thiệu các dòng sản phẩm của hãng KHÁC đang có sẵn trong Context thỏa mãn tầm giá đó để khách tham khảo (Ví dụ: "Tuy nhiên, trong tầm giá dưới 4 triệu, anh/chị có thể tham khảo một số mẫu điện thoại Android đang có sẵn hàng tại cửa hàng như...").
+           - TUYỆT ĐỐI NGHIÊM CẤM TỰ BỊA (HALLUCINATE) sản phẩm không có trong Context RAG dưới đây (như tự chế ra iPhone 8, iPhone 11, iPhone 13 có giá dưới 4 triệu).
+           - Nếu khách hàng hỏi về thông tin chính sách (bảo hành, đổi trả, ship hàng, trả góp...), thông tin liên hệ hoặc các thắc mắc chung về cửa hàng KHÔNG có trong Context RAG bên dưới, tuyệt đối KHÔNG phản hồi "sản phẩm tạm hết hàng". Thay vào đó, hãy lịch sự giải đáp dựa trên các kiến thức chung hiện có và hướng dẫn khách hàng liên hệ trực tiếp với Hotline hoặc Zalo CSKH của QuangHưng Mobile để được nhân viên hỗ trợ chi tiết nhanh nhất.
+        
+        5. ĐỊNH DẠNG BẮT BUỘC (TUYỆT ĐỐI TUÂN THỦ):
+           - Bạn BẮT BUỘC phải sử dụng thẻ HTML cho tất cả định dạng văn bản.
+           - TUYỆT ĐỐI NGHIÊM CẤM sử dụng bất kỳ ký hiệu Markdown nào, bao gồm: dấu sao đôi (`**`), dấu sao đơn (`*`), dấu gạch đầu dòng (`-` hoặc `*`), dấu thăng (`#`), hay các ký tự markdown định dạng khối mã (` ``` `). Mọi định dạng in đậm phải dùng thẻ `<strong>` hoặc `<b>`. Xuống dòng dùng `<br>`. Dùng thẻ danh sách HTML (`<ul>` và `<li>`) nếu cần tạo danh sách. Bất kỳ sự rò rỉ ký tự markdown nào đều bị coi là lỗi nghiêm trọng.
+           - Mỗi sản phẩm bạn gợi ý BẮT BUỘC phải được chèn vào khung HTML này (thay thế các biến [[...]] bằng dữ liệu thật):
+              <div class="ai-product-card">
+                <img src="[[Anh]]" alt="[[Ten_san_pham]]" class="ai-product-image">
+                <div class="ai-product-info">
+                  <strong class="ai-product-name">[[Ten_san_pham]]</strong>
+                  <div class="ai-product-price-row">Giá: <span class="ai-product-price">[[Gia]]</span></div>
+                  <div class="ai-product-config">[[Cau_hinh]]</div>
+                  <div class="ai-product-actions">
+                    <a href="product-detail.html?id=[[ID]]" class="ai-product-btn-detail">Xem chi tiết</a>
+                    <button class="chatbot-add-cart-btn ai-product-btn-cart" data-pid="[[ID]]" data-pname="[[Ten_san_pham]]" data-pprice="[[Gia]]" data-pimage="[[Anh]]"><i class="fas fa-cart-plus"></i> Thêm</button>
+                  </div>
+                </div>
+              </div>
+             (Thay thế [[Anh]], [[Ten_san_pham]], [[Gia]], [[ID]] bằng thông tin thật. Trong đó, [[Anh]] BẮT BUỘC phải SAO CHÉP NGUYÊN VĂN 100% đường dẫn ảnh từ trường "Ảnh đại diện (anh_dai_dien)" được cung cấp trong thông tin sản phẩm (Ví dụ: "images/products/product-1766371394101-525441573.jpg" - BẮT BUỘC copy nguyên cả đường dẫn bao gồm "images/products/...", KHÔNG tự chế tên file, KHÔNG bỏ đuôi .webp/.jpg/.png/.avif, KHÔNG bỏ phần "images/products/" ở đầu). Riêng phần [[Cau_hinh]] bạn tự tổng hợp ngắn gọn các thông số như RAM, Chip, Pin, Màn hình, Camera thành 1 câu giống trong ảnh).
+
+        6. KHỚP ẢNH CHÍNH XÁC & PHÂN LOẠI DANH MỤC SẢN PHẨM (BẮT BUỘC):
+           - Hãy xem kỹ "Loại sản phẩm (Danh mục)" của từng mặt hàng được cung cấp trong Context.
+           - Nếu khách hỏi mua "ĐIỆN THOẠI", chỉ tư vấn các dòng máy có loại sản phẩm là "Điện thoại" (như Redmi Note 11, Redmi Note 12, Xiaomi 13 Pro). Tuyệt đối không được lấy mẫu "Phụ kiện" (như Sạc nhanh Xiaomi 33W) để giới thiệu làm điện thoại!
+           - Khi ghép thẻ HTML sản phẩm, bắt buộc phải đối chiếu khớp đúng 100% giữa Tên sản phẩm và Ảnh đại diện (anh_dai_dien) của chính sản phẩm đó. Tuyệt đối không lấy ảnh của cục sạc gán cho điện thoại và ngược lại! BẮT BUỘC sao chép chính xác 100% đường dẫn ảnh trong ngữ cảnh bao gồm cả tiền tố "images/products/" (Ví dụ: "images/products/product-1766470093003-131484230.webp", không tự sáng tạo ra tên khác). Khi thay thế biến [[Anh]], [[Ten_san_pham]], [[Gia]], [[ID]], [[Cau_hinh]] trong HTML template, hãy thay bằng dữ liệu thật từ Context.
+
+        7. GUARDRAILS (RẤT QUAN TRỌNG):
+           - Bạn CHỈ TƯ VẤN về CÔNG NGHỆ, ĐIỆN THOẠI, LAPTOP, PHỤ KIỆN, và DỊCH VỤ CỦA CỬA HÀNG.
+           - Nếu khách hàng hỏi những câu hỏi ngoài lề (ví dụ: chính trị, tôn giáo, nấu ăn, thời tiết, giải toán, code...), bạn PHẢI TỪ CHỐI LỊCH SỰ.
+           - Câu trả lời mẫu: "Dạ, em là trợ lý AI của QuangHưng Mobile, em chỉ chuyên tư vấn về các sản phẩm công nghệ như điện thoại, phụ kiện thôi ạ. Anh/chị có đang quan tâm đến dòng smartphone nào không, em hỗ trợ mình nhé!"
+
+        <Lịch sử trò chuyện gần nhất>
+        {chat_history}
+        </Lịch sử trò chuyện gần nhất>
+
+        <Thông tin sản phẩm & Tri thức (RAG Context)>
+        {{context}}
+        </Thông tin sản phẩm & Tri thức (RAG Context)>
+        
+        Câu hỏi của khách hàng: {{question}}
+        
+        Hãy đưa ra câu trả lời thuyết phục, thông minh và đậm chất tư vấn bán hàng chuyên nghiệp:
+        """
+        prompt = PromptTemplate(
+            template=system_template,
+            input_variables=["context", "question"]
+        )
+
+        # [FIX HALLUCINATION] Thay RetrievalQA bằng manual similarity_search + context filtering
+        # Lý do: RetrievalQA trả về các document Chroma gần nhất theo embedding,
+        # nhưng không lọc theo giá/brand → LLM nhận iPhone 30tr cùng Redmi 3.9tr
+        # → nhầm giá Redmi gán cho iPhone → hallucination.
+        try:
+            import re as _re
+            # Lấy nhiều docs hơn (k=6) để có pool rộng hơn cho filtering
+            raw_docs = self.vectorstore.similarity_search(standalone_question, k=6)
+            
+            # Phân tích brand và price constraint từ câu hỏi gốc
+            price_constraint = parse_price_constraint(question)
+            
+            # Detect brand từ câu hỏi
+            q_lower = question.lower()
+            brand_map_local = {
+                'iphone': 'Apple', 'apple': 'Apple', 'ip': 'Apple',
+                'samsung': 'Samsung', 'galaxy': 'Samsung',
+                'xiaomi': 'Xiaomi', 'redmi': 'Xiaomi', 'poco': 'Xiaomi',
+                'oppo': 'Oppo', 'vivo': 'Vivo', 'realme': 'Realme',
+                'sony': 'Sony', 'nokia': 'Nokia', 'huawei': 'Huawei',
+                'honor': 'Honor', 'google': 'Google', 'pixel': 'Google',
+                'asus': 'Asus', 'rog': 'Asus', 'tecno': 'Tecno'
+            }
+            detected_brand = None
+            for kw, br in brand_map_local.items():
+                if kw in q_lower:
+                    detected_brand = br
+                    break
+            
+            # Lọc context: loại bỏ sản phẩm không phù hợp
+            filtered_docs = []
+            for doc in raw_docs:
+                meta = doc.metadata or {}
+                doc_type = meta.get('type', '')
+                
+                # Giữ nguyên tất cả knowledge docs (chính sách, FAQ)
+                if doc_type == 'knowledge':
+                    filtered_docs.append(doc)
+                    continue
+                
+                # Với product docs: lọc theo price constraint nếu có
+                doc_price = meta.get('gia', 0)
+                doc_brand = (meta.get('ten_hang') or '').strip()
+                
+                if price_constraint and doc_type == 'product':
+                    op, limit_val = price_constraint
+                    if op == 'max' and doc_price > limit_val:
+                        # Sản phẩm vượt ngân sách → loại bỏ
+                        print(f"[RAG FILTER] Loại bỏ '{meta.get('ten_sp', '?')}' giá {doc_price} > budget {limit_val}")
+                        continue
+                    elif op == 'min' and doc_price < limit_val:
+                        print(f"[RAG FILTER] Loại bỏ '{meta.get('ten_sp', '?')}' giá {doc_price} < min {limit_val}")
+                        continue
+                
+                filtered_docs.append(doc)
+            
+            # Nếu lọc xong không còn product nào → giữ tất cả để LLM tự trả lời "không có"
+            has_product = any((d.metadata or {}).get('type') == 'product' for d in filtered_docs)
+            if not has_product:
+                # Giữ knowledge docs + thêm lại tối đa 2 product rẻ nhất từ raw_docs (khác brand nếu có)
+                product_docs_sorted = sorted(
+                    [d for d in raw_docs if (d.metadata or {}).get('type') == 'product'],
+                    key=lambda d: (d.metadata or {}).get('gia', float('inf'))
+                )
+                # Nếu user hỏi brand cụ thể, chỉ lấy sản phẩm hãng KHÁC làm alternative
+                if detected_brand:
+                    alt_docs = [d for d in product_docs_sorted if (d.metadata or {}).get('ten_hang', '') != detected_brand]
+                    filtered_docs.extend(alt_docs[:2])
+                else:
+                    filtered_docs.extend(product_docs_sorted[:2])
+            
+            # Ghép context text từ filtered docs
+            context_text = "\n\n".join(doc.page_content for doc in filtered_docs)
+            
+            # Gọi LLM với context đã lọc
+            final_prompt = prompt.format(context=context_text, question=question)
+            result = self.llm.invoke(final_prompt)
+            return self._validate_response_product_ids(result.content)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return f"Xin lỗi, tôi gặp chút khó khăn trong việc tổng hợp thông tin: {str(e)}"
+
+    def _get_general_knowledge(self) -> str:
+        """Lấy kiến thức chung từ bảng chatbot_knowledge - có RAM cache 5 phút"""
+        import time
+        now = time.time()
+        
+        # Trả về cache nếu còn hiệu lực
+        if self._knowledge_cache is not None and (now - self._knowledge_cache_time) < self._KNOWLEDGE_CACHE_TTL:
+            print("[CACHE HIT] Returning knowledge from RAM cache")
+            return self._knowledge_cache
+        
+        # Cache hết hạn hoặc chưa có -> query MySQL
+        print("[CACHE MISS] Query MySQL chatbot_knowledge...")
+        try:
+            conn = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME)
+            cursor = conn.cursor(dictionary=True)
+            # Chỉ lấy các thông tin cốt lõi bắt buộc đưa vào Prompt hệ thống. Các chính sách chi tiết khác sẽ được lấy qua RAG ChromaDB khi cần thiết.
+            cursor.execute("SELECT title, content FROM chatbot_knowledge WHERE is_active = 1 AND title IN ('Địa chỉ cửa hàng', 'Giờ làm việc', 'Hotline liên hệ', 'Giới thiệu cửa hàng')")
+            rows = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            if rows:
+                knowledge = "\n<Kiến thức chung cửa hàng>\nĐây là những thông tin bổ sung về cửa hàng, bạn CÓ THỂ sử dụng để trả lời tự nhiên nếu khách hỏi:\n"
+                for r in rows:
+                    t = str(r['title']).replace("{", "{{").replace("}", "}}")
+                    c = str(r['content']).replace("{", "{{").replace("}", "}}")
+                    knowledge += f"- {t}: {c}\n"
+                knowledge += "</Kiến thức chung cửa hàng>\n"
+                # Lưu vào cache
+                self._knowledge_cache = knowledge
+                self._knowledge_cache_time = now
+                return knowledge
+            self._knowledge_cache = ""
+            self._knowledge_cache_time = now
+            return ""
+        except Exception as e:
+            print(f"Error fetching knowledge: {e}")
+            return self._knowledge_cache or ""
+
+    def _get_db_product_signature(self):
+        """Trả về set (ma_sp, so_luong_ton) — checksum SP đang bán trong MySQL.
+        Dùng để phát hiện vectorstore Chroma lệch DB (SP đã xoá/hết hàng nhưng vẫn ở vector)."""
+        try:
+            conn = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME)
+            cursor = conn.cursor()
+            cursor.execute("SELECT ma_sp, so_luong_ton FROM san_pham WHERE so_luong_ton > 0")
+            rows = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            return {(str(r[0]), int(r[1])) for r in rows}
+        except Exception as e:
+            print(f"[Freshness] Error reading DB signature: {e}")
+            return None
+
+    def _get_vectorstore_product_signature(self):
+        """Trả về set (ma_sp, so_luong_ton_at_index_time) trong Chroma. Lưu ý: vector không có so_luong_ton
+        nên ta chỉ so set ma_sp; so_luong_ton sẽ luôn là -1 để so sánh nhanh."""
+        try:
+            if not self.vectorstore:
+                return set()
+            collection = self.vectorstore._collection
+            results = collection.get(where={"type": "product"})
+            metadatas = results.get("metadatas", []) or []
+            return {(str(m.get("ma_sp")), -1) for m in metadatas if m.get("ma_sp") is not None}
+        except Exception as e:
+            print(f"[Freshness] Error reading vectorstore signature: {e}")
+            return None
+
+    def _ensure_vectorstore_fresh(self):
+        """Auto rebuild vectorstore nếu set ma_sp trong Chroma ≠ set ma_sp trong DB.
+        Chạy tối đa 1 lần / _FRESHNESS_CHECK_TTL giây để không cản chat realtime."""
+        import time
+        now = time.time()
+        if (now - self._last_freshness_check) < self._FRESHNESS_CHECK_TTL:
+            return
+        self._last_freshness_check = now
+
+        db_sig = self._get_db_product_signature()
+        if db_sig is None:
+            return  # DB lỗi → bỏ qua, lần sau thử lại
+        vec_sig = self._get_vectorstore_product_signature()
+        if vec_sig is None:
+            return
+
+        db_ids = {sp for sp, _ in db_sig}
+        vec_ids = {sp for sp, _ in vec_sig}
+        if db_ids != vec_ids:
+            missing_in_vec = db_ids - vec_ids
+            stale_in_vec = vec_ids - db_ids
+            print(f"[Freshness] Vectorstore lệch DB: thiếu {len(missing_in_vec)} SP, dư {len(stale_in_vec)} SP đã xoá → rebuild")
+            try:
+                self.reload_vectorstore()
+            except Exception as e:
+                print(f"[Freshness] reload_vectorstore lỗi: {e}")
+
+    def _get_valid_product_ids(self):
+        """ID các SP đang còn bán (so_luong_ton > 0) — dùng cross-check response LLM."""
+        sig = self._get_db_product_signature()
+        if sig is None:
+            return None  # signal: DB lỗi, không lọc
+        return {sp for sp, _ in sig}
+
+    def _validate_response_product_ids(self, response_text: str) -> str:
+        """Quét product-detail.html?id=<ID> trong response. Nếu ID không có trong DB,
+        đã hết hàng, bị LLM đổi tên sai lệch, hoặc bị LLM bịa giá khác DB,
+        thay khối <div> bao quanh SP đó bằng câu xin lỗi để tránh 'bịa SP'."""
+        if not response_text:
+            return response_text
+        import re
+        
+        # Lấy danh sách tên + giá sản phẩm trong DB để cross-check
+        db_products = {}  # {id_str: {'ten_sp': ..., 'gia': ...}}
+        try:
+            conn = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME)
+            cursor = conn.cursor()
+            cursor.execute("SELECT ma_sp, ten_sp, gia FROM san_pham WHERE so_luong_ton > 0")
+            for r in cursor.fetchall():
+                db_products[str(r[0])] = {'ten_sp': str(r[1]), 'gia': float(r[2]) if r[2] else 0}
+            cursor.close()
+            conn.close()
+        except Exception as e:
+            print(f"[Validate] DB connect error: {e}")
+            return response_text  # DB lỗi -> trả về nguyên bản (fail-open)
+
+        id_pattern = re.compile(r'product-detail\.html\?id=([^"\'\s&<>]+)', re.IGNORECASE)
+        mentioned_ids = set(id_pattern.findall(response_text))
+        if not mentioned_ids:
+            return response_text
+
+        # Helper: trích xuất từ khóa lõi từ tên sản phẩm để so sánh
+        def get_core_words(s):
+            import unicodedata
+            s = s.lower()
+            s = ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
+            s = s.replace('đ', 'd').replace('Đ', 'd')
+            words = set(re.findall(r'\b\w+\b', s))
+            common = {'gb', 'ram', 'tb', '5g', '4g', 'lte', 'pro', 'max', 'plus', 'cu', 'moi', 'chinh', 'hang', 'viet', 'nam', 'mau', 'sac'}
+            return words - common
+
+        # Helper: trích xuất số tiền từ chuỗi giá (ví dụ: "3.990.000đ" → 3990000)
+        def extract_price_digits(price_str):
+            digits = re.sub(r'[^\d]', '', price_str)
+            return int(digits) if digits else 0
+
+        invalid_ids = set()
+        for mid in mentioned_ids:
+            mid_str = str(mid)
+            if mid_str not in db_products:
+                invalid_ids.add(mid)
+                continue
+            
+            db_info = db_products[mid_str]
+            db_name = db_info['ten_sp']
+            db_price = db_info['gia']
+                
+            # Trích xuất khối HTML chứa sản phẩm này (hỗ trợ cả HTML class-based mới)
+            esc = re.escape(mid_str)
+            # Pattern cho cấu trúc .ai-product-card mới
+            block_pattern = re.compile(
+                r'<div[^>]*class="ai-product-card"[^>]*>[\s\S]*?product-detail\.html\?id=' + esc + r'[\s\S]*?</div>\s*</div>\s*</div>',
+                re.IGNORECASE
+            )
+            match_block = block_pattern.search(response_text)
+            
+            # Fallback: pattern cũ cho cấu trúc inline style
+            if not match_block:
+                block_pattern_old = re.compile(
+                    r'<div\b[^>]*>(?:(?!<div\b)[\s\S])*?product-detail\.html\?id=' + esc + r'[\s\S]*?</div>\s*</div>\s*</div>',
+                    re.IGNORECASE
+                )
+                match_block = block_pattern_old.search(response_text)
+            
+            if match_block:
+                block_content = match_block.group(0)
+                
+                # --- Kiểm tra TÊN sản phẩm ---
+                # Pattern mới: <strong class="ai-product-name">Tên SP</strong>
+                name_pattern = re.compile(
+                    r'<strong[^>]*class="ai-product-name"[^>]*>([^<]+)</strong>',
+                    re.IGNORECASE
+                )
+                match_name = name_pattern.search(block_content)
+                
+                # Fallback: pattern cũ inline style
+                if not match_name:
+                    name_pattern_old = re.compile(
+                        r'font-size:16px;\s*font-weight:bold;[^>]*>([^<]+)</div>',
+                        re.IGNORECASE
+                    )
+                    match_name = name_pattern_old.search(block_content)
+                
+                # Fallback 2: bất kỳ <strong> nào trong block
+                if not match_name:
+                    name_pattern_generic = re.compile(r'<strong[^>]*>([^<]+)</strong>', re.IGNORECASE)
+                    match_name = name_pattern_generic.search(block_content)
+                
+                if match_name:
+                    rendered_name = match_name.group(1).strip()
+                    db_core = get_core_words(db_name)
+                    rendered_core = get_core_words(rendered_name)
+                    if not db_core.intersection(rendered_core):
+                        print(f"[Validate] Phát hiện lệch tên sản phẩm cho ID {mid_str}: DB là '{db_name}' nhưng LLM in ra '{rendered_name}' -> Đánh dấu không hợp lệ")
+                        invalid_ids.add(mid)
+                        continue  # Đã invalid, không cần kiểm tra giá
+                
+                # --- Kiểm tra GIÁ sản phẩm (CHỐNG BỊA GIÁ) ---
+                # Pattern mới: <span class="ai-product-price">3.990.000đ</span>
+                price_pattern = re.compile(
+                    r'<span[^>]*class="ai-product-price"[^>]*>([^<]+)</span>',
+                    re.IGNORECASE
+                )
+                match_price = price_pattern.search(block_content)
+                
+                # Fallback: tìm pattern "Giá: XXXđ" trong block
+                if not match_price:
+                    price_pattern_fallback = re.compile(
+                        r'Giá[:\s]*([\d.,]+\s*(?:đ|VNĐ|vnđ|dong|đồng))',
+                        re.IGNORECASE
+                    )
+                    match_price = price_pattern_fallback.search(block_content)
+                
+                if match_price and db_price > 0:
+                    rendered_price = extract_price_digits(match_price.group(1))
+                    # So sánh: cho phép sai lệch tối đa 1% (do làm tròn)
+                    if rendered_price > 0:
+                        deviation = abs(rendered_price - db_price) / db_price
+                        if deviation > 0.01:  # Sai lệch > 1%
+                            print(f"[Validate] Phát hiện BỊA GIÁ cho ID {mid_str} ('{db_name}'): DB giá={int(db_price)}, LLM in ra={rendered_price} (lệch {deviation*100:.1f}%) -> Đánh dấu không hợp lệ")
+                            invalid_ids.add(mid)
+                            continue
+
+        if not invalid_ids:
+            return response_text
+
+        print(f"[Validate] Các ID không hợp lệ: {invalid_ids} -> Loại bỏ khỏi response")
+
+        cleaned = response_text
+        for invalid in invalid_ids:
+            esc = re.escape(str(invalid))
+            # Pattern mới: class-based card
+            block_pattern_new = re.compile(
+                r'<div[^>]*class="ai-product-card"[^>]*>[\s\S]*?product-detail\.html\?id=' + esc + r'[\s\S]*?</div>\s*</div>\s*</div>',
+                re.IGNORECASE
+            )
+            cleaned, n = block_pattern_new.subn('', cleaned)
+            
+            # Fallback: pattern cũ
+            if n == 0:
+                block_pattern_old = re.compile(
+                    r'<div\b[^>]*>(?:(?!<div\b)[\s\S])*?product-detail\.html\?id=' + esc + r'[\s\S]*?</div>\s*</div>\s*</div>',
+                    re.IGNORECASE
+                )
+                cleaned, n = block_pattern_old.subn('', cleaned)
+            
+            if n == 0:
+                cleaned = re.sub(
+                    r'<a[^>]*product-detail\.html\?id=' + esc + r'[^>]*>[\s\S]*?</a>',
+                    '', cleaned, flags=re.IGNORECASE
+                )
+
+        # Nếu sau khi cắt response trống/ngắn -> trả thông báo lịch sự
+        plain = re.sub(r'<[^>]+>', '', cleaned).strip()
+        if len(plain) < 30:
+            return ('Dạ, hiện tại cửa hàng bên em không có mẫu sản phẩm nào như anh/chị vừa hỏi ạ. '
+                    'Anh/chị cho em biết thêm về tầm giá hoặc nhu cầu sử dụng (chơi game, chụp ảnh, pin trâu...) '
+                    'để em tư vấn các mẫu đang có sẵn phù hợp nhất nhé!')
+        return cleaned
+
+    def query_brand_products(self, brand: str, question: str, history: List[Dict] = None, interests: List[str] = None) -> str:
+        """Truy vấn SQL trực tiếp theo hãng sản phẩm"""
+        try:
+            conn = mysql.connector.connect(
+                host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME
+            )
+            cursor = conn.cursor(dictionary=True)
+            
+            # Phân tích ràng buộc giá từ câu hỏi
+            price_constraint = parse_price_constraint(question)
+            query_cond = ""
+            params = [f"%{brand.lower()}%"]
+            if price_constraint:
+                op, limit_val = price_constraint
+                if op == "max":
+                    query_cond = "AND sp.gia <= %s"
+                    params.append(limit_val)
+                elif op == "min":
+                    query_cond = "AND sp.gia >= %s"
+                    params.append(limit_val)
+            
+            query = f"""
+                SELECT sp.ma_sp, sp.ten_sp, sp.gia, sp.anh_dai_dien, sp.bo_nho,
+                       hsx.ten_hang,
+                       ch.ram, ch.chip, ch.pin, ch.man_hinh, ch.camera
+                FROM san_pham sp
+                LEFT JOIN hang_san_xuat hsx ON sp.ma_hang = hsx.ma_hang
+                LEFT JOIN cau_hinh ch ON sp.ma_sp = ch.ma_sp
+                WHERE sp.so_luong_ton > 0 AND LOWER(hsx.ten_hang) LIKE %s {query_cond}
+                ORDER BY sp.gia ASC
+                LIMIT 40
+            """
+            cursor.execute(query, tuple(params))
+            products = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            
+            if not products:
+                return None  # Return None to fallback to semantic search
+            
+            # Lọc bỏ phụ kiện nếu người dùng không hỏi về phụ kiện
+            user_asked_for_accessory = is_accessory(question)
+            filtered_products = []
+            for p in products:
+                if not user_asked_for_accessory and is_accessory(p['ten_sp']):
+                    continue
+                filtered_products.append(p)
+            
+            # Slice lấy 8 sản phẩm phù hợp nhất
+            products = filtered_products[:8]
+            
+            if not products:
+                return None  # Fallback to semantic search if accessories filtered all out
+            
+            # Build product context for LLM
+            product_context = ""
+            for p in products:
+                price_formatted = f"{int(p['gia']):,}".replace(",", ".") + "đ" if p['gia'] else "N/A"
+                price_raw = int(p['gia']) if p['gia'] else 0
+                product_context += f"""\nSản phẩm: {p['ten_sp']}
+  Hãng: {p['ten_hang'] or 'N/A'}
+  Danh mục: Điện thoại
+  Giá: {price_formatted}
+  Giá số: {price_raw}
+  Bộ nhớ: {p['bo_nho'] or 'N/A'}
+  ID: {p['ma_sp']}
+  Ảnh: {p['anh_dai_dien'] or ''}"""
+                if p.get('ram'):
+                    product_context += f"\n  Cấu hình: RAM {p['ram']}, Chip {p['chip']}, Pin {p['pin']}, Màn hình {p['man_hinh']}, Camera {p['camera']}"
+            
+            total_count = len(products)
+            
+            # Lấy kiến thức chung
+            general_knowledge = self._get_general_knowledge()
+            
+            # Format history
+            chat_history = ""
+            if history:
+                for msg in history[-5:]:
+                    role = "Khách hàng" if msg.get("role") == "user" else "Chatbot"
+                    chat_history += f"{role}: {msg.get('content')}\n"
+            
+            # Cá nhân hóa
+            interests_instruction = ""
+            if interests and len(interests) > 0:
+                interests_str = ", ".join(interests)
+                interests_instruction = f"LƯU Ý CÁ NHÂN HÓA: Khách hàng này có sở thích: {interests_str}. Hãy ưu tiên phân tích sản phẩm theo góc độ sở thích này."
+            
+            system_prompt = f"""Bạn là Chuyên gia Tư vấn Công nghệ của QuangHưng Mobile.
+ 
+ DƯỚI ĐÂY LÀ DANH SÁCH CHÍNH XÁC {total_count} SẢN PHẨM CỦA HÃNG {brand.upper()} HIỆN CÓ TẠI CỬA HÀNG:
+ {product_context}
+ 
+ {general_knowledge}
+ {interests_instruction}
+ 
+ QUY TẮC BẮT BUỘC:
+ 1. Trả lời CHÍNH XÁC dựa trên danh sách sản phẩm bên trên. Có tổng cộng {total_count} sản phẩm {brand}.
+ 2. KHÔNG BỊA ĐẶT sản phẩm không có trong danh sách.
+ 3. BẠN BẮT BUỘC PHẢI DÙNG HTML ĐỂ HIỂN THỊ SẢN PHẨM. Mỗi khi nói về một sản phẩm, BẮT BUỘC dùng thẻ HTML:
+     <div class="ai-product-card">
+       <img src="[[Anh]]" alt="[[Ten_san_pham]]" class="ai-product-image">
+       <div class="ai-product-info">
+         <strong class="ai-product-name">[[Ten_san_pham]]</strong>
+         <div class="ai-product-price-row">Giá: <span class="ai-product-price">[[Gia]]</span></div>
+         <div class="ai-product-config">[[Cau_hinh]]</div>
+         <div class="ai-product-actions">
+           <a href="product-detail.html?id=[[ID]]" class="ai-product-btn-detail">Xem chi tiết</a>
+           <button class="chatbot-add-cart-btn ai-product-btn-cart" data-pid="[[ID]]" data-pname="[[Ten_san_pham]]" data-pprice="[[Gia]]" data-pimage="[[Anh]]"><i class="fas fa-cart-plus"></i> Thêm</button>
+         </div>
+       </div>
+     </div>
+    (Trong đó, [[Anh]] BẮT BUỘC phải SAO CHÉP NGUYÊN VĂN 100% đường dẫn ảnh từ trường "Ảnh" được cung cấp trong danh sách sản phẩm bên trên (Ví dụ: "images/products/product-1766383708166-283137270.webp" - BẮT BUỘC copy nguyên cả đường dẫn bao gồm "images/products/...", KHÔNG tự chế tên file, KHÔNG bỏ đuôi .webp/.jpg/.png/.avif, KHÔNG bỏ phần "images/products/" ở đầu). Thay thế [[Ten_san_pham]], [[Gia]], [[ID]] bằng thông tin tương ứng. [[Cau_hinh]] là chuỗi tóm tắt thông số cấu hình như RAM, Chip, Pin, Màn hình, Camera).
+ 4. TUYỆT ĐỐI NGHIÊM CẤM sử dụng bất kỳ ký hiệu Markdown nào (như `**`, `*`, `-`, `#`, ` ``` `). Chỉ sử dụng HTML cơ bản như `<br>`, `<strong>`, `<b>`, `<ul>`, `<li>` và các thẻ `<div>` để dựng khung sản phẩm. Bất kỳ ký tự markdown nào rò rỉ đều bị coi là lỗi nghiêm trọng.
+ 5. Xưng hô lịch sự: "Dạ", "em", "anh/chị".
+ 6. So sánh ưu/nhược điểm nếu có nhiều sản phẩm.
+ 7. Cuối câu trả lời, đưa ra gợi ý tiếp theo.
+ 8. GUARDRAILS: CHỈ TƯ VẤN về CÔNG NGHỆ, ĐIỆN THOẠI, LAPTOP, PHỤ KIỆN, và DỊCH VỤ CỦA CỬA HÀNG. TỪ CHỐI LỊCH SỰ nếu hỏi ngoài lề. Nếu câu hỏi về chính sách chung nằm ngoài danh sách sản phẩm, hãy hỗ trợ dựa trên kiến thức chung hiện có và hướng dẫn khách hàng liên hệ trực tiếp Hotline/Zalo của QuangHưng Mobile thay vì báo hết hàng.
+ 9. XỬ LÝ KHI GIÁ KHÔNG PHÙ HỢP: Nếu khách hàng hỏi về phân khúc giá rẻ hoặc có ngân sách thấp mà các sản phẩm của hãng {brand} này đều có giá cao vượt quá ngân sách của họ, bạn cần phải thông báo lịch sự là dòng máy này của hãng {brand} hiện tại không có phân khúc giá rẻ đó. Hướng dẫn khách hàng tham khảo các hãng khác (như Samsung, Xiaomi) có phân khúc giá rẻ tốt hơn và khuyên họ liên hệ Hotline 0355745120 hoặc Zalo để được nhân viên hỗ trợ.
+ 
+ Lịch sử trò chuyện:
+ {chat_history}
+ 
+ Câu hỏi của khách hàng: {question}
+ 
+ Hãy đưa ra câu trả lời thuyết phục, thông minh và đậm chất tư vấn bán hàng chuyên nghiệp:"""
+            
+            response = self.llm.invoke(system_prompt)
+            return self._validate_response_product_ids(response.content)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return None
+
+    def query_admin_kpi(self, question: str) -> str:
+        """Sử dụng Text-to-SQL báo cáo nâng cao dành cho Admin"""
+        chain = create_sql_query_chain(self.llm, self.db)
+        
+        try:
+            # 1. Sinh câu lệnh SQL
+            sql_query = chain.invoke({"question": question + " Trả về kết quả bằng tiếng Việt."})
+            
+            # Làm sạch SQL string
+            if "```sql" in sql_query:
+                sql_query = sql_query.split("```sql")[1].split("```")[0].strip()
+            elif "```" in sql_query:
+                sql_query = sql_query.split("```")[1].strip()
+                
+            import re
+            parts = re.split(r'(?:sql\s*query|sqlquery|query|question)\s*:', sql_query, flags=re.IGNORECASE)
+            if len(parts) > 1:
+                sql_query = parts[-1].strip()
+                
+            match = re.search(r'\b(SELECT|SHOW|WITH|DESCRIBE)\b', sql_query, re.IGNORECASE)
+            if match:
+                sql_query = sql_query[match.start():].strip()
+                
+            sql_query = sql_query.split(";")[0].strip()
+                
+            # Kiểm tra an toàn SQL
+            forbidden_keywords = ["DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE", "GRANT", "REVOKE"]
+            upper_query = sql_query.upper()
+            if any(f" {keyword} " in f" {upper_query} " or upper_query.startswith(f"{keyword} ") for keyword in forbidden_keywords):
+                return "Xin lỗi, tôi phát hiện hành động truy vấn nguy hại CSDL nên đã tự động chặn lại để bảo mật."
+                
+            # 2. Thực thi truy vấn
+            result = self.db.run(sql_query)
+            
+            # 3. Sử dụng Prompt đặc biệt dành cho Admin để render HTML Table báo cáo
+            prompt = PromptTemplate.from_template(
+                "Bạn là Trợ lý Phân tích Dữ liệu (BI Assistant) cao cấp của QuangHưng Mobile.\n"
+                "Nhiệm vụ: báo cáo số liệu chính xác, chuyên nghiệp cho Quản trị viên.\n\n"
+                "Câu hỏi quản trị: {question}\n"
+                "Kết quả truy vấn CSDL (số liệu chính xác 100%): {result}\n\n"
+                "=== QUY TẮC BẮT BUỘC (PHẢI TUÂN THỦ 100%) ===\n"
+                "1. TUYỆT ĐỐI CẤM dùng Markdown. KHÔNG dùng ký tự: ** * | --- # > ` ```\n"
+                "   Chỉ dùng HTML thuần: <br>, <strong>, <em>, <span>, <div>, <table>, <tr>, <th>, <td>, <thead>, <tbody>.\n"
+                "2. Khi có danh sách hoặc số liệu, BẮT BUỘC render HTML Table. Đây là mẫu CHÍNH XÁC phải tuân theo:\n\n"
+                '<table style="width:100%; border-collapse:collapse; margin:10px 0; font-size:13px; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">\n'
+                "  <thead>\n"
+                '    <tr style="background:#1e3c72; color:#fff;">\n'
+                '      <th style="padding:10px 12px; text-align:left;">Tên sản phẩm</th>\n'
+                '      <th style="padding:10px 12px; text-align:center;">Số lượng tồn</th>\n'
+                '      <th style="padding:10px 12px; text-align:right;">Giá bán</th>\n'
+                "    </tr>\n"
+                "  </thead>\n"
+                "  <tbody>\n"
+                '    <tr style="border-bottom:1px solid #eee;">\n'
+                '      <td style="padding:10px 12px;">iPhone 15 Pro Max</td>\n'
+                '      <td style="padding:10px 12px; text-align:center; color:#e53935; font-weight:bold;">2</td>\n'
+                '      <td style="padding:10px 12px; text-align:right;">29.990.000đ</td>\n'
+                "    </tr>\n"
+                "  </tbody>\n"
+                "</table>\n\n"
+                "3. Bảng phải có ĐẦY ĐỦ các cột dữ liệu liên quan (tên SP, số lượng, giá, doanh thu... tuỳ ngữ cảnh). KHÔNG chỉ hiện 1 cột tên.\n"
+                "4. Tiêu đề báo cáo dùng <strong> hoặc <span style='font-size:16px; font-weight:bold;'>. KHÔNG dùng **.\n"
+                "5. Số tiền định dạng: 29.990.000đ (dùng dấu chấm phân cách hàng nghìn).\n"
+                "6. Cuối báo cáo, đưa nhận xét ngắn gọn bằng HTML (dùng <br> xuống dòng).\n"
+                "7. Báo cáo bằng tiếng Việt, trang trọng, chuyên nghiệp.\n\n"
+                "Báo cáo quản trị:"
+            )
+            answer_chain = prompt | self.llm
+            final_answer = answer_chain.invoke({"question": question, "result": result})
+            return final_answer.content
+        except Exception as e:
+            return f"Lỗi truy vấn báo cáo KPI: {str(e)}"
+
+    def process_admin_chat(self, message: str, history: List[Dict] = None) -> str:
+        """Bộ định tuyến dành riêng cho Admin: Định tuyến giữa SQL báo cáo và Semantic FAQ"""
+        msg_lower = message.lower()
+        is_bi_query = any(kw in msg_lower for kw in [
+            'doanh thu', 'bán được', 'đơn hàng', 'doanh số', 'tồn kho', 'hết hàng',
+            'sắp hết', 'thống kê', 'báo cáo', 'bán chạy', 'đánh giá', 'kpi', 'thu nhập'
+        ])
+        
+        if is_bi_query:
+            print("=> Routing to Admin BI/SQL engine")
+            return self.query_admin_kpi(message)
+        else:
+            print("=> Routing to Semantic/RAG engine for Admin FAQ")
+            return self.query_semantic(message, history)
+
+    def process_chat(self, message: str, history: List[Dict] = None, is_admin: bool = False, user_id: Any = None, interests: List[str] = None) -> str:
+        """Router: Phân loại câu hỏi để dùng Brand SQL, RAG hay Text-to-SQL"""
+        try:
+            self._ensure_vectorstore_fresh()
+        except Exception as e:
+            print(f"[Freshness] Check failed: {e}")
+        msg_lower = message.lower()
+        
+        # 1. Detect brand-specific queries
+        brand_map = {
+            'vivo': 'Vivo', 'samsung': 'Samsung', 'galaxy': 'Samsung',
+            'iphone': 'Apple', 'apple': 'Apple', 'xiaomi': 'Xiaomi',
+            'redmi': 'Xiaomi', 'poco': 'Xiaomi', 'oppo': 'Oppo',
+            'realme': 'Realme', 'sony': 'Sony', 'xperia': 'Sony',
+            'google': 'Google', 'pixel': 'Google', 'asus': 'Asus',
+            'rog': 'Asus', 'tecno': 'Tecno', 'nokia': 'Nokia',
+            'huawei': 'Huawei', 'honor': 'Honor'
+        }
+        
+        detected_brand = None
+        for keyword, brand in brand_map.items():
+            if keyword in msg_lower:
+                detected_brand = brand
+                break
+        
+        # Detect "all products" queries
+        is_listing_query = any(kw in msg_lower for kw in [
+            'tất cả', 'tat ca', 'tổng hợp', 'tong hop', 'liệt kê', 'liet ke',
+            'danh sách', 'danh sach', 'có mấy', 'co may', 'bao nhiêu', 'bao nhieu',
+            'những', 'nhung', 'các mẫu', 'cac mau', 'các dòng', 'cac dong',
+            'có gì', 'co gi', 'có những', 'cho xem', 'show me'
+        ])
+        
+        # If brand detected and it's a listing/product query, use direct SQL
+        if detected_brand and (is_listing_query or any(kw in msg_lower for kw in [
+            'điện thoại', 'dien thoai', 'máy', 'may', 'mẫu', 'mau', 'dòng', 'dong',
+            'giá', 'gia', 'tư vấn', 'tu van', 'gợi ý', 'goi y', 'nào', 'nao'
+        ])):
+            print(f"=> Routing to Brand SQL engine for brand: {detected_brand}")
+            result = self.query_brand_products(detected_brand, message, history, interests)
+            if result:
+                return result
+            print(f"Brand SQL returned nothing, falling back to Semantic/RAG")
+        
+        # 2. KPI / thống kê queries (CHỈ CHO PHÉP NẾU LÀ ADMIN)
+        if not is_admin:
+            print("=> Routing to Semantic/RAG engine (Public user forced)")
+            return self.query_semantic(message, history, interests)
+            
+        router_prompt = PromptTemplate.from_template(
+            "Câu hỏi sau đây của người dùng thuộc loại nào?\n"
+            "Câu hỏi: {question}\n\n"
+            "Chọn 1 trong 2 loại sau và chỉ trả về tên loại, không giải thích:\n"
+            "1. KPI (nếu hỏi về số lượng bán, doanh thu, đơn hàng, thống kê, đánh giá)\n"
+            "2. SEMANTIC (nếu hỏi về tính năng sản phẩm, cấu hình, tư vấn mua máy, tìm kiếm điện thoại)\n"
+            "Loại:"
+        )
+        
+        router_chain = router_prompt | self.llm
+        try:
+            intent = router_chain.invoke({"question": message}).content.strip().upper()
+        except Exception as e:
+            print(f"Router chain failed: {e}. Defaulting to SEMANTIC.")
+            intent = "SEMANTIC"
+        
+        if "KPI" in intent:
+            print("=> Routing to KPI/SQL engine")
+            return self.query_kpi(message)
+        else:
+            print("=> Routing to Semantic/RAG engine")
+            return self.query_semantic(message, history, interests)
+
+# Khởi tạo singleton instance
+rag_engine = None
+
+def get_rag_engine():
+    global rag_engine
+    if rag_engine is None:
+        rag_engine = RAGEngine()
+    return rag_engine

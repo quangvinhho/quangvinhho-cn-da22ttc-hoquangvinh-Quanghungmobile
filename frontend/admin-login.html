@@ -119,6 +119,12 @@
           <span>Đăng nhập với Google</span>
         </button>
 
+        <div class="mt-6 text-center">
+          <a href="employee-login.html" class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+            Bạn là nhân viên? Đăng nhập tại Cổng nhân viên <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+
         <div class="mt-10 p-4 bg-amber-50 rounded-xl border border-amber-100 flex items-start gap-3">
           <i class="fas fa-shield-halved text-amber-500 mt-0.5 text-lg"></i>
           <p class="text-sm text-amber-800 font-medium leading-relaxed">
@@ -131,7 +137,7 @@
 
   <script src="js/secure-storage.js"></script>
   <script>
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = window.location.hostname === '127.0.0.1' ? 'http://127.0.0.1:3000/api' : 'http://localhost:3000/api';
 
     // Kiểm tra nếu đã đăng nhập thì chuyển đến trang admin
     document.addEventListener('DOMContentLoaded', async function() {
@@ -284,9 +290,9 @@
         if (response.ok) {
           showSuccess('Đăng nhập thành công! Đang chuyển hướng...');
           
-          // Lưu thông tin admin vào localStorage (fallback frontend)
-          localStorage.setItem('adminToken', data.token);
-          localStorage.setItem('adminData', JSON.stringify(data.admin));
+           // Lưu thông tin admin vào localStorage (fallback frontend)
+          localStorage.setItem('adminToken', data.token || (data.data ? data.data.token : '') || '');
+          localStorage.setItem('adminData', JSON.stringify(data.data));
           localStorage.setItem('isAdmin', 'true');
           localStorage.setItem('isLoggedIn', 'true');
           

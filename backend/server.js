@@ -74,6 +74,7 @@ testConnection();
     ['add_product_status', './migrations/add_product_status'],
     ['add_variant_to_cart_detail', './migrations/add_variant_to_cart_detail'],
     ['create_color_image_table', './migrations/create_color_image_table'],
+    ['create_color_storage_catalog', './migrations/create_color_storage_catalog'],
     ['add_shop_reply_to_review', './migrations/add_shop_reply_to_review'],
     ['create_review_votes',      './migrations/create_review_votes'],
     ['create_review_reports',    './migrations/create_review_reports'],
@@ -84,6 +85,7 @@ testConnection();
     ['create_shop_settings',     './migrations/create_shop_settings'],
     ['add_keywords_to_chatbot_knowledge', './migrations/add_keywords_to_chatbot_knowledge'],
     ['seed_chatbot_knowledge_20',         './migrations/seed_chatbot_knowledge_20'],
+    ['add_context_state_to_conversation', './migrations/add_context_state_to_conversation'],
     ['add_employee_details',              './migrations/add_employee_details'],
   ];
   for (const [name, mod] of steps) {
@@ -185,6 +187,7 @@ const orderRoutes = require('./routes/orders');
 const newsRoutes = require('./routes/news');
 const adminRoutes = require('./routes/admin');
 const searchRoutes = require('./routes/search');
+const posRoutes = require('./routes/pos');
 const addressRoutes = require('./routes/address');
 const notificationRoutes = require('./routes/notifications');
 const promotionRoutes = require('./routes/promotions');
@@ -193,6 +196,7 @@ const chatbotKnowledgeRoutes = require('./routes/chatbot-knowledge');
 const recommendationRoutes = require('./routes/recommendations'); // ✅ Hook Route HML
 const interestRoutes = require('./routes/interests'); // ✅ Quản lý sở thích
 const warrantyRoutes = require('./routes/warranty'); // ✅ Quản lý bảo hành
+const reportsRoutes = require('./routes/reports'); // ✅ Quản lý báo cáo doanh thu & lợi nhuận
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
@@ -202,6 +206,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/admin/pos', posRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/address', addressRoutes);
 app.use('/api/notifications', notificationRoutes);
@@ -212,6 +217,7 @@ app.use('/api/recommendations', recommendationRoutes); // ✅ Endpoint UI sử d
 app.use('/api/interests', interestRoutes); // ✅ Sở thích khách hàng
 app.use('/api/warranty', warrantyRoutes); // ✅ Quản lý bảo hành
 app.use('/api/wishlist', require('./routes/wishlist')); // ✅ SP yêu thích + auto subscribe
+app.use('/api/admin/reports', reportsRoutes); // ✅ Phân hệ Báo cáo
 
 // Health check
 app.get('/api/health', (req, res) => {

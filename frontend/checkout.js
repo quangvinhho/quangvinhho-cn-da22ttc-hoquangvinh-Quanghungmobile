@@ -1186,14 +1186,70 @@ async function showMoMoPaymentModal(orderData, paymentType = 'qr') {
   
   // PRODUCTION MODE: Gọi API MoMo thật
   try {
+    // 1. Tạo đơn hàng trong DB trước để lấy dbOrderId thực tế
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const provinceText = document.getElementById('province-text')?.textContent || '';
+    const districtText = document.getElementById('district-text')?.textContent || '';
+    const wardText = document.getElementById('ward-text')?.textContent || '';
+    const fullAddress = `${orderData.address.detail}, ${wardText}, ${districtText}, ${provinceText}`;
+    
+    const freeshipVoucherData = appliedFreeshipVoucher ? {
+      code: appliedFreeshipVoucher.code,
+      id: appliedFreeshipVoucher.id,
+      discountValue: freeshipDiscount,
+      type: 'freeship'
+    } : null;
+    
+    const discountVoucherData = appliedDiscountVoucher ? {
+      code: appliedDiscountVoucher.code,
+      id: appliedDiscountVoucher.id,
+      discountValue: percentDiscount,
+      type: appliedDiscountVoucher.discountType || 'fixed'
+    } : null;
+
+    const orderRes = await fetch(`${API_URL}/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customerId: user?.ma_kh || null,
+        customerName: orderData.customer.fullName,
+        phone: orderData.customer.phone,
+        address: fullAddress,
+        items: orderData.items,
+        subtotal: orderData.pricing.subtotal,
+        shippingFee: orderData.pricing.shippingFee,
+        discount: orderData.pricing.discount,
+        total: orderData.pricing.total,
+        paymentMethod: orderData.payment.method,
+        freeshipVoucher: freeshipVoucherData,
+        discountVoucher: discountVoucherData,
+        voucherCode: discountVoucherData?.code || freeshipVoucherData?.code || null,
+        isDeposit: false,
+        depositAmount: 0,
+        depositPercent: 0,
+        remainingAmount: 0
+      })
+    });
+
+    const orderResult = await orderRes.json();
+    if (!orderRes.ok || !orderResult.success) {
+      showQRError(orderResult.message || 'Lỗi tạo đơn hàng');
+      return;
+    }
+
+    const dbOrderId = orderResult.data.orderId;
+    orderData.dbOrderId = dbOrderId;
+    localStorage.setItem('pendingOrder', JSON.stringify(orderData));
+
+    // 2. Gọi API MoMo thật với dbOrderId dạng số
     const response = await fetch(`${API_URL}/payment/momo/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        orderId: orderData.orderId,
+        orderId: dbOrderId,
         amount: total,
         paymentType: paymentType,
-        orderInfo: `Thanh toán đơn hàng ${orderData.orderId} - QuangHưng Mobile`,
+        orderInfo: `Thanh toán đơn hàng #${dbOrderId} - QuangHưng Mobile`,
         items: orderData.items.map(item => ({
           name: item.name,
           quantity: item.quantity,
@@ -1218,7 +1274,7 @@ async function showMoMoPaymentModal(orderData, paymentType = 'qr') {
       
       qrTimeRemaining = 30 * 60;
       startQRCountdown();
-      startMoMoStatusCheck(orderData.orderId);
+      startMoMoStatusCheck(dbOrderId);
     } else {
       showQRError(result.message);
     }
@@ -1910,6 +1966,28 @@ function confirmPayment() {
 
 // ===== COMPLETE ORDER =====
 async function completeOrder(orderData) {
+  // Nếu đơn hàng đã được tạo trong DB trước đó (ví dụ qua MoMo)
+  if (orderData.dbOrderId) {
+    try {
+      if (orderData.status === 'paid') {
+        await fetch(`${API_URL}/orders/${orderData.dbOrderId}/payment`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: 'success',
+            transactionId: orderData.transactionId || null
+          })
+        });
+      }
+      clearCart();
+      window.location.href = `order-success.html?orderId=${orderData.orderId}`;
+    } catch (e) {
+      console.error('Error confirming MoMo payment:', e);
+      window.location.href = `order-success.html?orderId=${orderData.orderId}`;
+    }
+    return;
+  }
+
   // Lưu đơn hàng vào database
   try {
     const user = JSON.parse(localStorage.getItem('user') || 'null');

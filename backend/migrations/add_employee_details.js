@@ -18,7 +18,9 @@ async function run() {
       ['ngay_sinh', 'DATE NULL'],
       ['dia_chi', 'VARCHAR(255) NULL'],
       ['chuc_vu', 'VARCHAR(100) NULL'],
-      ['ngay_vao_lam', 'DATE NULL']
+      ['ngay_vao_lam', 'DATE NULL'],
+      ['cccd_truoc', 'LONGTEXT NULL'],
+      ['cccd_sau', 'LONGTEXT NULL']
     ];
 
     for (const [col, type] of colsToAdd) {
@@ -28,11 +30,9 @@ async function run() {
       }
     }
 
-    // 2. Tạo hoặc tái cấu trúc bảng face_embeddings
-    // Để an toàn và nhất quán, chúng ta sẽ xóa bảng cũ và tạo bảng mới liên kết với nhan_vien(ma_nv)
-    await pool.query(`DROP TABLE IF EXISTS face_embeddings`);
+    // 2. Tạo bảng face_embeddings nếu chưa tồn tại
     await pool.query(`
-      CREATE TABLE face_embeddings (
+      CREATE TABLE IF NOT EXISTS face_embeddings (
         id INT AUTO_INCREMENT PRIMARY KEY,
         ma_tai_khoan INT NOT NULL UNIQUE,
         embedding MEDIUMBLOB NOT NULL,

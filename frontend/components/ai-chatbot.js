@@ -104,19 +104,20 @@
           
           <!-- Suggestion Chips Container -->
           <div class="ai-chat-suggestions" id="ai-chat-suggestions" style="display: none;"></div>
-
           <!-- Handoff sang nhân viên thật -->
-          <div class="ai-chat-handoff" style="display: flex; gap: 6px; padding: 6px 12px; border-top: 1px solid #eef0f3; background: #fafbfc; font-size: 12px;">
-            <span style="color: #6b7280; align-self: center; margin-right: 4px;">Cần nhân viên thật?</span>
-            <a href="tel:1900xxxx" title="Gọi hotline" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; background: #fee2e2; color: #b91c1c; text-decoration: none; font-weight: 600;">
-              <i class="fas fa-phone"></i> Hotline
-            </a>
-            <a href="https://zalo.me/0000000000" target="_blank" rel="noopener" title="Chat Zalo" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; background: #dbeafe; color: #1d4ed8; text-decoration: none; font-weight: 600;">
-              <i class="fas fa-comments"></i> Zalo
-            </a>
-            <a href="https://m.me/quanghungmobile" target="_blank" rel="noopener" title="Chat Messenger" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; background: #e0e7ff; color: #4338ca; text-decoration: none; font-weight: 600;">
-              <i class="fab fa-facebook-messenger"></i> Messenger
-            </a>
+          <div class="ai-chat-handoff">
+            <span class="ai-handoff-label">Cần nhân viên thật?</span>
+            <div class="ai-handoff-links">
+              <a href="tel:1900xxxx" title="Gọi hotline" class="ai-handoff-link hotline">
+                <i class="fas fa-phone"></i> Hotline
+              </a>
+              <a href="https://zalo.me/0000000000" target="_blank" rel="noopener" title="Chat Zalo" class="ai-handoff-link zalo">
+                <i class="fas fa-comments"></i> Zalo
+              </a>
+              <a href="https://m.me/quanghungmobile" target="_blank" rel="noopener" title="Chat Messenger" class="ai-handoff-link messenger">
+                <i class="fab fa-facebook-messenger"></i> Messenger
+              </a>
+            </div>
           </div>
 
           <div class="ai-chat-input-area">

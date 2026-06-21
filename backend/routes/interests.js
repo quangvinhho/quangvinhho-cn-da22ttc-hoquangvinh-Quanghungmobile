@@ -286,5 +286,16 @@ router.delete('/admin/view-history/clear', async (req, res) => {
         res.status(500).json({ success: false, message: 'Lỗi server' });
     }
 });
+// DELETE /api/interests/admin/user-interests/all/:userId - Admin xóa toàn bộ sở thích của 1 user
+router.delete('/admin/user-interests/all/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        await pool.query('DELETE FROM so_thich_khach_hang WHERE ma_kh = ?', [userId]);
+        res.json({ success: true, message: 'Đã xóa toàn bộ sở thích của khách hàng này' });
+    } catch (error) {
+        console.error('Admin clear user interests error:', error);
+        res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+});
 
 module.exports = router;
